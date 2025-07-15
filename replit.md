@@ -100,7 +100,7 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - Scripts automatisés prêts à l'emploi
 - Configuration build optimisée
 
-**Dernière mise à jour**: 15 juillet 2025 - Conflits expo-doctor résolus
+**Dernière mise à jour**: 15 juillet 2025 - HomeScreen transformé en React Native
 
 **Status technique**: ✅ Toutes les vérifications passent
 - TypeScript 5.8.3 compilé sans erreurs  
@@ -119,3 +119,4 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **Script de test** : test-android-35.js pour vérification complète (11/11 tests réussis)
 - **Erreurs de lint corrigées** : FullBackupContent résolue dans data_extraction_rules.xml
 - **Conflits expo-doctor résolus** : Doctor personnalisé remplace expo-doctor avec versions conflictuelles
+- **HomeScreen transformé** : Conversion complète du site web anime-sama en React Native avec API identique
