@@ -102,3 +102,7 @@ console.log('   - Expo SDK 53');
 console.log('   - React Native 0.79.5');
 console.log('   - React 19.0.0 (latest)');
 console.log('   - @expo/cli 0.24.20 (latest)');
+
+console.log('\n🔍 Pour vérifier avec expo-doctor :');
+console.log('💡 Exécutez: npx expo-doctor');
+console.log('💡 En cas de problème de dépendances: npx expo install --check');

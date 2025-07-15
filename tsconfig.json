@@ -21,7 +21,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "jsx": "react-native",
-    "typeRoots": ["node_modules/@types", "node_modules/react-native/types"]
+    "typeRoots": ["node_modules/@types"]
   },
   "include": [
     "**/*.ts",
