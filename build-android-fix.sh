@@ -6,7 +6,7 @@
 echo "🔧 Configuration de l'environnement Java..."
 
 # Export JAVA_HOME explicitement
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
 
 echo "JAVA_HOME défini sur: $JAVA_HOME"
@@ -22,7 +22,7 @@ rm -rf .expo android/build android/app/build
 
 # Build avec variables d'environnement explicites
 echo "🚀 Build EAS avec configuration Java..."
-JAVA_HOME=/usr/lib/jvm/java-17-openjdk \
+JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
 ANDROID_COMPILE_SDK=33 \
 ANDROID_BUILD_TOOLS=33.0.0 \
 ANDROID_MIN_SDK=24 \

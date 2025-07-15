@@ -27,8 +27,8 @@
         "NODE_ENV": "production",
         "EXPO_USE_HERMES": "false",
         "EXPO_USE_METRO_REQUIRE": "1",
-        "JAVA_HOME": "/usr/lib/jvm/java-17-openjdk",
-        "GRADLE_OPTS": "-Xmx4096m -XX:MaxMetaspaceSize=512m"
+        "JAVA_HOME": "/usr/lib/jvm/java-17-openjdk-amd64",
+        "GRADLE_OPTS": "-Xmx4096m -XX:MaxMetaspaceSize=512m -Dorg.gradle.jvmargs=-Xmx4096m"
       },
       "cache": {
         "disabled": true
@@ -47,7 +47,8 @@
         "ANDROID_MIN_SDK": "24",
         "ANDROID_TARGET_SDK": "33",
         "EXPO_USE_HERMES": "false",
-        "JAVA_HOME": "/usr/lib/jvm/java-17-openjdk"
+        "JAVA_HOME": "/usr/lib/jvm/java-17-openjdk-amd64",
+        "GRADLE_OPTS": "-Xmx4096m -XX:MaxMetaspaceSize=512m"
       }
     }
   }
