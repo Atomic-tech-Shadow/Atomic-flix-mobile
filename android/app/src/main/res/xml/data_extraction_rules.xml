@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-extraction-rules>
     <cloud-backup>
+        <!-- Inclure les domaines principaux -->
         <include domain="root" />
         <include domain="file" />
+        <include domain="database" />
+        <include domain="sharedpref" />
+        
+        <!-- Exclure les fichiers sensibles -->
         <exclude domain="file" path="keystore/" />
         <exclude domain="file" path="credentials/" />
+        <exclude domain="database" path="secure.db" />
+        <exclude domain="sharedpref" path="sensitive_prefs.xml" />
     </cloud-backup>
+    
     <device-transfer>
+        <!-- Inclure les domaines principaux -->
         <include domain="root" />
         <include domain="file" />
+        <include domain="database" />
+        <include domain="sharedpref" />
+        
+        <!-- Exclure les données sensibles du transfert -->
         <exclude domain="file" path="keystore/" />
         <exclude domain="file" path="credentials/" />
+        <exclude domain="database" path="secure.db" />
+        <exclude domain="sharedpref" path="sensitive_prefs.xml" />
     </device-transfer>
 </data-extraction-rules>

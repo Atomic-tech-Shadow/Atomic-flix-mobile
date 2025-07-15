@@ -24,9 +24,11 @@ function createDataExtractionRules(config) {
       const dataExtractionRules = `<?xml version="1.0" encoding="utf-8"?>
 <data-extraction-rules>
     <cloud-backup>
-        <!-- Autoriser la sauvegarde cloud par défaut -->
+        <!-- Inclure les domaines principaux -->
         <include domain="root" />
         <include domain="file" />
+        <include domain="database" />
+        <include domain="sharedpref" />
         
         <!-- Exclure les fichiers sensibles -->
         <exclude domain="file" path="keystore/" />
@@ -36,20 +38,37 @@ function createDataExtractionRules(config) {
     </cloud-backup>
     
     <device-transfer>
-        <!-- Autoriser le transfert d'appareil -->
+        <!-- Inclure les domaines principaux -->
         <include domain="root" />
         <include domain="file" />
+        <include domain="database" />
+        <include domain="sharedpref" />
         
         <!-- Exclure les données sensibles du transfert -->
         <exclude domain="file" path="keystore/" />
         <exclude domain="file" path="credentials/" />
+        <exclude domain="database" path="secure.db" />
+        <exclude domain="sharedpref" path="sensitive_prefs.xml" />
     </device-transfer>
 </data-extraction-rules>`;
       
       const filePath = path.join(xmlDir, "data_extraction_rules.xml");
       fs.writeFileSync(filePath, dataExtractionRules);
       
-      console.log("✅ Fichier data_extraction_rules.xml créé avec succès");
+      // Créer aussi le fichier backup_rules.xml pour compatibilité
+      const backupRules = `<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <include domain="file" />
+    <include domain="database" />
+    <include domain="sharedpref" />
+    <exclude domain="file" path="keystore/" />
+    <exclude domain="file" path="credentials/" />
+</full-backup-content>`;
+      
+      const backupFilePath = path.join(xmlDir, "backup_rules.xml");
+      fs.writeFileSync(backupFilePath, backupRules);
+      
+      console.log("✅ Fichiers data_extraction_rules.xml et backup_rules.xml créés avec succès");
       
       return config;
     },
