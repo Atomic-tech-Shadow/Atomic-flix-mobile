@@ -49,9 +49,10 @@ const checks = [
     name: 'React Native 0.76+ configuré',
     check: () => {
       const pkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-      return pkg.dependencies && pkg.dependencies['react-native'] && pkg.dependencies['react-native'].includes('0.76');
+      const rnVersion = pkg.dependencies && pkg.dependencies['react-native'];
+      return rnVersion && (rnVersion.includes('0.76') || rnVersion.includes('0.77') || rnVersion.includes('0.78') || rnVersion.includes('0.79'));
     },
-    fix: 'Mettez à jour react-native vers la version 0.76.9'
+    fix: 'Mettez à jour react-native vers une version 0.76+'
   },
   {
     name: 'app.json configuré',
@@ -98,6 +99,6 @@ console.log('   - Android SDK 33 (stable)');
 console.log('   - Gradle 8.13 compatible');
 console.log('   - TypeScript 5.8.3');
 console.log('   - Expo SDK 53');
-console.log('   - React Native 0.76.9');
-console.log('   - React 18.3.1 (stable)');
+console.log('   - React Native 0.79.5');
+console.log('   - React 19.0.0 (latest)');
 console.log('   - @expo/cli 0.24.20 (latest)');
