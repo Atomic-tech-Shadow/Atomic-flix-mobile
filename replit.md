@@ -68,7 +68,7 @@ The application supports multiple build configurations:
 
 ### Current Structure
 ```
-shadow/
+root/
 ├── App.tsx (main app component)
 ├── src/
 │   ├── navigation/ (routing)
@@ -82,4 +82,4 @@ shadow/
 └── build scripts and configuration files
 ```
 
-The project is configured for mobile development with Expo and ready for Android builds.
+The project is configured for mobile development with Expo and ready for Android builds. All files are now located directly in the root directory.
