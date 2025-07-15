@@ -33,6 +33,7 @@
     },
     "plugins": [
       "./android-manifest-config.js",
+      "./android-resources-config.js",
       [
         "expo-build-properties",
         {

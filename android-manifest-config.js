@@ -25,7 +25,11 @@ function addOptimizedManifestConfig(androidManifest) {
   application.$["android:requestLegacyExternalStorage"] = "true";
   application.$["android:hardwareAccelerated"] = "true";
   application.$["android:allowBackup"] = "false";
-  application.$["android:extractNativeLibs"] = "true";
+  // Retirer extractNativeLibs pour éviter les warnings AGP
+  // application.$["android:extractNativeLibs"] = "true";
+  
+  // Ajouter data extraction rules pour Android 12+
+  application.$["android:dataExtractionRules"] = "@xml/data_extraction_rules";
 
   // Configuration pour MainActivity
   if (application.activity && application.activity.length > 0) {

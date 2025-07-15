@@ -107,3 +107,6 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - TanStack React Query v5 configuré correctement
 - Types SearchResult étendus avec contentType optionnel
 - Configuration doctor personnalisé : 8/8 vérifications réussies
+- **Problème Android résolu** : data_extraction_rules.xml créé
+- Fichiers de ressources Android configurés (backup_rules.xml)
+- Plugin android-resources-config.js ajouté à app.json
