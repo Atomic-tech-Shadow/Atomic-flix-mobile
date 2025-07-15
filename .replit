@@ -5,6 +5,24 @@ channel = "stable-24_05"
 packages = ["unzip"]
 
 [workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "health-check"
+
+[[workflows.workflow]]
+name = "health-check"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node complete-health-check.js"
 
 [[ports]]
 localPort = 5000
