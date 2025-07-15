@@ -110,3 +110,5 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **Problème Android résolu** : data_extraction_rules.xml créé
 - Fichiers de ressources Android configurés (backup_rules.xml)
 - Plugin android-resources-config.js ajouté à app.json
+- **EAS CLI installé** : version 16.15.0 configurée
+- **ID projet EAS** : e5b84028-0715-4bc5-861b-a2bfd28a99e9

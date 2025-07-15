@@ -83,11 +83,14 @@ npm run android
 ### 📱 Build APK
 
 ```bash
-# Build automatique avec keystore
-./build-with-keystore.sh
+# Authentification EAS (une seule fois)
+npx eas login
 
-# Ou build manuel
+# Build APK avec EAS (recommandé)
 npx eas build --platform android --profile preview
+
+# Ou build automatique avec keystore
+./build-with-keystore.sh
 ```
 
 ## 📋 Scripts disponibles
