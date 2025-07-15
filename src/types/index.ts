@@ -6,6 +6,7 @@ export interface SearchResult {
   type: string;
   status: string;
   image: string;
+  contentType?: string;
 }
 
 export interface Episode {
