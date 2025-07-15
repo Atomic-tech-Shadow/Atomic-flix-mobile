@@ -100,7 +100,7 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - Scripts automatisés prêts à l'emploi
 - Configuration build optimisée
 
-**Dernière mise à jour**: 15 juillet 2025 - Organisation finale, documentation complète et correction erreurs TypeScript
+**Dernière mise à jour**: 15 juillet 2025 - Configuration EAS CLI finale et résolution problèmes
 
 **Status technique**: ✅ Toutes les vérifications passent
 - TypeScript 5.8.3 compilé sans erreurs  
@@ -112,3 +112,6 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - Plugin android-resources-config.js ajouté à app.json
 - **EAS CLI installé** : version 16.15.0 configurée
 - **ID projet EAS** : e5b84028-0715-4bc5-861b-a2bfd28a99e9
+- **Slug corrigé** : atomic-flix-mobile (correspondance avec projectId)
+- **Version CLI EAS** : 16.15.0 spécifiée dans eas.json
+- **Script de test** : test-eas-config.js pour vérification

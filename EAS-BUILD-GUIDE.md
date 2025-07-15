@@ -2,13 +2,30 @@
 
 ## Configuration EAS
 
-L'ID du projet EAS a été configuré dans `app.json` :
+### Projet configuré
+- **ID projet EAS** : e5b84028-0715-4bc5-861b-a2bfd28a99e9
+- **Slug** : atomic-flix-mobile
+- **Version CLI** : 16.15.0 (dans eas.json)
+
+### Configuration dans app.json
 ```json
 {
-  "extra": {
-    "eas": {
-      "projectId": "e5b84028-0715-4bc5-861b-a2bfd28a99e9"
+  "expo": {
+    "slug": "atomic-flix-mobile",
+    "extra": {
+      "eas": {
+        "projectId": "e5b84028-0715-4bc5-861b-a2bfd28a99e9"
+      }
     }
+  }
+}
+```
+
+### Configuration dans eas.json
+```json
+{
+  "cli": {
+    "version": "16.15.0"
   }
 }
 ```
@@ -122,6 +139,21 @@ Le projet inclut des scripts pour simplifier le build :
 
 # Correction des problèmes
 ./fix-android-build.sh
+
+# Vérification configuration EAS
+node test-eas-config.js
+```
+
+## Vérification de la configuration
+
+Pour vérifier que EAS CLI est correctement configuré :
+
+```bash
+# Test rapide de configuration
+node test-eas-config.js
+
+# Vérification complète
+npm run doctor
 ```
 
 ---
