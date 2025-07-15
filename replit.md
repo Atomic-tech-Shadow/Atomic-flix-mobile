@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a minimal static web application featuring a simple greeting page. The project consists of a single HTML page with French content displaying "salut je suis cid" (hello I am cid) with modern CSS styling including glassmorphism effects and gradient backgrounds.
+This is a React Native mobile application built with Expo for anime and manga streaming/reading. The project includes navigation between different screens, media player functionality, and is configured for Android builds.
 
 ## User Preferences
 
@@ -10,56 +10,76 @@ Preferred communication style: Simple, everyday language.
 
 ## System Architecture
 
-The application follows a basic static website architecture:
+The application follows a React Native/Expo mobile app architecture:
 
-- **Frontend Only**: Pure HTML/CSS implementation with no JavaScript framework
-- **Static Content**: No server-side processing or dynamic content generation
-- **Client-Side Rendering**: All content is rendered directly in the browser
+- **Mobile Framework**: React Native with Expo SDK ~53.0.19
+- **Navigation**: React Navigation with stack navigator
+- **State Management**: TanStack React Query for API state management
+- **TypeScript**: Full TypeScript support with strict configuration
+- **Build System**: Expo Application Services (EAS) for production builds
 
 ## Key Components
 
-### HTML Structure (`index.html`)
-- Single-page application with minimal markup
-- French language configuration (`lang="fr"`)
-- Responsive viewport meta tag for mobile compatibility
-- External CSS stylesheet linking
+### Main Application (`App.tsx`)
+- Root component with navigation setup
+- Status bar configuration
+- Main app entry point
 
-### Styling (`style.css`)
-- Modern CSS with glassmorphism design pattern
-- Responsive typography using `clamp()` function
-- CSS Grid/Flexbox for layout centering
-- Gradient backgrounds and backdrop filters for visual appeal
-- Hover effects for interactive feedback
+### Navigation (`src/navigation/AppNavigator.tsx`)
+- Stack-based navigation between screens
+- Screen routing configuration
+
+### Screens
+- **HomeScreen**: Main landing page
+- **AnimeDetailScreen**: Detailed anime information
+- **AnimePlayerScreen**: Video player for anime episodes  
+- **MangaReaderScreen**: Manga reading interface
+
+### Configuration Files
+- `app.json`: Expo app configuration
+- `eas.json`: Build configuration for Android/iOS
+- `babel.config.js`: Babel transpilation setup
+- `metro.config.js`: Metro bundler configuration
 
 ## Data Flow
 
-Since this is a static website, there is no complex data flow:
-
-1. Browser requests HTML file
-2. HTML loads and references CSS stylesheet
-3. CSS applies styling and visual effects
-4. Content is displayed to user
+1. App initializes with React Query client
+2. Navigation system handles screen transitions
+3. API calls managed through React Query hooks
+4. Media content displayed in specialized player components
 
 ## External Dependencies
 
-- **None**: The project uses only native HTML and CSS
-- **Fonts**: Relies on system Arial font (web-safe fallback)
-- **No CDNs**: All assets are self-contained
+- **React**: 19.0.0 with React Native 0.79.5
+- **Expo**: Complete Expo SDK for mobile development
+- **Navigation**: React Navigation for screen management
+- **Query Client**: TanStack React Query for data fetching
+- **Gestures**: React Native Gesture Handler for interactions
+- **Animation**: React Native Reanimated for smooth animations
 
-## Deployment Strategy
+## Build & Deployment Strategy
 
-The application can be deployed on any static hosting service:
+The application supports multiple build configurations:
 
-- **Requirements**: Any web server capable of serving static files
-- **Files Needed**: `index.html` and `style.css` in the same directory
-- **No Build Process**: Files can be served directly without compilation
-- **Hosting Options**: GitHub Pages, Netlify, Vercel, or any basic web hosting
+- **Development**: `expo start` for local development
+- **Android**: EAS Build for production APK generation
+- **Signing**: Custom keystore for Android app signing
+- **Scripts**: Automated build and dependency management scripts
 
 ### Current Structure
 ```
 shadow/
-├── index.html (main page)
-└── style.css (styling)
+├── App.tsx (main app component)
+├── src/
+│   ├── navigation/ (routing)
+│   ├── screens/ (app screens)
+│   ├── types/ (TypeScript definitions)
+│   └── utils/ (utilities)
+├── assets/ (app icons and images)
+├── package.json (dependencies)
+├── app.json (expo config)
+├── eas.json (build config)
+└── build scripts and configuration files
 ```
 
-The project is deployment-ready as-is and requires no additional configuration or build steps.
+The project is configured for mobile development with Expo and ready for Android builds.
