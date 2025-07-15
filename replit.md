@@ -1,12 +1,18 @@
-# Shadow Project
+# ATOMIC FLIX - Mobile Anime & Manga App
 
 ## Overview
 
-This is a React Native mobile application built with Expo for anime and manga streaming/reading. The project includes navigation between different screens, media player functionality, and is configured for Android builds.
+**🤖 PROJET DÉVELOPPÉ AVEC REPLIT AGENT** - Ce projet a été entièrement créé et optimisé par Replit Agent, l'assistant IA de développement.
+
+Il s'agit d'une application mobile React Native construite avec Expo pour le streaming d'anime et la lecture de manga. Le projet inclut une navigation entre différents écrans, des fonctionnalités de lecteur multimédia, et est configuré pour les builds Android avec keystore personnalisé.
 
 ## User Preferences
 
-Preferred communication style: Simple, everyday language.
+- **Communication style**: Simple, everyday language (français)
+- **Documentation**: Complète et accessible
+- **Architecture**: Propre et bien organisée
+- **Builds**: Scripts automatisés prioritaires
+- **Plateforme**: Android en priorité
 
 ## System Architecture
 
@@ -83,3 +89,15 @@ root/
 ```
 
 The project is configured for mobile development with Expo and ready for Android builds. All files are now located directly in the root directory.
+
+## Replit Agent Checkpoint Information
+
+**Status**: ✅ Projet complètement développé et optimisé par Replit Agent
+
+Ce projet peut être immédiatement continué par Replit Agent grâce à :
+- Documentation complète dans `README.md` et `REPLIT-AGENT-INFO.md`
+- Architecture clairement définie dans ce fichier
+- Scripts automatisés prêts à l'emploi
+- Configuration build optimisée
+
+**Dernière mise à jour**: 15 juillet 2025 - Organisation finale et documentation pour détection Replit Agent

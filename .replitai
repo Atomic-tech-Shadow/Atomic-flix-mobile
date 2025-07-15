@@ -1,0 +1,23 @@
+# Replit Agent Project Marker
+# Ce fichier identifie ce projet comme ayant été développé avec Replit Agent
+
+PROJECT_TYPE=react-native-expo
+AGENT_VERSION=claude-4-sonnet
+CREATED_DATE=2025-07-15
+STATUS=production-ready
+PLATFORM=android-mobile
+
+# Architecture
+FRAMEWORK=react-native-0.79.5
+SDK=expo-53
+LANGUAGE=typescript-5.8.3
+STATE_MANAGEMENT=tanstack-react-query
+NAVIGATION=react-navigation-v6
+
+# Build configuration
+BUILD_SYSTEM=eas
+KEYSTORE=configured
+AUTO_SCRIPTS=enabled
+
+# Documentation files for Agent context
+DOCS=README.md,REPLIT-AGENT-INFO.md,replit.md,BUILD-SOLUTION.md

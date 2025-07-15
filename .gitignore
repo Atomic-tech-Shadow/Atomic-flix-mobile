@@ -1,0 +1,150 @@
+# Replit Agent - Mobile React Native Project
+# Configuration Git pour ATOMIC FLIX
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Production
+build/
+*.tgz
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+.npm
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+lerna-debug.log*
+
+# Dependency directories
+jspm_packages/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+
+# Nuxt.js build / generate output
+.nuxt
+dist
+
+# Vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.tmp
+*.temp
+Desktop.ini
+$RECYCLE.BIN/
+
+# Android
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+local.properties
+.gradle/
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# iOS
+*.ipa
+*.app
+*.dSYM.zip
+*.dSYM
+Pods/
+DerivedData/
+build/
+
+# SECURITY - Files sensibles à ne JAMAIS commiter
+# (Ces fichiers sont déjà présents localement mais ne doivent pas être dans Git public)
+signing.keystore
+signing-key-info.txt
+credentials.json
+
+# Build temporaires
+temp-export/
+attached_assets/
+
+# Metro
+.metro-health-check*
+
+# Replit specific
+.replit
+replit.nix
