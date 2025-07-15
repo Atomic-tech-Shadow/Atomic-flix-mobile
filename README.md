@@ -86,11 +86,14 @@ npm run android
 # Authentification EAS (une seule fois)
 npx eas login
 
-# Build APK avec EAS (recommandé)
+# Build APK avec EAS Android 35 (recommandé)
 npx eas build --platform android --profile preview
 
 # Ou build automatique avec keystore
 ./build-with-keystore.sh
+
+# Correction des problèmes Android 35
+./fix-android-35.sh
 ```
 
 ## 📋 Scripts disponibles
@@ -102,6 +105,8 @@ npx eas build --platform android --profile preview
 | `npm run doctor` | Vérifie la configuration |
 | `npm run build:android` | Build APK via EAS |
 | `./build-with-keystore.sh` | Build automatique avec signature |
+| `./fix-android-35.sh` | Correction problèmes Android 35 |
+| `node test-android-35.js` | Test configuration Android 35 |
 
 ## 🔧 Configuration build
 

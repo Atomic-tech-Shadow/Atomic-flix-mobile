@@ -19,14 +19,14 @@ function addOptimizedManifestConfig(androidManifest) {
     application.$ = {};
   }
 
-  // Configuration pour éviter les erreurs de manifeste
+  // Configuration pour éviter les erreurs de manifeste Android 35
   application.$["android:largeHeap"] = "true";
   application.$["android:usesCleartextTraffic"] = "true";
   application.$["android:requestLegacyExternalStorage"] = "true";
   application.$["android:hardwareAccelerated"] = "true";
   application.$["android:allowBackup"] = "false";
-  // Retirer extractNativeLibs pour éviter les warnings AGP
-  // application.$["android:extractNativeLibs"] = "true";
+  application.$["android:supportsRtl"] = "true";
+  application.$["android:enableOnBackInvokedCallback"] = "true";
   
   // Ajouter data extraction rules pour Android 12+
   application.$["android:dataExtractionRules"] = "@xml/data_extraction_rules";
