@@ -409,14 +409,17 @@ const HomeScreen: React.FC = () => {
                 colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.95)', '#000000']}
                 style={styles.heroContent}
               >
+                {/* Texte centré */}
+                <Text style={styles.heroSubtitle}>
+                  Plongez dans l'univers infini{'\n'}des animes et mangas !
+                </Text>
+                
+                {/* Logo en bas à droite */}
                 <Image 
                   source={require('../../assets/atomic-flix-logo.png')}
                   style={styles.heroLogo}
                   resizeMode="contain"
                 />
-                <Text style={styles.heroSubtitle}>
-                  Plongez dans l'univers infini{'\n'}des animes et mangas !
-                </Text>
               </LinearGradient>
             </View>
 
@@ -547,21 +550,23 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: 24,
     paddingVertical: 48,
-    alignItems: 'flex-end', // Aligner le contenu à droite
+    alignItems: 'center', // Contenu centré par défaut
+    justifyContent: 'flex-end', // Contenu vers le bas
   },
   heroLogo: {
-    width: 150, // Légèrement plus petit pour le coin
-    height: 45,
-    marginBottom: 8,
-    borderRadius: 75, // Pour rendre le logo rond
-    alignSelf: 'flex-end', // Forcer l'alignement à droite
+    width: 120,
+    height: 36,
+    borderRadius: 60, // Pour rendre le logo rond
+    position: 'absolute',
+    bottom: 20,
+    right: 20, // Positionné en bas à droite
   },
   heroSubtitle: {
-    fontSize: 16, // Légèrement plus petit
+    fontSize: 18,
     color: '#d1d5db',
-    textAlign: 'right', // Aligner le texte à droite
-    lineHeight: 24,
-    alignSelf: 'flex-end', // Forcer l'alignement à droite
+    textAlign: 'center', // Texte centré
+    lineHeight: 28,
+    marginBottom: 60, // Espace pour le logo en bas
   },
 
 
