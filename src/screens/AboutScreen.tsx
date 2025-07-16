@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking, SafeAreaView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import { StatusBar } from 'expo-status-bar';
+import SharedHeader from '../components/SharedHeader';
 
 type AboutScreenNavigationProp = StackNavigationProp<RootStackParamList, 'About'>;
 
@@ -19,15 +21,19 @@ export default function AboutScreen({ navigation }: Props) {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar style="light" backgroundColor="#0a0a1a" />
+      <SharedHeader showBackButton={true} />
       
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>À Propos d'ATOMIC FLIX</Text>
-        <Text style={styles.subtitle}>
-          Votre plateforme de streaming d'anime moderne et innovante
-        </Text>
-      </View>
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.title}>À Propos d'ATOMIC FLIX</Text>
+          <Text style={styles.subtitle}>
+            Votre plateforme de streaming d'anime moderne et innovante
+          </Text>
+        </View>
 
       {/* Main Content */}
       <View style={styles.content}>
@@ -145,10 +151,15 @@ export default function AboutScreen({ navigation }: Props) {
         </View>
       </View>
     </ScrollView>
+  </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#0a0a1a',
+  },
   container: {
     flex: 1,
     backgroundColor: '#000000',

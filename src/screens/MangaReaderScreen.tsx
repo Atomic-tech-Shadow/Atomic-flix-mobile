@@ -10,12 +10,15 @@ import {
   Alert,
   Modal,
   FlatList,
-  Dimensions
+  Dimensions,
+  SafeAreaView
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { MangaChapter, MangaSeason, MangaData } from '../types';
+import { StatusBar } from 'expo-status-bar';
+import SharedHeader from '../components/SharedHeader';
 
 type MangaReaderScreenNavigationProp = StackNavigationProp<RootStackParamList, 'MangaReader'>;
 type MangaReaderScreenRouteProp = RouteProp<RootStackParamList, 'MangaReader'>;
@@ -215,45 +218,39 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#00bcd4" />
-        <Text style={styles.loadingText}>Chargement du manga...</Text>
-      </View>
+      <SafeAreaView style={styles.safeArea}>
+        <StatusBar style="light" backgroundColor="#0a0a1a" />
+        <SharedHeader showBackButton={true} />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#00bcd4" />
+          <Text style={styles.loadingText}>Chargement du manga...</Text>
+        </View>
+      </SafeAreaView>
     );
   }
 
   if (error) {
     return (
-      <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>{error}</Text>
-        <TouchableOpacity style={styles.retryButton} onPress={() => navigation.goBack()}>
-          <Text style={styles.retryButtonText}>Retour</Text>
-        </TouchableOpacity>
-      </View>
+      <SafeAreaView style={styles.safeArea}>
+        <StatusBar style="light" backgroundColor="#0a0a1a" />
+        <SharedHeader showBackButton={true} />
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+          <TouchableOpacity style={styles.retryButton} onPress={() => navigation.goBack()}>
+            <Text style={styles.retryButtonText}>Retour</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
     );
   }
 
   const currentPage = selectedChapter?.pages[currentPageIndex];
 
   return (
-    <View style={styles.container}>
-      {/* Header avec contrôles */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Text style={styles.backButtonText}>←</Text>
-        </TouchableOpacity>
-        
-        <Text style={styles.title} numberOfLines={1}>
-          {mangaTitle || mangaData?.title}
-        </Text>
-        
-        <TouchableOpacity 
-          style={styles.chaptersButton} 
-          onPress={() => setShowChapterList(true)}
-        >
-          <Text style={styles.chaptersButtonText}>📚</Text>
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar style="light" backgroundColor="#0a0a1a" />
+      <SharedHeader showBackButton={true} />
+      <View style={styles.container}>
 
       {/* Lecteur principal */}
       {selectedChapter && currentPage ? (
@@ -365,10 +362,15 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
         </View>
       )}
     </View>
+  </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#0a0a1a',
+  },
   container: {
     flex: 1,
     backgroundColor: '#000000',

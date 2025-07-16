@@ -135,4 +135,7 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **Navigation intelligente** : Détection automatique manga/anime, navigation vers MangaReader ou AnimePlayer selon le type de contenu
 - **Interface lecteur avancée** : WebView pour streaming, sélection serveurs multiples, navigation épisodes, gestion erreurs complète, états de chargement
 - **Compatibilité mobile** : Styles responsives, interactions tactiles, messages d'erreur adaptatifs, boutons de contrôle intuitifs, timeout et retry automatiques
-- **Application Expo en cours** : Metro Bundler actif sur port 8082, QR code disponible pour test mobile Expo Go
+- **🎯 HEADER UNIFIÉ APPLIQUÉ** : Tous les écrans utilisent désormais le même header HomeScreen avec composant SharedHeader
+- **Composant SharedHeader créé** : src/components/SharedHeader.tsx avec logo ATOMIC FLIX, icônes navigation, bouton retour conditionnel
+- **Navigation cohérente** : Bouton retour sur tous les écrans (sauf Home), styles dark blue (#0a0a1a), interactions tactiles
+- **Application Expo opérationnelle** : Metro Bundler actif sur port 8081, QR code disponible pour test mobile Expo Go, 5/5 health checks réussis

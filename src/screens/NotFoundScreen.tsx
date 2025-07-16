@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import { StatusBar } from 'expo-status-bar';
+import SharedHeader from '../components/SharedHeader';
 
 type NotFoundScreenNavigationProp = StackNavigationProp<RootStackParamList, 'NotFound'>;
 
@@ -19,9 +21,12 @@ export default function NotFoundScreen({ navigation }: Props) {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Background overlay */}
-      <View style={styles.overlay} />
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar style="light" backgroundColor="#0a0a1a" />
+      <SharedHeader showBackButton={true} />
+      <View style={styles.container}>
+        {/* Background overlay */}
+        <View style={styles.overlay} />
       
       {/* Content */}
       <View style={styles.content}>
@@ -63,10 +68,15 @@ export default function NotFoundScreen({ navigation }: Props) {
         </View>
       </View>
     </View>
+  </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#0a0a1a',
+  },
   container: {
     flex: 1,
     backgroundColor: '#000000',

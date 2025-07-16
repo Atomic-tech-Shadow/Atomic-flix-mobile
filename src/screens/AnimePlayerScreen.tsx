@@ -21,6 +21,7 @@ import type { RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 import type { RootStackParamList } from '../navigation/AppNavigator';
+import SharedHeader from '../components/SharedHeader';
 
 type AnimePlayerScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimePlayer'>;
 type AnimePlayerScreenRouteProp = RouteProp<RootStackParamList, 'AnimePlayer'>;
@@ -322,41 +323,7 @@ const AnimePlayerScreen: React.FC = () => {
     loadAnimeData();
   }, [animeUrl, seasonData, animeTitle]);
 
-  // Header mobile exact comme le site ATOMIC FLIX
-  const renderMobileHeader = () => (
-    <View style={styles.mobileHeader}>
-      <View style={styles.headerRow}>
-        {/* Logo ATOMIC FLIX avec symbole atomique */}
-        <View style={styles.logoSection}>
-          <View style={styles.atomicIcon}>
-            <View style={styles.atomicSymbolSmall}>
-              <View style={styles.atomicCoreSmall} />
-              <View style={[styles.atomicRingSmall, styles.ringSmall1]} />
-            </View>
-          </View>
-          <Text style={styles.logoTextMobile}>
-            <Text style={styles.atomicTextMobile}>ATOMIC</Text>
-            <Text style={styles.flixTextMobile}>FLIX</Text>
-          </Text>
-        </View>
 
-        {/* Icônes navigation droite */}
-        <View style={styles.headerIcons}>
-          <TouchableOpacity style={styles.headerIconButton}>
-            <Ionicons name="search" size={22} color="#ffffff" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.headerIconButton}>
-            <Ionicons name="notifications" size={22} color="#ffffff" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.headerIconButton}>
-            <Ionicons name="menu" size={22} color="#ffffff" />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
 
   // Hero Section avec image de fond et titre (utilise les vraies données)
   const renderHeroSection = () => (
@@ -556,7 +523,7 @@ const AnimePlayerScreen: React.FC = () => {
       <StatusBar style="light" backgroundColor="#0a0a1a" />
       
       {/* Header mobile ATOMIC FLIX */}
-      {renderMobileHeader()}
+      <SharedHeader showBackButton={true} />
       
       <ScrollView
         style={styles.scrollView}

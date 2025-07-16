@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import { StatusBar } from 'expo-status-bar';
+import SharedHeader from '../components/SharedHeader';
 
 type TermsOfServiceScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TermsOfService'>;
 
@@ -13,14 +15,10 @@ export default function TermsOfServiceScreen({ navigation }: Props) {
   const lastUpdated = "5 juillet 2025";
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Text style={styles.backButtonText}>←</Text>
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Conditions d'Utilisation</Text>
-      </View>
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar style="light" backgroundColor="#0a0a1a" />
+      <SharedHeader showBackButton={true} />
+      <View style={styles.container}>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Title Section */}
@@ -230,10 +228,15 @@ export default function TermsOfServiceScreen({ navigation }: Props) {
         </View>
       </ScrollView>
     </View>
+  </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#0a0a1a',
+  },
   container: {
     flex: 1,
     backgroundColor: '#000000',

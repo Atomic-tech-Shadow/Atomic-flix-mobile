@@ -21,6 +21,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { SearchResult } from '../types/index';
 import type { RootStackParamList } from '../navigation/AppNavigator';
+import SharedHeader from '../components/SharedHeader';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -173,41 +174,10 @@ const HomeScreen: React.FC = () => {
     setRefreshing(false);
   };
 
-  // Header exact comme le site mobile ATOMIC FLIX
-  const renderMobileHeader = () => (
-    <View style={styles.mobileHeader}>
-      <View style={styles.headerRow}>
-        {/* Logo ATOMIC FLIX avec symbole atomique */}
-        <View style={styles.logoSection}>
-          <View style={styles.atomicIcon}>
-            <View style={styles.atomicSymbolSmall}>
-              <View style={styles.atomicCoreSmall} />
-              <View style={[styles.atomicRingSmall, styles.ringSmall1]} />
-            </View>
-          </View>
-          <Text style={styles.logoTextMobile}>
-            <Text style={styles.atomicTextMobile}>ATOMIC</Text>
-            <Text style={styles.flixTextMobile}>FLIX</Text>
-          </Text>
-        </View>
-
-        {/* Icônes navigation droite */}
-        <View style={styles.headerIcons}>
-          <TouchableOpacity style={styles.headerIconButton}>
-            <Ionicons name="search" size={22} color="#ffffff" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.headerIconButton}>
-            <Ionicons name="notifications" size={22} color="#ffffff" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.headerIconButton}>
-            <Ionicons name="menu" size={22} color="#ffffff" />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
+  const handleSearchPress = () => {
+    // Active la recherche en focus
+    setSearchQuery('');
+  };
 
   // Composant Carte Anime (inspiré du design web)
   const renderAnimeCard = (anime: SearchResult, index: number) => (
@@ -279,7 +249,10 @@ const HomeScreen: React.FC = () => {
         }
         showsVerticalScrollIndicator={false}
       >
-        {renderMobileHeader()}
+        <SharedHeader 
+          showBackButton={false}
+          onSearchPress={handleSearchPress}
+        />
         
         {/* Barre de recherche locale (identique au site web) */}
         {searchQuery && (
@@ -427,71 +400,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   
-  // Header mobile exact
-  mobileHeader: {
-    backgroundColor: '#0a0a1a',
-    paddingHorizontal: 16,
-    paddingTop: 50,
-    paddingBottom: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#1a1a2e',
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  logoSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  atomicIcon: {
-    marginRight: 8,
-  },
-  atomicSymbolSmall: {
-    width: 24,
-    height: 24,
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  atomicCoreSmall: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: '#00bcd4',
-    position: 'absolute',
-  },
-  atomicRingSmall: {
-    position: 'absolute',
-    borderWidth: 1,
-    borderColor: '#00bcd4',
-    borderRadius: 50,
-  },
-  ringSmall1: {
-    width: 16,
-    height: 16,
-  },
-  logoTextMobile: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  atomicTextMobile: {
-    color: '#ffffff',
-    fontFamily: 'monospace',
-  },
-  flixTextMobile: {
-    color: '#00bcd4',
-    fontFamily: 'monospace',
-  },
-  headerIcons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerIconButton: {
-    padding: 8,
-    marginLeft: 8,
-  },
+
 
   // Recherche
   searchBarContainer: {
