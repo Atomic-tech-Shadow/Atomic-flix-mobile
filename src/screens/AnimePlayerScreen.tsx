@@ -470,14 +470,14 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={selectedPlayer}
-                onValueChange={(itemValue) => setSelectedPlayer(parseInt(itemValue))}
+                onValueChange={(itemValue) => setSelectedPlayer(itemValue)}
                 style={styles.picker}
                 dropdownIconColor="#00bcd4"
               >
                 {episodeDetails.sources.map((source, index) => (
                   <Picker.Item
                     key={`server-${index}-${source.server}`}
-                    label={`${source.server} (${source.quality})`}
+                    label={`${source.server} - ${source.quality}`}
                     value={index}
                   />
                 ))}
@@ -506,7 +506,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 {episodes.map((episode) => (
                   <Picker.Item
                     key={episode.id}
-                    label={`ÉPISODE ${episode.episodeNumber}`}
+                    label={`Épisode ${episode.episodeNumber}: ${episode.title}`}
                     value={episode.id}
                   />
                 ))}
