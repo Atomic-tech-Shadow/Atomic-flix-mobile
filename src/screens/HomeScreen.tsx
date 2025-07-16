@@ -11,8 +11,8 @@ import {
   SafeAreaView,
   Dimensions,
   RefreshControl,
-  Animated,
   Modal,
+  FlatList,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
@@ -79,6 +79,94 @@ const HomeScreen: React.FC = () => {
       }
     }
   };
+
+  // Charger les animes trending au démarrage (identique au site web)
+  useEffect(() => {
+    loadTrendingAnimes();
+  }, []);
+
+  // Charger tout le contenu trending depuis l'API (identique au site web)
+  const loadTrendingAnimes = async () => {
+    try {
+      const response = await apiRequest('/api/trending');
+      
+      if (response && response.success && response.results) {
+        // Afficher tous les types de contenu de l'API : animes, mangas, films
+        setTrendingAnimes(response.results.slice(0, 24)); // Augmenter le nombre d'éléments affichés
+        console.log('Contenu trending chargé:', response.results.length, 'éléments');
+      } else {
+        console.warn('Réponse API trending échouée:', response);
+        setTrendingAnimes([]);
+      }
+    } catch (error) {
+      console.error('Erreur chargement trending:', error);
+      setTrendingAnimes([]);
+    }
+  };
+
+  // Recherche d'animes (identique au site web)
+  const searchAnimes = async (query: string) => {
+    if (query.trim().length < 2) {
+      setSearchResults([]);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const response = await apiRequest(`/api/search?q=${encodeURIComponent(query)}`);
+      
+      if (response && response.success) {
+        const results = response.results || [];
+        if (Array.isArray(results)) {
+          // Afficher tout le contenu de l'API : animes, mangas, films, etc.
+          setSearchResults(results);
+        } else {
+          console.warn('Pas de résultats dans la réponse:', response);
+          setSearchResults([]);
+        }
+      } else {
+        throw new Error('Réponse API invalide');
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Erreur de recherche';
+      console.error('Erreur recherche:', errorMessage);
+      
+      if (errorMessage.includes('504') || errorMessage.includes('timeout')) {
+        setError('Le serveur anime-sama-scraper.vercel.app ne répond pas actuellement. Veuillez réessayer plus tard.');
+      } else if (errorMessage.includes('500')) {
+        setError('Erreur temporaire du serveur. Veuillez réessayer dans quelques instants.');
+      } else {
+        setError('Impossible de rechercher les animes. Vérifiez votre connexion internet.');
+      }
+      setSearchResults([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Naviguer vers la page dédiée (anime ou manga) (identique au site web)
+  const loadAnimeDetails = async (animeId: string, contentType?: string) => {
+    // Détecter si c'est un manga pour rediriger vers le lecteur approprié
+    if (contentType === 'manga') {
+      navigation.navigate('MangaReader', { mangaUrl: animeId, mangaTitle: 'Manga' });
+    } else {
+      navigation.navigate('AnimeDetail', { animeUrl: animeId, animeTitle: 'Anime' });
+    }
+  };
+
+  // Gérer la recherche en temps réel (identique au site web)
+  useEffect(() => {
+    if (searchQuery) {
+      const timeoutId = setTimeout(() => {
+        searchAnimes(searchQuery);
+      }, 300);
+      return () => clearTimeout(timeoutId);
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchQuery]);
 
   // Charger les animes trending (identique au site web)
   const loadTrendingAnimes = async () => {
