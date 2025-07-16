@@ -364,24 +364,7 @@ const AnimeDetailScreen: React.FC = () => {
           </View>
         </View>
 
-        {/* Section Saisons (simplifiée pour correspondre au design) */}
-        {animeData.seasons.length > 0 && (
-          <View style={styles.mobileSection}>
-            <View style={styles.mobileSectionHeader}>
-              <Ionicons name="play-circle" size={20} color="#00bcd4" />
-              <Text style={styles.mobileSectionTitle}>Regarder maintenant</Text>
-            </View>
-            
-            <TouchableOpacity
-              style={styles.watchButton}
-              onPress={() => goToPlayer(animeData.seasons[0])}
-              activeOpacity={0.8}
-            >
-              <Ionicons name="play" size={24} color="#ffffff" />
-              <Text style={styles.watchButtonText}>Commencer à regarder</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -615,24 +598,6 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  
-  // Bouton Regarder
-  watchButton: {
-    backgroundColor: '#00bcd4',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    borderRadius: 12,
-    marginTop: 8,
-  },
-  watchButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 8,
   },
 
 });

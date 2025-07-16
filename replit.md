@@ -100,7 +100,7 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - Scripts automatisés prêts à l'emploi
 - Configuration build optimisée
 
-**Dernière mise à jour**: 16 juillet 2025 - HomeScreen optimisé selon design mobile ATOMIC FLIX fourni par l'utilisateur
+**Dernière mise à jour**: 16 juillet 2025 - AnimeDetailScreen redessiné selon design mobile exact fourni par l'utilisateur
 
 **Status technique**: ✅ Toutes les vérifications passent (5/5)
 - TypeScript 5.8.3 compilé sans erreurs  
