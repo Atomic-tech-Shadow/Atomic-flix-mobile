@@ -173,6 +173,7 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **🎯 CODE WEB EXACT EN REACT NATIVE** : Fallbacks supprimés, utilise uniquement /api/anime/{id} comme le code web fonctionnel
 - **animeAPI.getDetails() pure** : Aucun fallback, throw direct des erreurs comme dans le code web, logique identique simplifiée
 - **🔄 ID PROJET EXPO REMPLACÉ** : 16 juillet 2025 - Nouvel ID projet EAS : 0623f722-2262-4443-b8bc-65a795ec2fb3
+- **📱 HEADER ANDROID OPTIMISÉ** : Suppression du bouton retour du header dans AnimeDetailScreen - Android utilise le bouton retour système natif
 - **⚡ OPTIMISATIONS PERFORMANCE** : ScrollView accéléré avec propriétés natives, images optimisées, animations simplifiées pour réduire les lags
 - **🎨 SPLASH SCREEN PORTRAIT COMPLET** : Plein écran avec resizeMode="cover", positionnement absolu, durée réduite à 2.5s pour démarrage plus rapide
 - **🚀 COMPOSANTS OPTIMISÉS** : React.useCallback sur renderAnimeCard, styles avec elevation/shadow pour UI native, backgroundColor sur images pour loading fluide
