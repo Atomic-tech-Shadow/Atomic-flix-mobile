@@ -78,27 +78,10 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
     <View style={styles.container}>
       <StatusBar style="light" />
       
-      {/* Fond étoilé animé */}
+      {/* Splash design complet avec animation de pulsation */}
       <Animated.View 
         style={[
-          styles.starsContainer, 
-          { transform: [{ rotate: starRotate }] }
-        ]}
-      >
-        <View style={[styles.star, styles.star1]} />
-        <View style={[styles.star, styles.star2]} />
-        <View style={[styles.star, styles.star3]} />
-        <View style={[styles.star, styles.star4]} />
-        <View style={[styles.star, styles.star5]} />
-        <View style={[styles.star, styles.star6]} />
-        <View style={[styles.star, styles.star7]} />
-        <View style={[styles.star, styles.star8]} />
-      </Animated.View>
-
-      {/* Logo principal avec animation de pulsation */}
-      <Animated.View 
-        style={[
-          styles.logoContainer,
+          styles.splashContainer,
           {
             opacity: opacityAnim,
             transform: [{ scale: scaleAnim }]
@@ -106,33 +89,13 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
         ]}
       >
         <Image
-          source={require('../../assets/splash/logo-af.png')}
-          style={styles.logo}
+          source={require('../../assets/splash/splash-design.png')}
+          style={styles.splashDesign}
           resizeMode="contain"
         />
       </Animated.View>
 
-      {/* Texte ATOMIC FLIX avec animation */}
-      <Animated.Text 
-        style={[
-          styles.text, 
-          { opacity: textOpacityAnim }
-        ]}
-      >
-        ATOMIC FLIX
-      </Animated.Text>
-
-      {/* Slogan avec animation */}
-      <Animated.Text 
-        style={[
-          styles.slogan, 
-          { opacity: textOpacityAnim }
-        ]}
-      >
-        LA PLATEFORME ULTIME POUR LES OTAKUS
-      </Animated.Text>
-
-      {/* Indicateur de chargement amélioré */}
+      {/* Indicateur de chargement subtil */}
       <Animated.View style={[styles.loadingContainer, { opacity: textOpacityAnim }]}>
         <View style={styles.loadingBar}>
           <Animated.View 
@@ -152,124 +115,45 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0e0e1a',
+    backgroundColor: '#0a0a1a',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  starsContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+  splashContainer: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
   },
-  star: {
-    position: 'absolute',
-    width: 3,
-    height: 3,
-    backgroundColor: '#00bcd4',
-    borderRadius: 1.5,
-    shadowColor: '#00bcd4',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
-  },
-  star1: {
-    top: '15%',
-    left: '10%',
-    opacity: 0.9,
-  },
-  star2: {
-    top: '25%',
-    right: '15%',
-    opacity: 0.7,
-  },
-  star3: {
-    top: '45%',
-    left: '20%',
-    opacity: 0.8,
-  },
-  star4: {
-    bottom: '30%',
-    right: '10%',
-    opacity: 0.6,
-  },
-  star5: {
-    bottom: '20%',
-    left: '15%',
-    opacity: 0.9,
-  },
-  star6: {
-    top: '35%',
-    left: '5%',
-    opacity: 0.5,
-  },
-  star7: {
-    top: '55%',
-    right: '25%',
-    opacity: 0.7,
-  },
-  star8: {
-    bottom: '40%',
-    right: '30%',
-    opacity: 0.6,
-  },
-  logoContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  logo: {
-    width: width * 0.4,
-    height: width * 0.4,
-  },
-  text: {
-    marginTop: 30,
-    color: '#ffffff',
-    fontSize: 28,
-    fontWeight: 'bold',
-    letterSpacing: 2,
-    textAlign: 'center',
-    shadowColor: '#00bcd4',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 10,
-    elevation: 5,
-  },
-  slogan: {
-    marginTop: 15,
-    color: '#00bcd4',
-    fontSize: 14,
-    fontWeight: '600',
-    letterSpacing: 1,
-    textAlign: 'center',
-    opacity: 0.8,
+  splashDesign: {
+    width: width,
+    height: height,
+    maxWidth: width,
+    maxHeight: height,
   },
   loadingContainer: {
     position: 'absolute',
-    bottom: 100,
+    bottom: 80,
     alignItems: 'center',
+    width: '100%',
   },
   loadingBar: {
-    width: 250,
-    height: 6,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 3,
+    width: 200,
+    height: 4,
+    backgroundColor: 'rgba(0, 188, 212, 0.2)',
+    borderRadius: 2,
     overflow: 'hidden',
   },
   loadingProgress: {
     height: '100%',
-    width: '80%',
+    width: '75%',
     backgroundColor: '#00bcd4',
-    borderRadius: 3,
+    borderRadius: 2,
     shadowColor: '#00bcd4',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
-    shadowRadius: 5,
-    elevation: 3,
+    shadowRadius: 8,
+    elevation: 5,
   },
 });
 
