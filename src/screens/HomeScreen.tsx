@@ -279,6 +279,8 @@ const HomeScreen: React.FC = () => {
         }
         showsVerticalScrollIndicator={false}
       >
+        {renderMobileHeader()}
+        
         {/* Barre de recherche locale (identique au site web) */}
         {searchQuery && (
           <View style={styles.searchBarContainer}>

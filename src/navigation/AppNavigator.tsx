@@ -52,8 +52,7 @@ const AppNavigator: React.FC = () => {
           name="Home" 
           component={HomeScreen}
           options={{
-            title: 'ATOMIC FLIX',
-            headerTitleAlign: 'center',
+            headerShown: false,
           }}
         />
         <Stack.Screen 
