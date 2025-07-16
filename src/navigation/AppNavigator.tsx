@@ -6,7 +6,6 @@ import { StatusBar } from 'expo-status-bar';
 // Import screens - exact reproductions of web pages
 import HomeScreen from '../screens/HomeScreen';
 import AnimeDetailScreen from '../screens/AnimeDetailScreen';
-import AnimePlayerScreen from '../screens/AnimePlayerScreen';
 import MangaReaderScreen from '../screens/MangaReaderScreen';
 import AboutScreen from '../screens/AboutScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -16,7 +15,6 @@ import TermsOfServiceScreen from '../screens/TermsOfServiceScreen';
 export type RootStackParamList = {
   Home: undefined;
   AnimeDetail: { animeUrl: string; animeTitle: string };
-  AnimePlayer: { animeUrl: string; seasonData: any; animeTitle: string };
   MangaReader: { mangaUrl: string; mangaTitle: string };
   About: undefined;
   NotFound: undefined;
@@ -62,13 +60,7 @@ const AppNavigator: React.FC = () => {
             headerShown: false,
           }}
         />
-        <Stack.Screen 
-          name="AnimePlayer" 
-          component={AnimePlayerScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
+
         <Stack.Screen 
           name="MangaReader" 
           component={MangaReaderScreen}
