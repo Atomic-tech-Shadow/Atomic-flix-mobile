@@ -523,7 +523,11 @@ const AnimePlayerScreen: React.FC = () => {
       <StatusBar style="light" backgroundColor="#0a0a1a" />
       
       {/* Header mobile ATOMIC FLIX */}
-      <SharedHeader showBackButton={true} />
+      <SharedHeader 
+        showBackButton={false} 
+        onSearchPress={() => navigation.navigate('Home')}
+        onNotificationPress={() => console.log('Notifications pressed from AnimePlayer')}
+      />
       
       <ScrollView
         style={styles.scrollView}
