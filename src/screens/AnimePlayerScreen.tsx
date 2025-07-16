@@ -408,13 +408,17 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 ]}>
                   {lang === 'VF' ? (
                     <View style={styles.frenchFlagStripes}>
-                      <View style={[styles.flagStripe, { backgroundColor: '#003f7f' }]} />
+                      <View style={[styles.flagStripe, { backgroundColor: '#1d4ed8' }]} />
                       <View style={[styles.flagStripe, { backgroundColor: '#ffffff' }]} />
-                      <View style={[styles.flagStripe, { backgroundColor: '#ed2939' }]} />
+                      <View style={[styles.flagStripe, { backgroundColor: '#dc2626' }]} />
                     </View>
                   ) : (
-                    <View style={styles.japaneseCircle}>
-                      <View style={styles.japaneseRedCircle} />
+                    <View style={styles.japaneseFlag}>
+                      <View style={styles.japaneseCircle}>
+                        <View style={styles.japaneseWhiteCircle}>
+                          <View style={styles.japaneseRedCircle} />
+                        </View>
+                      </View>
                     </View>
                   )}
                 </View>
@@ -611,7 +615,7 @@ const styles = StyleSheet.create({
   },
   frenchFlag: {},
   japaneseFlag: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#dc2626',
   },
   frenchFlagStripes: {
     flexDirection: 'row',
@@ -625,11 +629,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  japaneseWhiteCircle: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   japaneseRedCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#bc002d',
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: '#dc2626',
   },
   languageText: {
     color: '#ffffff',
