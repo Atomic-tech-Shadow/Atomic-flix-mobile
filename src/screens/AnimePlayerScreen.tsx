@@ -298,7 +298,7 @@ const AnimePlayerScreen: React.FC = () => {
             id: animeId,
             title: animeTitle,
             synopsis: '',
-            image: 'https://img.anime-sama.fr/catalogue/clevatess/cover.jpg',
+            image: `https://img.anime-sama.fr/catalogue/${animeId}/cover.jpg`,
             genres: [],
             status: '',
             year: '',
@@ -362,7 +362,7 @@ const AnimePlayerScreen: React.FC = () => {
   const renderHeroSection = () => (
     <View style={styles.heroContainer}>
       <Image
-        source={{ uri: animeData?.image || 'https://img.anime-sama.fr/catalogue/clevatess/cover.jpg' }}
+        source={{ uri: animeData?.image || `https://img.anime-sama.fr/catalogue/${animeUrl.split('/').pop()}/cover.jpg` }}
         style={styles.heroImage}
         resizeMode="cover"
       />
