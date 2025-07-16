@@ -478,7 +478,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   <Picker.Item
                     key={`server-${index}-${source.server}`}
                     label={`${source.server} - ${source.quality}`}
-                    value={index}
+                    value={index.toString()}
                   />
                 ))}
               </Picker>
