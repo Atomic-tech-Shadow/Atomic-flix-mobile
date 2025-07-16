@@ -255,8 +255,8 @@ const HomeScreen: React.FC = () => {
     return () => clearInterval(interval);
   }, [notificationsEnabled]);
 
-  // Composant Carte Anime (inspiré du design web)
-  const renderAnimeCard = (anime: SearchResult, index: number) => (
+  // Composant Carte Anime optimisé avec React.memo
+  const renderAnimeCard = React.useCallback((anime: SearchResult, index: number) => (
     <TouchableOpacity
       key={anime.id || index}
       style={styles.animeCard}
@@ -268,6 +268,8 @@ const HomeScreen: React.FC = () => {
           source={{ uri: anime.image }}
           style={styles.cardImage}
           resizeMode="cover"
+          loadingIndicatorSource={require('../../assets/atomic-flix-logo.png')}
+          fadeDuration={200}
           onError={(e) => {
             console.log('Erreur image:', anime.image);
           }}
@@ -307,7 +309,7 @@ const HomeScreen: React.FC = () => {
         </View>
       </View>
     </TouchableOpacity>
-  );
+  ), []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -324,6 +326,14 @@ const HomeScreen: React.FC = () => {
           />
         }
         showsVerticalScrollIndicator={false}
+        removeClippedSubviews={true}
+        scrollEventThrottle={16}
+        keyboardShouldPersistTaps="handled"
+        decelerationRate="normal"
+        bounces={true}
+        bouncesZoom={false}
+        alwaysBounceVertical={false}
+        nestedScrollEnabled={true}
       >
         <SharedHeader 
           showBackButton={false}
@@ -578,13 +588,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
 
-  // Cards Anime
+  // Cards Anime optimisées pour les performances
   animeCard: {
     width: (width - 48) / 2,
     marginBottom: 16,
     borderRadius: 12,
     overflow: 'hidden',
     backgroundColor: '#1a1a2e',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   cardImageContainer: {
     position: 'relative',
@@ -593,6 +608,7 @@ const styles = StyleSheet.create({
   cardImage: {
     width: '100%',
     height: '100%',
+    backgroundColor: '#1a1a2e',
   },
   contentBadge: {
     position: 'absolute',

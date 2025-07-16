@@ -15,23 +15,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
   const starAnimation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Animation du logo avec pulsation continue
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(scaleAnim, {
-          toValue: 1.05,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(scaleAnim, {
-          toValue: 0.9,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-
-    // Animation d'apparition du logo
+    // Animation d'apparition du logo simplifié
     Animated.timing(opacityAnim, {
       toValue: 1,
       duration: 800,
@@ -41,30 +25,37 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
     // Animation d'apparition du texte avec délai
     Animated.timing(textOpacityAnim, {
       toValue: 1,
-      duration: 1500,
+      duration: 1000,
       useNativeDriver: true,
-      delay: 1000,
+      delay: 500,
     }).start();
 
-    // Animation des étoiles en rotation
+    // Animation de pulsation réduite
     Animated.loop(
-      Animated.timing(starAnimation, {
-        toValue: 1,
-        duration: 8000,
-        useNativeDriver: true,
-      })
+      Animated.sequence([
+        Animated.timing(scaleAnim, {
+          toValue: 1.02,
+          duration: 2000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scaleAnim, {
+          toValue: 0.98,
+          duration: 2000,
+          useNativeDriver: true,
+        }),
+      ])
     ).start();
 
-    // Auto-fermeture après 4 secondes
+    // Auto-fermeture après 2.5 secondes (plus rapide)
     const timer = setTimeout(() => {
       Animated.timing(opacityAnim, {
         toValue: 0,
-        duration: 500,
+        duration: 300,
         useNativeDriver: true,
       }).start(() => {
         onFinish();
       });
-    }, 4000);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -91,7 +82,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
         <Image
           source={require('../../assets/splash/splash-design.png')}
           style={styles.splashDesign}
-          resizeMode="contain"
+          resizeMode="cover"
         />
       </Animated.View>
 
@@ -118,18 +109,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#0a0a1a',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1000,
   },
   splashContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    width: width,
+    height: height,
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
   splashDesign: {
     width: width,
     height: height,
-    maxWidth: width,
-    maxHeight: height,
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
   loadingContainer: {
     position: 'absolute',
