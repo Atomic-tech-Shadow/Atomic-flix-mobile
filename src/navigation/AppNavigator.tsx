@@ -58,57 +58,50 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen 
           name="AnimeDetail" 
           component={AnimeDetailScreen}
-          options={({ route }) => ({
-            title: route.params.animeTitle,
-            headerBackTitleVisible: false,
-          })}
+          options={{
+            headerShown: false,
+          }}
         />
         <Stack.Screen 
           name="AnimePlayer" 
           component={AnimePlayerScreen}
-          options={({ route }) => ({
-            title: route.params.animeTitle,
-            headerBackTitleVisible: false,
-          })}
+          options={{
+            headerShown: false,
+          }}
         />
         <Stack.Screen 
           name="MangaReader" 
           component={MangaReaderScreen}
-          options={({ route }) => ({
-            title: route.params.mangaTitle,
-            headerBackTitleVisible: false,
-          })}
+          options={{
+            headerShown: false,
+          }}
         />
         <Stack.Screen 
           name="About" 
           component={AboutScreen}
           options={{
-            title: 'À Propos',
-            headerBackTitleVisible: false,
+            headerShown: false,
           }}
         />
         <Stack.Screen 
           name="NotFound" 
           component={NotFoundScreen}
           options={{
-            title: 'Page Non Trouvée',
-            headerBackTitleVisible: false,
+            headerShown: false,
           }}
         />
         <Stack.Screen 
           name="PrivacyPolicy" 
           component={PrivacyPolicyScreen}
           options={{
-            title: 'Politique de Confidentialité',
-            headerBackTitleVisible: false,
+            headerShown: false,
           }}
         />
         <Stack.Screen 
           name="TermsOfService" 
           component={TermsOfServiceScreen}
           options={{
-            title: 'Conditions d\'Utilisation',
-            headerBackTitleVisible: false,
+            headerShown: false,
           }}
         />
       </Stack.Navigator>
