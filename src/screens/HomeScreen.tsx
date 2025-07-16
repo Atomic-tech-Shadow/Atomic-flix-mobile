@@ -12,6 +12,7 @@ import {
   Dimensions,
   RefreshControl,
   Animated,
+  Modal,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
@@ -42,6 +43,8 @@ const HomeScreen: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [trendingAnimes, setTrendingAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   // Configuration API identique au site web
   const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';
@@ -179,51 +182,167 @@ const HomeScreen: React.FC = () => {
     setRefreshing(false);
   };
 
-  // Composant Header avec logo ATOMIC FLIX
-  const renderHeader = () => (
-    <View style={styles.header}>
-      <LinearGradient
-        colors={['#0A0A1A', '#1a1a2e']}
-        style={styles.headerGradient}
-      >
-        {/* Logo ATOMIC FLIX */}
-        <View style={styles.logoContainer}>
-          <View style={styles.atomicSymbol}>
-            <View style={styles.atomicCore} />
-            <View style={[styles.atomicRing, styles.ring1]} />
-            <View style={[styles.atomicRing, styles.ring2]} />
+  // Header exact comme le site mobile ATOMIC FLIX
+  const renderMobileHeader = () => (
+    <View style={styles.mobileHeader}>
+      <View style={styles.headerRow}>
+        {/* Logo ATOMIC FLIX avec symbole atomique */}
+        <View style={styles.logoSection}>
+          <View style={styles.atomicIcon}>
+            <View style={styles.atomicSymbolSmall}>
+              <View style={styles.atomicCoreSmall} />
+              <View style={[styles.atomicRingSmall, styles.ringSmall1]} />
+            </View>
           </View>
-          <Text style={styles.logoText}>
-            <Text style={styles.atomicText}>ATOMIC</Text>
-            <Text style={styles.flixText}> FLIX</Text>
+          <Text style={styles.logoTextMobile}>
+            <Text style={styles.atomicTextMobile}>ATOMIC</Text>
+            <Text style={styles.flixTextMobile}>FLIX</Text>
           </Text>
         </View>
 
-        {/* Barre de recherche */}
-        <View style={styles.searchContainer}>
+        {/* Icônes navigation droite */}
+        <View style={styles.headerIcons}>
+          <TouchableOpacity 
+            style={styles.headerIconButton}
+            onPress={() => setIsSearchVisible(true)}
+          >
+            <Ionicons name="search" size={22} color="#ffffff" />
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.headerIconButton}>
+            <Ionicons name="notifications" size={22} color="#ffffff" />
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            style={styles.headerIconButton}
+            onPress={() => setIsMenuVisible(true)}
+          >
+            <Ionicons name="menu" size={22} color="#ffffff" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+
+  // Modal de recherche plein écran
+  const renderSearchModal = () => (
+    <Modal
+      visible={isSearchVisible}
+      animationType="slide"
+      onRequestClose={() => setIsSearchVisible(false)}
+    >
+      <View style={styles.searchModal}>
+        <View style={styles.searchModalHeader}>
           <View style={styles.searchInputContainer}>
             <Ionicons name="search" size={20} color="#00ffff" style={styles.searchIcon} />
             <TextInput
               style={styles.searchInput}
-              placeholder="Rechercher des animes..."
+              placeholder="Rechercher un anime..."
               placeholderTextColor="#6b7280"
               value={searchQuery}
               onChangeText={setSearchQuery}
               autoCapitalize="none"
               autoCorrect={false}
+              autoFocus={true}
             />
-            {searchQuery && (
-              <TouchableOpacity
-                onPress={() => setSearchQuery('')}
-                style={styles.clearButton}
-              >
-                <Ionicons name="close" size={20} color="#6b7280" />
-              </TouchableOpacity>
-            )}
+          </View>
+          <TouchableOpacity 
+            onPress={() => setIsSearchVisible(false)}
+            style={styles.closeSearchButton}
+          >
+            <Ionicons name="close" size={24} color="#ffffff" />
+          </TouchableOpacity>
+        </View>
+        
+        <ScrollView style={styles.searchResults}>
+          {searchResults.length > 0 ? (
+            <View style={styles.animeGrid}>
+              {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
+            </View>
+          ) : (
+            <View style={styles.emptySearchContainer}>
+              <Ionicons name="search" size={48} color="#374151" />
+              <Text style={styles.emptySearchText}>
+                {searchQuery ? 'Aucun résultat trouvé' : 'Recherchez vos animes favoris'}
+              </Text>
+            </View>
+          )}
+        </ScrollView>
+      </View>
+    </Modal>
+  );
+
+  // Navigation drawer exacte comme le site
+  const renderNavigationDrawer = () => (
+    <Modal
+      visible={isMenuVisible}
+      animationType="slide"
+      transparent={true}
+      onRequestClose={() => setIsMenuVisible(false)}
+    >
+      <View style={styles.drawerOverlay}>
+        <TouchableOpacity 
+          style={styles.drawerBackdrop}
+          onPress={() => setIsMenuVisible(false)}
+        />
+        <View style={styles.drawerContent}>
+          <View style={styles.drawerHeader}>
+            <TouchableOpacity 
+              onPress={() => setIsMenuVisible(false)}
+              style={styles.closeDrawerButton}
+            >
+              <Ionicons name="close" size={24} color="#ffffff" />
+            </TouchableOpacity>
+          </View>
+          
+          <View style={styles.drawerMenu}>
+            <TouchableOpacity 
+              style={styles.drawerMenuItem}
+              onPress={() => {
+                setIsMenuVisible(false);
+                // Navigation vers Accueil
+              }}
+            >
+              <Ionicons name="home" size={20} color="#ffffff" />
+              <Text style={styles.drawerMenuText}>Accueil</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.drawerMenuItem}
+              onPress={() => {
+                setIsMenuVisible(false);
+                // Navigation vers Animes
+              }}
+            >
+              <Ionicons name="tv" size={20} color="#ffffff" />
+              <Text style={styles.drawerMenuText}>Animes</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.drawerMenuItem}
+              onPress={() => {
+                setIsMenuVisible(false);
+                // Navigation vers Mangas
+              }}
+            >
+              <Ionicons name="book" size={20} color="#ffffff" />
+              <Text style={styles.drawerMenuText}>Mangas</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.drawerMenuItem}
+              onPress={() => {
+                setIsMenuVisible(false);
+                navigation.navigate('About');
+              }}
+            >
+              <Ionicons name="information-circle" size={20} color="#ffffff" />
+              <Text style={styles.drawerMenuText}>À propos</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </LinearGradient>
-    </View>
+      </View>
+    </Modal>
   );
 
   // Composant Carte Anime (inspiré du design web)
@@ -280,51 +399,57 @@ const HomeScreen: React.FC = () => {
     </TouchableOpacity>
   );
 
-  // Bannière héro (inspirée du design web)
-  const renderHeroSection = () => (
-    <View style={styles.heroSection}>
-      {/* Images d'animes en mosaïque */}
-      <View style={styles.heroBanner}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.heroImages}>
+  // Hero Banner exactement comme le site mobile ATOMIC FLIX
+  const renderMobileHeroSection = () => (
+    <View style={styles.mobileHeroSection}>
+      {/* Mosaïque d'images d'animes en horizontal */}
+      <View style={styles.mobileHeroBanner}>
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false} 
+          style={styles.mobileHeroImages}
+          contentContainerStyle={styles.mobileHeroImagesContainer}
+        >
           {trendingAnimes.length > 0 ? (
-            trendingAnimes.slice(0, 8).map((anime, index) => (
-              <View key={index} style={styles.heroImageContainer}>
-                <Image
-                  source={{ uri: anime.image }}
-                  style={styles.heroImage}
-                  resizeMode="cover"
-                />
-              </View>
+            trendingAnimes.slice(0, 6).map((anime, index) => (
+              <Image
+                key={index}
+                source={{ uri: anime.image }}
+                style={styles.mobileHeroImage}
+                resizeMode="cover"
+              />
             ))
           ) : (
-            // Placeholder images si pas de données
-            Array.from({length: 8}).map((_, index) => (
-              <View key={index} style={[styles.heroImageContainer, styles.placeholderImage]}>
-                <Ionicons name="image" size={24} color="#6b7280" />
+            // Images placeholder style site mobile
+            Array.from({length: 6}).map((_, index) => (
+              <View key={index} style={[styles.mobileHeroImage, styles.mobileHeroImagePlaceholder]}>
+                <Ionicons name="image" size={32} color="#4a5568" />
               </View>
             ))
           )}
         </ScrollView>
+        
+        {/* Gradient overlay pour le texte */}
         <LinearGradient
-          colors={['transparent', 'rgba(10,10,26,0.9)', 'rgba(10,10,26,1)']}
-          style={styles.heroGradient}
+          colors={['transparent', 'rgba(0,0,0,0.8)', 'rgba(0,0,0,0.95)']}
+          style={styles.mobileHeroGradient}
         />
       </View>
       
-      {/* Contenu de la bannière */}
-      <View style={styles.heroContent}>
-        <View style={styles.heroTitleContainer}>
-          <Text style={styles.heroTitle}>ATOMIC FLIX</Text>
-          <View style={styles.heroLogo}>
-            <View style={styles.atomicSymbolSmall}>
-              <View style={styles.atomicCoreSmall} />
-              <View style={[styles.atomicRingSmall, styles.ringSmall1]} />
-            </View>
-          </View>
-        </View>
-        <Text style={styles.heroSubtitle}>
+      {/* Contenu central exact du site */}
+      <View style={styles.mobileHeroContent}>
+        <Text style={styles.mobileHeroTitle}>ATOMIC FLIX</Text>
+        <Text style={styles.mobileHeroSubtitle}>
           Plongez dans l'univers infini{'\n'}des animes et mangas !
         </Text>
+        
+        {/* Logo atomique en bas à droite */}
+        <View style={styles.mobileHeroLogoPosition}>
+          <View style={styles.mobileAtomicSymbol}>
+            <View style={styles.mobileAtomicCore} />
+            <View style={[styles.mobileAtomicRing, styles.mobileRing1]} />
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -370,7 +495,7 @@ const HomeScreen: React.FC = () => {
         }
         showsVerticalScrollIndicator={false}
       >
-        {renderHeader()}
+        {renderMobileHeader()}
         
         {error && (
           <View style={styles.errorContainer}>
@@ -382,25 +507,59 @@ const HomeScreen: React.FC = () => {
           </View>
         )}
 
-        {/* Bannière héro si pas de recherche */}
-        {!searchQuery.trim() && renderHeroSection()}
+        {/* Hero Banner mobile exact */}
+        {!searchQuery.trim() && renderMobileHeroSection()}
+
+        {/* Section Nouveaux épisodes avec icône exacte */}
+        {!searchQuery.trim() && (
+          <View style={styles.mobileSection}>
+            <View style={styles.mobileSectionHeader}>
+              <Ionicons name="film" size={20} color="#00bcd4" />
+              <Text style={styles.mobileSectionTitle}>Nouveaux épisodes ajoutés</Text>
+            </View>
+            
+            {loading ? (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#00bcd4" />
+                <Text style={styles.loadingText}>Chargement...</Text>
+              </View>
+            ) : trendingAnimes.length > 0 ? (
+              <View style={styles.mobileAnimeGrid}>
+                {trendingAnimes.map((anime, index) => renderAnimeCard(anime, index))}
+              </View>
+            ) : (
+              <View style={styles.emptyContainer}>
+                <Ionicons name="tv" size={48} color="#374151" />
+                <Text style={styles.emptyText}>Aucun contenu disponible</Text>
+              </View>
+            )}
+          </View>
+        )}
 
         {/* Résultats de recherche */}
         {searchQuery.trim() && (
-          renderSection(
-            `🔍 Résultats de recherche pour "${searchQuery}"`,
-            searchResults,
-            loading
-          )
-        )}
-
-        {/* Contenu trending si pas de recherche */}
-        {!searchQuery.trim() && (
-          renderSection(
-            '📢 Nouveaux épisodes ajoutés',
-            trendingAnimes,
-            loading
-          )
+          <View style={styles.mobileSection}>
+            <View style={styles.mobileSectionHeader}>
+              <Ionicons name="search" size={20} color="#00bcd4" />
+              <Text style={styles.mobileSectionTitle}>Résultats de recherche</Text>
+            </View>
+            
+            {loading ? (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#00bcd4" />
+                <Text style={styles.loadingText}>Recherche en cours...</Text>
+              </View>
+            ) : searchResults.length > 0 ? (
+              <View style={styles.mobileAnimeGrid}>
+                {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
+              </View>
+            ) : (
+              <View style={styles.emptyContainer}>
+                <Ionicons name="search" size={48} color="#374151" />
+                <Text style={styles.emptyText}>Aucun résultat trouvé</Text>
+              </View>
+            )}
+          </View>
         )}
 
         {/* Message de chargement */}
@@ -422,6 +581,10 @@ const HomeScreen: React.FC = () => {
           </View>
         )}
       </ScrollView>
+      
+      {/* Modals */}
+      {renderSearchModal()}
+      {renderNavigationDrawer()}
     </SafeAreaView>
   );
 };
@@ -429,144 +592,32 @@ const HomeScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a0a0a',
+    backgroundColor: '#0a0a1a', // Dark blue exact comme le site
   },
   scrollView: {
     flex: 1,
   },
-  header: {
-    marginBottom: 20,
-  },
-  headerGradient: {
+  
+  // Header mobile exact
+  mobileHeader: {
+    backgroundColor: '#0a0a1a',
     paddingHorizontal: 16,
-    paddingVertical: 20,
-    paddingTop: 40,
+    paddingTop: 50,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#1a1a2e',
   },
-  logoContainer: {
+  headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 24,
+    justifyContent: 'space-between',
   },
-  atomicSymbol: {
-    width: 40,
-    height: 40,
-    marginRight: 12,
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  atomicCore: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#00ffff',
-    position: 'absolute',
-  },
-  atomicRing: {
-    position: 'absolute',
-    borderWidth: 2,
-    borderColor: '#00ffff',
-    borderRadius: 50,
-  },
-  ring1: {
-    width: 24,
-    height: 24,
-  },
-  ring2: {
-    width: 36,
-    height: 36,
-    opacity: 0.6,
-  },
-  logoText: {
-    fontSize: 28,
-    fontWeight: 'bold',
-  },
-  atomicText: {
-    color: '#00ffff',
-  },
-  flixText: {
-    color: '#ff00ff',
-  },
-  searchContainer: {
-    marginBottom: 8,
-  },
-  searchInputContainer: {
+  logoSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(0,255,255,0.2)',
   },
-  searchIcon: {
-    marginRight: 12,
-  },
-  searchInput: {
-    flex: 1,
-    color: '#ffffff',
-    fontSize: 16,
-  },
-  clearButton: {
-    marginLeft: 8,
-  },
-  heroSection: {
-    marginBottom: 32,
-    marginHorizontal: 16,
-    borderRadius: 16,
-    overflow: 'hidden',
-    backgroundColor: '#0A0A1A',
-    borderWidth: 1,
-    borderColor: 'rgba(0,240,255,0.2)',
-  },
-  heroBanner: {
-    position: 'relative',
-    height: 120,
-  },
-  heroImages: {
-    flexDirection: 'row',
-  },
-  heroImageContainer: {
-    width: width / 8,
-    height: 120,
-    marginRight: 2,
-  },
-  heroImage: {
-    width: '100%',
-    height: '100%',
-    opacity: 0.9,
-  },
-  placeholderImage: {
-    backgroundColor: '#1a1a2e',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  heroGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 60,
-  },
-  heroContent: {
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-    alignItems: 'center',
-  },
-  heroTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  heroTitle: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#00ffff',
-  },
-  heroLogo: {
-    marginLeft: 12,
+  atomicIcon: {
+    marginRight: 8,
   },
   atomicSymbolSmall: {
     width: 24,
@@ -579,24 +630,357 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#00ffff',
+    backgroundColor: '#00bcd4',
     position: 'absolute',
   },
   atomicRingSmall: {
     position: 'absolute',
     borderWidth: 1,
-    borderColor: '#00ffff',
+    borderColor: '#00bcd4',
     borderRadius: 50,
   },
   ringSmall1: {
     width: 16,
     height: 16,
   },
-  heroSubtitle: {
+  logoTextMobile: {
     fontSize: 18,
-    color: '#d1d5db',
+    fontWeight: 'bold',
+  },
+  atomicTextMobile: {
+    color: '#ffffff',
+    fontFamily: 'monospace',
+  },
+  flixTextMobile: {
+    color: '#00bcd4',
+    fontFamily: 'monospace',
+  },
+  headerIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerIconButton: {
+    padding: 8,
+    marginLeft: 8,
+  },
+  
+  // Hero Section Mobile
+  mobileHeroSection: {
+    height: 300,
+    position: 'relative',
+    marginBottom: 20,
+  },
+  mobileHeroBanner: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  mobileHeroImages: {
+    flex: 1,
+  },
+  mobileHeroImagesContainer: {
+    flexDirection: 'row',
+  },
+  mobileHeroImage: {
+    width: 120,
+    height: 300,
+    marginRight: 2,
+  },
+  mobileHeroImagePlaceholder: {
+    backgroundColor: '#1a1a2e',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mobileHeroGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 200,
+  },
+  mobileHeroContent: {
+    position: 'absolute',
+    bottom: 40,
+    left: 20,
+    right: 20,
+    alignItems: 'center',
+  },
+  mobileHeroTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    fontFamily: 'monospace',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  mobileHeroSubtitle: {
+    fontSize: 16,
+    color: '#b0b0b0',
     textAlign: 'center',
     lineHeight: 24,
+  },
+  mobileHeroLogoPosition: {
+    position: 'absolute',
+    bottom: -20,
+    right: 20,
+  },
+  mobileAtomicSymbol: {
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mobileAtomicCore: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#00bcd4',
+    position: 'absolute',
+  },
+  mobileAtomicRing: {
+    position: 'absolute',
+    borderWidth: 1.5,
+    borderColor: '#00bcd4',
+    borderRadius: 50,
+  },
+  mobileRing1: {
+    width: 24,
+    height: 24,
+  },
+  
+  // Section Nouveaux épisodes
+  mobileSection: {
+    paddingHorizontal: 16,
+    marginBottom: 30,
+  },
+  mobileSectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  mobileSectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginLeft: 8,
+  },
+  mobileAnimeGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  
+  // Cards Anime
+  animeCard: {
+    width: '48%',
+    marginBottom: 16,
+    backgroundColor: '#1a1a2e',
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  cardImageContainer: {
+    position: 'relative',
+    height: 200,
+  },
+  cardImage: {
+    width: '100%',
+    height: '100%',
+  },
+  cardGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 80,
+  },
+  contentBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  animeBadge: {
+    backgroundColor: '#00bcd4',
+  },
+  mangaBadge: {
+    backgroundColor: '#ff6b6b',
+  },
+  movieBadge: {
+    backgroundColor: '#4ecdc4',
+  },
+  badgeText: {
+    color: '#ffffff',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  cardContent: {
+    padding: 12,
+  },
+  cardTitle: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  cardMeta: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  statusText: {
+    color: '#00bcd4',
+    fontSize: 12,
+  },
+  typeText: {
+    color: '#888888',
+    fontSize: 12,
+  },
+  
+  // Modals
+  searchModal: {
+    flex: 1,
+    backgroundColor: '#0a0a1a',
+  },
+  searchModalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 50,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#1a1a2e',
+  },
+  searchInputContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1a1a2e',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    height: 44,
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchInput: {
+    flex: 1,
+    color: '#ffffff',
+    fontSize: 16,
+  },
+  closeSearchButton: {
+    padding: 8,
+    marginLeft: 12,
+  },
+  searchResults: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  
+  // Navigation Drawer
+  drawerOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  drawerBackdrop: {
+    flex: 1,
+  },
+  drawerContent: {
+    backgroundColor: '#0a0a1a',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingBottom: 40,
+  },
+  drawerHeader: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 16,
+  },
+  closeDrawerButton: {
+    padding: 8,
+  },
+  drawerMenu: {
+    paddingHorizontal: 20,
+  },
+  drawerMenuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#1a1a2e',
+  },
+  drawerMenuText: {
+    color: '#ffffff',
+    fontSize: 16,
+    marginLeft: 16,
+  },
+  
+  // États et erreurs
+  loadingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 40,
+  },
+  loadingText: {
+    color: '#888888',
+    marginTop: 12,
+    fontSize: 14,
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 40,
+  },
+  emptyText: {
+    color: '#888888',
+    marginTop: 12,
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  emptySearchContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 60,
+  },
+  emptySearchText: {
+    color: '#888888',
+    marginTop: 16,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  errorContainer: {
+    backgroundColor: '#2a1f1f',
+    margin: 16,
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  errorText: {
+    color: '#ef4444',
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  retryButton: {
+    backgroundColor: '#00bcd4',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 6,
+    marginTop: 12,
+  },
+  retryText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+  },
+  
+  // Styles manquants pour compatibilité avec les anciennes sections
+  animeGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
   section: {
     marginBottom: 32,
@@ -610,136 +994,8 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#00ffff',
+    color: '#ffffff',
     marginLeft: 8,
-  },
-  animeGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  animeCard: {
-    width: width > 768 ? (width - 64) / 4 - 8 :
-          width > 640 ? (width - 64) / 3 - 8 :
-          (width - 64) / 2 - 8,
-    marginBottom: 16,
-    borderRadius: 8,
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  cardImageContainer: {
-    position: 'relative',
-    height: width > 768 ? 200 : 180,
-  },
-  cardImage: {
-    width: '100%',
-    height: '100%',
-  },
-  contentBadge: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    borderWidth: 1,
-  },
-  mangaBadge: {
-    backgroundColor: 'rgba(249,115,22,0.8)',
-    borderColor: '#f97316',
-  },
-  movieBadge: {
-    backgroundColor: 'rgba(168,85,247,0.8)',
-    borderColor: '#a855f7',
-  },
-  animeBadge: {
-    backgroundColor: 'rgba(6,182,212,0.8)',
-    borderColor: '#06b6d4',
-  },
-  badgeText: {
-    color: '#ffffff',
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-  cardGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 80,
-  },
-  cardContent: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 12,
-  },
-  cardTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#ffffff',
-    marginBottom: 8,
-    lineHeight: 18,
-  },
-  cardMeta: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  statusText: {
-    fontSize: 12,
-    color: '#d1d5db',
-    textTransform: 'uppercase',
-  },
-  typeText: {
-    fontSize: 12,
-    color: 'rgba(0,255,255,0.8)',
-    fontWeight: '500',
-  },
-  loadingContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 32,
-  },
-  loadingText: {
-    color: '#6b7280',
-    marginTop: 12,
-  },
-  emptyContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 32,
-  },
-  emptyText: {
-    color: '#6b7280',
-    marginTop: 12,
-    fontSize: 16,
-  },
-  errorContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 32,
-    marginHorizontal: 16,
-  },
-  errorText: {
-    color: '#ef4444',
-    marginTop: 12,
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  retryButton: {
-    backgroundColor: 'rgba(0,255,255,0.1)',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(0,255,255,0.3)',
-  },
-  retryText: {
-    color: '#00ffff',
-    fontSize: 14,
-    fontWeight: '500',
   },
 });
 
