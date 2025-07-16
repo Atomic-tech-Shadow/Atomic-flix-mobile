@@ -30,17 +30,16 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
 
   const handleNotificationPress = async () => {
-    // Si les notifications sont activées, ouvrir le modal des notifications
-    if (notificationsEnabled) {
-      const allNotifications = await notificationService.getNotifications();
-      setNotifications(allNotifications);
-      setShowNotificationModal(true);
-      return;
-    }
-
-    // Sinon, activer/désactiver les notifications
+    // Activer/désactiver les notifications à chaque clic
     const newState = !notificationsEnabled;
     setNotificationsEnabled(newState);
+    
+    // Sauvegarder l'état dans les paramètres
+    await notificationService.saveSettings({
+      enabled: newState,
+      newEpisodes: newState,
+      newMangas: newState,
+    });
     
     // Marquer les notifications comme lues quand on les active
     if (newState) {
