@@ -112,6 +112,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             style={styles.logoImage}
             resizeMode="contain"
           />
+          <Text style={styles.logoText}>ATOMIC FLIX 🇹🇬</Text>
         </View>
 
         {/* Icônes navigation droite */}
@@ -182,9 +183,16 @@ const styles = StyleSheet.create({
   },
 
   logoImage: {
-    width: 120,
+    width: 35,
     height: 35,
     borderRadius: 60, // Pour rendre le logo rond
+    marginRight: 8,
+  },
+  logoText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    letterSpacing: 0.5,
   },
   headerIcons: {
     flexDirection: 'row',
