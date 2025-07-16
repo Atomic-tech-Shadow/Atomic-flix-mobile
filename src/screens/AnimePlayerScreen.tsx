@@ -470,7 +470,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={selectedPlayer}
-                onValueChange={(itemValue) => setSelectedPlayer(itemValue)}
+                onValueChange={(itemValue) => setSelectedPlayer(parseInt(itemValue))}
                 style={styles.picker}
                 dropdownIconColor="#00bcd4"
               >
