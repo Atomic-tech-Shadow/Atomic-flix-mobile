@@ -319,19 +319,15 @@ const HomeScreen: React.FC = () => {
                 colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.95)', '#000000']}
                 style={styles.heroContent}
               >
-                <Text style={styles.heroTitle}>ATOMIC FLIX</Text>
+                <Image 
+                  source={require('../../assets/atomic-flix-logo.png')}
+                  style={styles.heroLogo}
+                  resizeMode="contain"
+                />
                 <Text style={styles.heroSubtitle}>
                   Plongez dans l'univers infini{'\n'}des animes et mangas !
                 </Text>
               </LinearGradient>
-
-              {/* Logo en bas à droite */}
-              <View style={styles.heroLogoPosition}>
-                <View style={styles.atomicSymbol}>
-                  <View style={styles.atomicCore} />
-                  <View style={[styles.atomicRing, styles.ring1]} />
-                </View>
-              </View>
             </View>
 
             {/* Section Animes Trending (identique au site web) */}
@@ -463,13 +459,10 @@ const styles = StyleSheet.create({
     paddingVertical: 48,
     alignItems: 'center',
   },
-  heroTitle: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    textAlign: 'center',
-    marginBottom: 8,
-    fontFamily: 'monospace',
+  heroLogo: {
+    width: 200,
+    height: 60,
+    marginBottom: 12,
   },
   heroSubtitle: {
     fontSize: 18,
@@ -477,35 +470,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 28,
   },
-  heroLogoPosition: {
-    position: 'absolute',
-    bottom: 16,
-    right: 24,
-    opacity: 0.6,
-  },
-  atomicSymbol: {
-    width: 32,
-    height: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  atomicCore: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#00bcd4',
-    position: 'absolute',
-  },
-  atomicRing: {
-    position: 'absolute',
-    borderWidth: 1.5,
-    borderColor: '#00bcd4',
-    borderRadius: 50,
-  },
-  ring1: {
-    width: 24,
-    height: 24,
-  },
+
 
   // Section Trending
   trendingSection: {

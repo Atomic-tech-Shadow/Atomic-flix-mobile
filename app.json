@@ -4,10 +4,10 @@
     "slug": "atomic-flix-mobile",
     "version": "1.0.2",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/atomic-flix-logo.png",
     "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/atomic-flix-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#0f172a"
     },
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/atomic-flix-logo.png",
         "backgroundColor": "#0f172a"
       },
       "package": "com.atomicflix.mobile",

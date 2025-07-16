@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, SafeAreaView, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { StatusBar } from 'expo-status-bar';
@@ -33,7 +33,11 @@ export default function NotFoundScreen({ navigation }: Props) {
         {/* Logo ATOMIC FLIX */}
         <View style={styles.logoSection}>
           <Text style={styles.errorCode}>404</Text>
-          <Text style={styles.appName}>ATOMIC FLIX</Text>
+          <Image 
+            source={require('../../assets/atomic-flix-logo.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
           <Text style={styles.tagline}>Page introuvable dans l'univers</Text>
         </View>
 
@@ -110,10 +114,9 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 20,
   },
-  appName: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#ffffff',
+  logoImage: {
+    width: 160,
+    height: 50,
     marginBottom: 8,
   },
   tagline: {

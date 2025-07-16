@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
@@ -39,16 +39,11 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
               <Ionicons name="arrow-back" size={24} color="#ffffff" />
             </TouchableOpacity>
           )}
-          <View style={styles.atomicIcon}>
-            <View style={styles.atomicSymbolSmall}>
-              <View style={styles.atomicCoreSmall} />
-              <View style={[styles.atomicRingSmall, styles.ringSmall1]} />
-            </View>
-          </View>
-          <Text style={styles.logoTextMobile}>
-            <Text style={styles.atomicTextMobile}>ATOMIC</Text>
-            <Text style={styles.flixTextMobile}>FLIX</Text>
-          </Text>
+          <Image 
+            source={require('../../assets/atomic-flix-logo.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
         </View>
 
         {/* Icônes navigation droite */}
@@ -96,44 +91,10 @@ const styles = StyleSheet.create({
     padding: 8,
     marginRight: 8,
   },
-  atomicIcon: {
-    marginRight: 8,
-  },
-  atomicSymbolSmall: {
-    width: 24,
-    height: 24,
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  atomicCoreSmall: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: '#00bcd4',
-    position: 'absolute',
-  },
-  atomicRingSmall: {
-    position: 'absolute',
-    borderWidth: 1,
-    borderColor: '#00bcd4',
-    borderRadius: 50,
-  },
-  ringSmall1: {
-    width: 16,
-    height: 16,
-  },
-  logoTextMobile: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  atomicTextMobile: {
-    color: '#ffffff',
-    fontFamily: 'monospace',
-  },
-  flixTextMobile: {
-    color: '#00bcd4',
-    fontFamily: 'monospace',
+  logoImage: {
+    width: 120,
+    height: 35,
+    marginLeft: 8,
   },
   headerIcons: {
     flexDirection: 'row',

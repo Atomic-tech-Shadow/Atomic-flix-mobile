@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking, SafeAreaView, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { StatusBar } from 'expo-status-bar';
@@ -29,7 +29,11 @@ export default function AboutScreen({ navigation }: Props) {
         
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>À Propos d'ATOMIC FLIX</Text>
+          <Image 
+            source={require('../../assets/atomic-flix-logo.png')}
+            style={styles.headerLogo}
+            resizeMode="contain"
+          />
           <Text style={styles.subtitle}>
             Votre plateforme de streaming d'anime moderne et innovante
           </Text>
@@ -173,12 +177,10 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     paddingHorizontal: 20,
   },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  headerLogo: {
+    width: 180,
+    height: 55,
     marginBottom: 12,
-    color: '#00bcd4',
   },
   subtitle: {
     fontSize: 18,
