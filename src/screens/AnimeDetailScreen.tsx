@@ -245,6 +245,15 @@ const AnimeDetailScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" backgroundColor="#0a0a1a" />
       
+      {/* Header fixe au-dessus du contenu */}
+      <View style={styles.headerContainer}>
+        <SharedHeader 
+          showBackButton={false} 
+          onSearchPress={() => navigation.navigate('Home')}
+          onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
+        />
+      </View>
+      
       <ScrollView
         style={styles.scrollView}
         refreshControl={
@@ -257,15 +266,9 @@ const AnimeDetailScreen: React.FC = () => {
         }
         showsVerticalScrollIndicator={false}
       >
-        {/* Header mobile avec overlay */}
+        {/* Image hero ajustée */}
         <View style={styles.heroContainer}>
-          <SharedHeader 
-            showBackButton={false} 
-            onSearchPress={() => navigation.navigate('Home')}
-            onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
-          />
-          
-          {/* Image de fond fullscreen comme dans le design */}
+          {/* Image de fond avec hauteur réduite */}
           <View style={styles.heroImageContainer}>
             <Image
               source={{ uri: animeData.image }}
@@ -457,10 +460,16 @@ const styles = StyleSheet.create({
     padding: 8,
     marginLeft: 8,
   },
-  // Hero Section exactement comme dans l'image
+  // Header fixe
+  headerContainer: {
+    position: 'relative',
+    zIndex: 10,
+    backgroundColor: '#0a0a1a',
+  },
+  // Hero Section réduite pour laisser place au header
   heroContainer: {
     position: 'relative',
-    height: height * 0.7, // 70% de la hauteur de l'écran
+    height: height * 0.5, // 50% de la hauteur de l'écran au lieu de 70%
   },
   heroImageContainer: {
     position: 'absolute',
