@@ -553,6 +553,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 60,
     marginBottom: 12,
+    borderRadius: 100, // Pour rendre le logo rond
   },
   heroSubtitle: {
     fontSize: 18,

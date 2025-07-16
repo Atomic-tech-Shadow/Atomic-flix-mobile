@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 35,
     marginLeft: 8,
+    borderRadius: 60, // Pour rendre le logo rond
   },
   headerIcons: {
     flexDirection: 'row',

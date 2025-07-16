@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     width: 160,
     height: 50,
     marginBottom: 8,
+    borderRadius: 80, // Pour rendre le logo rond
   },
   tagline: {
     fontSize: 18,
