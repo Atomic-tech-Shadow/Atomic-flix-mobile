@@ -93,7 +93,20 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
   const navigateToScreen = (screenName: keyof RootStackParamList) => {
     closeMenuDrawer();
-    navigation.navigate(screenName);
+    // Navigation avec vérification des paramètres requis
+    switch (screenName) {
+      case 'Home':
+      case 'About':
+      case 'NotFound':
+      case 'PrivacyPolicy':
+      case 'TermsOfService':
+        navigation.navigate(screenName);
+        break;
+      default:
+        // Pour les écrans qui nécessitent des paramètres, naviguer vers Home par défaut
+        navigation.navigate('Home');
+        break;
+    }
   };
 
   const handleMarkAllRead = async () => {

@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
+import { Season } from '../types';
 
 // Import screens - exact reproductions of web pages
 import HomeScreen from '../screens/HomeScreen';
@@ -11,10 +12,12 @@ import AboutScreen from '../screens/AboutScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import PrivacyPolicyScreen from '../screens/PrivacyPolicyScreen';
 import TermsOfServiceScreen from '../screens/TermsOfServiceScreen';
+import AnimePlayerScreen from '../screens/AnimePlayerScreen';
 
 export type RootStackParamList = {
   Home: undefined;
   AnimeDetail: { animeUrl: string; animeTitle: string };
+  AnimePlayer: { animeUrl: string; seasonData: Season; animeTitle: string };
   MangaReader: { mangaUrl: string; mangaTitle: string };
   About: undefined;
   NotFound: undefined;
@@ -61,6 +64,13 @@ const AppNavigator: React.FC = () => {
           }}
         />
 
+        <Stack.Screen 
+          name="AnimePlayer" 
+          component={AnimePlayerScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen 
           name="MangaReader" 
           component={MangaReaderScreen}
