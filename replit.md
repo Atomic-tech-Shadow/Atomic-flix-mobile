@@ -143,3 +143,6 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **Composant SplashScreen créé** : src/components/SplashScreen.tsx avec animations fade/scale, auto-fermeture après 2.5s, design professionnel
 - **Configuration splash complète** : app.json mis à jour avec assets/splash-screen.png, App.tsx avec gestion d'état splash
 - **Application Expo opérationnelle** : Metro Bundler actif sur port 8081, QR code disponible pour test mobile Expo Go, 5/5 health checks réussis
+- **🎬 SPLASH SCREEN ANIMÉ AVANCÉ** : Animation de pulsation continue du logo (0.9→1.05), rotation des étoiles 360°, apparition progressive du texte, durée étendue à 4 secondes, effets d'ombre et de lumière cyan
+- **Animations fluides** : Utilisation d'Animated.loop pour pulsation continue, Animated.sequence pour transitions, useRef pour performances optimales, interpolation pour rotation des étoiles
+- **Design professionnel** : 8 étoiles animées avec effet de lueur, texte "ATOMIC FLIX" avec shadow cyan, slogan "LA PLATEFORME ULTIME POUR LES OTAKUS", barre de chargement animée avec scale effect
