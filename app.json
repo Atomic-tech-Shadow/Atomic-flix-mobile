@@ -7,7 +7,7 @@
     "icon": "./assets/atomic-flix-logo.png",
     "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/splash-screen.png",
+      "image": "./assets/splash/splash-design.png",
       "resizeMode": "cover",
       "backgroundColor": "#0a0a1a"
     },

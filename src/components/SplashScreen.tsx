@@ -46,16 +46,16 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
       ])
     ).start();
 
-    // Auto-fermeture après 2.5 secondes (plus rapide)
+    // Auto-fermeture après 1 seconde (très rapide pour éviter le double affichage)
     const timer = setTimeout(() => {
       Animated.timing(opacityAnim, {
         toValue: 0,
-        duration: 300,
+        duration: 200,
         useNativeDriver: true,
       }).start(() => {
         onFinish();
       });
-    }, 2500);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
