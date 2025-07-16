@@ -23,7 +23,7 @@ export default function NotFoundScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar style="light" backgroundColor="#0a0a1a" />
-      <SharedHeader showBackButton={true} />
+      <SharedHeader />
       <View style={styles.container}>
         {/* Background overlay */}
         <View style={styles.overlay} />

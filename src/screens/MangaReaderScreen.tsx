@@ -220,7 +220,7 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
     return (
       <SafeAreaView style={styles.safeArea}>
         <StatusBar style="light" backgroundColor="#0a0a1a" />
-        <SharedHeader showBackButton={true} />
+        <SharedHeader />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#00bcd4" />
           <Text style={styles.loadingText}>Chargement du manga...</Text>
@@ -233,7 +233,7 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
     return (
       <SafeAreaView style={styles.safeArea}>
         <StatusBar style="light" backgroundColor="#0a0a1a" />
-        <SharedHeader showBackButton={true} />
+        <SharedHeader />
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>{error}</Text>
           <TouchableOpacity style={styles.retryButton} onPress={() => navigation.goBack()}>
@@ -249,7 +249,7 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar style="light" backgroundColor="#0a0a1a" />
-      <SharedHeader showBackButton={true} />
+      <SharedHeader />
       <View style={styles.container}>
 
       {/* Lecteur principal */}

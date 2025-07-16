@@ -190,7 +190,6 @@ const AnimeDetailScreen: React.FC = () => {
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" backgroundColor="#0a0a1a" />
         <SharedHeader 
-          showBackButton={false} 
           onSearchPress={() => navigation.navigate('Home')}
           onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
         />
@@ -208,7 +207,6 @@ const AnimeDetailScreen: React.FC = () => {
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" backgroundColor="#0a0a1a" />
         <SharedHeader 
-          showBackButton={false} 
           onSearchPress={() => navigation.navigate('Home')}
           onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
         />
@@ -229,7 +227,6 @@ const AnimeDetailScreen: React.FC = () => {
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" backgroundColor="#0a0a1a" />
         <SharedHeader 
-          showBackButton={false} 
           onSearchPress={() => navigation.navigate('Home')}
           onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
         />
@@ -248,7 +245,6 @@ const AnimeDetailScreen: React.FC = () => {
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
         <SharedHeader 
-          showBackButton={false} 
           onSearchPress={() => navigation.navigate('Home')}
           onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
         />

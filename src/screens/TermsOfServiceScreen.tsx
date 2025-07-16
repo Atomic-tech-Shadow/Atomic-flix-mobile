@@ -17,7 +17,7 @@ export default function TermsOfServiceScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar style="light" backgroundColor="#0a0a1a" />
-      <SharedHeader showBackButton={true} />
+      <SharedHeader />
       <View style={styles.container}>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>

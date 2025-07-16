@@ -527,7 +527,6 @@ const AnimePlayerScreen: React.FC = () => {
       
       {/* Header mobile ATOMIC FLIX */}
       <SharedHeader 
-        showBackButton={false} 
         onSearchPress={() => navigation.navigate('Home')}
         onNotificationPress={() => console.log('Notifications pressed from AnimePlayer')}
       />

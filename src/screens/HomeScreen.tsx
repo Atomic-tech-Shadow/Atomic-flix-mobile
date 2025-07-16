@@ -336,7 +336,6 @@ const HomeScreen: React.FC = () => {
         nestedScrollEnabled={true}
       >
         <SharedHeader 
-          showBackButton={false}
           onSearchPress={handleSearchPress}
           onNotificationPress={handleNotificationPress}
         />

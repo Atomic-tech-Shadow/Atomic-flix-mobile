@@ -23,7 +23,7 @@ export default function AboutScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar style="light" backgroundColor="#0a0a1a" />
-      <SharedHeader showBackButton={true} />
+      <SharedHeader />
       
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         

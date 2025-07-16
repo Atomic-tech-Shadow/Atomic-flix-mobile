@@ -10,13 +10,11 @@ import NotificationModal from './NotificationModal';
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 interface SharedHeaderProps {
-  showBackButton?: boolean;
   onSearchPress?: () => void;
   onNotificationPress?: () => void;
 }
 
 const SharedHeader: React.FC<SharedHeaderProps> = ({ 
-  showBackButton = false,
   onSearchPress,
   onNotificationPress 
 }) => {
@@ -29,13 +27,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   
   const notificationService = NotificationService.getInstance();
 
-  const handleBackPress = () => {
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    } else {
-      navigation.navigate('Home');
-    }
-  };
+
 
   const handleNotificationPress = async () => {
     // Si les notifications sont activées, ouvrir le modal des notifications
@@ -115,14 +107,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
       <View style={styles.headerRow}>
         {/* Logo ATOMIC FLIX à gauche */}
         <View style={styles.logoSection}>
-          {showBackButton && (
-            <TouchableOpacity 
-              style={styles.backButton}
-              onPress={handleBackPress}
-            >
-              <Ionicons name="arrow-back" size={24} color="#ffffff" />
-            </TouchableOpacity>
-          )}
           <Image 
             source={require('../../assets/atomic-flix-logo.png')}
             style={styles.logoImage}
@@ -196,10 +180,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  backButton: {
-    padding: 8,
-    marginRight: 8,
-  },
+
   logoImage: {
     width: 120,
     height: 35,
