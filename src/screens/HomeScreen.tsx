@@ -43,6 +43,7 @@ const HomeScreen: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [trendingAnimes, setTrendingAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
 
   // Configuration API identique au site web
   const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';
@@ -175,7 +176,8 @@ const HomeScreen: React.FC = () => {
   };
 
   const handleSearchPress = () => {
-    // Active la recherche en focus
+    // Active l'affichage de la barre de recherche
+    setShowSearchBar(true);
     setSearchQuery('');
   };
 
@@ -255,7 +257,7 @@ const HomeScreen: React.FC = () => {
         />
         
         {/* Barre de recherche locale (identique au site web) */}
-        {searchQuery && (
+        {showSearchBar && (
           <View style={styles.searchBarContainer}>
             <View style={styles.searchBar}>
               <Ionicons name="search" size={20} color="#00bcd4" />
@@ -268,7 +270,10 @@ const HomeScreen: React.FC = () => {
                 autoFocus
               />
               <TouchableOpacity
-                onPress={() => setSearchQuery('')}
+                onPress={() => {
+                  setSearchQuery('');
+                  setShowSearchBar(false);
+                }}
                 style={styles.clearSearchButton}
               >
                 <Text style={styles.clearSearchText}>✕</Text>

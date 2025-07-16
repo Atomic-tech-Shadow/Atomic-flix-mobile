@@ -149,3 +149,6 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **🎨 SPLASH SCREEN DESIGN FINAL** : Intégration du design complet fourni par l'utilisateur (splash-design.png) avec logo atomique, texte "ATOMIC FLIX", slogan "LA PLATEFORME ULTIME POUR LES OTAKUS" et fond étoilé
 - **Image plein écran** : Design affiché en dimensions complètes (width x height) avec animation de pulsation subtile, barre de chargement cyan positionnée en bas
 - **Dernière mise à jour design** : 16 juillet 2025 - Splash screen finalisé selon la maquette exacte de l'utilisateur
+- **🔍 FONCTIONNALITÉ RECHERCHE CORRIGÉE** : Bug fixé dans handleSearchPress - ajout d'un état showSearchBar séparé pour contrôler l'affichage de la barre de recherche
+- **Comportement recherche amélioré** : Clic sur l'icône search affiche maintenant correctement la barre avec auto-focus, bouton ✕ ferme la recherche et remet à zéro
+- **Interface recherche complète** : TextInput avec placeholder "Rechercher des animes...", icône search cyan, recherche en temps réel avec délai 300ms, gestion d'erreurs API
