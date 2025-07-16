@@ -155,7 +155,7 @@ const HomeScreen: React.FC = () => {
     setError(null);
     
     try {
-      const response = await apiRequest(`/api/search?q=${encodeURIComponent(query)}`);
+      const response = await apiRequest(`/api/search?query=${encodeURIComponent(query)}`);
       
       if (response && response.success) {
         const results = response.results || [];
