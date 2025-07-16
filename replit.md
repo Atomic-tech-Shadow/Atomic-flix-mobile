@@ -176,3 +176,6 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **⚡ OPTIMISATIONS PERFORMANCE** : ScrollView accéléré avec propriétés natives, images optimisées, animations simplifiées pour réduire les lags
 - **🎨 SPLASH SCREEN PORTRAIT COMPLET** : Plein écran avec resizeMode="cover", positionnement absolu, durée réduite à 2.5s pour démarrage plus rapide
 - **🚀 COMPOSANTS OPTIMISÉS** : React.useCallback sur renderAnimeCard, styles avec elevation/shadow pour UI native, backgroundColor sur images pour loading fluide
+- **📱 SPLASH SCREEN ANDROID PLEIN ÉCRAN** : Configuration spécifique Android avec splash screen portrait, thème plein écran, support edge-to-edge pour Android 35+
+- **🔧 CONFIGURATION ANDROID COMPLÈTE** : Orientation portrait forcée, windowFullscreen, statusBar/navigationBar transparentes, windowLayoutInDisplayCutoutMode shortEdges
+- **🎨 THÈMES NATIFS ANDROID** : Theme.App.SplashScreen avec styles.xml pour toutes versions Android, support spécifique Android 35+ avec enforceStatusBarContrast

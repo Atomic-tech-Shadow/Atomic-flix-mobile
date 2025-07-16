@@ -68,7 +68,72 @@ function createDataExtractionRules(config) {
       const backupFilePath = path.join(xmlDir, "backup_rules.xml");
       fs.writeFileSync(backupFilePath, backupRules);
       
-      console.log("✅ Fichiers data_extraction_rules.xml et backup_rules.xml créés avec succès");
+      // Créer les fichiers styles.xml pour splash screen plein écran
+      const valuesDir = path.join(platformProjectRoot, "app", "src", "main", "res", "values");
+      const values35Dir = path.join(platformProjectRoot, "app", "src", "main", "res", "values-v35");
+      
+      if (!fs.existsSync(valuesDir)) {
+        fs.mkdirSync(valuesDir, { recursive: true });
+      }
+      
+      if (!fs.existsSync(values35Dir)) {
+        fs.mkdirSync(values35Dir, { recursive: true });
+      }
+      
+      // Styles généraux pour splash screen plein écran
+      const stylesContent = `<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Thème principal pour splash screen plein écran -->
+    <style name="Theme.App.SplashScreen" parent="Theme.Expo.Light.NoActionBar">
+        <item name="android:windowBackground">@color/splash_background</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <item name="android:screenOrientation">portrait</item>
+    </style>
+    
+    <!-- Couleur de fond du splash screen -->
+    <color name="splash_background">#0a0a1a</color>
+</resources>`;
+      
+      // Styles spécifiques Android 35+ pour edge-to-edge
+      const styles35Content = `<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Thème pour Android 35+ avec support edge-to-edge -->
+    <style name="Theme.App.SplashScreen" parent="Theme.Expo.Light.NoActionBar">
+        <item name="android:windowBackground">@color/splash_background</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <item name="android:screenOrientation">portrait</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">false</item>
+    </style>
+    
+    <!-- Couleur de fond du splash screen -->
+    <color name="splash_background">#0a0a1a</color>
+</resources>`;
+      
+      fs.writeFileSync(path.join(valuesDir, "styles.xml"), stylesContent);
+      fs.writeFileSync(path.join(values35Dir, "styles.xml"), styles35Content);
+      
+      console.log("✅ Fichiers data_extraction_rules.xml, backup_rules.xml et styles.xml créés avec succès");
+      console.log("✅ Configuration splash screen plein écran portrait appliquée");
       
       return config;
     },

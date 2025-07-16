@@ -26,7 +26,18 @@
         "android.permission.ACCESS_NETWORK_STATE",
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS"
-      ]
+      ],
+      "splash": {
+        "image": "./assets/splash/splash-design.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#0a0a1a",
+        "mdpi": "./assets/splash/splash-design.png",
+        "hdpi": "./assets/splash/splash-design.png",
+        "xhdpi": "./assets/splash/splash-design.png",
+        "xxhdpi": "./assets/splash/splash-design.png",
+        "xxxhdpi": "./assets/splash/splash-design.png"
+      },
+      "screenOrientation": "portrait"
     },
     "web": {
       "favicon": "./assets/favicon.png"

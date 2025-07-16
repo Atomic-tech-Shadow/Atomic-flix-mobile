@@ -41,6 +41,11 @@ function addOptimizedManifestConfig(androidManifest) {
     mainActivity.$["android:windowSoftInputMode"] = "adjustResize";
     mainActivity.$["android:exported"] = "true";
     mainActivity.$["android:launchMode"] = "singleTask";
+    mainActivity.$["android:screenOrientation"] = "portrait";
+    mainActivity.$["android:configChanges"] = "orientation|screenSize|keyboardHidden";
+    
+    // Configuration pour le splash screen full screen
+    mainActivity.$["android:theme"] = "@style/Theme.App.SplashScreen";
   }
 
   return androidManifest;
