@@ -547,19 +547,21 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: 24,
     paddingVertical: 48,
-    alignItems: 'center',
+    alignItems: 'flex-end', // Aligner le contenu à droite
   },
   heroLogo: {
-    width: 200,
-    height: 60,
-    marginBottom: 12,
-    borderRadius: 100, // Pour rendre le logo rond
+    width: 150, // Légèrement plus petit pour le coin
+    height: 45,
+    marginBottom: 8,
+    borderRadius: 75, // Pour rendre le logo rond
+    alignSelf: 'flex-end', // Forcer l'alignement à droite
   },
   heroSubtitle: {
-    fontSize: 18,
+    fontSize: 16, // Légèrement plus petit
     color: '#d1d5db',
-    textAlign: 'center',
-    lineHeight: 28,
+    textAlign: 'right', // Aligner le texte à droite
+    lineHeight: 24,
+    alignSelf: 'flex-end', // Forcer l'alignement à droite
   },
 
 
