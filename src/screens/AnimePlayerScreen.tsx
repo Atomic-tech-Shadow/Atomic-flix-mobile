@@ -18,6 +18,7 @@ import { RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { Episode, VideoSource, Season, AnimeData, EpisodeDetails } from '../types';
+import SharedHeader from '../components/SharedHeader';
 
 type AnimePlayerScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimePlayer'>;
 type AnimePlayerScreenRouteProp = RouteProp<RootStackParamList, 'AnimePlayer'>;
@@ -360,8 +361,8 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>Anime non trouvé</Text>
-          <TouchableOpacity style={styles.retryButton} onPress={() => navigation.goBack()}>
-            <Text style={styles.retryButtonText}>Retour</Text>
+          <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
+            <Text style={styles.retryButtonText}>Réessayer</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -372,18 +373,13 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
       
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity 
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="arrow-back" size={24} color="#ffffff" />
-        </TouchableOpacity>
-        <View style={styles.headerTitle}>
-          <Text style={styles.animeTitle} numberOfLines={1}>{animeTitle}</Text>
-          <Text style={styles.seasonTitle} numberOfLines={1}>{selectedSeason?.name}</Text>
-        </View>
+      {/* Header avec SharedHeader */}
+      <SharedHeader />
+      
+      {/* Titre de l'anime et saison */}
+      <View style={styles.titleContainer}>
+        <Text style={styles.animeTitle} numberOfLines={1}>{animeTitle}</Text>
+        <Text style={styles.seasonTitle} numberOfLines={1}>{selectedSeason?.name}</Text>
       </View>
 
       <ScrollView 
@@ -555,28 +551,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0f172a',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  titleContainer: {
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#1e293b',
-  },
-  backButton: {
-    marginRight: 16,
-  },
-  headerTitle: {
-    flex: 1,
   },
   animeTitle: {
     color: '#ffffff',
     fontSize: 18,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   seasonTitle: {
     color: '#94a3b8',
     fontSize: 14,
     marginTop: 2,
+    textAlign: 'center',
   },
   scrollContainer: {
     flex: 1,

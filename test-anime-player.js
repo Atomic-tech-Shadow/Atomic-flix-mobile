@@ -27,12 +27,12 @@ function testAnimePlayerExists() {
     const content = fs.readFileSync(playerPath, 'utf8');
     const hasWebView = content.includes('WebView');
     const hasAPI = content.includes('anime-sama-scraper.vercel.app');
-    const hasNavigation = content.includes('navigation.goBack');
+    const hasNavigation = content.includes('SharedHeader');
     
     testResult('Fichier AnimePlayerScreen', exists, 'Fichier créé avec succès');
     testResult('WebView intégré', hasWebView, 'Utilise react-native-webview');
     testResult('API intégrée', hasAPI, 'Utilise anime-sama-scraper API');
-    testResult('Navigation', hasNavigation, 'Navigation React Navigation');
+    testResult('Navigation', hasNavigation, 'SharedHeader intégré');
     
     return hasWebView && hasAPI && hasNavigation;
   } else {
