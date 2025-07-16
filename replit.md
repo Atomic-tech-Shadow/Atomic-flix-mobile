@@ -111,7 +111,7 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - Fichiers de ressources Android configurés (backup_rules.xml)
 - Plugin android-resources-config.js ajouté à app.json
 - **EAS CLI installé** : version 16.15.0 configurée
-- **ID projet EAS** : e5b84028-0715-4bc5-861b-a2bfd28a99e9
+- **ID projet EAS** : 0623f722-2262-4443-b8bc-65a795ec2fb3
 - **Slug corrigé** : atomic-flix-mobile (correspondance avec projectId)
 - **Version CLI EAS** : 16.15.0 spécifiée dans eas.json
 - **Android 35 configuré** : compileSdk 35, targetSdk 35, buildTools 35.0.0
@@ -172,3 +172,4 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **Logique identique** : Extraction ID depuis URL, timeout 20s, gestion erreurs 404/500/timeout, navigation manga/anime intelligente
 - **🎯 CODE WEB EXACT EN REACT NATIVE** : Fallbacks supprimés, utilise uniquement /api/anime/{id} comme le code web fonctionnel
 - **animeAPI.getDetails() pure** : Aucun fallback, throw direct des erreurs comme dans le code web, logique identique simplifiée
+- **🔄 ID PROJET EXPO REMPLACÉ** : 16 juillet 2025 - Nouvel ID projet EAS : 0623f722-2262-4443-b8bc-65a795ec2fb3

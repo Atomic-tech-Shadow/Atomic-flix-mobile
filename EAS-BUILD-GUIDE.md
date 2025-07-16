@@ -3,7 +3,7 @@
 ## Configuration EAS
 
 ### Projet configuré
-- **ID projet EAS** : e5b84028-0715-4bc5-861b-a2bfd28a99e9
+- **ID projet EAS** : 0623f722-2262-4443-b8bc-65a795ec2fb3
 - **Slug** : atomic-flix-mobile
 - **Version CLI** : 16.15.0 (dans eas.json)
 
@@ -14,7 +14,7 @@
     "slug": "atomic-flix-mobile",
     "extra": {
       "eas": {
-        "projectId": "e5b84028-0715-4bc5-861b-a2bfd28a99e9"
+        "projectId": "0623f722-2262-4443-b8bc-65a795ec2fb3"
       }
     }
   }
