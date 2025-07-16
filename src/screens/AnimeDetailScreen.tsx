@@ -129,21 +129,25 @@ const AnimeDetailScreen: React.FC = () => {
     }
   };
 
-  // Charger les données de l'anime (identique au site web)
+  // Charger les données de l'anime (identique au code web)
   const loadAnimeData = async () => {
     try {
       setLoading(true);
       setError(null);
       
-      console.log('Chargement des détails pour:', animeUrl);
-      const response = await apiRequest(`/api/anime/${encodeURIComponent(animeUrl)}`);
+      // Extraire l'ID de l'anime depuis l'URL
+      const animeId = animeUrl.split('/').pop() || animeUrl;
+      console.log('Chargement des détails pour:', animeId);
       
-      if (!response || !response.success) {
-        const errorMsg = response?.error || response?.message || 'Anime non trouvé dans la base de données';
+      // Appeler directement l'API externe comme dans le code web
+      const apiResponse = await apiRequest(`/api/anime/${animeId}`);
+      
+      if (!apiResponse || !apiResponse.success) {
+        const errorMsg = apiResponse?.error || apiResponse?.message || 'Anime non trouvé dans la base de données';
         throw new Error(errorMsg);
       }
       
-      setAnimeData(response.data);
+      setAnimeData(apiResponse.data);
       
     } catch (err) {
       console.error('Erreur chargement anime:', err);
