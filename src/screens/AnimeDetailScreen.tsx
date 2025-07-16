@@ -208,18 +208,39 @@ const AnimeDetailScreen: React.FC = () => {
     loadAnimeData();
   };
 
-  // Composant Header avec navigation
-  const renderHeader = () => (
-    <View style={styles.header}>
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Ionicons name="arrow-back" size={24} color="#ffffff" />
-      </TouchableOpacity>
-      <Text style={styles.headerTitle} numberOfLines={1}>
-        {animeTitle}
-      </Text>
+  // Header mobile exact comme le site ATOMIC FLIX
+  const renderMobileHeader = () => (
+    <View style={styles.mobileHeader}>
+      <View style={styles.headerRow}>
+        {/* Logo ATOMIC FLIX avec symbole atomique */}
+        <View style={styles.logoSection}>
+          <View style={styles.atomicIcon}>
+            <View style={styles.atomicSymbolSmall}>
+              <View style={styles.atomicCoreSmall} />
+              <View style={[styles.atomicRingSmall, styles.ringSmall1]} />
+            </View>
+          </View>
+          <Text style={styles.logoTextMobile}>
+            <Text style={styles.atomicTextMobile}>ATOMIC</Text>
+            <Text style={styles.flixTextMobile}>FLIX</Text>
+          </Text>
+        </View>
+
+        {/* Icônes navigation droite */}
+        <View style={styles.headerIcons}>
+          <TouchableOpacity style={styles.headerIconButton}>
+            <Ionicons name="search" size={22} color="#ffffff" />
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.headerIconButton}>
+            <Ionicons name="notifications" size={22} color="#ffffff" />
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.headerIconButton}>
+            <Ionicons name="menu" size={22} color="#ffffff" />
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 
@@ -227,10 +248,10 @@ const AnimeDetailScreen: React.FC = () => {
   if (loading && !animeData) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style="light" />
-        {renderHeader()}
+        <StatusBar style="light" backgroundColor="#0a0a1a" />
+        {renderMobileHeader()}
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#00ffff" />
+          <ActivityIndicator size="large" color="#00bcd4" />
           <Text style={styles.loadingText}>Chargement des détails de l'anime...</Text>
         </View>
       </SafeAreaView>
@@ -241,8 +262,8 @@ const AnimeDetailScreen: React.FC = () => {
   if (error && !animeData) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style="light" />
-        {renderHeader()}
+        <StatusBar style="light" backgroundColor="#0a0a1a" />
+        {renderMobileHeader()}
         <View style={styles.errorContainer}>
           <Ionicons name="alert-circle" size={48} color="#ef4444" />
           <Text style={styles.errorText}>{error}</Text>
@@ -258,8 +279,8 @@ const AnimeDetailScreen: React.FC = () => {
   if (!animeData) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style="light" />
-        {renderHeader()}
+        <StatusBar style="light" backgroundColor="#0a0a1a" />
+        {renderMobileHeader()}
         <View style={styles.errorContainer}>
           <Ionicons name="search" size={48} color="#6b7280" />
           <Text style={styles.errorText}>Anime non trouvé</Text>
@@ -270,8 +291,7 @@ const AnimeDetailScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="light" backgroundColor="#0a0a0a" />
-      {renderHeader()}
+      <StatusBar style="light" backgroundColor="#0a0a1a" />
       
       <ScrollView
         style={styles.scrollView}
@@ -279,118 +299,89 @@ const AnimeDetailScreen: React.FC = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={['#00ffff']}
-            tintColor="#00ffff"
+            colors={['#00bcd4']}
+            tintColor="#00bcd4"
           />
         }
         showsVerticalScrollIndicator={false}
       >
-        {/* Banner de l'anime */}
-        <View style={styles.bannerContainer}>
-          <Image
-            source={{ uri: animeData.image }}
-            style={styles.bannerImage}
-            resizeMode="cover"
-            onError={(e) => {
-              console.log('Erreur image banner:', animeData.image);
-            }}
-          />
-          <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.8)']}
-            style={styles.bannerGradient}
-          />
+        {/* Header mobile avec overlay */}
+        <View style={styles.heroContainer}>
+          {renderMobileHeader()}
           
-          <View style={styles.bannerContent}>
-            <Text style={styles.animeTitle}>{animeData.title}</Text>
+          {/* Image de fond fullscreen comme dans le design */}
+          <View style={styles.heroImageContainer}>
+            <Image
+              source={{ uri: animeData.image }}
+              style={styles.heroImage}
+              resizeMode="cover"
+              onError={(e) => {
+                console.log('Erreur image hero:', animeData.image);
+              }}
+            />
             
-            {/* Informations intégrées */}
-            <View style={styles.infoContainer}>
-              <View style={styles.infoBadge}>
-                <View style={styles.infoDot} />
-                <Text style={styles.infoText}>
-                  {animeData.seasons.length} saisons
-                </Text>
-              </View>
-              <View style={[styles.infoBadge, styles.yearBadge]}>
-                <View style={[styles.infoDot, styles.yearDot]} />
-                <Text style={[styles.infoText, styles.yearText]}>{animeData.year}</Text>
-              </View>
-            </View>
+            {/* Gradient overlay pour le contenu */}
+            <LinearGradient
+              colors={['transparent', 'rgba(0,0,0,0.3)', 'rgba(0,0,0,0.8)', 'rgba(10,10,26,0.95)']}
+              style={styles.heroGradient}
+            />
             
-            {/* Genres */}
-            <View style={styles.genresContainer}>
-              {animeData.genres.map((genre, index) => (
-                <View key={index} style={styles.genreTag}>
-                  <Text style={styles.genreText}>{genre}</Text>
+            {/* Contenu overlay exactement comme dans l'image */}
+            <View style={styles.heroContent}>
+              <Text style={styles.heroTitle}>{animeData.title}</Text>
+              
+              {/* Badges d'informations exactement comme dans l'image */}
+              <View style={styles.heroBadges}>
+                <View style={styles.heroBadge}>
+                  <View style={styles.badgeDot} />
+                  <Text style={styles.badgeText}>{animeData.seasons.length} saisons</Text>
                 </View>
-              ))}
+                <View style={[styles.heroBadge, styles.yearBadge]}>
+                  <View style={[styles.badgeDot, styles.yearDot]} />
+                  <Text style={styles.badgeText}>{animeData.year || '2000'}</Text>
+                </View>
+              </View>
+              
+              {/* Badge Anime comme dans l'image */}
+              <View style={styles.animeBadgeContainer}>
+                <View style={styles.animeBadge}>
+                  <Text style={styles.animeBadgeText}>Anime</Text>
+                </View>
+              </View>
             </View>
           </View>
         </View>
 
-        {/* Synopsis */}
-        <View style={styles.synopsisContainer}>
-          <View style={styles.synopsisCard}>
-            <Text style={styles.synopsisTitle}>📖 Synopsis</Text>
+        {/* Section Synopsis exactement comme dans l'image */}
+        <View style={styles.mobileSection}>
+          <View style={styles.mobileSectionHeader}>
+            <Ionicons name="document-text" size={20} color="#00bcd4" />
+            <Text style={styles.mobileSectionTitle}>Synopsis</Text>
+          </View>
+          
+          <View style={styles.synopsisContainer}>
             <Text style={styles.synopsisText}>{animeData.synopsis}</Text>
           </View>
         </View>
 
-        {/* Message d'erreur/info avec possibilité de réessayer */}
-        {error && (
-          <View style={styles.errorBanner}>
-            <View style={styles.errorBannerContent}>
-              <Ionicons name="alert-circle" size={16} color="#ef4444" style={styles.errorIcon} />
-              <Text style={styles.errorBannerText}>{error}</Text>
+        {/* Section Saisons (simplifiée pour correspondre au design) */}
+        {animeData.seasons.length > 0 && (
+          <View style={styles.mobileSection}>
+            <View style={styles.mobileSectionHeader}>
+              <Ionicons name="play-circle" size={20} color="#00bcd4" />
+              <Text style={styles.mobileSectionTitle}>Regarder maintenant</Text>
             </View>
-            <TouchableOpacity style={styles.errorRetryButton} onPress={retryLoad}>
-              <Text style={styles.errorRetryText}>Réessayer</Text>
+            
+            <TouchableOpacity
+              style={styles.watchButton}
+              onPress={() => goToPlayer(animeData.seasons[0])}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="play" size={24} color="#ffffff" />
+              <Text style={styles.watchButtonText}>Commencer à regarder</Text>
             </TouchableOpacity>
           </View>
         )}
-
-        {/* Sélection des saisons */}
-        <View style={styles.seasonsContainer}>
-          <Text style={styles.seasonsTitle}>🎬 Saisons et Films</Text>
-          <View style={styles.seasonsGrid}>
-            {animeData.seasons.map((season, index) => {
-              const isManga = season.name.toLowerCase().includes('scan') || 
-                             season.name.toLowerCase().includes('manga') ||
-                             season.name.toLowerCase().includes('tome') ||
-                             season.name.toLowerCase().includes('chapitre');
-              
-              return (
-                <TouchableOpacity
-                  key={`season-${index}-${season.name}`}
-                  style={[
-                    styles.seasonCard,
-                    isManga ? styles.mangaCard : styles.animeCard
-                  ]}
-                  onPress={() => goToPlayer(season)}
-                  activeOpacity={0.8}
-                >
-                  <Image
-                    source={{ uri: animeData.image }}
-                    style={styles.seasonImage}
-                    resizeMode="cover"
-                  />
-                  <View style={styles.seasonOverlay} />
-                  
-                  <View style={styles.seasonContent}>
-                    <Text style={styles.seasonName} numberOfLines={2}>
-                      {season.name}
-                    </Text>
-                    <View style={styles.seasonBadge}>
-                      <Text style={styles.seasonBadgeText}>
-                        {isManga ? '📖 MANGA' : '🎥 ANIME'}
-                      </Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -399,35 +390,196 @@ const AnimeDetailScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a0a0a',
+    backgroundColor: '#0a0a1a', // Dark blue exact comme le site
   },
   scrollView: {
     flex: 1,
   },
-  header: {
+  
+  // Header mobile exact
+  mobileHeader: {
+    backgroundColor: 'rgba(10,10,26,0.95)',
+    paddingHorizontal: 16,
+    paddingTop: 50,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#1a1a2e',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 100,
+  },
+  headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#0a0a0a',
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0,255,255,0.1)',
+    justifyContent: 'space-between',
   },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0,255,255,0.1)',
+  logoSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  atomicIcon: {
+    marginRight: 8,
+  },
+  atomicSymbolSmall: {
+    width: 24,
+    height: 24,
+    position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  atomicCoreSmall: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#00bcd4',
+    position: 'absolute',
+  },
+  atomicRingSmall: {
+    position: 'absolute',
+    borderWidth: 1,
+    borderColor: '#00bcd4',
+    borderRadius: 50,
+  },
+  ringSmall1: {
+    width: 16,
+    height: 16,
+  },
+  logoTextMobile: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  atomicTextMobile: {
+    color: '#ffffff',
+    fontFamily: 'monospace',
+  },
+  flixTextMobile: {
+    color: '#00bcd4',
+    fontFamily: 'monospace',
+  },
+  headerIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerIconButton: {
+    padding: 8,
+    marginLeft: 8,
+  },
+  // Hero Section exactement comme dans l'image
+  heroContainer: {
+    position: 'relative',
+    height: height * 0.7, // 70% de la hauteur de l'écran
+  },
+  heroImageContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  heroImage: {
+    width: '100%',
+    height: '100%',
+  },
+  heroGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '70%',
+  },
+  heroContent: {
+    position: 'absolute',
+    bottom: 40,
+    left: 20,
+    right: 20,
+  },
+  heroTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginBottom: 16,
+    textShadowColor: 'rgba(0,0,0,0.8)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
+  heroBadges: {
+    flexDirection: 'row',
+    marginBottom: 16,
+  },
+  heroBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,188,212,0.3)',
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     marginRight: 12,
   },
-  headerTitle: {
-    flex: 1,
+  yearBadge: {
+    backgroundColor: 'rgba(59,130,246,0.3)',
+  },
+  badgeDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#00bcd4',
+    marginRight: 8,
+  },
+  yearDot: {
+    backgroundColor: '#3b82f6',
+  },
+  badgeText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  animeBadgeContainer: {
+    alignSelf: 'flex-start',
+  },
+  animeBadge: {
+    backgroundColor: '#00bcd4',
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  animeBadgeText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  
+  // Section Synopsis mobile
+  mobileSection: {
+    paddingHorizontal: 16,
+    paddingVertical: 24,
+  },
+  mobileSectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  mobileSectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#ffffff',
+    marginLeft: 8,
   },
+  synopsisContainer: {
+    backgroundColor: 'rgba(26, 26, 46, 0.6)',
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+  },
+  synopsisText: {
+    color: '#d1d5db',
+    fontSize: 14,
+    lineHeight: 22,
+  },
+  
+  // États de chargement et erreur
   loadingContainer: {
     flex: 1,
     alignItems: 'center',
@@ -435,7 +587,7 @@ const styles = StyleSheet.create({
     paddingVertical: 64,
   },
   loadingText: {
-    color: '#6b7280',
+    color: '#888888',
     marginTop: 16,
     fontSize: 16,
   },
@@ -454,229 +606,35 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   retryButton: {
-    backgroundColor: 'rgba(0,255,255,0.1)',
+    backgroundColor: '#00bcd4',
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(0,255,255,0.3)',
   },
   retryText: {
-    color: '#00ffff',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  bannerContainer: {
-    position: 'relative',
-    height: 280,
-    overflow: 'hidden',
-  },
-  bannerImage: {
-    width: '100%',
-    height: '100%',
-  },
-  bannerGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 200,
-  },
-  bannerContent: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 16,
-    zIndex: 20,
-  },
-  animeTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#00ffff',
-    marginBottom: 12,
-  },
-  infoContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  infoBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(6,182,212,0.2)',
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    marginRight: 8,
-    marginBottom: 8,
-  },
-  yearBadge: {
-    backgroundColor: 'rgba(59,130,246,0.2)',
-  },
-  infoDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#06b6d4',
-    marginRight: 8,
-  },
-  yearDot: {
-    backgroundColor: '#3b82f6',
-  },
-  infoText: {
-    color: '#67e8f9',
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  yearText: {
-    color: '#93c5fd',
-  },
-  genresContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  genreTag: {
-    backgroundColor: 'rgba(6,182,212,0.2)',
-    borderWidth: 1,
-    borderColor: 'rgba(6,182,212,0.3)',
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    marginRight: 8,
-    marginBottom: 8,
-  },
-  genreText: {
-    color: '#67e8f9',
-    fontSize: 12,
-  },
-  synopsisContainer: {
-    padding: 16,
-    paddingTop: 24,
-  },
-  synopsisCard: {
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 24,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
-  },
-  synopsisTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#00ffff',
-    marginBottom: 12,
-  },
-  synopsisText: {
-    color: '#d1d5db',
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  errorBanner: {
-    backgroundColor: 'rgba(239,68,68,0.2)',
-    borderWidth: 1,
-    borderColor: 'rgba(239,68,68,0.3)',
-    borderRadius: 12,
-    padding: 16,
-    marginHorizontal: 16,
-    marginBottom: 24,
-  },
-  errorBannerContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  errorIcon: {
-    marginRight: 8,
-    flexShrink: 0,
-  },
-  errorBannerText: {
-    color: '#fca5a5',
-    fontSize: 14,
-    flex: 1,
-  },
-  errorRetryButton: {
-    backgroundColor: '#dc2626',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-    alignSelf: 'flex-start',
-  },
-  errorRetryText: {
     color: '#ffffff',
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  seasonsContainer: {
-    padding: 16,
-  },
-  seasonsTitle: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#00ffff',
-    marginBottom: 16,
   },
-  seasonsGrid: {
+  
+  // Bouton Regarder
+  watchButton: {
+    backgroundColor: '#00bcd4',
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  seasonCard: {
-    width: (width - 48) / 2,
-    height: 120,
-    borderRadius: 16,
-    overflow: 'hidden',
-    marginBottom: 16,
-    position: 'relative',
-    borderWidth: 2,
-  },
-  animeCard: {
-    borderColor: '#06b6d4',
-  },
-  mangaCard: {
-    borderColor: '#f97316',
-  },
-  seasonImage: {
-    width: '100%',
-    height: '100%',
-  },
-  seasonOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-  },
-  seasonContent: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    marginTop: 8,
   },
-  seasonName: {
+  watchButtonText: {
     color: '#ffffff',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 4,
-    textShadowColor: 'rgba(0,0,0,0.8)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
+    marginLeft: 8,
   },
-  seasonBadge: {
-    marginTop: 4,
-  },
-  seasonBadgeText: {
-    color: '#67e8f9',
-    fontSize: 12,
-    fontWeight: '500',
-  },
+
 });
 
 export default AnimeDetailScreen;
