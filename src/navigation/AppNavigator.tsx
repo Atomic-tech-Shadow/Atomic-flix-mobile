@@ -8,12 +8,20 @@ import HomeScreen from '../screens/HomeScreen';
 import AnimeDetailScreen from '../screens/AnimeDetailScreen';
 import AnimePlayerScreen from '../screens/AnimePlayerScreen';
 import MangaReaderScreen from '../screens/MangaReaderScreen';
+import AboutScreen from '../screens/AboutScreen';
+import NotFoundScreen from '../screens/NotFoundScreen';
+import PrivacyPolicyScreen from '../screens/PrivacyPolicyScreen';
+import TermsOfServiceScreen from '../screens/TermsOfServiceScreen';
 
 export type RootStackParamList = {
   Home: undefined;
   AnimeDetail: { animeUrl: string; animeTitle: string };
   AnimePlayer: { animeUrl: string; seasonData: any; animeTitle: string };
   MangaReader: { mangaUrl: string; mangaTitle: string };
+  About: undefined;
+  NotFound: undefined;
+  PrivacyPolicy: undefined;
+  TermsOfService: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -71,6 +79,38 @@ const AppNavigator: React.FC = () => {
             title: route.params.mangaTitle,
             headerBackTitleVisible: false,
           })}
+        />
+        <Stack.Screen 
+          name="About" 
+          component={AboutScreen}
+          options={{
+            title: 'À Propos',
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen 
+          name="NotFound" 
+          component={NotFoundScreen}
+          options={{
+            title: 'Page Non Trouvée',
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen 
+          name="PrivacyPolicy" 
+          component={PrivacyPolicyScreen}
+          options={{
+            title: 'Politique de Confidentialité',
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen 
+          name="TermsOfService" 
+          component={TermsOfServiceScreen}
+          options={{
+            title: 'Conditions d\'Utilisation',
+            headerBackTitleVisible: false,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -168,6 +168,7 @@ const HomeScreen: React.FC = () => {
       return () => clearTimeout(timeoutId);
     } else {
       setSearchResults([]);
+      return undefined;
     }
   }, [searchQuery]);
 
