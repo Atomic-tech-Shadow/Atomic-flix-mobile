@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, Modal, Animated, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
@@ -24,6 +24,8 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [notifications, setNotifications] = useState<EpisodeNotification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [showMenuDrawer, setShowMenuDrawer] = useState(false);
+  const [slideAnim] = useState(new Animated.Value(-300));
   
   const notificationService = NotificationService.getInstance();
 
@@ -68,6 +70,30 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
     
     // TODO: Naviguer vers l'anime/manga spécifique
     console.log('Navigation vers:', notification.animeTitle);
+  };
+
+  const handleMenuPress = () => {
+    setShowMenuDrawer(true);
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const closeMenuDrawer = () => {
+    Animated.timing(slideAnim, {
+      toValue: -300,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setShowMenuDrawer(false);
+    });
+  };
+
+  const navigateToScreen = (screenName: keyof RootStackParamList) => {
+    closeMenuDrawer();
+    navigation.navigate(screenName);
   };
 
   const handleMarkAllRead = async () => {
@@ -143,7 +169,10 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             </View>
           </TouchableOpacity>
           
-          <TouchableOpacity style={styles.headerIconButton}>
+          <TouchableOpacity 
+            style={styles.headerIconButton}
+            onPress={handleMenuPress}
+          >
             <Ionicons name="menu" size={22} color="#ffffff" />
           </TouchableOpacity>
         </View>
@@ -157,6 +186,84 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
         onNotificationPress={handleNotificationItemPress}
         onMarkAllRead={handleMarkAllRead}
       />
+
+      {/* Menu Drawer */}
+      <Modal
+        visible={showMenuDrawer}
+        transparent={true}
+        animationType="none"
+        onRequestClose={closeMenuDrawer}
+      >
+        <View style={styles.drawerOverlay}>
+          <TouchableOpacity 
+            style={styles.drawerBackground}
+            onPress={closeMenuDrawer}
+          />
+          <Animated.View 
+            style={[
+              styles.drawerContainer,
+              { transform: [{ translateX: slideAnim }] }
+            ]}
+          >
+            {/* Header du menu */}
+            <View style={styles.drawerHeader}>
+              <Image 
+                source={require('../../assets/atomic-flix-logo.png')}
+                style={styles.drawerLogo}
+                resizeMode="contain"
+              />
+              <Text style={styles.drawerTitle}>ATOMIC FLIX 🇹🇬</Text>
+              <TouchableOpacity 
+                style={styles.closeButton}
+                onPress={closeMenuDrawer}
+              >
+                <Ionicons name="close" size={24} color="#ffffff" />
+              </TouchableOpacity>
+            </View>
+
+            {/* Menu items */}
+            <View style={styles.menuItems}>
+              <TouchableOpacity 
+                style={styles.menuItem}
+                onPress={() => navigateToScreen('Home')}
+              >
+                <Ionicons name="home" size={20} color="#00bcd4" />
+                <Text style={styles.menuItemText}>Accueil</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.menuItem}
+                onPress={() => navigateToScreen('About')}
+              >
+                <Ionicons name="information-circle" size={20} color="#00bcd4" />
+                <Text style={styles.menuItemText}>À propos</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.menuItem}
+                onPress={() => navigateToScreen('PrivacyPolicy')}
+              >
+                <Ionicons name="shield-checkmark" size={20} color="#00bcd4" />
+                <Text style={styles.menuItemText}>Politique de confidentialité</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.menuItem}
+                onPress={() => navigateToScreen('TermsOfService')}
+              >
+                <Ionicons name="document-text" size={20} color="#00bcd4" />
+                <Text style={styles.menuItemText}>Conditions d'utilisation</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Footer du menu */}
+            <View style={styles.drawerFooter}>
+              <Text style={styles.footerText}>Version 1.0.0</Text>
+              <Text style={styles.footerSubtext}>Développé par Cid AKUE</Text>
+            </View>
+          </Animated.View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -220,6 +327,80 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  // Styles pour le menu drawer
+  drawerOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flexDirection: 'row',
+  },
+  drawerBackground: {
+    flex: 1,
+  },
+  drawerContainer: {
+    width: 280,
+    backgroundColor: '#0a0a1a',
+    height: '100%',
+    borderRightWidth: 1,
+    borderRightColor: '#1a1a2e',
+    paddingTop: 50,
+  },
+  drawerHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#1a1a2e',
+  },
+  drawerLogo: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginRight: 10,
+  },
+  drawerTitle: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ffffff',
+  },
+  closeButton: {
+    padding: 8,
+  },
+  menuItems: {
+    flex: 1,
+    paddingTop: 20,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#1a1a2e',
+  },
+  menuItemText: {
+    fontSize: 16,
+    color: '#ffffff',
+    marginLeft: 15,
+  },
+  drawerFooter: {
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderTopWidth: 1,
+    borderTopColor: '#1a1a2e',
+  },
+  footerText: {
+    fontSize: 12,
+    color: '#6b7280',
+    textAlign: 'center',
+  },
+  footerSubtext: {
+    fontSize: 10,
+    color: '#4b5563',
+    textAlign: 'center',
+    marginTop: 2,
   },
 });
 
