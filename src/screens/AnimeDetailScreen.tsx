@@ -304,6 +304,58 @@ const AnimeDetailScreen: React.FC = () => {
           </View>
         </View>
 
+        {/* Section Saisons exactement comme le code web */}
+        <View style={styles.mobileSection}>
+          <View style={styles.mobileSectionHeader}>
+            <Ionicons name="film" size={20} color="#00bcd4" />
+            <Text style={styles.mobileSectionTitle}>Saisons et Films</Text>
+          </View>
+          
+          {/* Grid 2 colonnes comme le code web */}
+          <View style={styles.seasonsGrid}>
+            {animeData.seasons.map((season, index) => {
+              const isManga = season.name.toLowerCase().includes('scan') || 
+                             season.name.toLowerCase().includes('manga') ||
+                             season.name.toLowerCase().includes('tome') ||
+                             season.name.toLowerCase().includes('chapitre');
+              
+              return (
+                <TouchableOpacity
+                  key={`season-${index}-${season.name}`}
+                  style={[
+                    styles.seasonCard,
+                    isManga ? styles.seasonCardManga : styles.seasonCardAnime
+                  ]}
+                  onPress={() => goToPlayer(season)}
+                  activeOpacity={0.8}
+                >
+                  {/* Image de fond exactement comme le code web */}
+                  <Image
+                    source={{ uri: animeData.image }}
+                    style={styles.seasonCardBackground}
+                    resizeMode="cover"
+                  />
+                  
+                  {/* Overlay dark exactement comme le code web */}
+                  <View style={styles.seasonCardOverlay} />
+                  
+                  {/* Contenu centré exactement comme le code web */}
+                  <View style={styles.seasonCardContent}>
+                    <Text style={styles.seasonCardTitle}>{season.name}</Text>
+                    
+                    {/* Badge type exactement comme le code web */}
+                    {isManga ? (
+                      <Text style={styles.seasonCardBadgeManga}>📖 MANGA</Text>
+                    ) : (
+                      <Text style={styles.seasonCardBadgeAnime}>🎥 ANIME</Text>
+                    )}
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+
 
       </ScrollView>
     </SafeAreaView>
@@ -538,6 +590,75 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  
+  // Saisons Grid exactement comme le code web
+  seasonsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 16,
+  },
+  seasonCard: {
+    width: '47%', // Pour 2 colonnes avec gap
+    height: 112, // h-28 du code web = 112px
+    borderRadius: 16, // rounded-2xl
+    overflow: 'hidden',
+    position: 'relative',
+    borderWidth: 2,
+  },
+  seasonCardAnime: {
+    borderColor: '#00bcd4', // border-cyan-400
+  },
+  seasonCardManga: {
+    borderColor: '#fb923c', // border-orange-400
+  },
+  seasonCardBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100%',
+    height: '100%',
+  },
+  seasonCardOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.6)', // bg-black/60
+  },
+  seasonCardContent: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  seasonCardTitle: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textShadowColor: 'rgba(0,0,0,0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+    marginBottom: 4,
+  },
+  seasonCardBadgeAnime: {
+    color: '#00bcd4', // text-cyan-300
+    fontSize: 10,
+    fontWeight: '600',
+  },
+  seasonCardBadgeManga: {
+    color: '#fb923c', // text-orange-300
+    fontSize: 10,
+    fontWeight: '600',
   },
 
 });
