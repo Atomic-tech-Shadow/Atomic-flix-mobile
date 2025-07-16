@@ -6,7 +6,7 @@ const { withAndroidManifest } = require("@expo/config-plugins");
  */
 function addOptimizedManifestConfig(androidManifest) {
   const { manifest } = androidManifest;
-  
+
   // Assurer que l'application principale existe
   if (!manifest.application || manifest.application.length === 0) {
     return androidManifest;
@@ -27,7 +27,7 @@ function addOptimizedManifestConfig(androidManifest) {
   application.$["android:allowBackup"] = "false";
   application.$["android:supportsRtl"] = "true";
   application.$["android:enableOnBackInvokedCallback"] = "true";
-  
+
   // Ajouter data extraction rules pour Android 12+
   application.$["android:dataExtractionRules"] = "@xml/data_extraction_rules";
 
@@ -37,13 +37,13 @@ function addOptimizedManifestConfig(androidManifest) {
     if (!mainActivity.$) {
       mainActivity.$ = {};
     }
-    
+
     mainActivity.$["android:windowSoftInputMode"] = "adjustResize";
     mainActivity.$["android:exported"] = "true";
     mainActivity.$["android:launchMode"] = "singleTask";
     mainActivity.$["android:screenOrientation"] = "portrait";
     mainActivity.$["android:configChanges"] = "orientation|screenSize|keyboardHidden";
-    
+
     // Configuration pour le splash screen full screen
     mainActivity.$["android:theme"] = "@style/Theme.App.SplashScreen";
   }
