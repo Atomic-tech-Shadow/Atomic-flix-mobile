@@ -22,6 +22,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SearchResult } from '../types/index';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
+import NotificationService from '../utils/notificationService';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -44,14 +45,45 @@ const HomeScreen: React.FC = () => {
   const [trendingAnimes, setTrendingAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
 
   // Configuration API identique au site web
   const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';
+  
+  // Service de notifications
+  const notificationService = NotificationService.getInstance();
 
-  // Charger les animes trending au démarrage (identique au site web)
+  // Charger les animes trending au démarrage et initialiser les notifications
   useEffect(() => {
     loadTrendingAnimes();
+    initializeNotifications();
+    
+    // Nettoyer les anciennes notifications au démarrage
+    notificationService.cleanOldNotifications();
   }, []);
+
+  // Initialiser les paramètres de notification
+  const initializeNotifications = async () => {
+    try {
+      const settings = await notificationService.getSettings();
+      setNotificationsEnabled(settings.enabled);
+      
+      const unreadCount = await notificationService.getUnreadCount();
+      setUnreadNotifications(unreadCount);
+      
+      // Écouter les changements de notifications
+      const unsubscribe = notificationService.addListener((notifications) => {
+        const unread = notifications.filter(n => !n.read).length;
+        setUnreadNotifications(unread);
+      });
+      
+      return unsubscribe;
+    } catch (error) {
+      console.error('Erreur initialisation notifications:', error);
+      return undefined;
+    }
+  };
 
   // Fonction pour les requêtes API avec retry (identique au site web)
   const apiRequest = async (endpoint: string, options = {}) => {
@@ -84,15 +116,24 @@ const HomeScreen: React.FC = () => {
     }
   };
 
-  // Charger tout le contenu trending depuis l'API (identique au site web)
+  // Charger tout le contenu trending depuis l'API et détecter les nouveaux épisodes
   const loadTrendingAnimes = async () => {
     try {
       const response = await apiRequest('/api/trending');
       
       if (response && response.success && response.results) {
+        const newContent = response.results.slice(0, 24);
+        
+        // Détecter les nouveaux épisodes avant de mettre à jour l'état
+        await notificationService.detectNewEpisodes(newContent);
+        
         // Afficher tous les types de contenu de l'API : animes, mangas, films
-        setTrendingAnimes(response.results.slice(0, 24)); // Augmenter le nombre d'éléments affichés
-        console.log('Contenu trending chargé:', response.results.length, 'éléments');
+        setTrendingAnimes(newContent);
+        console.log('Contenu trending chargé:', newContent.length, 'éléments');
+        
+        // Mettre à jour le compteur de notifications non lues
+        const unreadCount = await notificationService.getUnreadCount();
+        setUnreadNotifications(unreadCount);
       } else {
         console.warn('Réponse API trending échouée:', response);
         setTrendingAnimes([]);
@@ -181,6 +222,39 @@ const HomeScreen: React.FC = () => {
     setSearchQuery('');
   };
 
+  // Gérer l'activation/désactivation des notifications
+  const handleNotificationPress = async () => {
+    try {
+      const currentSettings = await notificationService.getSettings();
+      const newSettings = {
+        ...currentSettings,
+        enabled: !currentSettings.enabled
+      };
+      
+      await notificationService.saveSettings(newSettings);
+      setNotificationsEnabled(newSettings.enabled);
+      
+      if (newSettings.enabled) {
+        // Marquer toutes les notifications comme lues quand on active
+        await notificationService.markAllAsRead();
+        setUnreadNotifications(0);
+      }
+    } catch (error) {
+      console.error('Erreur gestion notifications:', error);
+    }
+  };
+
+  // Vérifier périodiquement les nouveaux épisodes (toutes les 5 minutes)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (notificationsEnabled) {
+        loadTrendingAnimes();
+      }
+    }, 5 * 60 * 1000); // 5 minutes
+
+    return () => clearInterval(interval);
+  }, [notificationsEnabled]);
+
   // Composant Carte Anime (inspiré du design web)
   const renderAnimeCard = (anime: SearchResult, index: number) => (
     <TouchableOpacity
@@ -254,6 +328,7 @@ const HomeScreen: React.FC = () => {
         <SharedHeader 
           showBackButton={false}
           onSearchPress={handleSearchPress}
+          onNotificationPress={handleNotificationPress}
         />
         
         {/* Barre de recherche locale (identique au site web) */}

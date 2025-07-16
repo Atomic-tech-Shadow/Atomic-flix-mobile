@@ -155,3 +155,9 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **🔔 NOTIFICATIONS INTERACTIVES** : Fonctionnalité cloche complète avec activation/désactivation, changement visuel d'état (cyan quand activée), badge rouge pour nouvelles notifications
 - **États notifications** : Icon "notifications" (activé) vs "notifications-off" (désactivé), Alert de confirmation, simulation de nouvelles notifications toutes les 30s
 - **Interface notifications** : Badge rouge avec point blanc, position absolue top-right, couleurs cyan/blanc selon l'état, callback onNotificationPress optionnel
+- **🚨 SYSTÈME DE NOTIFICATIONS AUTOMATIQUES COMPLET** : Détection automatique de nouveaux épisodes dans le HomeScreen avec notifications push
+- **Service NotificationService** : Classe singleton pour gérer les notifications, AsyncStorage pour persistance, détection de changements de contenu
+- **Notifications automatiques** : Comparaison contenu précédent vs actuel, Alert() pour notifications push, compteur non lues, nettoyage automatique après 7 jours
+- **Intégration HomeScreen** : Détection lors de loadTrendingAnimes(), vérification périodique toutes les 5 minutes, synchronisation état notifications enabled/disabled
+- **Fonctionnalités avancées** : markAsRead(), markAllAsRead(), getUnreadCount(), cleanOldNotifications(), addListener() pour mise à jour temps réel du badge
+- **Version AsyncStorage** : 2.1.2 compatible Expo 53, toutes vérifications health-check passent (5/5)
