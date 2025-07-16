@@ -113,8 +113,8 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   return (
     <View style={styles.mobileHeader}>
       <View style={styles.headerRow}>
-        {/* Section gauche pour le bouton retour */}
-        <View style={styles.leftSection}>
+        {/* Logo ATOMIC FLIX à gauche */}
+        <View style={styles.logoSection}>
           {showBackButton && (
             <TouchableOpacity 
               style={styles.backButton}
@@ -123,10 +123,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
               <Ionicons name="arrow-back" size={24} color="#ffffff" />
             </TouchableOpacity>
           )}
-        </View>
-
-        {/* Logo ATOMIC FLIX centré */}
-        <View style={styles.logoSection}>
           <Image 
             source={require('../../assets/atomic-flix-logo.png')}
             style={styles.logoImage}
@@ -196,19 +192,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  leftSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
   logoSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
   },
   backButton: {
     padding: 8,
+    marginRight: 8,
   },
   logoImage: {
     width: 120,
@@ -218,8 +208,6 @@ const styles = StyleSheet.create({
   headerIcons: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    flex: 1,
   },
   headerIconButton: {
     padding: 8,
