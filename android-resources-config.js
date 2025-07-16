@@ -84,7 +84,7 @@ function createDataExtractionRules(config) {
       const stylesContent = `<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Thème principal pour splash screen plein écran -->
-    <style name="Theme.App.SplashScreen" parent="Theme.Expo.Light.NoActionBar">
+    <style name="Theme.App.SplashScreen" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/splash_background</item>
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -107,7 +107,7 @@ function createDataExtractionRules(config) {
       const styles35Content = `<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Thème pour Android 35+ avec support edge-to-edge -->
-    <style name="Theme.App.SplashScreen" parent="Theme.Expo.Light.NoActionBar">
+    <style name="Theme.App.SplashScreen" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/splash_background</item>
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -122,7 +122,6 @@ function createDataExtractionRules(config) {
         <item name="android:screenOrientation">portrait</item>
         <item name="android:enforceStatusBarContrast">false</item>
         <item name="android:enforceNavigationBarContrast">false</item>
-        <item name="android:windowOptOutEdgeToEdgeEnforcement">false</item>
     </style>
     
     <!-- Couleur de fond du splash screen -->

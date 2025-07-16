@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Styles spécifiques pour Android 35+ -->
@@ -10,8 +11,6 @@
         <item name="android:windowLightNavigationBar">false</item>
         <item name="android:enforceStatusBarContrast">false</item>
         <item name="android:enforceNavigationBarContrast">false</item>
-        <!-- Désactive explicitement windowOptOutEdgeToEdgeEnforcement pour éviter l'erreur -->
-        <!-- <item name="android:windowOptOutEdgeToEdgeEnforcement">false</item> -->
     </style>
 
     <!-- Theme edge-to-edge pour Android 35 -->
@@ -21,4 +20,25 @@
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:fitsSystemWindows">false</item>
     </style>
+
+    <!-- Splash screen theme pour Android 35+ -->
+    <style name="Theme.App.SplashScreen" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/splash_background</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <item name="android:screenOrientation">portrait</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+    </style>
+    
+    <!-- Couleur de fond du splash screen -->
+    <color name="splash_background">#0a0a1a</color>
 </resources>
