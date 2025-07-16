@@ -1,14 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Image, Text, StyleSheet, Dimensions, Animated } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface SplashScreenProps {
   onFinish: () => void;
 }
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('screen'); // Utilise 'screen' pour les vraies dimensions
 
 const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
+  const insets = useSafeAreaInsets();
   const scaleAnim = useRef(new Animated.Value(0.9)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
   const textOpacityAnim = useRef(new Animated.Value(0)).current;
@@ -66,8 +68,13 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
   });
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="light" />
+    <View style={[styles.container, { 
+      marginTop: -insets.top,  // Étendre au-dessus de la barre de statut
+      marginBottom: -insets.bottom, // Étendre en bas
+      paddingTop: 0,
+      paddingBottom: 0,
+    }]}>
+      <StatusBar style="light" hidden={true} />
       
       {/* Splash design complet avec animation de pulsation */}
       <Animated.View 
@@ -75,13 +82,18 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
           styles.splashContainer,
           {
             opacity: opacityAnim,
-            transform: [{ scale: scaleAnim }]
+            transform: [{ scale: scaleAnim }],
+            marginTop: -insets.top,
+            height: height + insets.top + insets.bottom, // Hauteur totale
           }
         ]}
       >
         <Image
           source={require('../../assets/splash/splash-design.png')}
-          style={styles.splashDesign}
+          style={[styles.splashDesign, {
+            height: height + insets.top + insets.bottom,
+            marginTop: -insets.top,
+          }]}
           resizeMode="cover"
         />
       </Animated.View>
@@ -115,23 +127,27 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     zIndex: 1000,
+    width: '100%',
+    height: '100%',
   },
   splashContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     width: width,
-    height: height,
     position: 'absolute',
     top: 0,
     left: 0,
+    right: 0,
+    bottom: 0,
   },
   splashDesign: {
     width: width,
-    height: height,
     position: 'absolute',
     top: 0,
     left: 0,
+    right: 0,
+    bottom: 0,
   },
   loadingContainer: {
     position: 'absolute',
