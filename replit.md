@@ -166,3 +166,7 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **Détection intelligente épisodes** : Extraction automatique numéros d'épisodes/chapitres depuis titres et status, formatage E02/Ch.123
 - **Interface notifications premium** : Emojis par type (📺🎬📖), overlay type sur images, boutons lecture, compteur unread dans badge
 - **Interaction complète** : Clic cloche ouvre modal si activé, sinon active/désactive, bouton "Tout lire", navigation vers contenu spécifique
+- **🔄 ANIMEDETAILSCREEN SYNCHRONISÉ AVEC CODE WEB** : API identique au code web fonctionnel avec animeAPI.getDetails()
+- **animeAPI.ts créé** : Client API React Native reproduisant exactement le comportement du code web avec fallback endpoints
+- **Endpoints testés** : /api/details/{id}, /api/anime/{id}, /api/anime/details/{id} pour compatibilité maximale
+- **Logique identique** : Extraction ID depuis URL, timeout 20s, gestion erreurs 404/500/timeout, navigation manga/anime intelligente

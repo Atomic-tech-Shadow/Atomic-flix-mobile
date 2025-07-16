@@ -21,6 +21,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
+import { animeAPI } from '../utils/animeAPI';
 
 type AnimeDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimeDetail'>;
 type AnimeDetailScreenRouteProp = RouteProp<RootStackParamList, 'AnimeDetail'>;
@@ -130,18 +131,18 @@ const AnimeDetailScreen: React.FC = () => {
     }
   };
 
-  // Charger les données de l'anime (identique au code web)
+  // Charger les données de l'anime (exactement comme le code web)
   const loadAnimeData = async () => {
     try {
       setLoading(true);
       setError(null);
       
-      // Extraire l'ID de l'anime depuis l'URL
+      // Extraire l'ID de l'anime depuis l'URL exactement comme dans le code web
       const animeId = animeUrl.split('/').pop() || animeUrl;
       console.log('Chargement des détails pour:', animeId);
       
-      // Appeler directement l'API externe comme dans le code web
-      const apiResponse = await apiRequest(`/api/anime/${animeId}`);
+      // Appeler directement animeAPI.getDetails comme dans le code web
+      const apiResponse = await animeAPI.getDetails(animeId);
       
       if (!apiResponse || !apiResponse.success) {
         const errorMsg = apiResponse?.error || apiResponse?.message || 'Anime non trouvé dans la base de données';
