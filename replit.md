@@ -121,3 +121,4 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **Conflits expo-doctor résolus** : Doctor personnalisé remplace expo-doctor avec versions conflictuelles
 - **HomeScreen transformé** : Conversion complète du site web anime-sama en React Native avec API identique
 - **AnimeDetailScreen transformé** : Conversion complète du site web anime-detail en React Native avec navigation intelligente
+- **AnimePlayerScreen transformé** : Conversion complète du site web anime-player en React Native avec lecteur WebView intégré
