@@ -33,9 +33,16 @@
 
 #### app.json
 - ✅ Icône principale : `./assets/atomic-flix-logo.png`
-- ✅ Splash screen : `./assets/atomic-flix-logo.png`
+- ✅ Splash screen : `./assets/splash-screen.png` (logo complet + slogan)
 - ✅ Icône adaptative Android : `./assets/atomic-flix-logo.png`
-- ✅ Fond d'écran uniformisé : `#0f172a`
+- ✅ Fond d'écran uniformisé : `#0a0a1a`
+
+#### SplashScreen React Native
+- ✅ Composant personnalisé : `src/components/SplashScreen.tsx`
+- ✅ Animation fluide : fade-in/scale avec spring
+- ✅ Auto-fermeture : 2.5 secondes
+- ✅ Fond étoilé : effet visuel immersif
+- ✅ Intégration App.tsx : état splash géré
 
 ### 📋 Vérifications Techniques
 

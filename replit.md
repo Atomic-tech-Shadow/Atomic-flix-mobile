@@ -138,4 +138,8 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **🎯 HEADER UNIFIÉ APPLIQUÉ** : Tous les écrans utilisent désormais le même header HomeScreen avec composant SharedHeader
 - **Composant SharedHeader créé** : src/components/SharedHeader.tsx avec logo ATOMIC FLIX, icônes navigation, bouton retour conditionnel
 - **Navigation cohérente** : Bouton retour sur tous les écrans (sauf Home), styles dark blue (#0a0a1a), interactions tactiles
+- **🎨 LOGO OFFICIEL INTÉGRÉ** : Logo atomique rose/cyan avec "F" stylisé appliqué sur tous les écrans (SharedHeader, HomeScreen, AboutScreen, NotFoundScreen)
+- **✨ SPLASH SCREEN COMPLET** : Écran d'accueil avec logo ATOMIC FLIX, slogan "LA PLATEFORME ULTIME POUR LES OTAKUS", animations fluides, fond étoilé
+- **Composant SplashScreen créé** : src/components/SplashScreen.tsx avec animations fade/scale, auto-fermeture après 2.5s, design professionnel
+- **Configuration splash complète** : app.json mis à jour avec assets/splash-screen.png, App.tsx avec gestion d'état splash
 - **Application Expo opérationnelle** : Metro Bundler actif sur port 8081, QR code disponible pour test mobile Expo Go, 5/5 health checks réussis
