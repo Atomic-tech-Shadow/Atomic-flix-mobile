@@ -49,18 +49,18 @@ async function testNotificationSystem() {
       ...initialContent,
       {
         id: 'anime-2',
-        title: 'Demon Slayer - Nouveau Episode !',
+        title: 'Demon Slayer - Episode 12',
         type: 'anime',
-        status: 'Nouveau',
-        image: 'test2.jpg',
+        status: 'E12 disponible',
+        image: 'https://cdn.myanimelist.net/images/anime/1286/99889.jpg',
         url: 'test-url-2'
       },
       {
         id: 'manga-2',
-        title: 'Naruto - Chapitre inédit',
+        title: 'One Piece - Chapitre 1105',
         type: 'manga', 
-        status: 'Nouveau',
-        image: 'test3.jpg',
+        status: 'Ch.1105 disponible',
+        image: 'https://cdn.myanimelist.net/images/manga/2/253146.jpg',
         url: 'test-url-3'
       }
     ];

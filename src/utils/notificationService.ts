@@ -15,6 +15,9 @@ export interface EpisodeNotification {
   message: string;
   timestamp: number;
   read: boolean;
+  image: string;
+  episodeInfo?: string; // Ex: "E02", "Chapitre 1045", etc.
+  animeTitle: string; // Titre complet de l'anime/manga
 }
 
 class NotificationService {
@@ -103,13 +106,17 @@ class NotificationService {
         const shouldNotify = this.shouldCreateNotification(item, settings);
         
         if (shouldNotify) {
+          const episodeInfo = this.extractEpisodeInfo(item, previousItem);
           const notification: EpisodeNotification = {
             id: `${item.id}-${Date.now()}`,
             title: item.title,
             type: item.type as 'anime' | 'manga' | 'film',
-            message: this.generateNotificationMessage(item, !previousItem),
+            message: this.generateNotificationMessage(item, !previousItem, episodeInfo),
             timestamp: Date.now(),
-            read: false
+            read: false,
+            image: item.image,
+            episodeInfo: episodeInfo,
+            animeTitle: item.title
           };
           
           newNotifications.push(notification);
@@ -151,26 +158,78 @@ class NotificationService {
     return false;
   }
 
-  // Générer le message de notification
-  private generateNotificationMessage(item: SearchResult, isNew: boolean): string {
+  // Extraire les informations d'épisode du titre ou du status
+  private extractEpisodeInfo(item: SearchResult, previousItem?: SearchResult): string {
+    // Rechercher des patterns d'épisodes dans le titre et le status
+    const episodePatterns = [
+      /Episode?\s*(\d+)/i,
+      /E(\d+)/i,
+      /Ep\.?\s*(\d+)/i,
+      /Épisode\s*(\d+)/i,
+      /Chapitre\s*(\d+)/i,
+      /Chapter\s*(\d+)/i,
+      /Ch\.?\s*(\d+)/i,
+      /disponible/i // Pour détecter les nouveaux épisodes disponibles
+    ];
+    
+    for (const pattern of episodePatterns) {
+      const match = item.title.match(pattern) || item.status?.match(pattern);
+      if (match) {
+        const episodeNum = match[1];
+        if (item.type === 'manga') {
+          return `Ch.${episodeNum}`;
+        } else {
+          return `E${episodeNum.padStart(2, '0')}`;
+        }
+      }
+    }
+    
+    // Si aucun pattern trouvé, essayer de détecter une différence avec l'élément précédent
+    if (previousItem && item.status !== previousItem.status) {
+      return item.type === 'manga' ? 'Nouveau chapitre' : 'Nouvel épisode';
+    }
+    
+    return item.type === 'manga' ? 'Nouveau' : 'Nouveau';
+  }
+
+  // Générer le message de notification avec infos détaillées
+  private generateNotificationMessage(item: SearchResult, isNew: boolean, episodeInfo?: string): string {
     const typeText = item.type === 'anime' ? 'anime' : 
                      item.type === 'manga' ? 'manga' : 'film';
     
-    if (isNew) {
-      return `Nouveau ${typeText} ajouté : ${item.title}`;
+    if (episodeInfo && episodeInfo !== 'Nouveau') {
+      return `${item.title} - ${episodeInfo}`;
+    } else if (isNew) {
+      return `Nouveau ${typeText} : ${item.title}`;
     } else {
-      return `Mise à jour du ${typeText} : ${item.title}`;
+      return `Mise à jour : ${item.title}`;
     }
   }
 
-  // Afficher une alerte de notification
+  // Afficher une alerte de notification avec image et détails
   private showNotificationAlert(notification: EpisodeNotification): void {
+    const typeEmoji = notification.type === 'anime' ? '📺' : 
+                      notification.type === 'manga' ? '📖' : '🎬';
+    
+    const title = `${typeEmoji} ${notification.type.toUpperCase()} mis à jour !`;
+    
+    let message = notification.message;
+    if (notification.episodeInfo && notification.episodeInfo !== 'Nouveau') {
+      message = `${notification.animeTitle}\n${notification.episodeInfo} disponible !`;
+    }
+    
     Alert.alert(
-      '🔔 Nouvelle notification !',
-      notification.message,
+      title,
+      message,
       [
-        { text: 'Ignorer', style: 'cancel' },
-        { text: 'Voir', onPress: () => this.markAsRead(notification.id) }
+        { text: 'Plus tard', style: 'cancel' },
+        { 
+          text: 'Voir maintenant', 
+          onPress: () => {
+            this.markAsRead(notification.id);
+            // TODO: Naviguer vers l'anime/manga si possible
+          }
+        }
       ],
       { cancelable: true }
     );

@@ -4,6 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
+import NotificationService, { EpisodeNotification } from '../utils/notificationService';
+import NotificationModal from './NotificationModal';
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -21,6 +23,11 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   const navigation = useNavigation<NavigationProp>();
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [hasNewNotifications, setHasNewNotifications] = useState(true);
+  const [showNotificationModal, setShowNotificationModal] = useState(false);
+  const [notifications, setNotifications] = useState<EpisodeNotification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  
+  const notificationService = NotificationService.getInstance();
 
   const handleBackPress = () => {
     if (navigation.canGoBack()) {
@@ -30,7 +37,16 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
     }
   };
 
-  const handleNotificationPress = () => {
+  const handleNotificationPress = async () => {
+    // Si les notifications sont activées, ouvrir le modal des notifications
+    if (notificationsEnabled) {
+      const allNotifications = await notificationService.getNotifications();
+      setNotifications(allNotifications);
+      setShowNotificationModal(true);
+      return;
+    }
+
+    // Sinon, activer/désactiver les notifications
     const newState = !notificationsEnabled;
     setNotificationsEnabled(newState);
     
@@ -54,16 +70,45 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
     }
   };
 
-  // Simuler l'arrivée de nouvelles notifications périodiquement
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (notificationsEnabled && Math.random() > 0.7) {
-        setHasNewNotifications(true);
-      }
-    }, 30000); // Vérifie toutes les 30 secondes
+  const handleNotificationItemPress = (notification: EpisodeNotification) => {
+    // Marquer comme lu et fermer le modal
+    notificationService.markAsRead(notification.id);
+    setShowNotificationModal(false);
+    
+    // TODO: Naviguer vers l'anime/manga spécifique
+    console.log('Navigation vers:', notification.animeTitle);
+  };
 
-    return () => clearInterval(interval);
-  }, [notificationsEnabled]);
+  const handleMarkAllRead = async () => {
+    await notificationService.markAllAsRead();
+    const updatedNotifications = await notificationService.getNotifications();
+    setNotifications(updatedNotifications);
+    setUnreadCount(0);
+    setHasNewNotifications(false);
+  };
+
+  // Écouter les changements de notifications et mettre à jour le compteur
+  useEffect(() => {
+    const loadNotifications = async () => {
+      const settings = await notificationService.getSettings();
+      setNotificationsEnabled(settings.enabled);
+      
+      const count = await notificationService.getUnreadCount();
+      setUnreadCount(count);
+      setHasNewNotifications(count > 0);
+    };
+
+    loadNotifications();
+
+    // Écouter les nouvelles notifications
+    const unsubscribe = notificationService.addListener(async (newNotifications) => {
+      const count = await notificationService.getUnreadCount();
+      setUnreadCount(count);
+      setHasNewNotifications(count > 0);
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <View style={styles.mobileHeader}>
@@ -104,9 +149,11 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 size={22} 
                 color={notificationsEnabled ? "#00bcd4" : "#ffffff"} 
               />
-              {notificationsEnabled && hasNewNotifications && (
+              {notificationsEnabled && unreadCount > 0 && (
                 <View style={styles.notificationBadge}>
-                  <Text style={styles.badgeText}>•</Text>
+                  <Text style={styles.badgeText}>
+                    {unreadCount > 99 ? '99+' : unreadCount}
+                  </Text>
                 </View>
               )}
             </View>
@@ -117,6 +164,15 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* Modal des notifications */}
+      <NotificationModal
+        visible={showNotificationModal}
+        notifications={notifications}
+        onClose={() => setShowNotificationModal(false)}
+        onNotificationPress={handleNotificationItemPress}
+        onMarkAllRead={handleMarkAllRead}
+      />
     </View>
   );
 };
@@ -173,8 +229,9 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     color: '#ffffff',
-    fontSize: 8,
+    fontSize: 10,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

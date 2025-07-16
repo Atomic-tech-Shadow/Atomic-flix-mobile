@@ -161,3 +161,8 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **Intégration HomeScreen** : Détection lors de loadTrendingAnimes(), vérification périodique toutes les 5 minutes, synchronisation état notifications enabled/disabled
 - **Fonctionnalités avancées** : markAsRead(), markAllAsRead(), getUnreadCount(), cleanOldNotifications(), addListener() pour mise à jour temps réel du badge
 - **Version AsyncStorage** : 2.1.2 compatible Expo 53, toutes vérifications health-check passent (5/5)
+- **🖼️ NOTIFICATIONS VISUELLES AVANCÉES** : Interface complète avec images d'anime, détails d'épisodes (E02, Ch.1105), modal plein écran
+- **Modal NotificationModal** : Affichage des notifications avec images anime/manga, infos épisodes, timestamps relatifs, badges non-lues
+- **Détection intelligente épisodes** : Extraction automatique numéros d'épisodes/chapitres depuis titres et status, formatage E02/Ch.123
+- **Interface notifications premium** : Emojis par type (📺🎬📖), overlay type sur images, boutons lecture, compteur unread dans badge
+- **Interaction complète** : Clic cloche ouvre modal si activé, sinon active/désactive, bouton "Tout lire", navigation vers contenu spécifique
