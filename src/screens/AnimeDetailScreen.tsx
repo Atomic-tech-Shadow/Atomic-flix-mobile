@@ -189,7 +189,11 @@ const AnimeDetailScreen: React.FC = () => {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" backgroundColor="#0a0a1a" />
-        <SharedHeader showBackButton={true} />
+        <SharedHeader 
+          showBackButton={true} 
+          onSearchPress={() => navigation.navigate('Home')}
+          onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
+        />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#00bcd4" />
           <Text style={styles.loadingText}>Chargement des détails de l'anime...</Text>
@@ -203,7 +207,11 @@ const AnimeDetailScreen: React.FC = () => {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" backgroundColor="#0a0a1a" />
-        <SharedHeader showBackButton={true} />
+        <SharedHeader 
+          showBackButton={true} 
+          onSearchPress={() => navigation.navigate('Home')}
+          onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
+        />
         <View style={styles.errorContainer}>
           <Ionicons name="alert-circle" size={48} color="#ef4444" />
           <Text style={styles.errorText}>{error}</Text>
@@ -220,7 +228,11 @@ const AnimeDetailScreen: React.FC = () => {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" backgroundColor="#0a0a1a" />
-        <SharedHeader showBackButton={true} />
+        <SharedHeader 
+          showBackButton={true} 
+          onSearchPress={() => navigation.navigate('Home')}
+          onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
+        />
         <View style={styles.errorContainer}>
           <Ionicons name="search" size={48} color="#6b7280" />
           <Text style={styles.errorText}>Anime non trouvé</Text>
@@ -247,7 +259,11 @@ const AnimeDetailScreen: React.FC = () => {
       >
         {/* Header mobile avec overlay */}
         <View style={styles.heroContainer}>
-          <SharedHeader showBackButton={true} />
+          <SharedHeader 
+            showBackButton={true} 
+            onSearchPress={() => navigation.navigate('Home')}
+            onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
+          />
           
           {/* Image de fond fullscreen comme dans le design */}
           <View style={styles.heroImageContainer}>
