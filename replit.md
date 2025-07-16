@@ -152,3 +152,6 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **🔍 FONCTIONNALITÉ RECHERCHE CORRIGÉE** : Bug fixé dans handleSearchPress - ajout d'un état showSearchBar séparé pour contrôler l'affichage de la barre de recherche
 - **Comportement recherche amélioré** : Clic sur l'icône search affiche maintenant correctement la barre avec auto-focus, bouton ✕ ferme la recherche et remet à zéro
 - **Interface recherche complète** : TextInput avec placeholder "Rechercher des animes...", icône search cyan, recherche en temps réel avec délai 300ms, gestion d'erreurs API
+- **🔔 NOTIFICATIONS INTERACTIVES** : Fonctionnalité cloche complète avec activation/désactivation, changement visuel d'état (cyan quand activée), badge rouge pour nouvelles notifications
+- **États notifications** : Icon "notifications" (activé) vs "notifications-off" (désactivé), Alert de confirmation, simulation de nouvelles notifications toutes les 30s
+- **Interface notifications** : Badge rouge avec point blanc, position absolue top-right, couleurs cyan/blanc selon l'état, callback onNotificationPress optionnel
