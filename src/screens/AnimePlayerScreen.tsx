@@ -13,6 +13,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { Picker } from '@react-native-picker/picker';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -458,76 +459,55 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         {/* Lecteur vidéo */}
         {renderVideoPlayer()}
 
-        {/* Sélection serveur */}
+        {/* Dropdown sélection serveur */}
         {episodeDetails && episodeDetails.sources.length > 1 && (
-          <View style={styles.serverSelector}>
-            <Text style={styles.serverTitle}>SERVEURS DISPONIBLES</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <View style={styles.serverList}>
+          <View style={styles.dropdownContainer}>
+            <Text style={styles.dropdownLabel}>SERVEUR</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={selectedPlayer}
+                onValueChange={(itemValue) => setSelectedPlayer(itemValue)}
+                style={styles.picker}
+                dropdownIconColor="#00bcd4"
+              >
                 {episodeDetails.sources.map((source, index) => (
-                  <TouchableOpacity
+                  <Picker.Item
                     key={`server-${index}`}
-                    style={[
-                      styles.serverButton,
-                      selectedPlayer === index && styles.serverButtonActive
-                    ]}
-                    onPress={() => setSelectedPlayer(index)}
-                    activeOpacity={0.7}
-                  >
-                    <Text style={[
-                      styles.serverButtonText,
-                      selectedPlayer === index && styles.serverButtonTextActive
-                    ]}>
-                      {source.server}
-                    </Text>
-                    <Text style={[
-                      styles.serverQuality,
-                      selectedPlayer === index && styles.serverQualityActive
-                    ]}>
-                      {source.quality}
-                    </Text>
-                  </TouchableOpacity>
+                    label={`${source.server} - ${source.quality}`}
+                    value={index}
+                  />
                 ))}
-              </View>
-            </ScrollView>
+              </Picker>
+            </View>
           </View>
         )}
 
-        {/* Liste des épisodes */}
+        {/* Dropdown sélection épisode */}
         {episodes.length > 0 && (
-          <View style={styles.episodeList}>
-            <Text style={styles.episodeListTitle}>ÉPISODES</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <View style={styles.episodeListContainer}>
+          <View style={styles.dropdownContainer}>
+            <Text style={styles.dropdownLabel}>ÉPISODE</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={selectedEpisode?.id || ''}
+                onValueChange={(itemValue) => {
+                  const episode = episodes.find(ep => ep.id === itemValue);
+                  if (episode) {
+                    setSelectedEpisode(episode);
+                    loadEpisodeSources(episode);
+                  }
+                }}
+                style={styles.picker}
+                dropdownIconColor="#00bcd4"
+              >
                 {episodes.map((episode) => (
-                  <TouchableOpacity
+                  <Picker.Item
                     key={episode.id}
-                    style={[
-                      styles.episodeItem,
-                      selectedEpisode?.id === episode.id && styles.episodeItemActive
-                    ]}
-                    onPress={() => {
-                      setSelectedEpisode(episode);
-                      loadEpisodeSources(episode);
-                    }}
-                    activeOpacity={0.7}
-                  >
-                    <Text style={[
-                      styles.episodeItemNumber,
-                      selectedEpisode?.id === episode.id && styles.episodeItemNumberActive
-                    ]}>
-                      {episode.episodeNumber}
-                    </Text>
-                    <Text style={[
-                      styles.episodeItemTitle,
-                      selectedEpisode?.id === episode.id && styles.episodeItemTitleActive
-                    ]} numberOfLines={2}>
-                      {episode.title}
-                    </Text>
-                  </TouchableOpacity>
+                    label={`Épisode ${episode.episodeNumber}: ${episode.title}`}
+                    value={episode.id}
+                  />
                 ))}
-              </View>
-            </ScrollView>
+              </Picker>
+            </View>
           </View>
         )}
 
@@ -710,96 +690,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  serverSelector: {
+  dropdownContainer: {
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#1e293b',
   },
-  serverTitle: {
+  dropdownLabel: {
     color: '#ffffff',
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 12,
   },
-  serverList: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  serverButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+  pickerContainer: {
+    backgroundColor: '#1e293b',
     borderRadius: 8,
     borderWidth: 2,
     borderColor: '#64748b',
-    backgroundColor: '#1e293b',
   },
-  serverButtonActive: {
-    borderColor: '#00bcd4',
-    backgroundColor: '#00bcd4',
-  },
-  serverButtonText: {
+  picker: {
     color: '#ffffff',
-    fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    backgroundColor: 'transparent',
   },
-  serverButtonTextActive: {
-    color: '#ffffff',
-  },
-  serverQuality: {
-    color: '#94a3b8',
-    fontSize: 12,
-    textAlign: 'center',
-    marginTop: 2,
-  },
-  serverQualityActive: {
-    color: '#ffffff',
-  },
-  episodeList: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#1e293b',
-  },
-  episodeListTitle: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  episodeListContainer: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  episodeItem: {
-    width: 120,
-    padding: 12,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: '#64748b',
-    backgroundColor: '#1e293b',
-  },
-  episodeItemActive: {
-    borderColor: '#00bcd4',
-    backgroundColor: '#00bcd4',
-  },
-  episodeItemNumber: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  episodeItemNumberActive: {
-    color: '#ffffff',
-  },
-  episodeItemTitle: {
-    color: '#94a3b8',
-    fontSize: 12,
-    textAlign: 'center',
-    marginTop: 4,
-  },
-  episodeItemTitleActive: {
-    color: '#ffffff',
-  },
+
   errorMessage: {
     flexDirection: 'row',
     alignItems: 'center',

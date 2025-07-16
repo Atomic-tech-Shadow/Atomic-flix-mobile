@@ -27,6 +27,7 @@
     "@expo/config-plugins": "~10.1.1",
     "@expo/prebuild-config": "~9.0.0",
     "@react-native-async-storage/async-storage": "^2.1.2",
+    "@react-native-picker/picker": "^2.11.1",
     "@react-navigation/native": "^6.0.0",
     "@react-navigation/stack": "^6.0.0",
     "@tanstack/react-query": "^5.82.0",
