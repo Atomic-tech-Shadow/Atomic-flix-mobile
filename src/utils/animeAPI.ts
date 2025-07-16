@@ -52,38 +52,12 @@ export const animeAPI = {
   // Fonction getDetails exactement comme dans le code web
   getDetails: async (id: string): Promise<ApiResponse<any>> => {
     try {
-      // Utiliser l'endpoint qui fonctionne d'après nos tests
-      const endpoints = [
-        `/api/anime/${id}`, // Endpoint principal qui fonctionne
-        `/api/details/${id}`,
-        `/api/anime/details/${id}`
-      ];
-      
-      let lastError: Error | null = null;
-      
-      for (const endpoint of endpoints) {
-        try {
-          const response = await apiRequest(endpoint);
-          if (response && response.success) {
-            return response;
-          }
-        } catch (error) {
-          lastError = error as Error;
-          console.log(`Endpoint ${endpoint} échoué:`, error);
-        }
-      }
-      
-      // Si tous les endpoints échouent, retourner l'erreur
-      throw lastError || new Error('Tous les endpoints ont échoué');
-      
+      // Utiliser l'endpoint exact du code web qui fonctionne
+      const response = await apiRequest(`/api/anime/${id}`);
+      return response;
     } catch (error) {
       console.error('Erreur animeAPI.getDetails:', error);
-      return {
-        success: false,
-        data: null,
-        timestamp: new Date().toISOString(),
-        error: error instanceof Error ? error.message : 'Erreur inconnue'
-      };
+      throw error; // Laisser l'erreur remonter comme dans le code web
     }
   },
 

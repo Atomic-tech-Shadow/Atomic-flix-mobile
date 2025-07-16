@@ -97,39 +97,7 @@ const AnimeDetailScreen: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
-  const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';
 
-  // Fonction pour les requêtes API avec timeout (identique au site web)
-  const apiRequest = async (endpoint: string, timeoutMs = 20000) => {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-    
-    try {
-      console.log('Requête API:', endpoint);
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        signal: controller.signal
-      });
-      
-      clearTimeout(timeoutId);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      clearTimeout(timeoutId);
-      if (error instanceof Error && error.name === 'AbortError') {
-        throw new Error('Timeout: La requête a pris trop de temps');
-      }
-      throw error;
-    }
-  };
 
   // Charger les données de l'anime (exactement comme le code web)
   const loadAnimeData = async () => {

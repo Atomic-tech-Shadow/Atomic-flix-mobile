@@ -170,3 +170,5 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **animeAPI.ts créé** : Client API React Native reproduisant exactement le comportement du code web avec fallback endpoints
 - **Endpoints testés** : /api/details/{id}, /api/anime/{id}, /api/anime/details/{id} pour compatibilité maximale
 - **Logique identique** : Extraction ID depuis URL, timeout 20s, gestion erreurs 404/500/timeout, navigation manga/anime intelligente
+- **🎯 CODE WEB EXACT EN REACT NATIVE** : Fallbacks supprimés, utilise uniquement /api/anime/{id} comme le code web fonctionnel
+- **animeAPI.getDetails() pure** : Aucun fallback, throw direct des erreurs comme dans le code web, logique identique simplifiée

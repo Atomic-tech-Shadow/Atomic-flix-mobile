@@ -76,54 +76,71 @@ async function testAnimeDetailAPI() {
   console.log('🌐 Testez manuellement: ' + API_BASE_URL + '/api/details/attack-on-titan');
 }
 
-// Test de comparaison avec le code web
-async function compareWithWebCode() {
-  console.log('\n🔄 COMPARAISON AVEC LE CODE WEB');
-  console.log('===============================');
+// Test exact du code React Native
+async function testReactNativeImplementation() {
+  console.log('\n🔄 TEST IMPLEMENTATION REACT NATIVE');
+  console.log('=====================================');
   
-  // Simuler le comportement exact du code web
-  const id = 'attack-on-titan';
+  // Simuler le comportement exact du React Native
+  const testIds = ['demon-slayer', 'one-piece'];
   
-  try {
-    // Exactement comme animeAPI.getDetails(id) dans le code web
-    console.log('Simulation animeAPI.getDetails() du code web...');
-    
-    const response = await fetch(`${API_BASE_URL}/api/details/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+  for (const id of testIds) {
+    try {
+      console.log(`\n📱 Test React Native pour: ${id}`);
+      
+      // Exactement comme animeAPI.getDetails(id) dans React Native
+      const response = await fetch(`${API_BASE_URL}/api/anime/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-    });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      
+      const apiResponse = await response.json();
+      
+      if (!apiResponse || !apiResponse.success) {
+        const errorMsg = apiResponse?.error || apiResponse?.message || 'Anime non trouvé dans la base de données';
+        throw new Error(errorMsg);
+      }
+      
+      console.log('✅ React Native API fonctionnelle !');
+      console.log('📊 Données reçues:', {
+        title: apiResponse.data.title,
+        seasons: apiResponse.data.seasons?.length,
+        hasImage: !!apiResponse.data.image,
+        hasSynopsis: !!apiResponse.data.synopsis,
+        genres: apiResponse.data.genres?.length || 0
+      });
+      
+      // Test navigation logic
+      if (apiResponse.data.seasons) {
+        const hasAnime = apiResponse.data.seasons.some(s => 
+          !s.name.toLowerCase().includes('scan') && 
+          !s.name.toLowerCase().includes('manga')
+        );
+        const hasManga = apiResponse.data.seasons.some(s => 
+          s.name.toLowerCase().includes('scan') || 
+          s.name.toLowerCase().includes('manga')
+        );
+        
+        console.log('🎬 Type de contenu détecté:', hasAnime ? 'Anime' : '', hasManga ? 'Manga' : '');
+      }
+      
+    } catch (error) {
+      console.log('❌ Erreur React Native pour', id, ':', error.message);
     }
-    
-    const apiResponse = await response.json();
-    
-    if (!apiResponse || !apiResponse.success) {
-      const errorMsg = apiResponse?.error || apiResponse?.message || 'Anime non trouvé dans la base de données';
-      throw new Error(errorMsg);
-    }
-    
-    console.log('✅ Code web simulé avec succès !');
-    console.log('📊 Données reçues:', {
-      title: apiResponse.data.title,
-      seasons: apiResponse.data.seasons?.length,
-      hasImage: !!apiResponse.data.image,
-      hasSynopsis: !!apiResponse.data.synopsis
-    });
-    
-  } catch (error) {
-    console.log('❌ Erreur simulation code web:', error.message);
   }
 }
 
 // Exécuter les tests
 if (require.main === module) {
   testAnimeDetailAPI()
-    .then(() => compareWithWebCode())
+    .then(() => testReactNativeImplementation())
     .catch(console.error);
 }
 
-module.exports = { testAnimeDetailAPI, compareWithWebCode };
+module.exports = { testAnimeDetailAPI, testReactNativeImplementation };
