@@ -22,6 +22,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SearchResult } from '../types/index';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
+import LoadingSpinner from '../components/LoadingSpinner';
 import NotificationService from '../utils/notificationService';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -371,8 +372,11 @@ const HomeScreen: React.FC = () => {
         {/* Résultats de recherche (identique au site web) */}
         {loading && searchQuery && (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#00bcd4" />
-            <Text style={styles.loadingText}>Recherche en cours...</Text>
+            <LoadingSpinner 
+              message="Recherche en cours..." 
+              size="large"
+              color="#00bcd4"
+            />
           </View>
         )}
         

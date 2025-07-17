@@ -21,6 +21,8 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - 🚨 Bug splash screen corrigé: intégration dans App.tsx avec SafeAreaProvider
 - ⚡ Animations simplifiées pour éliminer problèmes de performance  
 - 🔧 Doublon splash screen supprimé: seul le composant React Native personnalisé reste
+- 🎨 Splash screen amélioré: plein écran avec animations avancées (pulsation, rotation, étoiles)
+- ⚡ LoadingSpinner unifié: composant réutilisable pour tous les chargements du projet
 
 ## User Preferences
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Image, Text, StyleSheet, Dimensions, Animated } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface SplashScreenProps {
   onFinish: () => void;
@@ -9,15 +10,19 @@ interface SplashScreenProps {
 const { width, height } = Dimensions.get('screen');
 
 const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
+  const insets = useSafeAreaInsets();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
+  const pulseAnim = useRef(new Animated.Value(0.9)).current;
+  const rotateAnim = useRef(new Animated.Value(0)).current;
+  const textOpacityAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Animation simple d'apparition
+    // Animation d'apparition avec pulsation
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 800,
+        duration: 1000,
         useNativeDriver: true,
       }),
       Animated.spring(scaleAnim, {
@@ -28,53 +33,146 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
       }),
     ]).start();
 
-    // Auto-fermeture après 2.5 secondes
+    // Animation de pulsation continue
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.05,
+          duration: 1500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 0.9,
+          duration: 1500,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+
+    // Animation de rotation continue pour les étoiles
+    Animated.loop(
+      Animated.timing(rotateAnim, {
+        toValue: 1,
+        duration: 8000,
+        useNativeDriver: true,
+      })
+    ).start();
+
+    // Apparition retardée du texte
+    setTimeout(() => {
+      Animated.timing(textOpacityAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }).start();
+    }, 500);
+
+    // Auto-fermeture après 4 secondes avec animation de sortie spectaculaire
     const timer = setTimeout(() => {
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 0,
-          duration: 500,
+          duration: 600,
           useNativeDriver: true,
         }),
         Animated.timing(scaleAnim, {
-          toValue: 1.1,
-          duration: 500,
+          toValue: 1.2,
+          duration: 600,
           useNativeDriver: true,
         }),
       ]).start(() => {
         onFinish();
       });
-    }, 2500);
+    }, 4000);
 
     return () => clearTimeout(timer);
-  }, [fadeAnim, scaleAnim, onFinish]);
+  }, [fadeAnim, scaleAnim, pulseAnim, rotateAnim, textOpacityAnim, onFinish]);
+
+  const rotate = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {
+      marginTop: -insets.top,
+      marginBottom: -insets.bottom,
+      height: height + insets.top + insets.bottom,
+    }]}>
       <StatusBar style="light" hidden={true} />
       
+      {/* Image de fond plein écran */}
+      <Image
+        source={require('../../assets/splash/splash-design.png')}
+        style={[styles.backgroundImage, {
+          height: height + insets.top + insets.bottom,
+        }]}
+        resizeMode="cover"
+      />
+      
+      {/* Overlay avec animations */}
       <Animated.View 
         style={[
-          styles.contentContainer,
+          styles.overlayContainer,
           {
             opacity: fadeAnim,
             transform: [{ scale: scaleAnim }],
           }
         ]}
       >
-        <Image
-          source={require('../../assets/splash/splash-design.png')}
-          style={styles.splashImage}
-          resizeMode="cover"
-        />
+        {/* Étoiles animées */}
+        <Animated.View 
+          style={[
+            styles.starsContainer,
+            {
+              transform: [{ rotate }],
+              opacity: textOpacityAnim,
+            }
+          ]}
+        >
+          {[...Array(8)].map((_, i) => (
+            <Animated.View
+              key={i}
+              style={[
+                styles.star,
+                {
+                  top: `${10 + i * 12}%`,
+                  left: `${5 + i * 11}%`,
+                  transform: [{ scale: pulseAnim }],
+                }
+              ]}
+            />
+          ))}
+        </Animated.View>
         
-        <View style={styles.textContainer}>
+        {/* Contenu principal */}
+        <Animated.View 
+          style={[
+            styles.contentContainer,
+            {
+              transform: [{ scale: pulseAnim }],
+              opacity: textOpacityAnim,
+            }
+          ]}
+        >
           <Text style={styles.title}>ATOMIC FLIX</Text>
           <Text style={styles.subtitle}>LA PLATEFORME ULTIME POUR LES OTAKUS</Text>
-          <View style={styles.loadingBar}>
-            <View style={styles.loadingProgress} />
+          
+          {/* Barre de chargement avec animation */}
+          <View style={styles.loadingContainer}>
+            <View style={styles.loadingBar}>
+              <Animated.View 
+                style={[
+                  styles.loadingProgress,
+                  {
+                    transform: [{ scaleX: pulseAnim }],
+                  }
+                ]} 
+              />
+            </View>
+            <Text style={styles.loadingText}>Chargement...</Text>
           </View>
-        </View>
+        </Animated.View>
       </Animated.View>
     </View>
   );
@@ -82,59 +180,100 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: '#0a0a1a',
+    zIndex: 1000,
+  },
+  backgroundImage: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: width,
+  },
+  overlayContainer: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(10, 10, 26, 0.3)',
+  },
+  starsContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    pointerEvents: 'none',
+  },
+  star: {
+    position: 'absolute',
+    width: 8,
+    height: 8,
+    backgroundColor: '#00bcd4',
+    borderRadius: 4,
+    shadowColor: '#00bcd4',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 6,
+    elevation: 4,
   },
   contentContainer: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
-  },
-  splashImage: {
-    width: width,
-    height: height,
-    position: 'absolute',
-  },
-  textContainer: {
-    position: 'absolute',
-    bottom: 120,
-    alignItems: 'center',
-    width: '100%',
     paddingHorizontal: 20,
   },
   title: {
-    fontSize: 28,
+    fontSize: 36,
     fontWeight: 'bold',
     color: '#00bcd4',
     textAlign: 'center',
-    marginBottom: 8,
-    letterSpacing: 3,
-    textShadowColor: 'rgba(0, 188, 212, 0.5)',
+    marginBottom: 12,
+    letterSpacing: 4,
+    textShadowColor: 'rgba(0, 188, 212, 0.8)',
     textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 10,
+    textShadowRadius: 15,
   },
   subtitle: {
-    fontSize: 14,
-    color: '#d1d5db',
+    fontSize: 16,
+    color: '#e2e8f0',
     textAlign: 'center',
-    marginBottom: 30,
-    opacity: 0.9,
+    marginBottom: 40,
+    opacity: 0.95,
+    letterSpacing: 1,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    width: '100%',
   },
   loadingBar: {
-    width: 200,
-    height: 4,
+    width: 250,
+    height: 6,
     backgroundColor: 'rgba(0, 188, 212, 0.2)',
-    borderRadius: 2,
+    borderRadius: 3,
     overflow: 'hidden',
+    marginBottom: 16,
   },
   loadingProgress: {
     height: '100%',
-    width: '70%',
+    width: '85%',
     backgroundColor: '#00bcd4',
-    borderRadius: 2,
+    borderRadius: 3,
+    shadowColor: '#00bcd4',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  loadingText: {
+    fontSize: 14,
+    color: '#94a3b8',
+    textAlign: 'center',
+    opacity: 0.8,
   },
 });
 

@@ -21,6 +21,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { animeAPI } from '../utils/animeAPI';
 
 type AnimeDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimeDetail'>;
@@ -194,8 +195,11 @@ const AnimeDetailScreen: React.FC = () => {
           onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
         />
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#00bcd4" />
-          <Text style={styles.loadingText}>Chargement des détails de l'anime...</Text>
+          <LoadingSpinner 
+            message="Chargement des détails de l'anime..." 
+            size="large"
+            color="#00bcd4"
+          />
         </View>
       </SafeAreaView>
     );

@@ -21,6 +21,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { Episode, VideoSource, Season, AnimeData, EpisodeDetails } from '../types';
 import SharedHeader from '../components/SharedHeader';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 type AnimePlayerScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimePlayer'>;
 type AnimePlayerScreenRouteProp = RouteProp<RootStackParamList, 'AnimePlayer'>;
@@ -286,8 +287,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     if (!episodeDetails || !episodeDetails.sources[selectedPlayer]) {
       return (
         <View style={styles.videoContainer}>
-          <ActivityIndicator size="large" color="#00bcd4" />
-          <Text style={styles.loadingText}>Chargement du lecteur...</Text>
+          <LoadingSpinner 
+            message="Chargement du lecteur..." 
+            size="large"
+            color="#00bcd4"
+          />
         </View>
       );
     }
@@ -386,8 +390,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#00bcd4" />
-          <Text style={styles.loadingText}>Chargement de l'anime...</Text>
+          <LoadingSpinner 
+            message="Chargement de l'anime..." 
+            size="large"
+            color="#00bcd4"
+          />
         </View>
       </SafeAreaView>
     );
