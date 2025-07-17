@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { View, Image, Text, StyleSheet, Dimensions, Animated } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import * as SplashScreenNative from 'expo-splash-screen';
 
 interface SplashScreenProps {
   onFinish: () => void;
@@ -19,34 +18,20 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
   const textOpacityAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Cache le splash screen natif et commence les animations
-    const hideSplashScreen = async () => {
-      try {
-        await SplashScreenNative.hideAsync();
-      } catch (e) {
-        console.log('Splash screen déjà caché');
-      }
-    };
-
-    // Délai pour permettre une transition fluide
-    const timer = setTimeout(() => {
-      hideSplashScreen();
-      
-      // Animation d'apparition avec pulsation
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.spring(scaleAnim, {
-          toValue: 1,
-          tension: 50,
-          friction: 7,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }, 100);
+    // Animation d'apparition immédiate avec pulsation
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        tension: 50,
+        friction: 7,
+        useNativeDriver: true,
+      }),
+    ]).start();
 
     // Animation de pulsation continue
     Animated.loop(
@@ -101,7 +86,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
     }, 4000);
 
     return () => {
-      clearTimeout(timer);
       clearTimeout(autoCloseTimer);
     };
   }, [fadeAnim, scaleAnim, pulseAnim, rotateAnim, textOpacityAnim, onFinish]);

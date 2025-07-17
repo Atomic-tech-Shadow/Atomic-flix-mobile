@@ -6,12 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/atomic-flix-logo.png",
     "userInterfaceStyle": "dark",
-    "splash": {
-      "image": "./assets/splash-screen.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#0a0a1a",
-      "hideAsync": true
-    },
+
 
     "ios": {
       "supportsTablet": true,
@@ -22,11 +17,7 @@
         "foregroundImage": "./assets/atomic-flix-logo.png",
         "backgroundColor": "#0f172a"
       },
-      "splash": {
-        "image": "./assets/splash-screen.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#0a0a1a"
-      },
+
       "package": "com.atomicflix.mobile",
       "permissions": [
         "android.permission.INTERNET",
