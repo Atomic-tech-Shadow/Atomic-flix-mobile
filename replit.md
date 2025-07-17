@@ -46,7 +46,17 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ App retourne null jusqu'à ce qu'elle soit prête (empêche flash)
 - ✅ SplashScreen.hideAsync() appelé seulement après fin du splash custom
 - ✅ Plugin expo-splash-screen ajouté dans app.json pour configuration native
-- ✅ Contrôle optimal du timing avec onLayout callback entre splash screen Expo et écran personnalisé
+- ✅ Contrôle optimal du timing avec onLayout callback
+
+**Système de vérification Telegram - July 17, 2025**
+- ✅ Composant TelegramVerification.tsx créé avec interface complète
+- ✅ Flux: Splash Screen → Vérification Telegram → Application principale
+- ✅ Deux boutons: "S'abonner au canal" et "Vérifier l'abonnement"
+- ✅ Stockage local AsyncStorage pour mémoriser les utilisateurs vérifiés
+- ✅ Bouton debug pour reset en mode développement
+- ✅ Interface responsive avec dégradés et animations
+- ✅ Integration dans App.tsx avec gestion d'état complet
+- ✅ Guide de configuration TELEGRAM_CONFIG.md créé entre splash screen Expo et écran personnalisé
 - ✅ Expo development server opérationnel sur port 8081
 
 **Nettoyage complet du projet - July 17, 2025**

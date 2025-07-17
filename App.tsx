@@ -8,6 +8,7 @@ import 'react-native-gesture-handler';
 
 import AppNavigator from './src/navigation/AppNavigator';
 import CustomSplashScreen from './src/components/SplashScreen';
+import TelegramVerification from './src/components/TelegramVerification';
 import { queryClient } from './src/utils/queryClient';
 
 // CRITIQUE : Appeler preventAutoHideAsync() dans le scope global
@@ -19,6 +20,7 @@ SplashScreen.preventAutoHideAsync()
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+  const [showTelegramVerification, setShowTelegramVerification] = useState(false);
 
   useEffect(() => {
     async function prepareApp() {
@@ -37,15 +39,22 @@ export default function App() {
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
-    if (appIsReady && !showSplash) {
-      // Ne cacher le splash screen d'Expo que quand l'app est prête
-      // ET que notre splash screen custom est terminé
+    if (appIsReady && !showSplash && !showTelegramVerification) {
+      // Ne cacher le splash screen d'Expo que quand tout est prêt :
+      // - App prête
+      // - Splash screen custom terminé
+      // - Vérification Telegram terminée
       await SplashScreen.hideAsync();
     }
-  }, [appIsReady, showSplash]);
+  }, [appIsReady, showSplash, showTelegramVerification]);
 
   const handleSplashFinish = () => {
     setShowSplash(false);
+    setShowTelegramVerification(true);
+  };
+
+  const handleTelegramVerified = () => {
+    setShowTelegramVerification(false);
   };
 
   // Ne rien rendre jusqu'à ce que l'app soit prête
@@ -60,6 +69,12 @@ export default function App() {
           <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
             {showSplash ? (
               <CustomSplashScreen onFinish={handleSplashFinish} />
+            ) : showTelegramVerification ? (
+              <TelegramVerification
+                onVerified={handleTelegramVerified}
+                telegramChannelUrl="https://t.me/votre_canal" // Remplacez par votre URL
+                channelName="ATOMIC FLIX Official"
+              />
             ) : (
               <AppNavigator />
             )}
