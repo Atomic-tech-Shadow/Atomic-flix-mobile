@@ -8,6 +8,15 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Mise à jour tailles boutons AnimePlayerScreen - July 17, 2025**
+- ✅ Boutons navigation (gauche/droite) : 40x40 → 56x56 pixels
+- ✅ Bouton téléchargement (vert) : 40x40 → 56x56 pixels
+- ✅ Boutons langue : 60x45 → 70x55 pixels
+- ✅ Dropdowns épisodes/serveurs : hauteur 48 → 56 pixels
+- ✅ Bordures et espacements augmentés pour meilleure accessibilité mobile
+- ✅ Rayons de bordure uniformisés à 8px pour design moderne
+- ✅ Padding et marges ajustés selon image référence fournie
+
 **Modal Telegram avec effet blur intégré - July 17, 2025**
 - ✅ Modal de vérification Telegram intégré dans HomeScreen avec BlurView
 - ✅ Effet de flou en arrière-plan pour modal moderne et professionnel
