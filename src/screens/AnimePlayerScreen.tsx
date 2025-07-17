@@ -826,9 +826,11 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     minWidth: 60,
     minHeight: 45,
+    opacity: 0.5,
   },
   languageButtonActive: {
     borderColor: '#ffffff',
+    opacity: 1.0,
   },
   flagBackground: {
     position: 'absolute',
