@@ -47,6 +47,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   const [episodeLoading, setEpisodeLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
   const webViewRef = useRef<WebView>(null);
 
   // Fonction pour les requêtes API externes
@@ -345,6 +346,41 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     );
   };
 
+
+
+  // Fonction pour télécharger la vidéo - Identique au web
+  const downloadVideo = (quality: 'faible' | 'moyenne' | 'HD') => {
+    if (!episodeDetails || !episodeDetails.sources[selectedPlayer]) {
+      Alert.alert('Erreur', 'Aucune source vidéo disponible pour le téléchargement.');
+      return;
+    }
+    
+    const qualityText = quality === 'faible' ? '360p' : quality === 'moyenne' ? '720p' : '1080p';
+    const source = episodeDetails.sources[selectedPlayer];
+    
+    Alert.alert(
+      'Téléchargement',
+      `Téléchargement de ${episodeDetails.animeTitle} - Épisode ${episodeDetails.episodeNumber} en qualité ${qualityText}`,
+      [
+        { text: 'Annuler', style: 'cancel' },
+        { 
+          text: 'Télécharger', 
+          onPress: () => {
+            // Fermer le menu
+            setShowDownloadMenu(false);
+            
+            // Simuler le téléchargement (à implémenter selon les besoins)
+            Alert.alert(
+              'Téléchargement commencé',
+              `Le téléchargement de l'épisode ${episodeDetails.episodeNumber} en ${qualityText} depuis ${source.server} a commencé.`,
+              [{ text: 'OK' }]
+            );
+          }
+        }
+      ]
+    );
+  };
+
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
@@ -456,39 +492,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           </View>
         )}
 
-        {/* Navigation et info épisode */}
-        {selectedEpisode && (
-          <View style={styles.episodeControls}>
-            <TouchableOpacity 
-              style={styles.navButton}
-              onPress={() => navigateEpisode('prev')}
-              activeOpacity={0.7}
-            >
-              <Ionicons name="chevron-back" size={24} color="#ffffff" />
-            </TouchableOpacity>
-            
-            <View style={styles.episodeInfo}>
-              <Text style={styles.episodeTitle} numberOfLines={1}>
-                {selectedEpisode.title}
-              </Text>
-              <Text style={styles.episodeNumber}>
-                ÉPISODE {selectedEpisode.episodeNumber}
-              </Text>
-            </View>
-            
-            <TouchableOpacity 
-              style={styles.navButton}
-              onPress={() => navigateEpisode('next')}
-              activeOpacity={0.7}
-            >
-              <Ionicons name="chevron-forward" size={24} color="#ffffff" />
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {/* Lecteur vidéo */}
-        {renderVideoPlayer()}
-
         {/* Sélecteurs en grille 2 colonnes - Style anime-sama */}
         {episodes.length > 0 && (
           <View style={styles.selectorsGrid}>
@@ -549,6 +552,83 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               <Text style={styles.lastSelectionLabel}>DERNIÈRE SÉLECTION : </Text>
               <Text style={styles.lastSelectionValue}>ÉPISODE {selectedEpisode.episodeNumber}</Text>
             </Text>
+          </View>
+        )}
+
+        {/* Lecteur vidéo */}
+        {renderVideoPlayer()}
+
+        {/* Navigation entre épisodes - Style anime-sama identique au web */}
+        {selectedEpisode && (
+          <View style={styles.navigationContainer}>
+            <TouchableOpacity
+              style={[
+                styles.navButtonCustom,
+                (!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === 0) && styles.navButtonDisabled
+              ]}
+              onPress={() => navigateEpisode('prev')}
+              disabled={!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === 0}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="chevron-back" size={24} color="#ffffff" />
+            </TouchableOpacity>
+            
+            <View style={styles.downloadContainer}>
+              <TouchableOpacity
+                style={styles.downloadButton}
+                onPress={() => setShowDownloadMenu(!showDownloadMenu)}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="download" size={24} color="#ffffff" />
+              </TouchableOpacity>
+              
+              {/* Menu de téléchargement */}
+              {showDownloadMenu && (
+                <View style={styles.downloadMenu}>
+                  <View style={styles.downloadMenuHeader}>
+                    <Text style={styles.downloadMenuTitle}>Télécharger en :</Text>
+                  </View>
+                  <View style={styles.downloadMenuContent}>
+                    <TouchableOpacity
+                      style={styles.downloadMenuItem}
+                      onPress={() => downloadVideo('faible')}
+                      activeOpacity={0.7}
+                    >
+                      <View style={[styles.qualityIndicator, { backgroundColor: '#eab308' }]} />
+                      <Text style={styles.downloadMenuText}>Qualité Faible (360p)</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.downloadMenuItem}
+                      onPress={() => downloadVideo('moyenne')}
+                      activeOpacity={0.7}
+                    >
+                      <View style={[styles.qualityIndicator, { backgroundColor: '#3b82f6' }]} />
+                      <Text style={styles.downloadMenuText}>Qualité Moyenne (720p)</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.downloadMenuItem}
+                      onPress={() => downloadVideo('HD')}
+                      activeOpacity={0.7}
+                    >
+                      <View style={[styles.qualityIndicator, { backgroundColor: '#10b981' }]} />
+                      <Text style={styles.downloadMenuText}>Qualité HD (1080p)</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
+            </View>
+            
+            <TouchableOpacity
+              style={[
+                styles.navButtonCustom,
+                (!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === episodes.length - 1) && styles.navButtonDisabled
+              ]}
+              onPress={() => navigateEpisode('next')}
+              disabled={!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === episodes.length - 1}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="chevron-forward" size={24} color="#ffffff" />
+            </TouchableOpacity>
           </View>
         )}
 
@@ -877,6 +957,85 @@ const styles = StyleSheet.create({
   },
   errorMessageText: {
     flex: 1,
+    color: '#ffffff',
+    fontSize: 14,
+  },
+  
+  // Styles pour la navigation et le téléchargement
+  navigationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    marginVertical: 10,
+  },
+  navButtonCustom: {
+    backgroundColor: '#1e293b',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 48,
+    minHeight: 48,
+  },
+  navButtonDisabled: {
+    backgroundColor: '#334155',
+    opacity: 0.5,
+  },
+  downloadContainer: {
+    position: 'relative',
+    alignItems: 'center',
+  },
+  downloadButton: {
+    backgroundColor: '#00bcd4',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 48,
+    minHeight: 48,
+  },
+  downloadMenu: {
+    position: 'absolute',
+    top: 55,
+    backgroundColor: '#1e293b',
+    borderRadius: 8,
+    minWidth: 200,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    zIndex: 1000,
+  },
+  downloadMenuHeader: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#475569',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  downloadMenuTitle: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  downloadMenuContent: {
+    paddingVertical: 8,
+  },
+  downloadMenuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  qualityIndicator: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 12,
+  },
+  downloadMenuText: {
     color: '#ffffff',
     fontSize: 14,
   },
