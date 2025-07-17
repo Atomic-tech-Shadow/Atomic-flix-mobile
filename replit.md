@@ -23,6 +23,7 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - 🔧 Doublon splash screen supprimé: seul le composant React Native personnalisé reste
 - 🎨 Splash screen amélioré: plein écran avec animations avancées (pulsation, rotation, étoiles)
 - ⚡ LoadingSpinner unifié: composant réutilisable pour tous les chargements du projet
+- 🐛 Bug AnimePlayerScreen corrigé: problème de chargement séquentiel des données résolu
 
 ## User Preferences
 

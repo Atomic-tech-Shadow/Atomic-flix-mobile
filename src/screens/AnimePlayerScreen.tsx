@@ -96,57 +96,54 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     }
   };
 
+  // Fonction séparée pour charger les épisodes avec les données anime
+  const loadSeasonEpisodesWithData = async (animeInfo: AnimeData, season: Season, language: 'VF' | 'VOSTFR', autoLoadEpisode = false) => {
+    try {
+      setEpisodeLoading(true);
+      const languageCode = language.toLowerCase();
+      
+      const data = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeInfo.id}?season=${season.value}&language=${languageCode}`);
+      
+      if (data && data.success && data.episodes && Array.isArray(data.episodes) && data.episodes.length > 0) {
+        const formattedEpisodes: Episode[] = data.episodes.map((ep: any, index: number) => {
+          const episodeNumber = ep.number || (index + 1);
+          const episodeTitle = ep.title || `Épisode ${episodeNumber}`;
+          const episodeUrl = ep.url || `https://anime-sama.fr/catalogue/${animeInfo.id}/${season.value}/${languageCode}/episode-${episodeNumber}`;
+          
+          return {
+            id: `${animeInfo.id}-${season.value}-ep${episodeNumber}-${languageCode}`,
+            title: episodeTitle,
+            episodeNumber: episodeNumber,
+            url: episodeUrl,
+            language: language,
+            available: ep.available !== false,
+            streamingSources: ep.streamingSources || []
+          };
+        });
+        
+        setEpisodes(formattedEpisodes);
+        setSelectedEpisode(formattedEpisodes[0]);
+        
+        if (autoLoadEpisode) {
+          loadEpisodeSources(formattedEpisodes[0]);
+        }
+      } else {
+        setError('Aucun épisode trouvé pour cette saison');
+      }
+    } catch (err) {
+      setError('Erreur lors du chargement des épisodes');
+    } finally {
+      setEpisodeLoading(false);
+    }
+  };
+
   // Fonction pour charger les épisodes via API externe
   const loadSeasonEpisodes = async (season: Season, autoLoadEpisode = false) => {
-    console.log('🎞️ loadSeasonEpisodes appelé avec:', { season: season.name, autoLoadEpisode });
-    
     if (!animeData) {
-      console.warn('⚠️ Pas de données anime disponibles pour charger les épisodes');
-      // Créer des épisodes factices pour tester
-      const mockEpisodes: Episode[] = [
-        {
-          id: 'mock-ep-1',
-          title: 'Épisode 1',
-          episodeNumber: 1,
-          url: 'https://anime-sama.fr/test-episode-1',
-          language: selectedLanguage,
-          available: true
-        },
-        {
-          id: 'mock-ep-2', 
-          title: 'Épisode 2',
-          episodeNumber: 2,
-          url: 'https://anime-sama.fr/test-episode-2', 
-          language: selectedLanguage,
-          available: true
-        }
-      ];
-      
-      console.log('🧪 Utilisation d\'épisodes de test:', mockEpisodes);
-      setEpisodes(mockEpisodes);
-      setSelectedEpisode(mockEpisodes[0]);
-      
-      if (autoLoadEpisode) {
-        // Créer des sources factices pour le test
-        setEpisodeDetails({
-          id: mockEpisodes[0].id,
-          title: mockEpisodes[0].title,
-          animeTitle: animeTitle,
-          episodeNumber: mockEpisodes[0].episodeNumber,
-          sources: [{
-            url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-            server: 'YouTube Test',
-            quality: '720p',
-            language: selectedLanguage,
-            type: 'video/mp4',
-            serverIndex: 0
-          }],
-          availableServers: ['YouTube Test'],
-          url: mockEpisodes[0].url
-        });
-      }
       return;
     }
+    
+    await loadSeasonEpisodesWithData(animeData, season, selectedLanguage, autoLoadEpisode);
     
     try {
       setEpisodeLoading(true);
@@ -271,52 +268,43 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     const loadAnimeData = async () => {
       try {
         setLoading(true);
-        console.log('🎬 Démarrage AnimePlayerScreen avec:', { animeUrl, animeTitle });
+        setError(null);
         
         // Extraire l'ID de l'anime depuis l'URL
         const animeId = animeUrl.split('/').pop()?.replace(/\.html$/, '') || animeUrl;
-        console.log('📝 ID anime extrait:', animeId);
         
         // Charger les données de base de l'anime
-        console.log('🔄 Chargement données anime...');
-        const animeData = await getAnimeDetails(animeId);
-        console.log('📊 Données anime reçues:', animeData);
+        const response = await getAnimeDetails(animeId);
         
-        if (animeData && animeData.success && animeData.data) {
-          console.log('✅ Données anime valides:', animeData.data.title);
-          setAnimeData(animeData.data);
+        if (response && response.success && response.data) {
+          const animeInfo = response.data;
+          setAnimeData(animeInfo);
           
           // Utiliser la saison passée en paramètre ou la première disponible
-          const seasonToSelect = seasonData || animeData.data.seasons[0];
-          console.log('🎯 Saison sélectionnée:', seasonToSelect);
+          const seasonToSelect = seasonData || animeInfo.seasons[0];
           setSelectedSeason(seasonToSelect);
           
           // Sélectionner la langue par défaut
           if (seasonToSelect && seasonToSelect.languages) {
             const defaultLanguage = seasonToSelect.languages.includes('VF') ? 'VF' : 
-                                  seasonToSelect.languages.includes('VOSTFR') ? 'VOSTFR' : 
-                                  seasonToSelect.languages[0] || 'VF';
+                                  seasonToSelect.languages.includes('VOSTFR') ? 'VOSTFR' : 'VF';
             
-            console.log('🌐 Langue par défaut:', defaultLanguage);
             setSelectedLanguage(defaultLanguage as 'VF' | 'VOSTFR');
             
-            // Charger les épisodes avec la langue par défaut
-            console.log('🎞️ Chargement épisodes...');
-            await loadSeasonEpisodes(seasonToSelect, true);
+            // Charger les épisodes immédiatement après avoir défini animeData
+            setTimeout(async () => {
+              await loadSeasonEpisodesWithData(animeInfo, seasonToSelect, defaultLanguage as 'VF' | 'VOSTFR', true);
+            }, 100);
           } else {
-            console.warn('⚠️ Pas de langues disponibles pour cette saison');
             setError('Aucune langue disponible pour cette saison');
           }
         } else {
-          console.error('❌ Données anime invalides:', animeData);
           setError('Impossible de charger les données de l\'anime');
         }
       } catch (err) {
-        console.error('💥 Erreur fatale chargement anime:', err);
-        setError(`Erreur critique: ${err instanceof Error ? err.message : 'Erreur inconnue'}`);
+        setError('Erreur lors du chargement de l\'anime');
       } finally {
         setLoading(false);
-        console.log('🏁 Fin du chargement initial');
       }
     };
 
