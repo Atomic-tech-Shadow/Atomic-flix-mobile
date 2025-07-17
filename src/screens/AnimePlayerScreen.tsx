@@ -11,6 +11,7 @@ import {
   RefreshControl,
   Dimensions,
   StatusBar,
+  Image,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Picker } from '@react-native-picker/picker';
@@ -392,10 +393,19 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       {/* Header avec SharedHeader */}
       <SharedHeader />
       
-      {/* Titre de l'anime et saison */}
-      <View style={styles.titleContainer}>
-        <Text style={styles.animeTitle} numberOfLines={1}>{animeTitle}</Text>
-        <Text style={styles.seasonTitle} numberOfLines={1}>{selectedSeason?.name}</Text>
+      {/* Image et titre de l'anime */}
+      <View style={styles.animeHeaderContainer}>
+        {animeData?.image && (
+          <Image
+            source={{ uri: animeData.image }}
+            style={styles.animeImage}
+            resizeMode="cover"
+          />
+        )}
+        <View style={styles.titleContainer}>
+          <Text style={styles.animeTitle} numberOfLines={1}>{animeTitle}</Text>
+          <Text style={styles.seasonTitle} numberOfLines={1}>{selectedSeason?.name}</Text>
+        </View>
       </View>
 
       <ScrollView 
@@ -571,10 +581,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0f172a',
   },
-  titleContainer: {
+  animeHeaderContainer: {
+    flexDirection: 'row',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#1e293b',
+    alignItems: 'center',
+  },
+  animeImage: {
+    width: 80,
+    height: 120,
+    borderRadius: 8,
+    marginRight: 16,
+  },
+  titleContainer: {
+    flex: 1,
   },
   animeTitle: {
     color: '#ffffff',
