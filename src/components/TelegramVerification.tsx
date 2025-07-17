@@ -122,89 +122,90 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
       >
         <View style={[styles.content, { paddingTop: insets.top + 20 }]}>
           
-          {/* Header */}
-          <View style={styles.header}>
-            <Text style={styles.title}>ATOMIC FLIX</Text>
-            <Text style={styles.subtitle}>Accès exclusif requis</Text>
-          </View>
-
-          {/* Message principal */}
-          <View style={styles.messageContainer}>
-            <Text style={styles.messageTitle}>
-              Rejoignez notre communauté !
-            </Text>
-            <Text style={styles.messageText}>
-              Pour accéder à ATOMIC FLIX, veuillez vous abonner à notre canal Telegram officiel.
-              Restez informé des dernières sorties d'anime et des mises à jour de l'application.
-            </Text>
-            <Text style={styles.channelName}>
-              📢 {channelName}
-            </Text>
-          </View>
-
-          {/* Boutons d'action */}
-          <View style={styles.buttonsContainer}>
+          {/* Carte principale centrée */}
+          <View style={styles.cardContainer}>
             
-            {/* Bouton S'abonner */}
-            <TouchableOpacity
-              style={[styles.button, styles.subscribeButton]}
-              onPress={handleSubscribe}
-              activeOpacity={0.8}
-            >
-              <LinearGradient
-                colors={['#0088cc', '#005588']}
-                style={styles.buttonGradient}
-              >
-                <Text style={styles.buttonText}>
-                  📱 S'abonner au canal
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
+            {/* Logo et titre */}
+            <View style={styles.logoSection}>
+              <View style={styles.logoContainer}>
+                <Text style={styles.logoText}>⚛️</Text>
+              </View>
+              <Text style={styles.appTitle}>ATOMIC FLIX</Text>
+              <Text style={styles.cardSubtitle}>Accès exclusif requis</Text>
+            </View>
 
-            {/* Bouton Vérifier */}
-            <TouchableOpacity
-              style={[
-                styles.button,
-                styles.verifyButton,
-                (!hasSubscribed || isVerifying) && styles.buttonDisabled
-              ]}
-              onPress={handleVerify}
-              disabled={!hasSubscribed || isVerifying}
-              activeOpacity={0.8}
-            >
-              <LinearGradient
-                colors={
-                  hasSubscribed && !isVerifying
-                    ? ['#00bcd4', '#0097a7']
-                    : ['#424242', '#616161']
-                }
-                style={styles.buttonGradient}
+            {/* Message principal */}
+            <View style={styles.messageSection}>
+              <Text style={styles.welcomeText}>
+                Rejoignez notre communauté !
+              </Text>
+              <Text style={styles.descriptionText}>
+                Abonnez-vous à notre canal Telegram officiel pour accéder à l'application.
+              </Text>
+              <View style={styles.channelBadge}>
+                <Text style={styles.channelText}>📢 {channelName}</Text>
+              </View>
+            </View>
+
+            {/* Boutons d'action */}
+            <View style={styles.actionButtonsContainer}>
+              
+              {/* Bouton S'abonner */}
+              <TouchableOpacity
+                style={styles.primaryButton}
+                onPress={handleSubscribe}
+                activeOpacity={0.8}
               >
-                {isVerifying ? (
-                  <View style={styles.loadingContainer}>
-                    <ActivityIndicator color="#ffffff" size="small" />
-                    <Text style={styles.buttonText}>Vérification...</Text>
-                  </View>
-                ) : (
-                  <Text style={styles.buttonText}>
-                    ✅ Vérifier l'abonnement
+                <LinearGradient
+                  colors={['#0088cc', '#005588']}
+                  style={styles.buttonGradient}
+                >
+                  <Text style={styles.primaryButtonText}>
+                    📱 S'abonner au canal
                   </Text>
-                )}
-              </LinearGradient>
-            </TouchableOpacity>
+                </LinearGradient>
+              </TouchableOpacity>
+
+              {/* Bouton Vérifier */}
+              <TouchableOpacity
+                style={[
+                  styles.secondaryButton,
+                  (!hasSubscribed || isVerifying) && styles.buttonDisabled
+                ]}
+                onPress={handleVerify}
+                disabled={!hasSubscribed || isVerifying}
+                activeOpacity={0.8}
+              >
+                <LinearGradient
+                  colors={
+                    hasSubscribed && !isVerifying
+                      ? ['#00bcd4', '#0097a7']
+                      : ['#424242', '#616161']
+                  }
+                  style={styles.buttonGradient}
+                >
+                  {isVerifying ? (
+                    <View style={styles.loadingContainer}>
+                      <ActivityIndicator color="#ffffff" size="small" />
+                      <Text style={styles.secondaryButtonText}>Vérification...</Text>
+                    </View>
+                  ) : (
+                    <Text style={styles.secondaryButtonText}>
+                      ✅ Vérifier l'abonnement
+                    </Text>
+                  )}
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+
+            {/* Instructions compactes */}
+            <View style={styles.instructionsSection}>
+              <Text style={styles.stepsText}>
+                1. S'abonner • 2. Vérifier • 3. Profiter
+              </Text>
+            </View>
+
           </View>
-
-          {/* Instructions */}
-          <View style={styles.instructionsContainer}>
-            <Text style={styles.instructionsTitle}>Instructions :</Text>
-            <Text style={styles.instructionsText}>
-              1. Appuyez sur "S'abonner au canal"{'\n'}
-              2. Rejoignez le canal Telegram{'\n'}
-              3. Revenez dans l'app et appuyez sur "Vérifier"
-            </Text>
-          </View>
-
-
 
         </View>
       </LinearGradient>
@@ -224,108 +225,159 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     justifyContent: 'center',
-  },
-  header: {
     alignItems: 'center',
-    marginBottom: 40,
   },
-  title: {
+  
+  // Design en carte centrée
+  cardContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderRadius: 24,
+    padding: 30,
+    maxWidth: 380,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 188, 212, 0.3)',
+    elevation: 15,
+    shadowColor: '#00bcd4',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+  },
+  
+  // Section logo
+  logoSection: {
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  logoContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'rgba(0, 188, 212, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+    borderWidth: 2,
+    borderColor: 'rgba(0, 188, 212, 0.4)',
+  },
+  logoText: {
     fontSize: 32,
+    textAlign: 'center',
+  },
+  appTitle: {
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#00bcd4',
     textAlign: 'center',
-    marginBottom: 8,
-    letterSpacing: 3,
-    textShadowColor: 'rgba(0, 188, 212, 0.5)',
+    marginBottom: 6,
+    letterSpacing: 2,
+    textShadowColor: 'rgba(0, 188, 212, 0.6)',
     textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 10,
+    textShadowRadius: 8,
   },
-  subtitle: {
-    fontSize: 16,
+  cardSubtitle: {
+    fontSize: 14,
     color: '#94a3b8',
     textAlign: 'center',
     opacity: 0.8,
   },
-  messageContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: 15,
-    padding: 20,
-    marginBottom: 30,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 188, 212, 0.2)',
+  
+  // Section message
+  messageSection: {
+    alignItems: 'center',
+    marginBottom: 28,
   },
-  messageTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  welcomeText: {
+    fontSize: 18,
+    fontWeight: '600',
     color: '#ffffff',
     textAlign: 'center',
     marginBottom: 12,
   },
-  messageText: {
-    fontSize: 16,
+  descriptionText: {
+    fontSize: 15,
     color: '#e2e8f0',
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: 22,
     marginBottom: 16,
+    opacity: 0.9,
   },
-  channelName: {
-    fontSize: 18,
-    fontWeight: 'bold',
+  channelBadge: {
+    backgroundColor: 'rgba(0, 188, 212, 0.15)',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 188, 212, 0.3)',
+  },
+  channelText: {
+    fontSize: 16,
+    fontWeight: '600',
     color: '#00bcd4',
     textAlign: 'center',
   },
-  buttonsContainer: {
-    marginBottom: 30,
+  
+  // Boutons d'action
+  actionButtonsContainer: {
+    width: '100%',
+    marginBottom: 20,
   },
-  button: {
-    borderRadius: 12,
-    marginBottom: 15,
+  primaryButton: {
+    borderRadius: 16,
+    marginBottom: 12,
     overflow: 'hidden',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
+    elevation: 8,
+    shadowColor: '#0088cc',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+  },
+  secondaryButton: {
+    borderRadius: 16,
+    overflow: 'hidden',
+    elevation: 6,
+    shadowColor: '#00bcd4',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
     shadowRadius: 8,
   },
   buttonGradient: {
-    paddingVertical: 16,
+    paddingVertical: 14,
     paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonDisabled: {
-    opacity: 0.6,
+    opacity: 0.5,
   },
-  buttonText: {
-    fontSize: 18,
+  primaryButtonText: {
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#ffffff',
     textAlign: 'center',
   },
-  subscribeButton: {},
-  verifyButton: {},
+  secondaryButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    textAlign: 'center',
+  },
   loadingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 8,
   },
-  instructionsContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.03)',
-    borderRadius: 10,
-    padding: 15,
-    borderLeftWidth: 4,
-    borderLeftColor: '#00bcd4',
+  
+  // Instructions
+  instructionsSection: {
+    alignItems: 'center',
   },
-  instructionsTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#00bcd4',
-    marginBottom: 8,
-  },
-  instructionsText: {
-    fontSize: 14,
+  stepsText: {
+    fontSize: 13,
     color: '#94a3b8',
-    lineHeight: 20,
+    textAlign: 'center',
+    opacity: 0.7,
+    fontStyle: 'italic',
   },
 
 });
