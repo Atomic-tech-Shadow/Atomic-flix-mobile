@@ -18,6 +18,8 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Mise à jour du health check pour correspondre aux fichiers actuels
 - ✅ Projet maintenant entièrement propre et optimisé
 - 🔍 Diagnostic recherche: API fonctionne, code correct, investigation UI en cours
+- 🚨 Bug splash screen corrigé: intégration dans App.tsx avec SafeAreaProvider
+- ⚡ Animations simplifiées pour éliminer problèmes de performance
 
 ## User Preferences
 
