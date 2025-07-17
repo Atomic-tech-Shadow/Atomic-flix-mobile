@@ -8,13 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
-**Protection barre navigation Android - July 17, 2025**
-- ✅ Ajout paddingBottom: 20 dans tous les styles container (9/9 écrans)
-- ✅ Protection contre superposition barre navigation système Android
-- ✅ Contenu maintenant visible même sur appareils avec navigation on-screen
+**SafeAreaView avec edges pour Android - July 17, 2025**
+- ✅ Configuration SafeAreaView avec edges={['top', 'left', 'right']} sur tous les écrans
+- ✅ Application reste AU-DESSUS de la barre navigation système Android
+- ✅ Élimination complète du risque de superposition avec barres système
 - ✅ Modification HomeScreen, AnimeDetailScreen, AnimePlayerScreen, AboutScreen
 - ✅ Modification NotFoundScreen, PrivacyPolicyScreen, TermsOfServiceScreen, MangaReaderScreen
-- ✅ Application 100% compatible avec tous types d'écrans Android
+- ✅ Suppression paddingBottom car SafeAreaView gère automatiquement l'espace
+- ✅ Application 100% compatible avec tous appareils Android (navigation on-screen/off-screen)
 
 **Header fixe unifié sur tous les écrans - July 17, 2025**
 - ✅ Structure header fixe appliquée à TOUS les écrans (9/9)

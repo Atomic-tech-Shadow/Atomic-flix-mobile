@@ -10,9 +10,9 @@ import {
   Alert,
   Modal,
   FlatList,
-  Dimensions,
-  SafeAreaView
+  Dimensions
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
@@ -247,7 +247,7 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
   const currentPage = selectedChapter?.pages[currentPageIndex];
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
       <StatusBar style="light" backgroundColor="#0a0a1a" />
       
       {/* Header fixe au-dessus du contenu */}
@@ -384,7 +384,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000',
-    paddingBottom: 20, // Espace pour la barre de navigation Android
   },
   loadingContainer: {
     flex: 1,
