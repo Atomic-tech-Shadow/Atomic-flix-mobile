@@ -16,6 +16,12 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ paddingBottom réduit de 12 → 8 pixels sur tous les headers
 - ✅ Interface plus compacte et moderne avec cohérence maintenue
 
+**Correction couleur header AnimePlayerScreen - July 17, 2025**
+- ✅ Background container : #0f172a → #0a0a1a (cohérence avec autres écrans)
+- ✅ StatusBar background : #0f172a → #0a0a1a (toutes les occurrences)
+- ✅ Couleur uniforme du header sur tous les écrans de l'application
+- ✅ Cohérence visuelle restaurée dans l'interface utilisateur
+
 **Infrastructure Bot Telegram pour vérification réelle - July 17, 2025**
 - ✅ Guide complet de mise en œuvre avec Bot Telegram API
 - ✅ Serveur Node.js avec endpoint `/api/verify-subscription`

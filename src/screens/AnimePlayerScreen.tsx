@@ -424,7 +424,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
+        <StatusBar barStyle="light-content" backgroundColor="#0a0a1a" />
         <View style={styles.loadingContainer}>
           <LoadingSpinner 
             message="Chargement de l'anime..." 
@@ -439,7 +439,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   if (error && !animeData) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
+        <StatusBar barStyle="light-content" backgroundColor="#0a0a1a" />
         <View style={styles.errorContainer}>
           <Ionicons name="warning-outline" size={48} color="#ef4444" />
           <Text style={styles.errorText}>{error}</Text>
@@ -454,7 +454,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   if (!animeData) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
+        <StatusBar barStyle="light-content" backgroundColor="#0a0a1a" />
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>Anime non trouvé</Text>
           <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
@@ -467,7 +467,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
+      <StatusBar barStyle="light-content" backgroundColor="#0a0a1a" />
       
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
@@ -740,7 +740,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#0a0a1a',
   },
   headerContainer: {
     position: 'relative',
