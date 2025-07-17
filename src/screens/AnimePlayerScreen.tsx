@@ -821,18 +821,23 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#64748b',
     overflow: 'hidden',
+    minWidth: 80,
+    minHeight: 60,
   },
   languageButtonActive: {
     borderColor: '#ffffff',
   },
   flagBackground: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    top: 2,
+    left: 2,
+    right: 2,
+    bottom: 2,
+    borderRadius: 6,
   },
-  frenchFlag: {},
+  frenchFlag: {
+    backgroundColor: '#ffffff',
+  },
   japaneseFlag: {
     backgroundColor: '#ffffff',
   },
@@ -849,9 +854,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   japaneseRedCircle: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     backgroundColor: '#dc2626',
   },
   languageText: {
