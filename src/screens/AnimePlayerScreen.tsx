@@ -563,10 +563,16 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   style={styles.picker}
                   dropdownIconColor="#ffffff"
                 >
+                  <Picker.Item
+                    key="episode-header"
+                    label="ÉPISODE"
+                    value=""
+                    enabled={false}
+                  />
                   {episodes.map((episode) => (
                     <Picker.Item
                       key={episode.id}
-                      label={`ÉPISODE ${episode.episodeNumber}`}
+                      label={`${episode.episodeNumber}`}
                       value={episode.id}
                     />
                   ))}
@@ -584,6 +590,12 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                     style={styles.picker}
                     dropdownIconColor="#ffffff"
                   >
+                    <Picker.Item
+                      key="server-header"
+                      label="SERVEURS"
+                      value=""
+                      enabled={false}
+                    />
                     {episodeDetails.sources.map((source, index) => (
                       <Picker.Item
                         key={`server-${index}-${source.server}`}
@@ -601,8 +613,14 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                     enabled={false}
                   >
                     <Picker.Item
-                      label="Chargement des serveurs..."
+                      label="SERVEURS"
                       value=""
+                      enabled={false}
+                    />
+                    <Picker.Item
+                      label="Chargement..."
+                      value=""
+                      enabled={false}
                     />
                   </Picker>
                 )}
