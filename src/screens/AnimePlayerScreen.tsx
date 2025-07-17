@@ -836,7 +836,7 @@ const styles = StyleSheet.create({
   },
   frenchFlag: {},
   japaneseFlag: {
-    backgroundColor: '#dc2626',
+    backgroundColor: '#ffffff',
   },
   frenchFlagStripes: {
     flexDirection: 'row',
@@ -851,17 +851,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   japaneseWhiteCircle: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     backgroundColor: '#ffffff',
     justifyContent: 'center',
     alignItems: 'center',
   },
   japaneseRedCircle: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     backgroundColor: '#dc2626',
   },
   languageText: {
