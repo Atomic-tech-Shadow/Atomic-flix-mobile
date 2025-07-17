@@ -562,6 +562,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   }}
                   style={styles.picker}
                   dropdownIconColor="#ffffff"
+                  itemStyle={{ color: '#ffffff', fontSize: 16 }}
                 >
                   {episodes.map((episode) => (
                     <Picker.Item
@@ -583,6 +584,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                     onValueChange={(itemValue) => setSelectedPlayer(parseInt(itemValue as string))}
                     style={styles.picker}
                     dropdownIconColor="#ffffff"
+                    itemStyle={{ color: '#ffffff', fontSize: 16 }}
                   >
                     {episodeDetails.sources.map((source, index) => (
                       <Picker.Item
@@ -598,6 +600,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                     onValueChange={() => {}}
                     style={styles.picker}
                     dropdownIconColor="#ffffff"
+                    itemStyle={{ color: '#ffffff', fontSize: 16 }}
                   >
                     <Picker.Item
                       label="Aucun serveur disponible"
@@ -945,11 +948,12 @@ const styles = StyleSheet.create({
   },
   picker: {
     color: '#ffffff',
-    backgroundColor: 'transparent',
-    fontSize: 14,
+    backgroundColor: '#1f2937',
+    fontSize: 16,
     fontWeight: '500',
     height: 48,
     marginVertical: 0,
+    paddingHorizontal: 12,
   },
   selectorsGrid: {
     flexDirection: 'row',
