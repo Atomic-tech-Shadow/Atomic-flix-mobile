@@ -564,7 +564,13 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   }}
                   style={styles.picker}
                   dropdownIconColor="#ffffff"
-                  itemStyle={{ color: '#ffffff', fontSize: 16 }}
+                  itemStyle={{ 
+                    color: '#ffffff', 
+                    fontSize: 14, 
+                    fontWeight: '600',
+                    backgroundColor: '#1f2937'
+                  }}
+                  mode="dropdown"
                 >
                   {episodes.map((episode) => (
                     <Picker.Item
@@ -586,7 +592,13 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                     onValueChange={(itemValue) => setSelectedPlayer(parseInt(itemValue as string))}
                     style={styles.picker}
                     dropdownIconColor="#ffffff"
-                    itemStyle={{ color: '#ffffff', fontSize: 16 }}
+                    itemStyle={{ 
+                      color: '#ffffff', 
+                      fontSize: 14, 
+                      fontWeight: '600',
+                      backgroundColor: '#1f2937'
+                    }}
+                    mode="dropdown"
                   >
                     {episodeDetails.sources.map((source, index) => (
                       <Picker.Item
@@ -602,7 +614,13 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                     onValueChange={() => {}}
                     style={styles.picker}
                     dropdownIconColor="#ffffff"
-                    itemStyle={{ color: '#ffffff', fontSize: 16 }}
+                    itemStyle={{ 
+                      color: '#ffffff', 
+                      fontSize: 14, 
+                      fontWeight: '600',
+                      backgroundColor: '#1f2937'
+                    }}
+                    mode="dropdown"
                   >
                     <Picker.Item
                       label="Aucun serveur disponible"
@@ -960,15 +978,18 @@ const styles = StyleSheet.create({
     height: 48,
     justifyContent: 'center',
     overflow: 'hidden',
+    elevation: 2,
   },
   picker: {
     color: '#ffffff',
-    backgroundColor: '#1f2937',
-    fontSize: 16,
-    fontWeight: '500',
+    backgroundColor: 'transparent',
+    fontSize: 14,
+    fontWeight: '600',
     height: 48,
     marginVertical: 0,
     paddingHorizontal: 12,
+    marginLeft: -8,
+    marginRight: -8,
   },
   selectorsGrid: {
     flexDirection: 'row',
