@@ -53,9 +53,7 @@ atomic-flix/
 ├── 🔧 Scripts automatisés
 │   ├── build-with-keystore.sh     # Build auto avec keystore
 │   ├── reset-metro.sh             # Reset Metro cache
-│   ├── complete-health-check.js   # Vérification complète du projet
-│   ├── test-api-endpoints.js      # Test des API
-│   └── test-anime-player.js       # Test du player anime
+│   └── complete-health-check.js   # Vérification complète du projet
 │
 ├── 🤖 Replit Agent
 │   └── .replitai                  # Marqueur projet Replit Agent

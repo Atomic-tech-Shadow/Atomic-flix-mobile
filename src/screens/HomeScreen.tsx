@@ -146,10 +146,7 @@ const HomeScreen: React.FC = () => {
 
   // Recherche d'animes (identique au site web)
   const searchAnimes = async (query: string) => {
-    console.log('🔍 Recherche démarrée pour:', query);
-    
     if (query.trim().length < 2) {
-      console.log('❌ Query trop courte:', query.length);
       setSearchResults([]);
       return;
     }
@@ -158,28 +155,23 @@ const HomeScreen: React.FC = () => {
     setError(null);
     
     try {
-      console.log('📡 Appel API de recherche...');
       const response = await apiRequest(`/api/search?query=${encodeURIComponent(query)}`);
-      console.log('📥 Réponse API reçue:', response);
       
       if (response && response.success) {
         const results = response.results || [];
-        console.log('✅ Résultats trouvés:', results.length);
         if (Array.isArray(results)) {
           // Afficher tout le contenu de l'API : animes, mangas, films, etc.
           setSearchResults(results);
-          console.log('🎯 Résultats mis en état:', results.length);
         } else {
-          console.warn('❌ Pas de résultats dans la réponse:', response);
+          console.warn('Pas de résultats dans la réponse:', response);
           setSearchResults([]);
         }
       } else {
-        console.error('❌ Réponse API échec:', response);
         throw new Error('Réponse API invalide');
       }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur de recherche';
-      console.error('❌ Erreur recherche:', errorMessage, err);
+      console.error('Erreur recherche:', errorMessage);
       
       if (errorMessage.includes('504') || errorMessage.includes('timeout')) {
         setError('Le serveur anime-sama-scraper.vercel.app ne répond pas actuellement. Veuillez réessayer plus tard.');
@@ -191,7 +183,6 @@ const HomeScreen: React.FC = () => {
       setSearchResults([]);
     } finally {
       setLoading(false);
-      console.log('🏁 Recherche terminée');
     }
   };
 
@@ -227,7 +218,6 @@ const HomeScreen: React.FC = () => {
 
   const handleSearchPress = () => {
     // Active l'affichage de la barre de recherche
-    console.log('🔍 Bouton recherche cliqué');
     setShowSearchBar(true);
     setSearchQuery('');
     setSearchResults([]);
@@ -386,12 +376,7 @@ const HomeScreen: React.FC = () => {
           </View>
         )}
         
-        {/* Affichage message de débogage */}
-        {searchQuery && !loading && (
-          <Text style={styles.debugText}>
-            Debug: Query="{searchQuery}", Results={searchResults.length}, Error={error ? 'Oui' : 'Non'}
-          </Text>
-        )}
+
         
         {searchResults.length > 0 && !loading && (
           <View style={styles.searchResultsGrid}>
@@ -754,17 +739,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 16,
   },
-  debugText: {
-    color: '#fbbf24',
-    textAlign: 'center',
-    marginVertical: 8,
-    paddingHorizontal: 16,
-    fontSize: 12,
-    backgroundColor: '#1f2937',
-    padding: 8,
-    borderRadius: 4,
-    marginHorizontal: 16,
-  },
+
 });
 
 export default HomeScreen;
