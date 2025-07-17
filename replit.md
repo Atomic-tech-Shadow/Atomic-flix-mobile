@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Audit complet barres système Android - July 17, 2025**
+- ✅ Vérification de tous les écrans pour conformité Android system bars
+- ✅ TOUS LES ÉCRANS (9/9) respectent les safe areas et barres système
+- ✅ Configuration SafeAreaView + StatusBar uniforme sur tous les écrans
+- ✅ SharedHeader intégré correctement avec respect des safe areas
+- ✅ SplashScreen avec StatusBar translucent=false pour éviter conflits
+- ✅ Application 100% conforme aux standards Android UI/UX
+
 **Configuration splash screen personnalisé - July 17, 2025**
 - ✅ Configuration app.json avec splash screen personnalisé (splash-design.png)
 - ✅ Modification App.tsx pour gérer les deux splash screens (Expo + custom)
