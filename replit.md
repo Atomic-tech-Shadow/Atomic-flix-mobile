@@ -8,6 +8,16 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Infrastructure Bot Telegram pour vérification réelle - July 17, 2025**
+- ✅ Guide complet de mise en œuvre avec Bot Telegram API
+- ✅ Serveur Node.js avec endpoint `/api/verify-subscription`
+- ✅ Méthode `getChatMember` pour vérification réelle d'abonnement
+- ✅ Gestion d'erreurs complète (user_not_found, unauthorized, network_error)
+- ✅ API utilitaire React Native pour intégration mobile
+- ✅ Configuration production avec variables d'environnement
+- ✅ Documentation technique complète dans `/docs/TELEGRAM_VERIFICATION_GUIDE.md`
+- ✅ Passage de simulation à vérification réelle authentique
+
 **Amélioration interface vérification Telegram - July 17, 2025**
 - ✅ Instructions étape par étape pour clarifier le processus utilisateur
 - ✅ Étapes affichées : "1. Cliquez S'abonner → 2. Abonnez-vous → 3. Revenez et Vérifiez"
