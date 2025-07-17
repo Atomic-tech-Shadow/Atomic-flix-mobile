@@ -6,6 +6,16 @@
 
 Il s'agit d'une application mobile React Native construite avec Expo pour le streaming d'anime et la lecture de manga. Le projet inclut une navigation entre différents écrans, des fonctionnalités de lecteur multimédia, et est configuré pour les builds Android avec keystore personnalisé.
 
+## Recent Changes
+
+**Nettoyage complet du projet - July 17, 2025**
+- ✅ Suppression des fichiers temporaires (attached_assets/, temp-export/, build-output/)
+- ✅ Nettoyage des documentations redondantes (transformations, comparaisons multiples)
+- ✅ Suppression des scripts de fix redondants (gardé les essentiels)
+- ✅ Réduction des tests en double (gardé les tests principaux)
+- ✅ Mise à jour du health check pour correspondre aux fichiers actuels
+- ✅ Projet maintenant plus propre et organisé avec tous les tests qui passent
+
 ## User Preferences
 
 - **Communication style**: Simple, everyday language (français)
@@ -13,6 +23,7 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - **Architecture**: Propre et bien organisée
 - **Builds**: Scripts automatisés prioritaires
 - **Plateforme**: Android en priorité
+- **Maintenance**: Préfère un projet propre sans fichiers inutiles
 
 ## System Architecture
 

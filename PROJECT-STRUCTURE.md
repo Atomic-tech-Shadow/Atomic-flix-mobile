@@ -52,21 +52,15 @@ atomic-flix/
 │
 ├── 🔧 Scripts automatisés
 │   ├── build-with-keystore.sh     # Build auto avec keystore
-│   ├── build-android-fix.sh       # Réparation build Android
 │   ├── reset-metro.sh             # Reset Metro cache
-│   ├── fix-dependencies.sh        # Fix dépendances
-│   ├── fix-metro.sh               # Fix Metro spécifique
-│   ├── validate-config.sh         # Validation config
-│   ├── java-fix.sh                # Fix problèmes Java
-│   └── package-lock-fix.sh        # Fix package-lock
+│   ├── complete-health-check.js   # Vérification complète du projet
+│   ├── test-api-endpoints.js      # Test des API
+│   └── test-anime-player.js       # Test du player anime
 │
 ├── 🤖 Replit Agent
-│   ├── .replitai                  # Marqueur projet Replit Agent
-│   └── doctor-check.js            # Vérification personnalisée
+│   └── .replitai                  # Marqueur projet Replit Agent
 │
 └── 📂 Autres
-    ├── attached_assets/           # Assets temporaires
-    ├── temp-export/               # Export temporaire
     └── node_modules/              # Dépendances npm
 ```
 

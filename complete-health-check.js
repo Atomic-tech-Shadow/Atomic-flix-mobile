@@ -38,24 +38,19 @@ function main() {
       description: 'Vérification des dépendances et configuration Expo'
     },
     {
-      name: 'Doctor personnalisé',
-      command: 'node doctor-check.js',
-      description: 'Vérifications spécifiques au projet mobile'
-    },
-    {
-      name: 'Configuration Android',
-      command: 'node test-android-35.js',
-      description: 'Test de la configuration Android 35'
-    },
-    {
-      name: 'Validation XML Android',
-      command: 'node validate-android-config.js',
-      description: 'Validation des fichiers XML Android'
-    },
-    {
       name: 'Compilation TypeScript',
       command: 'npx tsc --noEmit --skipLibCheck',
       description: 'Vérification de la compilation TypeScript'
+    },
+    {
+      name: 'Test API',
+      command: 'node test-api-endpoints.js',
+      description: 'Test des endpoints API'
+    },
+    {
+      name: 'Test Player',
+      command: 'node test-anime-player.js',
+      description: 'Test du player anime'
     }
   ];
   
