@@ -576,10 +576,10 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               </View>
             </View>
 
-            {/* Sélecteur de serveur */}
-            {episodeDetails && episodeDetails.sources.length > 0 && (
-              <View style={styles.selectorHalf}>
-                <View style={styles.pickerContainer}>
+            {/* Sélecteur de serveur - Toujours visible avec placeholder */}
+            <View style={styles.selectorHalf}>
+              <View style={styles.pickerContainer}>
+                {episodeDetails && episodeDetails.sources.length > 0 ? (
                   <Picker
                     selectedValue={selectedPlayer.toString()}
                     onValueChange={(itemValue) => setSelectedPlayer(parseInt(itemValue as string))}
@@ -594,9 +594,22 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                       />
                     ))}
                   </Picker>
-                </View>
+                ) : (
+                  <Picker
+                    selectedValue=""
+                    onValueChange={() => {}}
+                    style={styles.picker}
+                    dropdownIconColor="#ffffff"
+                    enabled={false}
+                  >
+                    <Picker.Item
+                      label="Chargement des serveurs..."
+                      value=""
+                    />
+                  </Picker>
+                )}
               </View>
-            )}
+            </View>
           </View>
         )}
 
@@ -614,7 +627,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         {renderVideoPlayer()}
 
         {/* Navigation entre épisodes - Style anime-sama identique au web */}
-        {selectedEpisode && (
+        {episodes.length > 0 && (
           <View style={styles.navigationContainer}>
             <TouchableOpacity
               style={[
@@ -630,15 +643,19 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             
             <View style={styles.downloadContainer}>
               <TouchableOpacity
-                style={styles.downloadButton}
+                style={[
+                  styles.downloadButton,
+                  (!episodeDetails || episodeDetails.sources.length === 0) && styles.navButtonDisabled
+                ]}
                 onPress={() => setShowDownloadMenu(!showDownloadMenu)}
+                disabled={!episodeDetails || episodeDetails.sources.length === 0}
                 activeOpacity={0.7}
               >
                 <Ionicons name="download" size={24} color="#ffffff" />
               </TouchableOpacity>
               
               {/* Menu de téléchargement */}
-              {showDownloadMenu && (
+              {showDownloadMenu && episodeDetails && (
                 <View style={styles.downloadMenu}>
                   <View style={styles.downloadMenuHeader}>
                     <Text style={styles.downloadMenuTitle}>Télécharger en :</Text>
