@@ -82,10 +82,10 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
         
         Alert.alert(
           'Vérification réussie !',
-          'Merci de vous être abonné à notre canal Telegram. Profitez de l\'application !',
+          'Merci de vous être abonné à notre canal Telegram. Vous pouvez maintenant accéder à tout le contenu de l\'application !',
           [
             {
-              text: 'Continuer',
+              text: 'Accéder à l\'app',
               onPress: () => {
                 setIsVerifying(false);
                 onVerified();
@@ -122,6 +122,14 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
       <Text style={styles.description}>
         Abonnez-vous à notre canal Telegram pour accéder au contenu exclusif !
       </Text>
+      
+      {!hasSubscribed && (
+        <Text style={styles.stepsText}>
+          1. Cliquez sur "S'abonner" pour ouvrir Telegram{'\n'}
+          2. Abonnez-vous au canal{'\n'}
+          3. Revenez dans l'app et cliquez "Vérifier"
+        </Text>
+      )}
 
       <View style={styles.channelInfo}>
         <Text style={styles.channelName}>📢 {channelName}</Text>
@@ -165,7 +173,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
 
       {hasSubscribed && (
         <Text style={styles.successMessage}>
-          ✅ Parfait ! Maintenant vérifiez votre abonnement
+          ✅ Parfait ! Maintenant cliquez sur "Vérifier" pour confirmer votre abonnement
         </Text>
       )}
     </View>
@@ -217,6 +225,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: 20,
+  },
+  stepsText: {
+    fontSize: 14,
+    color: '#9ca3af',
+    textAlign: 'left',
+    lineHeight: 20,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    backgroundColor: 'rgba(0, 188, 212, 0.05)',
+    borderRadius: 8,
+    padding: 12,
+    borderLeftWidth: 3,
+    borderLeftColor: '#00bcd4',
   },
   channelInfo: {
     backgroundColor: 'rgba(0, 188, 212, 0.1)',

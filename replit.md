@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Amélioration interface vérification Telegram - July 17, 2025**
+- ✅ Instructions étape par étape pour clarifier le processus utilisateur
+- ✅ Étapes affichées : "1. Cliquez S'abonner → 2. Abonnez-vous → 3. Revenez et Vérifiez"
+- ✅ Message succès amélioré avec instructions claires
+- ✅ Bouton final renommé "Accéder à l'app" au lieu de "Continuer"
+- ✅ Zone d'instructions avec bordure cyan et fond subtil
+- ✅ Interface utilisateur plus guidée et intuitive
+
 **Harmonisation couleurs vérification Telegram - July 17, 2025**
 - ✅ Bouton S'abonner : gradient bleu Telegram (#0088cc) → cyan uniforme (#00bcd4)
 - ✅ Bouton désactivé : gris basique (#333) → gris application (#374151)
