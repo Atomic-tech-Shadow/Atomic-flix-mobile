@@ -2,7 +2,7 @@
   "expo": {
     "name": "ATOMIC FLIX",
     "slug": "atomic-flix-mobile",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "orientation": "portrait",
     "icon": "./assets/atomic-flix-logo.png",
     "userInterfaceStyle": "dark",
