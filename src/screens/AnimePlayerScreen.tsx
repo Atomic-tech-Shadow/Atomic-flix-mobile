@@ -532,9 +532,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   ) : (
                     <View style={styles.japaneseFlag}>
                       <View style={styles.japaneseCircle}>
-                        <View style={styles.japaneseWhiteCircle}>
-                          <View style={styles.japaneseRedCircle} />
-                        </View>
+                        <View style={styles.japaneseRedCircle} />
                       </View>
                     </View>
                   )}
@@ -850,18 +848,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  japaneseWhiteCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   japaneseRedCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
     backgroundColor: '#dc2626',
   },
   languageText: {
