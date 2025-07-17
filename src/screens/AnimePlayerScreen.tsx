@@ -496,7 +496,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             <Text style={styles.bannerSeason}>{selectedSeason?.name}</Text>
           </View>
         </View>
-        {/* Sélecteur de langue */}
+        {/* Sélecteur de langue - Style simplifié */}
         {selectedSeason && selectedSeason.languages.length > 1 && (
           <View style={styles.languageSelector}>
             {selectedSeason.languages.map((lang) => (
@@ -509,114 +509,95 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 onPress={() => changeLanguage(lang as 'VF' | 'VOSTFR')}
                 activeOpacity={0.7}
               >
-                <View style={[
-                  styles.flagBackground,
-                  lang === 'VF' ? styles.frenchFlag : styles.japaneseFlag
+                <Text style={[
+                  styles.languageText,
+                  selectedLanguage === lang && styles.languageTextActive
                 ]}>
-                  {lang === 'VF' ? (
-                    <View style={styles.frenchFlagStripes}>
-                      <View style={[styles.flagStripe, { backgroundColor: '#1d4ed8' }]} />
-                      <View style={[styles.flagStripe, { backgroundColor: '#ffffff' }]} />
-                      <View style={[styles.flagStripe, { backgroundColor: '#dc2626' }]} />
-                    </View>
-                  ) : (
-                    <View style={styles.japaneseFlag}>
-                      <View style={styles.japaneseCircle}>
-                        <View style={styles.japaneseRedCircle} />
-                      </View>
-                    </View>
-                  )}
-                </View>
-                <Text style={styles.languageText}>
-                  {lang === 'VOSTFR' ? 'VO' : lang}
+                  {lang === 'VF' ? '🇫🇷 VF' : '🇯🇵 VO'}
                 </Text>
               </TouchableOpacity>
             ))}
           </View>
         )}
 
-        {/* Sélecteurs en grille 2 colonnes - Style anime-sama */}
+        {/* Sélecteurs en grille 2 colonnes - Style simplifié */}
         {episodes.length > 0 && (
           <View style={styles.selectorsGrid}>
             {/* Sélecteur d'épisode */}
-            <View style={styles.selectorHalf}>
-              <View style={styles.pickerContainer}>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={selectedEpisode?.id || ''}
+                onValueChange={(itemValue) => {
+                  const episode = episodes.find(ep => ep.id === itemValue);
+                  if (episode) {
+                    setSelectedEpisode(episode);
+                    loadEpisodeSources(episode);
+                  }
+                }}
+                style={styles.picker}
+                dropdownIconColor="#00bcd4"
+                itemStyle={{ 
+                  color: '#ffffff', 
+                  fontSize: 14, 
+                  fontWeight: '600',
+                  backgroundColor: '#1a1a2e'
+                }}
+                mode="dropdown"
+              >
+                {episodes.map((episode) => (
+                  <Picker.Item
+                    key={episode.id}
+                    label={`Épisode ${episode.episodeNumber}`}
+                    value={episode.id}
+                  />
+                ))}
+              </Picker>
+            </View>
+
+            {/* Sélecteur de serveur */}
+            <View style={styles.pickerContainer}>
+              {episodeDetails && episodeDetails.sources.length > 0 ? (
                 <Picker
-                  selectedValue={selectedEpisode?.id || ''}
-                  onValueChange={(itemValue) => {
-                    const episode = episodes.find(ep => ep.id === itemValue);
-                    if (episode) {
-                      setSelectedEpisode(episode);
-                      loadEpisodeSources(episode);
-                    }
-                  }}
+                  selectedValue={selectedPlayer.toString()}
+                  onValueChange={(itemValue) => setSelectedPlayer(parseInt(itemValue as string))}
                   style={styles.picker}
-                  dropdownIconColor="#ffffff"
+                  dropdownIconColor="#00bcd4"
                   itemStyle={{ 
                     color: '#ffffff', 
                     fontSize: 14, 
                     fontWeight: '600',
-                    backgroundColor: '#1f2937'
+                    backgroundColor: '#1a1a2e'
                   }}
                   mode="dropdown"
                 >
-                  {episodes.map((episode) => (
+                  {episodeDetails.sources.map((source, index) => (
                     <Picker.Item
-                      key={episode.id}
-                      label={`Épisode ${episode.episodeNumber}`}
-                      value={episode.id}
+                      key={`server-${index}-${source.server}`}
+                      label={`${source.server} (${source.quality})`}
+                      value={index.toString()}
                     />
                   ))}
                 </Picker>
-              </View>
-            </View>
-
-            {/* Sélecteur de serveur - Toujours visible avec placeholder */}
-            <View style={styles.selectorHalf}>
-              <View style={styles.pickerContainer}>
-                {episodeDetails && episodeDetails.sources.length > 0 ? (
-                  <Picker
-                    selectedValue={selectedPlayer.toString()}
-                    onValueChange={(itemValue) => setSelectedPlayer(parseInt(itemValue as string))}
-                    style={styles.picker}
-                    dropdownIconColor="#ffffff"
-                    itemStyle={{ 
-                      color: '#ffffff', 
-                      fontSize: 14, 
-                      fontWeight: '600',
-                      backgroundColor: '#1f2937'
-                    }}
-                    mode="dropdown"
-                  >
-                    {episodeDetails.sources.map((source, index) => (
-                      <Picker.Item
-                        key={`server-${index}-${source.server}`}
-                        label={`${source.server} (${source.quality})`}
-                        value={index.toString()}
-                      />
-                    ))}
-                  </Picker>
-                ) : (
-                  <Picker
-                    selectedValue=""
-                    onValueChange={() => {}}
-                    style={styles.picker}
-                    dropdownIconColor="#ffffff"
-                    itemStyle={{ 
-                      color: '#ffffff', 
-                      fontSize: 14, 
-                      fontWeight: '600',
-                      backgroundColor: '#1f2937'
-                    }}
-                    mode="dropdown"
-                  >
-                    <Picker.Item
-                      label="Aucun serveur disponible"
-                      value=""
-                    />
-                  </Picker>
-                )}
-              </View>
+              ) : (
+                <Picker
+                  selectedValue=""
+                  onValueChange={() => {}}
+                  style={styles.picker}
+                  dropdownIconColor="#00bcd4"
+                  itemStyle={{ 
+                    color: '#ffffff', 
+                    fontSize: 14, 
+                    fontWeight: '600',
+                    backgroundColor: '#1a1a2e'
+                  }}
+                  mode="dropdown"
+                >
+                  <Picker.Item
+                    label="Aucun serveur disponible"
+                    value=""
+                  />
+                </Picker>
+              )}
             </View>
           </View>
         )}
@@ -826,76 +807,32 @@ const styles = StyleSheet.create({
   languageSelector: {
     flexDirection: 'row',
     padding: 16,
-    gap: 8,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
+    gap: 12,
   },
   languageButton: {
-    position: 'relative',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 8,
-    borderWidth: 2,
-    borderColor: '#64748b',
-    overflow: 'visible',
-    minWidth: 70,
-    minHeight: 55,
-    opacity: 0.5,
+    backgroundColor: '#1a1a2e',
+    borderWidth: 1,
+    borderColor: '#374151',
     justifyContent: 'center',
     alignItems: 'center',
   },
   languageButtonActive: {
-    borderColor: '#ffffff',
-    opacity: 1.0,
-  },
-  flagBackground: {
-    position: 'absolute',
-    top: 2,
-    left: 2,
-    right: 2,
-    bottom: 20,
-    borderRadius: 6,
-  },
-  frenchFlag: {
-    backgroundColor: '#ffffff',
-  },
-  japaneseFlag: {
-    backgroundColor: '#ffffff',
-  },
-  frenchFlagStripes: {
-    flexDirection: 'row',
-    flex: 1,
-  },
-  flagStripe: {
-    flex: 1,
-  },
-  japaneseCircle: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  japaneseRedCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#dc2626',
+    backgroundColor: '#00bcd4',
+    borderColor: '#00bcd4',
   },
   languageText: {
     color: '#ffffff',
-    fontSize: 11,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: '600',
     textAlign: 'center',
-    textShadowColor: 'rgba(0, 0, 0, 0.9)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
-    position: 'absolute',
-    bottom: 2,
-    left: 0,
-    right: 0,
-    zIndex: 100,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    paddingVertical: 1,
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4,
+  },
+  languageTextActive: {
+    color: '#ffffff',
+    fontWeight: 'bold',
   },
   episodeControls: {
     flexDirection: 'row',
@@ -959,14 +896,15 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   pickerContainer: {
-    backgroundColor: '#1f2937',
+    backgroundColor: '#1a1a2e',
     borderRadius: 8,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#374151',
     height: 56,
     justifyContent: 'center',
     overflow: 'hidden',
     elevation: 2,
+    flex: 1,
   },
   picker: {
     color: '#ffffff',
@@ -982,12 +920,8 @@ const styles = StyleSheet.create({
   selectorsGrid: {
     flexDirection: 'row',
     gap: 16,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingVertical: 16,
-  },
-  selectorHalf: {
-    flex: 1,
-    minWidth: 160,
   },
   videoPlayerWrapper: {
     borderRadius: 8,
