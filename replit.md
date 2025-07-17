@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Configuration splash screen personnalisé - July 17, 2025**
+- ✅ Configuration app.json avec splash screen personnalisé (splash-design.png)
+- ✅ Modification App.tsx pour gérer les deux splash screens (Expo + custom)
+- ✅ Ajout de expo-splash-screen pour contrôle précis du timing
+- ✅ Implémentation preventAutoHideAsync() pour contrôler l'affichage
+- ✅ Transition fluide entre splash screen Expo et écran personnalisé
+- ✅ Expo development server opérationnel sur port 8081
+
 **Nettoyage complet du projet - July 17, 2025**
 - ✅ Suppression des fichiers temporaires (attached_assets/, temp-export/, build-output/)
 - ✅ Nettoyage des documentations redondantes (transformations, comparaisons multiples)
