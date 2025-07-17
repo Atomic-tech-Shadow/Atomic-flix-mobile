@@ -592,7 +592,21 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                       />
                     ))}
                   </Picker>
-                ) : null}
+                ) : (
+                  <Picker
+                    selectedValue=""
+                    onValueChange={() => {}}
+                    style={styles.picker}
+                    dropdownIconColor="#ffffff"
+                    enabled={false}
+                  >
+                    <Picker.Item
+                      label="Serveur"
+                      value=""
+                      enabled={false}
+                    />
+                  </Picker>
+                )}
               </View>
             </View>
           </View>
