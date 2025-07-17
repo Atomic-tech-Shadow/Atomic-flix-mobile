@@ -26,7 +26,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   const [unreadCount, setUnreadCount] = useState(0);
   const [showMenuDrawer, setShowMenuDrawer] = useState(false);
   const [slideAnim] = useState(new Animated.Value(-300));
-  
+
   const notificationService = NotificationService.getInstance();
 
 
@@ -35,14 +35,14 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
     // Activer/désactiver les notifications à chaque clic
     const newState = !notificationsEnabled;
     setNotificationsEnabled(newState);
-    
+
     // Sauvegarder l'état dans les paramètres
     await notificationService.saveSettings({
       enabled: newState,
       newEpisodes: newState,
       newMangas: newState,
     });
-    
+
     // Marquer les notifications comme lues quand on les active
     if (newState) {
       setHasNewNotifications(false);
@@ -67,7 +67,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
     // Marquer comme lu et fermer le modal
     notificationService.markAsRead(notification.id);
     setShowNotificationModal(false);
-    
+
     // TODO: Naviguer vers l'anime/manga spécifique
     console.log('Navigation vers:', notification.animeTitle);
   };
@@ -122,7 +122,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
     const loadNotifications = async () => {
       const settings = await notificationService.getSettings();
       setNotificationsEnabled(settings.enabled);
-      
+
       const count = await notificationService.getUnreadCount();
       setUnreadCount(count);
       setHasNewNotifications(count > 0);
@@ -139,6 +139,9 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
     return unsubscribe;
   }, []);
+
+  // Import package.json
+  const packageJson = require('../../package.json');
 
   return (
     <View style={styles.mobileHeader}>
@@ -161,7 +164,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           >
             <Ionicons name="search" size={22} color="#ffffff" />
           </TouchableOpacity>
-          
+
           <TouchableOpacity 
             style={styles.headerIconButton}
             onPress={handleNotificationPress}
@@ -181,7 +184,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
               )}
             </View>
           </TouchableOpacity>
-          
+
           <TouchableOpacity 
             style={styles.headerIconButton}
             onPress={handleMenuPress}
@@ -271,7 +274,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
             {/* Footer du menu */}
             <View style={styles.drawerFooter}>
-              <Text style={styles.footerText}>Version 1.0.0</Text>
+              <Text style={styles.footerText}>Version {packageJson.version}</Text>
               <Text style={styles.footerSubtext}>Développé par Cid AKUE</Text>
             </View>
           </Animated.View>
