@@ -861,12 +861,17 @@ const styles = StyleSheet.create({
   },
   languageText: {
     color: '#ffffff',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 'bold',
     textAlign: 'center',
     textShadowColor: 'rgba(0, 0, 0, 0.8)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
+    position: 'absolute',
+    bottom: 4,
+    left: 0,
+    right: 0,
+    zIndex: 10,
   },
   episodeControls: {
     flexDirection: 'row',
