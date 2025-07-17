@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/atomic-flix-logo.png",
     "userInterfaceStyle": "dark",
+    "backgroundColor": "#0a0a1a",
 
 
     "ios": {
