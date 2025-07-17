@@ -393,18 +393,19 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       {/* Header avec SharedHeader */}
       <SharedHeader />
       
-      {/* Image et titre de l'anime */}
-      <View style={styles.animeHeaderContainer}>
+      {/* Bannière avec titre de la saison - Pleine largeur comme le web */}
+      <View style={styles.bannerContainer}>
         {animeData?.image && (
           <Image
             source={{ uri: animeData.image }}
-            style={styles.animeImage}
+            style={styles.bannerImage}
             resizeMode="cover"
           />
         )}
-        <View style={styles.titleContainer}>
-          <Text style={styles.animeTitle} numberOfLines={1}>{animeTitle}</Text>
-          <Text style={styles.seasonTitle} numberOfLines={1}>{selectedSeason?.name}</Text>
+        <View style={styles.bannerOverlay} />
+        <View style={styles.bannerContent}>
+          <Text style={styles.bannerTitle}>{animeData.title}</Text>
+          <Text style={styles.bannerSeason}>{selectedSeason?.name}</Text>
         </View>
       </View>
 
@@ -581,33 +582,44 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0f172a',
   },
-  animeHeaderContainer: {
-    flexDirection: 'row',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#1e293b',
-    alignItems: 'center',
+  bannerContainer: {
+    position: 'relative',
+    height: 200, // Équivalent à h-48 (192px) ou h-56 (224px)
+    overflow: 'hidden',
   },
-  animeImage: {
-    width: 80,
-    height: 120,
-    borderRadius: 8,
-    marginRight: 16,
+  bannerImage: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100%',
+    height: '100%',
   },
-  titleContainer: {
-    flex: 1,
+  bannerOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Équivalent à bg-black/60
   },
-  animeTitle: {
-    color: '#ffffff',
-    fontSize: 18,
+  bannerContent: {
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
+    right: 16,
+  },
+  bannerTitle: {
+    fontSize: 24, // Équivalent à text-2xl
     fontWeight: 'bold',
-    textAlign: 'center',
+    color: '#ffffff',
+    marginBottom: 4,
   },
-  seasonTitle: {
-    color: '#94a3b8',
-    fontSize: 14,
-    marginTop: 2,
-    textAlign: 'center',
+  bannerSeason: {
+    fontSize: 18, // Équivalent à text-lg
+    color: '#d1d5db', // Équivalent à text-gray-300
+    textTransform: 'uppercase',
   },
   scrollContainer: {
     flex: 1,

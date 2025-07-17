@@ -148,8 +148,9 @@ Ce projet peut être immédiatement continué par Replit Agent grâce à :
 - **API fonctionnelle** : getAnimeDetails, loadSeasonEpisodes, loadEpisodeSources, changeLanguage, navigateEpisode
 - **Interface mobile optimisée** : Contrôles tactiles, navigation épisodes, sélection serveurs, drapeaux VF/VOSTFR
 - **Interface web-identique** : Dropdowns en grille 2 colonnes, overlay vidéo, message "DERNIÈRE SÉLECTION", "I AM ATOMIC"
-- **Image anime intégrée** : Affichage de l'image de l'anime en haut avec titre et saison
+- **Bannière identique au web** : Bannière pleine largeur avec overlay noir 60%, positionnement absolu, tailles exactes (24px/18px)
 - **Configuration API validée** : test-api-endpoints.js confirme tous les endpoints fonctionnels
+- **Tests bannière** : test-banner-identical.js confirme reproduction exacte (24/24 tests réussis)
 - **Tests complets** : 6/6 tests réussis avec test-anime-player.js, navigation configurée, types définis
 - **Header unifié** : SharedHeader connecté au lieu du bouton retour personnalisé, navigation cohérente
 - **Dropdowns intégrés** : Sélection d'épisodes et de serveurs avec @react-native-picker/picker pour une meilleure UX
