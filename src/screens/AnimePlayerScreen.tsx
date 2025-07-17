@@ -481,31 +481,31 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
       
-      {/* Header avec SharedHeader */}
-      <SharedHeader />
-      
-      {/* Bannière avec titre de la saison - Pleine largeur comme le web */}
-      <View style={styles.bannerContainer}>
-        {animeData?.image && (
-          <Image
-            source={{ uri: animeData.image }}
-            style={styles.bannerImage}
-            resizeMode="cover"
-          />
-        )}
-        <View style={styles.bannerOverlay} />
-        <View style={styles.bannerContent}>
-          <Text style={styles.bannerTitle}>{animeData.title}</Text>
-          <Text style={styles.bannerSeason}>{selectedSeason?.name}</Text>
-        </View>
-      </View>
-
       <ScrollView 
         style={styles.scrollContainer}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#00bcd4" />
         }
+        showsVerticalScrollIndicator={false}
       >
+        {/* Header avec SharedHeader */}
+        <SharedHeader />
+        
+        {/* Bannière avec titre de la saison - Pleine largeur comme le web */}
+        <View style={styles.bannerContainer}>
+          {animeData?.image && (
+            <Image
+              source={{ uri: animeData.image }}
+              style={styles.bannerImage}
+              resizeMode="cover"
+            />
+          )}
+          <View style={styles.bannerOverlay} />
+          <View style={styles.bannerContent}>
+            <Text style={styles.bannerTitle}>{animeData.title}</Text>
+            <Text style={styles.bannerSeason}>{selectedSeason?.name}</Text>
+          </View>
+        </View>
         {/* Sélecteur de langue */}
         {selectedSeason && selectedSeason.languages.length > 1 && (
           <View style={styles.languageSelector}>
