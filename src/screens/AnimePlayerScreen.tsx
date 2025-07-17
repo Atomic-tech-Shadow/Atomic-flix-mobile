@@ -757,7 +757,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     position: 'relative',
     zIndex: 10,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#0a0a1a',
   },
   bannerContainer: {
     position: 'relative',
