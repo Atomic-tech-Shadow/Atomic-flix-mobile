@@ -293,38 +293,53 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     const currentSource = episodeDetails.sources[selectedPlayer];
     
     return (
-      <View style={styles.videoContainer}>
-        <WebView
-          ref={webViewRef}
-          source={{ uri: currentSource.url }}
-          style={styles.webView}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          startInLoadingState={true}
-          allowsFullscreenVideo={true}
-          allowsInlineMediaPlayback={true}
-          mediaPlaybackRequiresUserAction={false}
-          onError={(error) => {
-            console.error('Erreur WebView:', error);
-            setError('Erreur du lecteur vidéo');
-          }}
-          onLoadStart={() => setEpisodeLoading(true)}
-          onLoadEnd={() => setEpisodeLoading(false)}
-          renderError={() => (
-            <View style={styles.errorContainer}>
-              <Ionicons name="warning-outline" size={48} color="#ef4444" />
-              <Text style={styles.errorText}>Erreur du lecteur</Text>
-              <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
-                <Text style={styles.retryButtonText}>Réessayer</Text>
-              </TouchableOpacity>
+      <View style={styles.videoPlayerWrapper}>
+        <View style={styles.videoContainer}>
+          <WebView
+            ref={webViewRef}
+            source={{ uri: currentSource.url }}
+            style={styles.webView}
+            javaScriptEnabled={true}
+            domStorageEnabled={true}
+            startInLoadingState={true}
+            allowsFullscreenVideo={true}
+            allowsInlineMediaPlayback={true}
+            mediaPlaybackRequiresUserAction={false}
+            onError={(error) => {
+              console.error('Erreur WebView:', error);
+              setError('Erreur du lecteur vidéo');
+            }}
+            onLoadStart={() => setEpisodeLoading(true)}
+            onLoadEnd={() => setEpisodeLoading(false)}
+            renderError={() => (
+              <View style={styles.errorContainer}>
+                <Ionicons name="warning-outline" size={48} color="#ef4444" />
+                <Text style={styles.errorText}>Erreur du lecteur</Text>
+                <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
+                  <Text style={styles.retryButtonText}>Réessayer</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+          
+          {/* Overlay avec informations de l'épisode - Style anime-sama */}
+          <View style={styles.videoOverlay}>
+            <View style={styles.videoInfoContainer}>
+              <Text style={styles.videoAnimeTitle} numberOfLines={1}>
+                {episodeDetails.animeTitle}
+              </Text>
+              <Text style={styles.videoEpisodeInfo} numberOfLines={1}>
+                Épisode {episodeDetails.episodeNumber} • {currentSource.server} • {currentSource.quality}
+              </Text>
+            </View>
+          </View>
+          
+          {episodeLoading && (
+            <View style={styles.loadingOverlay}>
+              <ActivityIndicator size="large" color="#00bcd4" />
             </View>
           )}
-        />
-        {episodeLoading && (
-          <View style={styles.loadingOverlay}>
-            <ActivityIndicator size="large" color="#00bcd4" />
-          </View>
-        )}
+        </View>
       </View>
     );
   };
@@ -463,55 +478,76 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         {/* Lecteur vidéo */}
         {renderVideoPlayer()}
 
-        {/* Dropdown sélection serveur */}
-        {episodeDetails && episodeDetails.sources.length > 0 && (
-          <View style={styles.dropdownContainer}>
-            <Text style={styles.dropdownLabel}>SERVEUR</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={selectedPlayer}
-                onValueChange={(itemValue) => setSelectedPlayer(parseInt(itemValue))}
-                style={styles.picker}
-                dropdownIconColor="#00bcd4"
-              >
-                {episodeDetails.sources.map((source, index) => (
-                  <Picker.Item
-                    key={`server-${index}-${source.server}`}
-                    label={`${source.server} - ${source.quality}`}
-                    value={index.toString()}
-                  />
-                ))}
-              </Picker>
+        {/* Sélecteurs en grille 2 colonnes - Style anime-sama */}
+        {episodes.length > 0 && (
+          <View style={styles.selectorsGrid}>
+            {/* Sélecteur d'épisode */}
+            <View style={styles.selectorHalf}>
+              <View style={styles.pickerContainer}>
+                <Picker
+                  selectedValue={selectedEpisode?.id || ''}
+                  onValueChange={(itemValue) => {
+                    const episode = episodes.find(ep => ep.id === itemValue);
+                    if (episode) {
+                      setSelectedEpisode(episode);
+                      loadEpisodeSources(episode);
+                    }
+                  }}
+                  style={styles.picker}
+                  dropdownIconColor="#ffffff"
+                >
+                  {episodes.map((episode) => (
+                    <Picker.Item
+                      key={episode.id}
+                      label={`ÉPISODE ${episode.episodeNumber}`}
+                      value={episode.id}
+                    />
+                  ))}
+                </Picker>
+              </View>
             </View>
+
+            {/* Sélecteur de serveur */}
+            {episodeDetails && episodeDetails.sources.length > 0 && (
+              <View style={styles.selectorHalf}>
+                <View style={styles.pickerContainer}>
+                  <Picker
+                    selectedValue={selectedPlayer.toString()}
+                    onValueChange={(itemValue) => setSelectedPlayer(parseInt(itemValue as string))}
+                    style={styles.picker}
+                    dropdownIconColor="#ffffff"
+                  >
+                    {episodeDetails.sources.map((source, index) => (
+                      <Picker.Item
+                        key={`server-${index}-${source.server}`}
+                        label={`${source.server} (${source.quality})`}
+                        value={index.toString()}
+                      />
+                    ))}
+                  </Picker>
+                </View>
+              </View>
+            )}
           </View>
         )}
 
-        {/* Dropdown sélection épisode */}
-        {episodes.length > 0 && (
-          <View style={styles.dropdownContainer}>
-            <Text style={styles.dropdownLabel}>ÉPISODE</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={selectedEpisode?.id || ''}
-                onValueChange={(itemValue) => {
-                  const episode = episodes.find(ep => ep.id === itemValue);
-                  if (episode) {
-                    setSelectedEpisode(episode);
-                    loadEpisodeSources(episode);
-                  }
-                }}
-                style={styles.picker}
-                dropdownIconColor="#00bcd4"
-              >
-                {episodes.map((episode) => (
-                  <Picker.Item
-                    key={episode.id}
-                    label={`Épisode ${episode.episodeNumber}: ${episode.title}`}
-                    value={episode.id}
-                  />
-                ))}
-              </Picker>
-            </View>
+        {/* Dernière sélection - Style anime-sama */}
+        {selectedEpisode && (
+          <View style={styles.lastSelectionContainer}>
+            <Text style={styles.lastSelectionText}>
+              <Text style={styles.lastSelectionLabel}>DERNIÈRE SÉLECTION : </Text>
+              <Text style={styles.lastSelectionValue}>ÉPISODE {selectedEpisode.episodeNumber}</Text>
+            </Text>
+          </View>
+        )}
+
+        {/* Message d'erreur de pub - Style anime-sama */}
+        {selectedEpisode && (
+          <View style={styles.atomicMessageContainer}>
+            <Text style={styles.atomicMessageText}>⚛️I AM ATOMIC⚛️</Text>
+            <Text style={styles.atomicMessageSubtext}>
+              <Text style={styles.atomicMessageBold}>Trop de pub🙄? Changez de lecteur.</Text>
+            </Text>
           </View>
         )}
 
@@ -714,14 +750,87 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   pickerContainer: {
-    backgroundColor: '#1e293b',
+    backgroundColor: '#1f2937',
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: '#64748b',
+    borderColor: '#3b82f6',
   },
   picker: {
     color: '#ffffff',
     backgroundColor: 'transparent',
+  },
+  selectorsGrid: {
+    flexDirection: 'row',
+    gap: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  selectorHalf: {
+    flex: 1,
+  },
+  videoPlayerWrapper: {
+    borderRadius: 8,
+    overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: '#374151',
+    marginHorizontal: 16,
+    marginVertical: 8,
+  },
+  videoOverlay: {
+    position: 'absolute',
+    top: 16,
+    left: 16,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  videoInfoContainer: {
+    flexDirection: 'column',
+  },
+  videoAnimeTitle: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  videoEpisodeInfo: {
+    color: '#d1d5db',
+    fontSize: 12,
+    marginTop: 2,
+  },
+  lastSelectionContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  lastSelectionText: {
+    color: '#d1d5db',
+    fontSize: 14,
+  },
+  lastSelectionLabel: {
+    fontWeight: 'bold',
+  },
+  lastSelectionValue: {
+    color: '#ffffff',
+  },
+  atomicMessageContainer: {
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  atomicMessageText: {
+    color: '#d1d5db',
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  atomicMessageSubtext: {
+    color: '#d1d5db',
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 4,
+    fontStyle: 'italic',
+  },
+  atomicMessageBold: {
+    fontWeight: 'bold',
   },
 
   errorMessage: {
