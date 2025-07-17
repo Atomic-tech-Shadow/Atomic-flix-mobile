@@ -72,8 +72,8 @@ export default function App() {
             ) : showTelegramVerification ? (
               <TelegramVerification
                 onVerified={handleTelegramVerified}
-                telegramChannelUrl="https://t.me/votre_canal" // Remplacez par votre URL
-                channelName="ATOMIC FLIX Official"
+                telegramChannelUrl="https://t.me/Atomic_flix_officiel"
+                channelName="Atomic Flix Officiel"
               />
             ) : (
               <AppNavigator />

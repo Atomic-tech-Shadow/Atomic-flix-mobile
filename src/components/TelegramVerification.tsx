@@ -110,14 +110,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
     }, 2000);
   };
 
-  const resetVerification = async () => {
-    try {
-      await AsyncStorage.removeItem('telegram_verified');
-      Alert.alert('Reset', 'Vérification réinitialisée pour test');
-    } catch (error) {
-      console.log('Erreur reset:', error);
-    }
-  };
+
 
   return (
     <View style={styles.container}>
@@ -211,15 +204,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
             </Text>
           </View>
 
-          {/* Bouton debug pour reset (à supprimer en production) */}
-          {__DEV__ && (
-            <TouchableOpacity 
-              style={styles.debugButton}
-              onPress={resetVerification}
-            >
-              <Text style={styles.debugText}>Reset (Debug)</Text>
-            </TouchableOpacity>
-          )}
+
 
         </View>
       </LinearGradient>
@@ -342,17 +327,7 @@ const styles = StyleSheet.create({
     color: '#94a3b8',
     lineHeight: 20,
   },
-  debugButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: 'rgba(255, 0, 0, 0.2)',
-    borderRadius: 5,
-    alignSelf: 'center',
-  },
-  debugText: {
-    color: '#ff6b6b',
-    fontSize: 12,
-  },
+
 });
 
 export default TelegramVerification;
