@@ -20,7 +20,6 @@ SplashScreen.preventAutoHideAsync()
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
-  const [showTelegramVerification, setShowTelegramVerification] = useState(false);
 
   useEffect(() => {
     async function prepareApp() {
@@ -39,22 +38,14 @@ export default function App() {
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
-    if (appIsReady && !showSplash && !showTelegramVerification) {
-      // Ne cacher le splash screen d'Expo que quand tout est prêt :
-      // - App prête
-      // - Splash screen custom terminé
-      // - Vérification Telegram terminée
+    if (appIsReady && !showSplash) {
+      // Cacher le splash screen d'Expo quand l'app est prête
       await SplashScreen.hideAsync();
     }
-  }, [appIsReady, showSplash, showTelegramVerification]);
+  }, [appIsReady, showSplash]);
 
   const handleSplashFinish = () => {
     setShowSplash(false);
-    setShowTelegramVerification(true);
-  };
-
-  const handleTelegramVerified = () => {
-    setShowTelegramVerification(false);
   };
 
   // Ne rien rendre jusqu'à ce que l'app soit prête
@@ -69,12 +60,6 @@ export default function App() {
           <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
             {showSplash ? (
               <CustomSplashScreen onFinish={handleSplashFinish} />
-            ) : showTelegramVerification ? (
-              <TelegramVerification
-                onVerified={handleTelegramVerified}
-                telegramChannelUrl="https://t.me/Atomic_flix_officiel"
-                channelName="Atomic Flix Officiel"
-              />
             ) : (
               <AppNavigator />
             )}

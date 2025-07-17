@@ -24,6 +24,9 @@ import type { RootStackParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import NotificationService from '../utils/notificationService';
+import TelegramVerification from '../components/TelegramVerification';
+import { BlurView } from 'expo-blur';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -48,6 +51,7 @@ const HomeScreen: React.FC = () => {
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
+  const [showTelegramModal, setShowTelegramModal] = useState(false);
 
   // Configuration API identique au site web
   const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';
@@ -59,10 +63,29 @@ const HomeScreen: React.FC = () => {
   useEffect(() => {
     loadTrendingAnimes();
     initializeNotifications();
+    checkTelegramVerification();
     
     // Nettoyer les anciennes notifications au démarrage
     notificationService.cleanOldNotifications();
   }, []);
+
+  // Vérifier si l'utilisateur a déjà validé Telegram
+  const checkTelegramVerification = async () => {
+    try {
+      const verified = await AsyncStorage.getItem('telegram_verified');
+      if (verified !== 'true') {
+        setShowTelegramModal(true);
+      }
+    } catch (error) {
+      console.log('Erreur vérification Telegram:', error);
+      setShowTelegramModal(true);
+    }
+  };
+
+  // Gestionnaire de fermeture du modal Telegram
+  const handleTelegramVerified = () => {
+    setShowTelegramModal(false);
+  };
 
   // Initialiser les paramètres de notification
   const initializeNotifications = async () => {
@@ -510,6 +533,17 @@ const HomeScreen: React.FC = () => {
           </View>
         )}
       </ScrollView>
+      
+      {/* Modal de vérification Telegram avec effet blur */}
+      {showTelegramModal && (
+        <View style={styles.telegramModalOverlay}>
+          <BlurView intensity={50} style={styles.blurView}>
+            <View style={styles.telegramModalContainer}>
+              <TelegramVerification onVerified={handleTelegramVerified} />
+            </View>
+          </BlurView>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -751,6 +785,36 @@ const styles = StyleSheet.create({
     color: '#6b7280',
     textAlign: 'center',
     marginBottom: 16,
+  },
+
+  // Styles pour le modal Telegram avec effet blur
+  telegramModalOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1000,
+  },
+  blurView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+  },
+  telegramModalContainer: {
+    width: '90%',
+    maxWidth: 400,
+    backgroundColor: 'rgba(16, 16, 30, 0.95)',
+    borderRadius: 20,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 188, 212, 0.3)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 20,
   },
 
 });

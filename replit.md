@@ -8,6 +8,16 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Modal Telegram avec effet blur intégré - July 17, 2025**
+- ✅ Modal de vérification Telegram intégré dans HomeScreen avec BlurView
+- ✅ Effet de flou en arrière-plan pour modal moderne et professionnel
+- ✅ Composant TelegramVerification simplifié et optimisé pour modal compact
+- ✅ Configuration canal officiel : https://t.me/Atomic_flix_officiel
+- ✅ Interface centrée avec logo atomique, boutons S'abonner et Vérifier
+- ✅ Mémorisation des utilisateurs vérifiés avec AsyncStorage
+- ✅ Suppression de l'écran séparé, modal apparaît en superposition sur contenu
+- ✅ Dépendance expo-blur installée pour effet de flou natif
+
 **SafeAreaView avec edges pour Android - July 17, 2025**
 - ✅ Configuration SafeAreaView avec edges={['top', 'left', 'right']} sur tous les écrans
 - ✅ Application reste AU-DESSUS de la barre navigation système Android
