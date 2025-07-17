@@ -80,42 +80,28 @@ function createDataExtractionRules(config) {
         fs.mkdirSync(values35Dir, { recursive: true });
       }
       
-      // Styles généraux pour splash screen plein écran
+      // Styles généraux pour application mobile
       const stylesContent = `<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Thème principal pour splash screen plein écran -->
-    <style name="Theme.App.SplashScreen" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:windowBackground">@color/splash_background</item>
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowTranslucentNavigation">false</item>
+    <!-- Thème principal de l'application -->
+    <style name="Theme.App" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/app_background</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
         <item name="android:screenOrientation">portrait</item>
     </style>
     
-    <!-- Couleur de fond du splash screen -->
-    <color name="splash_background">#0a0a1a</color>
+    <!-- Couleur de fond de l'application -->
+    <color name="app_background">#0a0a1a</color>
 </resources>`;
       
       // Styles spécifiques Android 35+ pour edge-to-edge
       const styles35Content = `<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Thème pour Android 35+ avec support edge-to-edge -->
-    <style name="Theme.App.SplashScreen" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:windowBackground">@color/splash_background</item>
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowTranslucentNavigation">false</item>
+    <style name="Theme.App" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/app_background</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
@@ -124,8 +110,8 @@ function createDataExtractionRules(config) {
         <item name="android:enforceNavigationBarContrast">false</item>
     </style>
     
-    <!-- Couleur de fond du splash screen -->
-    <color name="splash_background">#0a0a1a</color>
+    <!-- Couleur de fond de l'application -->
+    <color name="app_background">#0a0a1a</color>
 </resources>`;
       
       fs.writeFileSync(path.join(valuesDir, "styles.xml"), stylesContent);

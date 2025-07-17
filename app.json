@@ -6,11 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/atomic-flix-logo.png",
     "userInterfaceStyle": "dark",
-    "splash": {
-      "image": "./assets/splash/splash-design.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#0a0a1a"
-    },
+
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.atomicflix.mobile"
@@ -27,16 +23,7 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS"
       ],
-      "splash": {
-        "image": "./assets/splash/splash-design.png",
-        "resizeMode": "cover",
-        "backgroundColor": "#0a0a1a",
-        "mdpi": "./assets/splash/splash-design.png",
-        "hdpi": "./assets/splash/splash-design.png",
-        "xhdpi": "./assets/splash/splash-design.png",
-        "xxhdpi": "./assets/splash/splash-design.png",
-        "xxxhdpi": "./assets/splash/splash-design.png"
-      }
+
     },
     "web": {
       "favicon": "./assets/favicon.png"
