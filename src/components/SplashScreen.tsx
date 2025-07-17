@@ -94,19 +94,13 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
   });
 
   return (
-    <View style={[styles.container, {
-      marginTop: -insets.top,
-      marginBottom: -insets.bottom,
-      height: height + insets.top + insets.bottom,
-    }]}>
-      <StatusBar style="light" hidden={true} />
+    <View style={styles.container}>
+      <StatusBar style="light" backgroundColor="#0a0a1a" translucent={false} />
       
-      {/* Image de fond plein écran */}
+      {/* Image de fond respectant les safe areas */}
       <Image
         source={require('../../assets/splash/splash-design.png')}
-        style={[styles.backgroundImage, {
-          height: height + insets.top + insets.bottom,
-        }]}
+        style={styles.backgroundImage}
         resizeMode="cover"
       />
       
@@ -180,13 +174,8 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    flex: 1,
     backgroundColor: '#0a0a1a',
-    zIndex: 1000,
   },
   backgroundImage: {
     position: 'absolute',
@@ -195,12 +184,15 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     width: width,
+    height: height,
   },
   overlayContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(10, 10, 26, 0.3)',
+    paddingTop: 50,
+    paddingBottom: 50,
   },
   starsContainer: {
     position: 'absolute',

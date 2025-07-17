@@ -25,6 +25,7 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ⚡ LoadingSpinner unifié: composant réutilisable pour tous les chargements du projet
 - 🐛 Bug AnimePlayerScreen corrigé: problème de chargement séquentiel des données résolu
 - 📱 Version APK mise à jour: v1.0.3 → v2.0.0 pour nouveau build
+- 🤖 Barres système Android corrigées: splash screen et contenu respectent les safe areas
 
 ## User Preferences
 
