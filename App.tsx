@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View } from 'react-native';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -9,33 +10,60 @@ import AppNavigator from './src/navigation/AppNavigator';
 import CustomSplashScreen from './src/components/SplashScreen';
 import { queryClient } from './src/utils/queryClient';
 
-// Empêcher la fermeture automatique du splash screen d'Expo
-SplashScreen.preventAutoHideAsync();
+// CRITIQUE : Appeler preventAutoHideAsync() dans le scope global
+// avant tout rendu React pour éviter le flash du splash screen par défaut
+SplashScreen.preventAutoHideAsync()
+  .then(() => console.log('✅ Splash screen auto-hide prevented'))
+  .catch(console.warn);
 
 export default function App() {
+  const [appIsReady, setAppIsReady] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    // Cacher le splash screen d'Expo immédiatement au démarrage
-    const hideSplash = async () => {
-      await SplashScreen.hideAsync();
-    };
-    hideSplash();
+    async function prepareApp() {
+      try {
+        // Ici on peut ajouter des chargements async (fonts, données, etc.)
+        // Pour l'instant, on simule juste un délai minimal
+        await new Promise(resolve => setTimeout(resolve, 100));
+      } catch (e) {
+        console.warn('Erreur lors de la préparation de l\'app:', e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+
+    prepareApp();
   }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady && !showSplash) {
+      // Ne cacher le splash screen d'Expo que quand l'app est prête
+      // ET que notre splash screen custom est terminé
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady, showSplash]);
 
   const handleSplashFinish = () => {
     setShowSplash(false);
   };
 
+  // Ne rien rendre jusqu'à ce que l'app soit prête
+  if (!appIsReady) {
+    return null;
+  }
+
   return (
     <SafeAreaProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <QueryClientProvider client={queryClient}>
-          {showSplash ? (
-            <CustomSplashScreen onFinish={handleSplashFinish} />
-          ) : (
-            <AppNavigator />
-          )}
+          <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+            {showSplash ? (
+              <CustomSplashScreen onFinish={handleSplashFinish} />
+            ) : (
+              <AppNavigator />
+            )}
+          </View>
         </QueryClientProvider>
       </GestureHandlerRootView>
     </SafeAreaProvider>

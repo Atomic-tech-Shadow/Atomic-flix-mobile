@@ -38,6 +38,15 @@
       "./android-manifest-config.js",
       "./android-resources-config.js",
       [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0a0a1a",
+          "image": "./assets/splash/splash-design.png",
+          "imageWidth": 200,
+          "resizeMode": "cover"
+        }
+      ],
+      [
         "expo-build-properties",
         {
           "android": {

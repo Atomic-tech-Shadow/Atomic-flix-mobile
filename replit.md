@@ -38,7 +38,15 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Modification App.tsx pour gérer les deux splash screens (Expo + custom)
 - ✅ Ajout de expo-splash-screen pour contrôle précis du timing
 - ✅ Implémentation preventAutoHideAsync() pour contrôler l'affichage
-- ✅ Transition fluide entre splash screen Expo et écran personnalisé
+- ✅ Transition fluide
+
+**Fix splash screen Expo par défaut - July 17, 2025**
+- ✅ Solution complète pour éviter le flash du splash screen par défaut Expo
+- ✅ preventAutoHideAsync() dans le scope global avant tout rendu React
+- ✅ App retourne null jusqu'à ce qu'elle soit prête (empêche flash)
+- ✅ SplashScreen.hideAsync() appelé seulement après fin du splash custom
+- ✅ Plugin expo-splash-screen ajouté dans app.json pour configuration native
+- ✅ Contrôle optimal du timing avec onLayout callback entre splash screen Expo et écran personnalisé
 - ✅ Expo development server opérationnel sur port 8081
 
 **Nettoyage complet du projet - July 17, 2025**
