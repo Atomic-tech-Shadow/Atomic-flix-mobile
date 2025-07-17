@@ -36,8 +36,7 @@
         "xhdpi": "./assets/splash/splash-design.png",
         "xxhdpi": "./assets/splash/splash-design.png",
         "xxxhdpi": "./assets/splash/splash-design.png"
-      },
-      "screenOrientation": "portrait"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
