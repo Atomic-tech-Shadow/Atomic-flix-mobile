@@ -24,16 +24,16 @@ export default function NotFoundScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
       <StatusBar style="light" backgroundColor="#0a0a1a" />
-      
+
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
         <SharedHeader />
       </View>
-      
+
       <View style={styles.container}>
         {/* Background overlay */}
         <View style={styles.overlay} />
-      
+
       {/* Content */}
       <View style={styles.content}>
         {/* Logo ATOMIC FLIX */}
@@ -56,13 +56,13 @@ export default function NotFoundScreen({ navigation }: Props) {
             Il semblerait que cette page se soit perdue dans l'espace-temps. 
             Retournez à l'accueil pour découvrir nos animes.
           </Text>
-          
+
           {/* Action buttons */}
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.homeButton} onPress={goHome}>
               <Text style={styles.homeButtonText}>Retour à l'accueil</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity style={styles.backButton} onPress={goBack}>
               <Text style={styles.backButtonText}>Page précédente</Text>
             </TouchableOpacity>
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#0a0a1a',
     position: 'relative',
   },
   overlay: {
