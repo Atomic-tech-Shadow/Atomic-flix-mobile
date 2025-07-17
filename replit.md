@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Réduction taille header mobile - July 17, 2025**
+- ✅ Header principal (SharedHeader) : paddingTop 50 → 20 pixels
+- ✅ Header détails anime (AnimeDetailScreen) : paddingTop 50 → 20 pixels  
+- ✅ Header lecteur manga (MangaReaderScreen) : paddingTop 50 → 20 pixels
+- ✅ Menu drawer : paddingTop 50 → 20 pixels
+- ✅ paddingBottom réduit de 12 → 8 pixels sur tous les headers
+- ✅ Interface plus compacte et moderne avec cohérence maintenue
+
 **Infrastructure Bot Telegram pour vérification réelle - July 17, 2025**
 - ✅ Guide complet de mise en œuvre avec Bot Telegram API
 - ✅ Serveur Node.js avec endpoint `/api/verify-subscription`

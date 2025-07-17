@@ -289,8 +289,8 @@ const styles = StyleSheet.create({
   mobileHeader: {
     backgroundColor: '#0a0a1a',
     paddingHorizontal: 16,
-    paddingTop: 50,
-    paddingBottom: 12,
+    paddingTop: 20,
+    paddingBottom: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#1a1a2e',
   },
@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRightWidth: 1,
     borderRightColor: '#1a1a2e',
-    paddingTop: 50,
+    paddingTop: 20,
   },
   drawerHeader: {
     flexDirection: 'row',

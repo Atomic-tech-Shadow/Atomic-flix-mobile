@@ -394,8 +394,8 @@ const styles = StyleSheet.create({
   mobileHeader: {
     backgroundColor: 'rgba(10,10,26,0.95)',
     paddingHorizontal: 16,
-    paddingTop: 50,
-    paddingBottom: 12,
+    paddingTop: 20,
+    paddingBottom: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#1a1a2e',
     position: 'absolute',
