@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Image, Text, StyleSheet, Dimensions, Animated } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface SplashScreenProps {
   onFinish: () => void;
@@ -10,15 +9,14 @@ interface SplashScreenProps {
 const { width, height } = Dimensions.get('screen');
 
 const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
-  const insets = useSafeAreaInsets();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
-  const pulseAnim = useRef(new Animated.Value(0.9)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
   const rotateAnim = useRef(new Animated.Value(0)).current;
   const textOpacityAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Animation d'apparition immédiate avec pulsation
+    // Animation d'apparition progressive
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
@@ -28,65 +26,70 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
       Animated.spring(scaleAnim, {
         toValue: 1,
         tension: 50,
-        friction: 7,
+        friction: 8,
         useNativeDriver: true,
       }),
     ]).start();
 
-    // Animation de pulsation continue
-    Animated.loop(
+    // Animation de pulsation douce et continue
+    const pulseAnimation = Animated.loop(
       Animated.sequence([
         Animated.timing(pulseAnim, {
-          toValue: 1.05,
+          toValue: 1.03,
           duration: 1500,
           useNativeDriver: true,
         }),
         Animated.timing(pulseAnim, {
-          toValue: 0.9,
+          toValue: 0.97,
           duration: 1500,
           useNativeDriver: true,
         }),
       ])
-    ).start();
+    );
+    pulseAnimation.start();
 
-    // Animation de rotation continue pour les étoiles
-    Animated.loop(
+    // Animation de rotation lente pour les étoiles
+    const rotationAnimation = Animated.loop(
       Animated.timing(rotateAnim, {
         toValue: 1,
-        duration: 8000,
+        duration: 10000,
         useNativeDriver: true,
       })
-    ).start();
+    );
+    rotationAnimation.start();
 
     // Apparition retardée du texte
-    setTimeout(() => {
+    const textTimer = setTimeout(() => {
       Animated.timing(textOpacityAnim, {
         toValue: 1,
         duration: 800,
         useNativeDriver: true,
       }).start();
-    }, 500);
+    }, 300);
 
-    // Auto-fermeture après 4 secondes avec animation de sortie spectaculaire
+    // Auto-fermeture après 2 secondes
     const autoCloseTimer = setTimeout(() => {
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 0,
-          duration: 600,
+          duration: 500,
           useNativeDriver: true,
         }),
         Animated.timing(scaleAnim, {
-          toValue: 1.2,
-          duration: 600,
+          toValue: 1.1,
+          duration: 500,
           useNativeDriver: true,
         }),
       ]).start(() => {
         onFinish();
       });
-    }, 4000);
+    }, 2000);
 
     return () => {
+      clearTimeout(textTimer);
       clearTimeout(autoCloseTimer);
+      pulseAnimation.stop();
+      rotationAnimation.stop();
     };
   }, [fadeAnim, scaleAnim, pulseAnim, rotateAnim, textOpacityAnim, onFinish]);
 
@@ -192,9 +195,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(10, 10, 26, 0.3)',
-    paddingTop: 50,
-    paddingBottom: 50,
+    backgroundColor: 'rgba(10, 10, 26, 0.2)',
+    paddingHorizontal: 20,
   },
   starsContainer: {
     position: 'absolute',
@@ -222,23 +224,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   title: {
-    fontSize: 36,
+    fontSize: 32,
     fontWeight: 'bold',
     color: '#00bcd4',
     textAlign: 'center',
-    marginBottom: 12,
-    letterSpacing: 4,
-    textShadowColor: 'rgba(0, 188, 212, 0.8)',
+    marginBottom: 8,
+    letterSpacing: 3,
+    textShadowColor: 'rgba(0, 188, 212, 0.6)',
     textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 15,
+    textShadowRadius: 12,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#e2e8f0',
     textAlign: 'center',
-    marginBottom: 40,
-    opacity: 0.95,
-    letterSpacing: 1,
+    marginBottom: 32,
+    opacity: 0.9,
+    letterSpacing: 0.5,
   },
   loadingContainer: {
     alignItems: 'center',

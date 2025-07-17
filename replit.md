@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Optimisation animations splash screen selon documentation Expo - July 17, 2025**
+- ✅ Suppression des logs de debug pour performance optimale
+- ✅ Animation spring pour l'apparition (tension: 50, friction: 8)
+- ✅ Pulsation douce et subtile (0.97 ↔ 1.03, durée 1500ms)
+- ✅ Rotation lente des étoiles (10 secondes par tour)
+- ✅ Durée totale réduite à 2 secondes (meilleures pratiques Expo)
+- ✅ Tailles et espacements optimisés selon standards UX mobile
+
 **Réduction taille header mobile - July 17, 2025**
 - ✅ Header principal (SharedHeader) : paddingTop 50 → 20 pixels
 - ✅ Header détails anime (AnimeDetailScreen) : paddingTop 50 → 20 pixels  
