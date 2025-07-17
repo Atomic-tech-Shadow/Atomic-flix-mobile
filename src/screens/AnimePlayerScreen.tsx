@@ -481,6 +481,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
       
+      {/* Header fixe au-dessus du contenu */}
+      <View style={styles.headerContainer}>
+        <SharedHeader />
+      </View>
+      
       <ScrollView 
         style={styles.scrollContainer}
         refreshControl={
@@ -488,9 +493,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         }
         showsVerticalScrollIndicator={false}
       >
-        {/* Header avec SharedHeader */}
-        <SharedHeader />
-        
         {/* Bannière avec titre de la saison - Pleine largeur comme le web */}
         <View style={styles.bannerContainer}>
           {animeData?.image && (
@@ -732,6 +734,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#0f172a',
+  },
+  headerContainer: {
+    position: 'relative',
+    zIndex: 10,
     backgroundColor: '#0f172a',
   },
   bannerContainer: {

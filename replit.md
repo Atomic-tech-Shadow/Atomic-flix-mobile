@@ -8,6 +8,13 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Correction navigation AnimePlayerScreen - July 17, 2025**
+- ✅ Corrigé structure navigation AnimePlayerScreen pour correspondre à AnimeDetailScreen
+- ✅ Header SharedHeader maintenant fixe au lieu de défiler avec le contenu
+- ✅ Seule l'image bannière et le contenu défilent, header reste en place
+- ✅ Ajout style headerContainer pour cohérence visuelle
+- ✅ Comportement navigation maintenant identique aux autres écrans
+
 **Audit complet barres système Android - July 17, 2025**
 - ✅ Vérification de tous les écrans pour conformité Android system bars
 - ✅ TOUS LES ÉCRANS (9/9) respectent les safe areas et barres système
