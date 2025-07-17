@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000',
     position: 'relative',
+    paddingBottom: 20, // Espace pour la barre de navigation Android
   },
   overlay: {
     position: 'absolute',

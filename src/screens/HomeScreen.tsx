@@ -518,6 +518,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0a0a1a', // Dark blue exact comme le site
+    paddingBottom: 20, // Espace pour la barre de navigation Android
   },
   headerContainer: {
     position: 'relative',
