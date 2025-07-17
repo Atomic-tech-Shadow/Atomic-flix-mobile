@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Harmonisation couleurs vérification Telegram - July 17, 2025**
+- ✅ Bouton S'abonner : gradient bleu Telegram (#0088cc) → cyan uniforme (#00bcd4)
+- ✅ Bouton désactivé : gris basique (#333) → gris application (#374151)
+- ✅ Message succès : vert générique (#4ade80) → cyan application (#00bcd4)
+- ✅ Fond modal : RGB(16,16,30) → RGB(10,10,26) cohérent avec thème principal
+- ✅ Ombres boutons : couleur bleue Telegram → cyan application uniforme
+- ✅ Palette de couleurs 100% cohérente dans toute l'application
+
 **Mise à jour tailles boutons AnimePlayerScreen - July 17, 2025**
 - ✅ Boutons navigation (gauche/droite) : 40x40 → 56x56 pixels
 - ✅ Bouton téléchargement (vert) : 40x40 → 56x56 pixels

@@ -805,7 +805,7 @@ const styles = StyleSheet.create({
   telegramModalContainer: {
     width: '90%',
     maxWidth: 400,
-    backgroundColor: 'rgba(16, 16, 30, 0.95)',
+    backgroundColor: 'rgba(10, 10, 26, 0.95)',
     borderRadius: 20,
     padding: 20,
     borderWidth: 1,

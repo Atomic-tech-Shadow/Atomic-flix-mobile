@@ -134,7 +134,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           activeOpacity={0.8}
         >
           <LinearGradient
-            colors={['#0088cc', '#005588']}
+            colors={['#00bcd4', '#0094cc']}
             style={styles.buttonGradient}
           >
             <Text style={styles.buttonText}>📱 S'abonner</Text>
@@ -151,7 +151,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           activeOpacity={0.8}
         >
           <LinearGradient
-            colors={hasSubscribed ? ['#00bcd4', '#0094cc'] : ['#333', '#555']}
+            colors={hasSubscribed ? ['#00bcd4', '#0094cc'] : ['#374151', '#475569']}
             style={styles.buttonGradient}
           >
             {isVerifying ? (
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     elevation: 3,
-    shadowColor: '#0088cc',
+    shadowColor: '#00bcd4',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
   },
   successMessage: {
     fontSize: 14,
-    color: '#4ade80',
+    color: '#00bcd4',
     textAlign: 'center',
     marginTop: 15,
     fontWeight: '500',
