@@ -23,7 +23,11 @@ export default function AboutScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar style="light" backgroundColor="#0a0a1a" />
-      <SharedHeader />
+      
+      {/* Header fixe au-dessus du contenu */}
+      <View style={styles.headerContainer}>
+        <SharedHeader />
+      </View>
       
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         
@@ -162,6 +166,11 @@ export default function AboutScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: '#0a0a1a',
+  },
+  headerContainer: {
+    position: 'relative',
+    zIndex: 10,
     backgroundColor: '#0a0a1a',
   },
   container: {

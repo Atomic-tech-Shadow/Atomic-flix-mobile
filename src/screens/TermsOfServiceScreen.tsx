@@ -17,7 +17,12 @@ export default function TermsOfServiceScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar style="light" backgroundColor="#0a0a1a" />
-      <SharedHeader />
+      
+      {/* Header fixe au-dessus du contenu */}
+      <View style={styles.headerContainer}>
+        <SharedHeader />
+      </View>
+      
       <View style={styles.container}>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -235,6 +240,11 @@ export default function TermsOfServiceScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: '#0a0a1a',
+  },
+  headerContainer: {
+    position: 'relative',
+    zIndex: 10,
     backgroundColor: '#0a0a1a',
   },
   container: {

@@ -318,6 +318,14 @@ const HomeScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" backgroundColor="#0a0a1a" />
       
+      {/* Header fixe au-dessus du contenu */}
+      <View style={styles.headerContainer}>
+        <SharedHeader 
+          onSearchPress={handleSearchPress}
+          onNotificationPress={handleNotificationPress}
+        />
+      </View>
+      
       <ScrollView
         style={styles.scrollView}
         refreshControl={
@@ -338,10 +346,6 @@ const HomeScreen: React.FC = () => {
         alwaysBounceVertical={false}
         nestedScrollEnabled={true}
       >
-        <SharedHeader 
-          onSearchPress={handleSearchPress}
-          onNotificationPress={handleNotificationPress}
-        />
         
         {/* Barre de recherche locale (identique au site web) */}
         {showSearchBar && (
@@ -514,6 +518,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0a0a1a', // Dark blue exact comme le site
+  },
+  headerContainer: {
+    position: 'relative',
+    zIndex: 10,
+    backgroundColor: '#0a0a1a',
   },
   scrollView: {
     flex: 1,

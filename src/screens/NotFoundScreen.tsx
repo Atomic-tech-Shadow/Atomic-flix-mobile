@@ -23,7 +23,12 @@ export default function NotFoundScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar style="light" backgroundColor="#0a0a1a" />
-      <SharedHeader />
+      
+      {/* Header fixe au-dessus du contenu */}
+      <View style={styles.headerContainer}>
+        <SharedHeader />
+      </View>
+      
       <View style={styles.container}>
         {/* Background overlay */}
         <View style={styles.overlay} />
@@ -79,6 +84,11 @@ export default function NotFoundScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: '#0a0a1a',
+  },
+  headerContainer: {
+    position: 'relative',
+    zIndex: 10,
     backgroundColor: '#0a0a1a',
   },
   container: {
