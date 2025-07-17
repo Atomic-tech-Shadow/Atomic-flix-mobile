@@ -12,6 +12,7 @@ import {
   Dimensions,
   StatusBar,
   Image,
+  Animated,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Picker } from '@react-native-picker/picker';
@@ -50,6 +51,73 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
   const webViewRef = useRef<WebView>(null);
+
+  // Animations pour l'affichage progressif
+  const bannerAnim = useRef(new Animated.Value(0)).current;
+  const languageAnim = useRef(new Animated.Value(0)).current;
+  const selectorsAnim = useRef(new Animated.Value(0)).current;
+  const selectionAnim = useRef(new Animated.Value(0)).current;
+  const playerAnim = useRef(new Animated.Value(0)).current;
+  const navigationAnim = useRef(new Animated.Value(0)).current;
+  const messageAnim = useRef(new Animated.Value(0)).current;
+
+  // Fonction pour déclencher les animations progressives
+  const startProgressiveAnimations = () => {
+    // Réinitialise toutes les animations
+    bannerAnim.setValue(0);
+    languageAnim.setValue(0);
+    selectorsAnim.setValue(0);
+    selectionAnim.setValue(0);
+    playerAnim.setValue(0);
+    navigationAnim.setValue(0);
+    messageAnim.setValue(0);
+
+    // Séquence d'animations avec délais progressifs
+    Animated.sequence([
+      // Bannière apparaît en premier
+      Animated.timing(bannerAnim, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      // Sélecteur de langue avec un délai
+      Animated.timing(languageAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      // Sélecteurs d'épisode et serveur
+      Animated.timing(selectorsAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      // Dernière sélection
+      Animated.timing(selectionAnim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      // Lecteur vidéo
+      Animated.timing(playerAnim, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      // Navigation
+      Animated.timing(navigationAnim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      // Message final
+      Animated.timing(messageAnim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
 
   // Fonction pour les requêtes API externes
   const apiRequest = async (endpoint: string, timeoutMs = 20000) => {
@@ -294,6 +362,10 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             // Charger les épisodes immédiatement après avoir défini animeData
             setTimeout(async () => {
               await loadSeasonEpisodesWithData(animeInfo, seasonToSelect, defaultLanguage as 'VF' | 'VOSTFR', true);
+              // Déclencher les animations après le chargement
+              setTimeout(() => {
+                startProgressiveAnimations();
+              }, 300);
             }, 100);
           } else {
             setError('Aucune langue disponible pour cette saison');
@@ -483,7 +555,18 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       <SharedHeader />
       
       {/* Bannière avec titre de la saison - Pleine largeur comme le web */}
-      <View style={styles.bannerContainer}>
+      <Animated.View 
+        style={[
+          styles.bannerContainer,
+          {
+            opacity: bannerAnim,
+            transform: [{ translateY: bannerAnim.interpolate({
+              inputRange: [0, 1],
+              outputRange: [-50, 0],
+            }) }],
+          }
+        ]}
+      >
         {animeData?.image && (
           <Image
             source={{ uri: animeData.image }}
@@ -496,7 +579,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           <Text style={styles.bannerTitle}>{animeData.title}</Text>
           <Text style={styles.bannerSeason}>{selectedSeason?.name}</Text>
         </View>
-      </View>
+      </Animated.View>
 
       <ScrollView 
         style={styles.scrollContainer}
@@ -506,7 +589,18 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       >
         {/* Sélecteur de langue */}
         {selectedSeason && selectedSeason.languages.length > 1 && (
-          <View style={styles.languageSelector}>
+          <Animated.View 
+            style={[
+              styles.languageSelector,
+              {
+                opacity: languageAnim,
+                transform: [{ translateX: languageAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [-100, 0],
+                }) }],
+              }
+            ]}
+          >
             {selectedSeason.languages.map((lang) => (
               <TouchableOpacity
                 key={lang}
@@ -542,12 +636,23 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 </Text>
               </TouchableOpacity>
             ))}
-          </View>
+          </Animated.View>
         )}
 
         {/* Sélecteurs en grille 2 colonnes - Style anime-sama */}
         {episodes.length > 0 && (
-          <View style={styles.selectorsGrid}>
+          <Animated.View 
+            style={[
+              styles.selectorsGrid,
+              {
+                opacity: selectorsAnim,
+                transform: [{ scale: selectorsAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.8, 1],
+                }) }],
+              }
+            ]}
+          >
             {/* Sélecteur d'épisode */}
             <View style={styles.selectorHalf}>
               <View style={styles.pickerContainer}>
@@ -595,25 +700,57 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 </View>
               </View>
             )}
-          </View>
+          </Animated.View>
         )}
 
         {/* Dernière sélection - Style anime-sama */}
         {selectedEpisode && (
-          <View style={styles.lastSelectionContainer}>
+          <Animated.View 
+            style={[
+              styles.lastSelectionContainer,
+              {
+                opacity: selectionAnim,
+                transform: [{ translateY: selectionAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [20, 0],
+                }) }],
+              }
+            ]}
+          >
             <Text style={styles.lastSelectionText}>
               <Text style={styles.lastSelectionLabel}>DERNIÈRE SÉLECTION : </Text>
               <Text style={styles.lastSelectionValue}>ÉPISODE {selectedEpisode.episodeNumber}</Text>
             </Text>
-          </View>
+          </Animated.View>
         )}
 
         {/* Lecteur vidéo */}
-        {renderVideoPlayer()}
+        <Animated.View 
+          style={{
+            opacity: playerAnim,
+            transform: [{ scale: playerAnim.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0.9, 1],
+            }) }],
+          }}
+        >
+          {renderVideoPlayer()}
+        </Animated.View>
 
         {/* Navigation entre épisodes - Style anime-sama identique au web */}
         {selectedEpisode && (
-          <View style={styles.navigationContainer}>
+          <Animated.View 
+            style={[
+              styles.navigationContainer,
+              {
+                opacity: navigationAnim,
+                transform: [{ translateY: navigationAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [30, 0],
+                }) }],
+              }
+            ]}
+          >
             <TouchableOpacity
               style={[
                 styles.navButtonCustom,
@@ -682,17 +819,28 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             >
               <Ionicons name="chevron-forward" size={24} color="#ffffff" />
             </TouchableOpacity>
-          </View>
+          </Animated.View>
         )}
 
         {/* Message d'erreur de pub - Style anime-sama */}
         {selectedEpisode && (
-          <View style={styles.atomicMessageContainer}>
+          <Animated.View 
+            style={[
+              styles.atomicMessageContainer,
+              {
+                opacity: messageAnim,
+                transform: [{ scale: messageAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.8, 1],
+                }) }],
+              }
+            ]}
+          >
             <Text style={styles.atomicMessageText}>⚛️I AM ATOMIC⚛️</Text>
             <Text style={styles.atomicMessageSubtext}>
               <Text style={styles.atomicMessageBold}>Trop de pub🙄? Changez de lecteur.</Text>
             </Text>
-          </View>
+          </Animated.View>
         )}
 
         {/* Message d'erreur */}
