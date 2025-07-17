@@ -7,197 +7,174 @@ const fs = require('fs');
 const path = require('path');
 
 function testResult(name, passed, details = '') {
-  const status = passed ? '✅' : '❌';
-  const result = passed ? 'RÉUSSI' : 'ÉCHOUÉ';
-  
-  console.log(`${status} ${name} : ${result}`);
+  console.log(`${passed ? '✅' : '❌'} ${name}`);
   if (details) {
     console.log(`   ${details}`);
   }
 }
 
 function testWebDropdowns() {
-  console.log('🔍 Test des dropdowns du code web...');
+  console.log('\n🌐 ANALYSE DES DROPDOWNS WEB');
   
-  const webCodePath = path.join(__dirname, 'attached_assets/anime-player_1752707514026.tsx');
+  // Lire le fichier web
+  const webFile = path.join(__dirname, 'attached_assets', 'anime-player_1752707514026.tsx');
   
-  if (!fs.existsSync(webCodePath)) {
-    testResult('Code web disponible', false, 'Fichier manquant');
-    return { hasEpisodeSelect: false, hasServerSelect: false };
+  if (!fs.existsSync(webFile)) {
+    testResult('Fichier web trouvé', false, 'Fichier web non trouvé');
+    return false;
   }
   
-  const webContent = fs.readFileSync(webCodePath, 'utf8');
+  const webContent = fs.readFileSync(webFile, 'utf8');
   
-  // Vérifier le dropdown d'épisode
-  const hasEpisodeSelect = webContent.includes('selectedEpisode?.id || \'\'') &&
-                           webContent.includes('ÉPISODE {episode.episodeNumber}') &&
-                           webContent.includes('onChange={(e) => {') &&
-                           webContent.includes('episodes.find(ep => ep.id === e.target.value)');
+  // Test 1: Grille 2 colonnes
+  const hasGrid2Cols = webContent.includes('grid-cols-2');
+  testResult('Grille 2 colonnes', hasGrid2Cols, 'grid-cols-2 détecté');
   
-  testResult('Dropdown épisode dans code web', hasEpisodeSelect, 'HTML select avec episode.episodeNumber');
+  // Test 2: Labels des épisodes
+  const hasEpisodeLabel = webContent.includes('ÉPISODE {episode.episodeNumber}');
+  testResult('Label épisode', hasEpisodeLabel, 'ÉPISODE {episode.episodeNumber} détecté');
   
-  // Vérifier le dropdown de serveur
-  const hasServerSelect = webContent.includes('selectedPlayer') &&
-                         webContent.includes('onChange={(e) => setSelectedPlayer(parseInt(e.target.value))') &&
-                         webContent.includes('{source.server} ({source.quality})');
+  // Test 3: Labels des serveurs
+  const hasServerLabel = webContent.includes('{source.server} ({source.quality})');
+  testResult('Label serveur', hasServerLabel, '{source.server} ({source.quality}) détecté');
   
-  testResult('Dropdown serveur dans code web', hasServerSelect, 'HTML select avec server et quality');
+  // Test 4: Styles des dropdowns
+  const hasDropdownStyles = webContent.includes('bg-gray-800 text-white px-4 py-3 rounded-lg');
+  testResult('Styles dropdown', hasDropdownStyles, 'Styles CSS détectés');
   
-  // Vérifier les styles
-  const hasWebStyles = webContent.includes('bg-gray-800 text-white px-4 py-3 rounded-lg') &&
-                      webContent.includes('border-2 border-blue-500 font-bold uppercase');
-  
-  testResult('Styles web des dropdowns', hasWebStyles, 'Styles CSS Tailwind');
-  
-  return { hasEpisodeSelect, hasServerSelect, hasWebStyles };
+  return hasGrid2Cols && hasEpisodeLabel && hasServerLabel && hasDropdownStyles;
 }
 
 function testReactNativeDropdowns() {
-  console.log('🔍 Test des dropdowns React Native...');
+  console.log('\n📱 ANALYSE DES DROPDOWNS REACT NATIVE');
   
-  const rnCodePath = path.join(__dirname, 'src/screens/AnimePlayerScreen.tsx');
+  // Lire le fichier React Native
+  const mobileFile = path.join(__dirname, 'src', 'screens', 'AnimePlayerScreen.tsx');
   
-  if (!fs.existsSync(rnCodePath)) {
-    testResult('Code React Native disponible', false, 'Fichier manquant');
-    return { hasEpisodePicker: false, hasServerPicker: false };
+  if (!fs.existsSync(mobileFile)) {
+    testResult('Fichier mobile trouvé', false, 'Fichier mobile non trouvé');
+    return false;
   }
   
-  const rnContent = fs.readFileSync(rnCodePath, 'utf8');
+  const mobileContent = fs.readFileSync(mobileFile, 'utf8');
   
-  // Vérifier le Picker d'épisode
-  const hasEpisodePicker = rnContent.includes('selectedEpisode?.id || \'\'') &&
-                          rnContent.includes('Épisode {episode.episodeNumber}: {episode.title}') &&
-                          rnContent.includes('onValueChange={(itemValue) => {') &&
-                          rnContent.includes('episodes.find(ep => ep.id === itemValue)');
+  // Test 1: Grille 2 colonnes (React Native)
+  const hasSelectorsGrid = mobileContent.includes('selectorsGrid');
+  testResult('Grille sélecteurs', hasSelectorsGrid, 'selectorsGrid détecté');
   
-  testResult('Picker épisode React Native', hasEpisodePicker, 'Picker avec episode.episodeNumber');
+  // Test 2: Labels des épisodes identiques
+  const hasEpisodeLabel = mobileContent.includes('ÉPISODE ${episode.episodeNumber}');
+  testResult('Label épisode identique', hasEpisodeLabel, 'ÉPISODE ${episode.episodeNumber} détecté');
   
-  // Vérifier le Picker de serveur
-  const hasServerPicker = rnContent.includes('selectedPlayer') &&
-                         rnContent.includes('onValueChange={(itemValue) => setSelectedPlayer(itemValue)') &&
-                         rnContent.includes('{source.server} - {source.quality}');
+  // Test 3: Labels des serveurs identiques
+  const hasServerLabel = mobileContent.includes('${source.server} (${source.quality})');
+  testResult('Label serveur identique', hasServerLabel, '${source.server} (${source.quality}) détecté');
   
-  testResult('Picker serveur React Native', hasServerPicker, 'Picker avec server et quality');
+  // Test 4: Picker React Native
+  const hasPicker = mobileContent.includes('<Picker');
+  testResult('Picker React Native', hasPicker, '<Picker détecté');
   
-  // Vérifier les styles React Native
-  const hasRNStyles = rnContent.includes('dropdownContainer') &&
-                     rnContent.includes('dropdownLabel') &&
-                     rnContent.includes('pickerContainer') &&
-                     rnContent.includes('SERVEUR') &&
-                     rnContent.includes('ÉPISODE');
+  // Test 5: Deux sélecteurs
+  const selectorHalfCount = (mobileContent.match(/selectorHalf/g) || []).length;
+  testResult('Deux sélecteurs', selectorHalfCount >= 2, `${selectorHalfCount} sélecteurs détectés`);
   
-  testResult('Styles React Native des dropdowns', hasRNStyles, 'Styles StyleSheet');
-  
-  return { hasEpisodePicker, hasServerPicker, hasRNStyles };
+  return hasSelectorsGrid && hasEpisodeLabel && hasServerLabel && hasPicker && selectorHalfCount >= 2;
 }
 
 function testFunctionalEquivalence() {
-  console.log('🔍 Test de l\'équivalence fonctionnelle...');
+  console.log('\n🔄 TEST D\'ÉQUIVALENCE FONCTIONNELLE');
   
-  const webCodePath = path.join(__dirname, 'attached_assets/anime-player_1752707514026.tsx');
-  const rnCodePath = path.join(__dirname, 'src/screens/AnimePlayerScreen.tsx');
+  // Test 1: Même logique de sélection
+  const webFile = path.join(__dirname, 'attached_assets', 'anime-player_1752707514026.tsx');
+  const mobileFile = path.join(__dirname, 'src', 'screens', 'AnimePlayerScreen.tsx');
   
-  if (!fs.existsSync(webCodePath) || !fs.existsSync(rnCodePath)) {
-    testResult('Fichiers disponibles', false, 'Fichiers manquants');
+  if (!fs.existsSync(webFile) || !fs.existsSync(mobileFile)) {
+    testResult('Fichiers disponibles', false, 'Un ou plusieurs fichiers manquants');
     return false;
   }
   
-  const webContent = fs.readFileSync(webCodePath, 'utf8');
-  const rnContent = fs.readFileSync(rnCodePath, 'utf8');
+  const webContent = fs.readFileSync(webFile, 'utf8');
+  const mobileContent = fs.readFileSync(mobileFile, 'utf8');
   
-  // Vérifier que les mêmes états sont utilisés
-  const sameStates = webContent.includes('selectedEpisode') && rnContent.includes('selectedEpisode') &&
-                    webContent.includes('selectedPlayer') && rnContent.includes('selectedPlayer') &&
-                    webContent.includes('episodes') && rnContent.includes('episodes') &&
-                    webContent.includes('episodeDetails') && rnContent.includes('episodeDetails');
+  // Test onChange episode
+  const webOnChange = webContent.includes('setSelectedEpisode(episode)');
+  const mobileOnChange = mobileContent.includes('setSelectedEpisode(episode)');
+  testResult('Logique onChange épisode', webOnChange && mobileOnChange, 'setSelectedEpisode() identique');
   
-  testResult('Mêmes états utilisés', sameStates, 'selectedEpisode, selectedPlayer, episodes, episodeDetails');
+  // Test onChange serveur
+  const webServerChange = webContent.includes('setSelectedPlayer(parseInt(e.target.value))');
+  const mobileServerChange = mobileContent.includes('setSelectedPlayer(parseInt(itemValue))');
+  testResult('Logique onChange serveur', webServerChange && mobileServerChange, 'setSelectedPlayer() équivalent');
   
-  // Vérifier que les mêmes fonctions sont appelées
-  const sameFunctions = webContent.includes('setSelectedEpisode') && rnContent.includes('setSelectedEpisode') &&
-                       webContent.includes('setSelectedPlayer') && rnContent.includes('setSelectedPlayer') &&
-                       webContent.includes('loadEpisodeSources') && rnContent.includes('loadEpisodeSources');
+  // Test loadEpisodeSources
+  const webLoadSources = webContent.includes('loadEpisodeSources(episode)');
+  const mobileLoadSources = mobileContent.includes('loadEpisodeSources(episode)');
+  testResult('Chargement sources', webLoadSources && mobileLoadSources, 'loadEpisodeSources() identique');
   
-  testResult('Mêmes fonctions appelées', sameFunctions, 'setSelectedEpisode, setSelectedPlayer, loadEpisodeSources');
-  
-  // Vérifier que les mêmes données sont affichées
-  const sameData = webContent.includes('episode.episodeNumber') && rnContent.includes('episode.episodeNumber') &&
-                  webContent.includes('source.server') && rnContent.includes('source.server') &&
-                  webContent.includes('source.quality') && rnContent.includes('source.quality');
-  
-  testResult('Mêmes données affichées', sameData, 'episodeNumber, server, quality');
-  
-  return sameStates && sameFunctions && sameData;
+  return webOnChange && mobileOnChange && webServerChange && mobileServerChange && webLoadSources && mobileLoadSources;
 }
 
 function testUILabels() {
-  console.log('🔍 Test des labels UI...');
+  console.log('\n🏷️ TEST DES LABELS UI');
   
-  const rnCodePath = path.join(__dirname, 'src/screens/AnimePlayerScreen.tsx');
+  const mobileFile = path.join(__dirname, 'src', 'screens', 'AnimePlayerScreen.tsx');
   
-  if (!fs.existsSync(rnCodePath)) {
-    testResult('Code React Native disponible', false, 'Fichier manquant');
+  if (!fs.existsSync(mobileFile)) {
+    testResult('Fichier mobile disponible', false, 'Fichier mobile non trouvé');
     return false;
   }
   
-  const rnContent = fs.readFileSync(rnCodePath, 'utf8');
+  const mobileContent = fs.readFileSync(mobileFile, 'utf8');
   
-  // Vérifier les labels en majuscules comme dans le code web
-  const hasUppercaseLabels = rnContent.includes('SERVEUR') &&
-                            rnContent.includes('ÉPISODE') &&
-                            rnContent.includes('dropdownLabel');
+  // Test des labels exacts
+  const labels = [
+    'ÉPISODE ${episode.episodeNumber}',
+    '${source.server} (${source.quality})',
+    'DERNIÈRE SÉLECTION',
+    'I AM ATOMIC'
+  ];
   
-  testResult('Labels en majuscules', hasUppercaseLabels, 'SERVEUR, ÉPISODE comme dans le code web');
+  let allLabelsFound = true;
+  labels.forEach(label => {
+    const found = mobileContent.includes(label);
+    testResult(`Label "${label}"`, found, found ? 'Trouvé' : 'Manquant');
+    if (!found) allLabelsFound = false;
+  });
   
-  // Vérifier le format des épisodes
-  const hasEpisodeFormat = rnContent.includes('Épisode {episode.episodeNumber}: {episode.title}');
-  
-  testResult('Format épisode correct', hasEpisodeFormat, 'Épisode N: Titre');
-  
-  // Vérifier le format des serveurs
-  const hasServerFormat = rnContent.includes('{source.server} - {source.quality}');
-  
-  testResult('Format serveur correct', hasServerFormat, 'Serveur - Qualité');
-  
-  return hasUppercaseLabels && hasEpisodeFormat && hasServerFormat;
+  return allLabelsFound;
 }
 
 async function runAllTests() {
-  console.log('🔄 TEST DE COMPARAISON DES DROPDOWNS - ATOMIC FLIX');
-  console.log('===================================================\\n');
+  console.log('🧪 TEST DE COMPARAISON DES DROPDOWNS - ATOMIC FLIX');
+  console.log('=====================================================');
   
-  const webResults = testWebDropdowns();
-  console.log('');
-  const rnResults = testReactNativeDropdowns();
-  console.log('');
-  const equivalenceResult = testFunctionalEquivalence();
-  console.log('');
-  const labelsResult = testUILabels();
+  const webTest = testWebDropdowns();
+  const mobileTest = testReactNativeDropdowns();
+  const functionalTest = testFunctionalEquivalence();
+  const labelsTest = testUILabels();
   
-  // Calculer les résultats
-  const webTests = Object.values(webResults).filter(Boolean).length;
-  const rnTests = Object.values(rnResults).filter(Boolean).length;
-  const totalTests = webTests + rnTests + (equivalenceResult ? 1 : 0) + (labelsResult ? 1 : 0);
-  const maxTests = 3 + 3 + 1 + 1; // 3 tests web + 3 tests RN + 1 équivalence + 1 labels
+  console.log('\n📊 RÉSULTATS FINAUX');
+  console.log('===================');
   
-  console.log('\\n============================================================');
-  console.log(`📊 RÉSULTATS: ${totalTests}/${maxTests} tests réussis`);
+  testResult('Dropdowns web', webTest, 'Structure et styles corrects');
+  testResult('Dropdowns mobile', mobileTest, 'Picker React Native configuré');
+  testResult('Équivalence fonctionnelle', functionalTest, 'Logique identique');
+  testResult('Labels UI', labelsTest, 'Tous les labels présents');
   
-  if (totalTests === maxTests) {
-    console.log('✅ LES DROPDOWNS SONT IDENTIQUES AU CODE WEB');
-    console.log('🎉 La transformation est parfaite !');
-    console.log('');
-    console.log('📋 RÉSUMÉ:');
-    console.log('- ✅ Dropdown épisode: HTML select → React Native Picker');
-    console.log('- ✅ Dropdown serveur: HTML select → React Native Picker');
-    console.log('- ✅ Mêmes états et fonctions utilisés');
-    console.log('- ✅ Mêmes données affichées');
-    console.log('- ✅ Labels en majuscules comme le code web');
-    console.log('- ✅ Format des épisodes et serveurs identique');
+  const allPassed = webTest && mobileTest && functionalTest && labelsTest;
+  
+  console.log('\n' + '='.repeat(50));
+  if (allPassed) {
+    console.log('🎉 TOUS LES TESTS PASSÉS !');
+    console.log('✅ Les dropdowns mobile sont identiques au web');
+    console.log('✅ Grille 2 colonnes implémentée');
+    console.log('✅ Labels et fonctionnalités identiques');
   } else {
-    console.log('⚠️  CERTAINS DROPDOWNS DIFFÈRENT DU CODE WEB');
-    console.log('🔧 Vérifiez les erreurs ci-dessus');
+    console.log('❌ CERTAINS TESTS ONT ÉCHOUÉ');
+    console.log('🔧 Vérifier les implémentations');
   }
+  
+  return allPassed;
 }
 
 // Exécuter tous les tests
