@@ -376,18 +376,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             )}
           />
           
-          {/* Overlay avec informations de l'épisode - Style anime-sama */}
-          <View style={styles.videoOverlay}>
-            <View style={styles.videoInfoContainer}>
-              <Text style={styles.videoAnimeTitle} numberOfLines={1}>
-                {episodeDetails.animeTitle}
-              </Text>
-              <Text style={styles.videoEpisodeInfo} numberOfLines={1}>
-                Épisode {episodeDetails.episodeNumber} • {currentSource.server} • {currentSource.quality}
-              </Text>
-            </View>
-          </View>
-          
           {episodeLoading && (
             <View style={styles.loadingOverlay}>
               <ActivityIndicator size="large" color="#00bcd4" />
@@ -1009,28 +997,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginVertical: 8,
   },
-  videoOverlay: {
-    position: 'absolute',
-    top: 16,
-    left: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  videoInfoContainer: {
-    flexDirection: 'column',
-  },
-  videoAnimeTitle: {
-    color: '#ffffff',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  videoEpisodeInfo: {
-    color: '#d1d5db',
-    fontSize: 12,
-    marginTop: 2,
-  },
+  
   lastSelectionContainer: {
     paddingHorizontal: 16,
     paddingVertical: 8,
