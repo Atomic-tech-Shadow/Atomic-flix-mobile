@@ -56,6 +56,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Ombres boutons : couleur bleue Telegram → cyan application uniforme
 - ✅ Palette de couleurs 100% cohérente dans toute l'application
 
+**Header fixe AnimePlayerScreen sur tous les états - July 18, 2025**
+- ✅ Header SharedHeader visible pendant le chargement initial
+- ✅ Header présent dans l'état d'erreur avec bouton retour fonctionnel
+- ✅ Header affiché même si aucune donnée anime trouvée
+- ✅ SafeAreaView avec edges uniform sur tous les états de rendu
+- ✅ StatusBar configuration cohérente sur tous les états
+- ✅ Navigation utilisateur possible même pendant les chargements
+
 **Mise à jour style boutons langue et dropdowns selon capture utilisateur - July 18, 2025**
 - ✅ Boutons langue : dimensions exactes 80x48px selon capture utilisateur
 - ✅ Style boutons VO/VF : drapeaux en arrière-plan (opacité 0.3) avec texte VF/VO au centre
