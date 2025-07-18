@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Image,
   Dimensions,
+  Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -33,8 +34,26 @@ const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ visible, onClose 
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [slideAnim] = useState(new Animated.Value(0));
   
   const searchService = SearchService.getInstance();
+
+  // Animation d'ouverture/fermeture
+  useEffect(() => {
+    if (visible) {
+      Animated.timing(slideAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [visible]);
 
   const performSearch = useCallback(async (query: string) => {
     if (!query || query.trim().length < 2) {
@@ -146,7 +165,22 @@ const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ visible, onClose 
       onRequestClose={handleClose}
     >
       <BlurView intensity={20} style={styles.modalOverlay}>
-        <View style={styles.modalContainer}>
+        <Animated.View 
+          style={[
+            styles.modalContainer,
+            {
+              transform: [
+                {
+                  translateY: slideAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [50, 0],
+                  }),
+                },
+              ],
+              opacity: slideAnim,
+            },
+          ]}
+        >
           {/* Header avec barre de recherche */}
           <View style={styles.header}>
             <View style={styles.searchBar}>
@@ -202,14 +236,33 @@ const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ visible, onClose 
 
             {!searchQuery && (
               <View style={styles.placeholderContainer}>
-                <Ionicons name="search" size={64} color="#64748b" />
-                <Text style={styles.placeholderText}>
-                  Recherchez vos animes et mangas préférés
+                <View style={styles.placeholderIcon}>
+                  <Ionicons name="search" size={64} color="#00bcd4" />
+                </View>
+                <Text style={styles.placeholderTitle}>
+                  Recherche Globale
                 </Text>
+                <Text style={styles.placeholderText}>
+                  Découvrez vos animes et mangas préférés
+                </Text>
+                <View style={styles.placeholderHints}>
+                  <View style={styles.hintItem}>
+                    <Ionicons name="tv" size={16} color="#00bcd4" />
+                    <Text style={styles.hintText}>Animes</Text>
+                  </View>
+                  <View style={styles.hintItem}>
+                    <Ionicons name="book" size={16} color="#f43f5e" />
+                    <Text style={styles.hintText}>Mangas</Text>
+                  </View>
+                  <View style={styles.hintItem}>
+                    <Ionicons name="film" size={16} color="#a855f7" />
+                    <Text style={styles.hintText}>Films</Text>
+                  </View>
+                </View>
               </View>
             )}
           </View>
-        </View>
+        </Animated.View>
       </BlurView>
     </Modal>
   );
@@ -218,29 +271,40 @@ const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ visible, onClose 
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: 'rgba(10, 10, 26, 0.95)', // Cohérent avec le thème principal
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: '#0a0a1a', // Couleur exacte de l'APK
     marginTop: 50,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    shadowColor: '#00bcd4',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 10,
   },
   header: {
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    borderBottomColor: 'rgba(0, 188, 212, 0.2)', // Bordure cyan subtile
+    backgroundColor: 'rgba(0, 188, 212, 0.05)', // Fond avec teinte cyan très légère
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 188, 212, 0.3)',
+    borderWidth: 2,
+    borderColor: '#00bcd4', // Bordure cyan plus marquée
+    shadowColor: '#00bcd4',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   searchInput: {
     flex: 1,
@@ -294,11 +358,50 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
-  placeholderText: {
-    color: '#64748b',
-    fontSize: 18,
+  placeholderIcon: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: 'rgba(0, 188, 212, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: 'rgba(0, 188, 212, 0.3)',
+  },
+  placeholderTitle: {
+    color: '#ffffff',
+    fontSize: 24,
+    fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: 16,
+    marginBottom: 8,
+  },
+  placeholderText: {
+    color: '#94a3b8',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  placeholderHints: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 20,
+  },
+  hintItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  hintText: {
+    color: '#ffffff',
+    fontSize: 12,
+    marginLeft: 6,
+    fontWeight: '500',
   },
   resultsList: {
     paddingHorizontal: 20,
@@ -309,7 +412,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: 'rgba(0, 188, 212, 0.2)',
+    shadowColor: '#00bcd4',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
   },
   resultContent: {
     flexDirection: 'row',
@@ -349,13 +457,19 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   animeBadge: {
-    backgroundColor: 'rgba(0, 188, 212, 0.2)',
+    backgroundColor: 'rgba(0, 188, 212, 0.3)',
+    borderWidth: 1,
+    borderColor: '#00bcd4',
   },
   mangaBadge: {
-    backgroundColor: 'rgba(244, 63, 94, 0.2)',
+    backgroundColor: 'rgba(244, 63, 94, 0.3)',
+    borderWidth: 1,
+    borderColor: '#f43f5e',
   },
   filmBadge: {
-    backgroundColor: 'rgba(168, 85, 247, 0.2)',
+    backgroundColor: 'rgba(168, 85, 247, 0.3)',
+    borderWidth: 1,
+    borderColor: '#a855f7',
   },
   typeText: {
     color: '#ffffff',
