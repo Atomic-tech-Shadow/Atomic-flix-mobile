@@ -845,7 +845,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   languageButton: {
-    width: 80,
+    width: 48, // Même dimension que la hauteur pour un bouton carré
     height: 48,
     borderRadius: 8,
     backgroundColor: '#374151',
