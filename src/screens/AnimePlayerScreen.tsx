@@ -881,20 +881,31 @@ const styles = StyleSheet.create({
   },
   languageText: {
     color: '#ffffff',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
     zIndex: 2,
     position: 'relative',
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    paddingHorizontal: 8,
+    textShadowColor: 'rgba(0, 0, 0, 0.9)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 4,
+    overflow: 'hidden',
   },
   languageTextActive: {
     color: '#ffffff',
     fontWeight: 'bold',
-    backgroundColor: 'rgba(0,0,0,0.8)',
+    fontSize: 16,
+    textShadowColor: 'rgba(0, 0, 0, 1)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
   },
   episodeControls: {
     flexDirection: 'row',
@@ -904,6 +915,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#1e293b',
   },
   navButton: {
+```python
     width: 44,
     height: 44,
     justifyContent: 'center',
@@ -925,8 +937,7 @@ const styles = StyleSheet.create({
   episodeNumber: {
     color: '#00bcd4',
     fontSize: 14,
-    fontWeight:```python
- 'bold',
+    fontWeight: 'bold',
     marginTop: 4,
   },
   videoContainer: {
@@ -1163,11 +1174,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   flagBackground: {
-    width: 40,
-    height: 28,
-    borderRadius: 4,
-    overflow: 'hidden',
-    position: 'relative',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    opacity: 0.6,
   },
   // Drapeau français tricolore
   frenchFlagStripe1: {
