@@ -99,7 +99,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   };
 
   // Fonction séparée pour charger les épisodes avec les données anime
-  const loadSeasonEpisodesWithData = async (animeInfo: AnimeData, season: Season, language: 'VF' | 'VOSTFR'), autoLoadEpisode = false => {
+  const loadSeasonEpisodesWithData = async (animeInfo: AnimeData, season: Season, language: 'VF' | 'VOSTFR', autoLoadEpisode = false) => {
     try {
       setEpisodeLoading(true);
       const languageCode = language.toLowerCase();
