@@ -35,7 +35,7 @@ const { width, height } = Dimensions.get('window');
 
 const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   const { animeUrl, seasonData, animeTitle } = route.params;
-  
+
   // États pour les données
   const [animeData, setAnimeData] = useState<AnimeData | null>(null);
   const [selectedSeason, setSelectedSeason] = useState<Season | null>(seasonData || null);
@@ -58,7 +58,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-      
+
       const response = await fetch(endpoint, {
         method: 'GET',
         headers: {
@@ -67,13 +67,13 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         },
         signal: controller.signal,
       });
-      
+
       clearTimeout(timeoutId);
-      
+
       if (!response.ok) {
         throw new Error(`Service externe indisponible: ${response.status}`);
       }
-      
+
       return await response.json();
     } catch (error) {
       console.error('Erreur API:', error);
@@ -85,12 +85,12 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   const getAnimeDetails = async (animeId: string) => {
     try {
       const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/anime/${animeId}`);
-      
+
       if (!response || !response.success) {
         console.error('Erreur API anime details:', response);
         return null;
       }
-      
+
       return response;
     } catch (error) {
       console.error('Erreur chargement anime API:', error);
@@ -99,19 +99,19 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   };
 
   // Fonction séparée pour charger les épisodes avec les données anime
-  const loadSeasonEpisodesWithData = async (animeInfo: AnimeData, season: Season, language: 'VF' | 'VOSTFR', autoLoadEpisode = false) => {
+  const loadSeasonEpisodesWithData = async (animeInfo: AnimeData, season: Season, language: 'VF' | 'VOSTFR'), autoLoadEpisode = false => {
     try {
       setEpisodeLoading(true);
       const languageCode = language.toLowerCase();
-      
+
       const data = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeInfo.id}?season=${season.value}&language=${languageCode}`);
-      
+
       if (data && data.success && data.episodes && Array.isArray(data.episodes) && data.episodes.length > 0) {
         const formattedEpisodes: Episode[] = data.episodes.map((ep: any, index: number) => {
           const episodeNumber = ep.number || (index + 1);
           const episodeTitle = ep.title || `Épisode ${episodeNumber}`;
           const episodeUrl = ep.url || `https://anime-sama.fr/catalogue/${animeInfo.id}/${season.value}/${languageCode}/episode-${episodeNumber}`;
-          
+
           return {
             id: `${animeInfo.id}-${season.value}-ep${episodeNumber}-${languageCode}`,
             title: episodeTitle,
@@ -122,10 +122,10 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             streamingSources: ep.streamingSources || []
           };
         });
-        
+
         setEpisodes(formattedEpisodes);
         setSelectedEpisode(formattedEpisodes[0]);
-        
+
         if (autoLoadEpisode) {
           loadEpisodeSources(formattedEpisodes[0]);
         }
@@ -144,30 +144,30 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     if (!animeData) {
       return;
     }
-    
+
     await loadSeasonEpisodesWithData(animeData, season, selectedLanguage, autoLoadEpisode);
-    
+
     try {
       setEpisodeLoading(true);
       const languageCode = selectedLanguage.toLowerCase();
-      
+
       console.log('Chargement épisodes pour:', animeData.id, 'saison:', season.value, 'langue:', selectedLanguage);
-      
+
       const data = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeData.id}?season=${season.value}&language=${languageCode}`);
       console.log('Épisodes reçus de l\'API:', data);
-      
+
       if (!data || !data.success) {
         console.error('Erreur API épisodes:', data);
         setError('Erreur lors du chargement des épisodes depuis l\'API');
         return;
       }
-      
+
       if (data.episodes && Array.isArray(data.episodes) && data.episodes.length > 0) {
         const formattedEpisodes: Episode[] = data.episodes.map((ep: any, index: number) => {
           const episodeNumber = ep.number || (index + 1);
           const episodeTitle = ep.title || `Épisode ${episodeNumber}`;
           const episodeUrl = ep.url || `https://anime-sama.fr/catalogue/${animeData.id}/${season.value}/${languageCode}/episode-${episodeNumber}`;
-          
+
           return {
             id: `${animeData.id}-${season.value}-ep${episodeNumber}-${languageCode}`,
             title: episodeTitle,
@@ -178,15 +178,15 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             streamingSources: ep.streamingSources || []
           };
         });
-        
+
         console.log('Épisodes formatés depuis API:', formattedEpisodes.length);
         setEpisodes(formattedEpisodes);
-        
+
         // Sélectionner le premier épisode
         const episodeToSelect = formattedEpisodes[0];
         console.log('Épisode sélectionné:', episodeToSelect.title);
         setSelectedEpisode(episodeToSelect);
-        
+
         // Auto-charger l'épisode avec l'API embed
         if (autoLoadEpisode) {
           loadEpisodeSources(episodeToSelect);
@@ -207,9 +207,9 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     try {
       setEpisodeLoading(true);
       console.log('Chargement sources pour épisode:', episode.title);
-      
+
       const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/embed?url=${encodeURIComponent(episode.url)}`);
-      
+
       if (response && response.success && response.sources && response.sources.length > 0) {
         setEpisodeDetails({
           id: episode.id,
@@ -237,12 +237,12 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   // Fonction pour changer de langue
   const changeLanguage = async (newLang: 'VF' | 'VOSTFR') => {
     if (newLang === selectedLanguage || !selectedSeason) return;
-    
+
     setSelectedLanguage(newLang);
     setEpisodes([]);
     setSelectedEpisode(null);
     setEpisodeDetails(null);
-    
+
     // Recharger les épisodes avec la nouvelle langue
     await loadSeasonEpisodes(selectedSeason, true);
   };
@@ -250,16 +250,16 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   // Navigation entre épisodes
   const navigateEpisode = (direction: 'prev' | 'next') => {
     if (!selectedEpisode || episodes.length === 0) return;
-    
+
     const currentIndex = episodes.findIndex(ep => ep.id === selectedEpisode.id);
     let newIndex;
-    
+
     if (direction === 'prev') {
       newIndex = currentIndex > 0 ? currentIndex - 1 : episodes.length - 1;
     } else {
       newIndex = currentIndex < episodes.length - 1 ? currentIndex + 1 : 0;
     }
-    
+
     const newEpisode = episodes[newIndex];
     setSelectedEpisode(newEpisode);
     loadEpisodeSources(newEpisode);
@@ -271,28 +271,28 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       try {
         setLoading(true);
         setError(null);
-        
+
         // Extraire l'ID de l'anime depuis l'URL
         const animeId = animeUrl.split('/').pop()?.replace(/\.html$/, '') || animeUrl;
-        
+
         // Charger les données de base de l'anime
         const response = await getAnimeDetails(animeId);
-        
+
         if (response && response.success && response.data) {
           const animeInfo = response.data;
           setAnimeData(animeInfo);
-          
+
           // Utiliser la saison passée en paramètre ou la première disponible
           const seasonToSelect = seasonData || animeInfo.seasons[0];
           setSelectedSeason(seasonToSelect);
-          
+
           // Sélectionner la langue par défaut
           if (seasonToSelect && seasonToSelect.languages) {
             const defaultLanguage = seasonToSelect.languages.includes('VF') ? 'VF' : 
                                   seasonToSelect.languages.includes('VOSTFR') ? 'VOSTFR' : 'VF';
-            
+
             setSelectedLanguage(defaultLanguage as 'VF' | 'VOSTFR');
-            
+
             // Charger les épisodes immédiatement après avoir défini animeData
             setTimeout(async () => {
               await loadSeasonEpisodesWithData(animeInfo, seasonToSelect, defaultLanguage as 'VF' | 'VOSTFR', true);
@@ -345,7 +345,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     }
 
     const currentSource = episodeDetails.sources[selectedPlayer];
-    
+
     return (
       <View style={styles.videoPlayerWrapper}>
         <View style={styles.videoContainer}>
@@ -375,7 +375,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               </View>
             )}
           />
-          
+
           {episodeLoading && (
             <View style={styles.loadingOverlay}>
               <ActivityIndicator size="large" color="#00bcd4" />
@@ -394,10 +394,10 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       Alert.alert('Erreur', 'Aucune source vidéo disponible pour le téléchargement.');
       return;
     }
-    
+
     const qualityText = quality === 'faible' ? '360p' : quality === 'moyenne' ? '720p' : '1080p';
     const source = episodeDetails.sources[selectedPlayer];
-    
+
     Alert.alert(
       'Téléchargement',
       `Téléchargement de ${episodeDetails.animeTitle} - Épisode ${episodeDetails.episodeNumber} en qualité ${qualityText}`,
@@ -408,7 +408,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           onPress: () => {
             // Fermer le menu
             setShowDownloadMenu(false);
-            
+
             // Simuler le téléchargement (à implémenter selon les besoins)
             Alert.alert(
               'Téléchargement commencé',
@@ -425,12 +425,12 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     return (
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
         <StatusBar barStyle="light-content" backgroundColor="#0a0a1a" />
-        
+
         {/* Header fixe toujours visible */}
         <View style={styles.headerContainer}>
           <SharedHeader />
         </View>
-        
+
         <View style={styles.loadingContainer}>
           <LoadingSpinner 
             message="Chargement de l'anime..." 
@@ -446,12 +446,12 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     return (
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
         <StatusBar barStyle="light-content" backgroundColor="#0a0a1a" />
-        
+
         {/* Header fixe toujours visible */}
         <View style={styles.headerContainer}>
           <SharedHeader />
         </View>
-        
+
         <View style={styles.errorContainer}>
           <Ionicons name="warning-outline" size={48} color="#ef4444" />
           <Text style={styles.errorText}>{error}</Text>
@@ -467,12 +467,12 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     return (
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
         <StatusBar barStyle="light-content" backgroundColor="#0a0a1a" />
-        
+
         {/* Header fixe toujours visible */}
         <View style={styles.headerContainer}>
           <SharedHeader />
         </View>
-        
+
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>Anime non trouvé</Text>
           <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
@@ -486,12 +486,12 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <StatusBar barStyle="light-content" backgroundColor="#0a0a1a" />
-      
+
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
         <SharedHeader />
       </View>
-      
+
       <ScrollView 
         style={styles.scrollContainer}
         refreshControl={
@@ -527,10 +527,21 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 onPress={() => changeLanguage(lang as 'VF' | 'VOSTFR')}
                 activeOpacity={0.7}
               >
-                {/* Drapeau en arrière-plan */}
-                <Text style={styles.languageFlag}>
-                  {lang === 'VF' ? '🇫🇷' : '🇯🇵'}
-                </Text>
+                {/* Fond drapeau personnalisé */}
+                {lang === 'VF' ? (
+                  // Drapeau français tricolore
+                  <View style={styles.flagBackground}>
+                    <View style={styles.frenchFlagStripe1} />
+                    <View style={styles.frenchFlagStripe2} />
+                    <View style={styles.frenchFlagStripe3} />
+                  </View>
+                ) : (
+                  // Drapeau japonais - cercle rouge sur fond blanc
+                  <View style={styles.flagBackground}>
+                    <View style={styles.japaneseFlagBg} />
+                    <View style={styles.japaneseRedCircle} />
+                  </View>
+                )}
                 {/* Texte VF/VO au centre */}
                 <Text style={[
                   styles.languageText,
@@ -652,7 +663,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             >
               <Ionicons name="chevron-back" size={24} color="#ffffff" />
             </TouchableOpacity>
-            
+
             <View style={styles.downloadContainer}>
               <TouchableOpacity
                 style={[
@@ -665,7 +676,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               >
                 <Ionicons name="download" size={24} color="#ffffff" />
               </TouchableOpacity>
-              
+
               {/* Menu de téléchargement */}
               {showDownloadMenu && episodeDetails && (
                 <View style={styles.downloadMenu}>
@@ -701,7 +712,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 </View>
               )}
             </View>
-            
+
             <TouchableOpacity
               style={[
                 styles.navButtonCustom,
@@ -914,7 +925,8 @@ const styles = StyleSheet.create({
   episodeNumber: {
     color: '#00bcd4',
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight:```python
+ 'bold',
     marginTop: 4,
   },
   videoContainer: {
@@ -986,7 +998,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginVertical: 8,
   },
-  
+
   lastSelectionContainer: {
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -1036,7 +1048,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 14,
   },
-  
+
   // Styles pour la navigation et le téléchargement
   navigationContainer: {
     flexDirection: 'row',
@@ -1149,6 +1161,60 @@ const styles = StyleSheet.create({
   downloadMenuText: {
     color: '#ffffff',
     fontSize: 14,
+  },
+  flagBackground: {
+    width: 40,
+    height: 28,
+    borderRadius: 4,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  // Drapeau français tricolore
+  frenchFlagStripe1: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: '33.33%',
+    backgroundColor: '#0055A4', // Bleu France
+  },
+  frenchFlagStripe2: {
+    position: 'absolute',
+    left: '33.33%',
+    top: 0,
+    bottom: 0,
+    width: '33.33%',
+    backgroundColor: '#FFFFFF', // Blanc France
+  },
+  frenchFlagStripe3: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: '33.33%',
+    backgroundColor: '#EF4135', // Rouge France
+  },
+  // Drapeau japonais
+  japaneseFlagBg: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#FFFFFF', // Fond blanc
+  },
+  japaneseRedCircle: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#BC002D', // Rouge japonais
+    transform: [
+      { translateX: -12 },
+      { translateY: -12 }
+    ],
   },
 });
 
