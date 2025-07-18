@@ -72,13 +72,47 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
       return;
     }
 
+    // Demander l'ID Telegram de l'utilisateur
+    Alert.prompt(
+      'Vérification Telegram',
+      'Entrez votre ID Telegram (vous pouvez le trouver en cherchant @userinfobot sur Telegram)',
+      [
+        { text: 'Annuler', style: 'cancel' },
+        { 
+          text: 'Vérifier', 
+          onPress: (userId) => {
+            if (userId && userId.trim()) {
+              verifySubscription(userId.trim());
+            } else {
+              Alert.alert('Erreur', 'Veuillez entrer un ID Telegram valide.');
+            }
+          }
+        }
+      ],
+      'plain-text',
+      '',
+      'numeric'
+    );
+  };
+
+  const verifySubscription = async (userId: string) => {
     setIsVerifying(true);
 
-    // Simulation de vérification (dans une vraie app, vous feriez un appel API)
-    setTimeout(async () => {
-      try {
+    try {
+      const response = await fetch('https://atomic-flix-verifier-bot.vercel.app/api/verify-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
         // Marquer comme vérifié dans le stockage local
         await AsyncStorage.setItem('telegram_verified', 'true');
+        await AsyncStorage.setItem('telegram_user_id', userId);
         
         Alert.alert(
           'Vérification réussie !',
@@ -93,15 +127,38 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
             }
           ]
         );
-      } catch (error) {
-        setIsVerifying(false);
+      } else {
+        // Gestion des erreurs spécifiques
+        let errorMessage = 'Vérification échouée.';
+        
+        if (data.error?.includes('not found')) {
+          errorMessage = 'Vous n\'êtes pas abonné au canal. Veuillez vous abonner d\'abord.';
+        } else if (data.error?.includes('left')) {
+          errorMessage = 'Vous avez quitté le canal. Veuillez vous réabonner.';
+        } else if (data.error?.includes('kicked')) {
+          errorMessage = 'Vous avez été banni du canal. Contactez les administrateurs.';
+        } else if (data.error?.includes('invalid')) {
+          errorMessage = 'ID Telegram invalide. Vérifiez votre ID avec @userinfobot.';
+        } else if (data.error) {
+          errorMessage = data.error;
+        }
+        
         Alert.alert(
-          'Erreur',
-          'Une erreur est survenue lors de la vérification.',
+          'Vérification échouée',
+          errorMessage,
           [{ text: 'Réessayer' }]
         );
       }
-    }, 2000);
+    } catch (error) {
+      console.error('Erreur API:', error);
+      Alert.alert(
+        'Erreur de connexion',
+        'Impossible de vérifier votre abonnement. Vérifiez votre connexion internet.',
+        [{ text: 'Réessayer' }]
+      );
+    } finally {
+      setIsVerifying(false);
+    }
   };
 
   return (
@@ -127,8 +184,21 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
         <Text style={styles.stepsText}>
           1. Cliquez sur "S'abonner" pour ouvrir Telegram{'\n'}
           2. Abonnez-vous au canal{'\n'}
-          3. Revenez dans l'app et cliquez "Vérifier"
+          3. Trouvez votre ID Telegram avec @userinfobot{'\n'}
+          4. Revenez dans l'app et cliquez "Vérifier"
         </Text>
+      )}
+      
+      {hasSubscribed && (
+        <View style={styles.infoBox}>
+          <Text style={styles.infoTitle}>💡 Comment trouver votre ID Telegram :</Text>
+          <Text style={styles.infoText}>
+            1. Ouvrez Telegram{'\n'}
+            2. Cherchez @userinfobot{'\n'}
+            3. Envoyez /start{'\n'}
+            4. Copiez votre ID (nombre)
+          </Text>
+        </View>
       )}
 
       <View style={styles.channelInfo}>
@@ -298,6 +368,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 15,
     fontWeight: '500',
+  },
+  infoBox: {
+    backgroundColor: 'rgba(0, 188, 212, 0.1)',
+    borderRadius: 12,
+    padding: 16,
+    marginVertical: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 188, 212, 0.3)',
+  },
+  infoTitle: {
+    fontSize: 14,
+    color: '#00bcd4',
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  infoText: {
+    fontSize: 13,
+    color: '#e2e8f0',
+    lineHeight: 18,
   },
 });
 

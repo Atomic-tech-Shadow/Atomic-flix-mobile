@@ -8,6 +8,22 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Intégration backend Telegram réel - July 18, 2025**
+- ✅ Backend déployé sur Vercel : https://atomic-flix-verifier-bot.vercel.app/
+- ✅ TelegramVerification.tsx connecté à l'API réelle de vérification
+- ✅ Remplacement de la simulation par vraie vérification getChatMember
+- ✅ Interface utilisateur améliorée avec instructions @userinfobot
+- ✅ Gestion d'erreurs complète (invalid ID, not subscribed, kicked, etc.)
+- ✅ Stockage local de l'ID utilisateur vérifié pour persistance
+- ✅ Prompts intuitifs pour demander l'ID Telegram utilisateur
+
+**Logo SVG animé créé - July 18, 2025**
+- ✅ Logo SVG animé créé avec orbites atomiques, symbole play, lettre F
+- ✅ Animations : rotation, pulsation, scintillement, effets de glow
+- ✅ react-native-svg installé et configuré version compatible Expo
+- ✅ SplashScreen modernisé avec nouveau logo au lieu ancienne animation
+- ✅ Particules d'étoiles et effets visuels avancés intégrés
+
 **Correction splash screen selon standards Expo 2025 - July 18, 2025**
 - ✅ Configuration app.json modernisée avec icône centrée (splash-icon.png)
 - ✅ Plugin expo-splash-screen reconfiguré : imageWidth 150px, resizeMode contain
