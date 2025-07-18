@@ -8,6 +8,7 @@ import {
   Alert,
   ActivityIndicator,
   TextInput,
+  Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -247,7 +248,11 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
     <View style={styles.container}>
       {/* Logo en haut de l'écran */}
       <View style={styles.topLogo}>
-        <AnimatedLogo />
+        <Image 
+          source={require('../../assets/atomic-flix-logo.png')}
+          style={styles.headerLogoImage}
+          resizeMode="contain"
+        />
         <Text style={styles.logoText}>ATOMIC FLIX</Text>
       </View>
 
@@ -357,6 +362,10 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 188, 212, 0.3)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
+  },
+  headerLogoImage: {
+    width: 40,
+    height: 40,
   },
   squareCard: {
     width: 320,
