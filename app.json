@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Atomic Flix - A F",
+    "name": "Atomic Flix",
     "slug": "atomic-flix-mobile",
     "version": "2.3.0",
     "orientation": "portrait",
@@ -21,7 +21,6 @@
         "foregroundImage": "./assets/atomic-flix-logo.png",
         "backgroundColor": "#0f172a"
       },
-
       "package": "com.atomicflix.mobile",
       "permissions": [
         "android.permission.INTERNET",
