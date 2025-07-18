@@ -16,7 +16,7 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Système d'opacité langue : active 100%, inactive 50%
 - ✅ Dropdowns avec couleurs cohérentes et ombres cyan
 - ✅ Version APK mise à jour : 2.2.0 → 2.3.0
-- ✅ Nom APK modifié : "ATOMIC FLIX" → "Atomic Flix"
+- ✅ Nom APK modifié : "ATOMIC FLIX" → "Atomic Flix - A F"
 
 **Interface Telegram stylée avec couleurs cohérentes - July 18, 2025**
 - ✅ Logo SVG animé intégré avec orbites atomiques (couleurs cyan/bleu)
