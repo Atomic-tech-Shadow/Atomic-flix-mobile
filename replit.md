@@ -8,13 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
-**Optimisations interface et amélioration UX - July 18, 2025**
+**Version 2.3.0 - Optimisations interface et amélioration UX - July 18, 2025**
 - ✅ Card hero HomeScreen réduite (300px → 180px) pour moins d'espace vide
 - ✅ Image AnimeDetailScreen réduite (50% → 35% de la hauteur écran)
 - ✅ Boutons AnimePlayerScreen améliorés avec visibilité optimale
 - ✅ Drapeaux langue occupent tout l'espace du bouton (VF/VO centrés)
 - ✅ Système d'opacité langue : active 100%, inactive 50%
 - ✅ Dropdowns avec couleurs cohérentes et ombres cyan
+- ✅ Version APK mise à jour : 2.2.0 → 2.3.0
 
 **Interface Telegram stylée avec couleurs cohérentes - July 18, 2025**
 - ✅ Logo SVG animé intégré avec orbites atomiques (couleurs cyan/bleu)
