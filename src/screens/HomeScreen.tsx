@@ -594,7 +594,7 @@ const styles = StyleSheet.create({
 
   // Hero Section
   heroSection: {
-    height: 300,
+    height: 180,
     position: 'relative',
     marginBottom: 20,
     backgroundColor: '#0A0A1A',
@@ -621,8 +621,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    paddingHorizontal: 24,
-    paddingVertical: 48,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
     alignItems: 'center', // Contenu centré par défaut
     justifyContent: 'flex-end', // Contenu vers le bas
   },
@@ -635,11 +635,11 @@ const styles = StyleSheet.create({
     right: 20, // Positionné en bas à droite
   },
   heroSubtitle: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#d1d5db',
     textAlign: 'center', // Texte centré
-    lineHeight: 28,
-    marginBottom: 60, // Espace pour le logo en bas
+    lineHeight: 24,
+    marginBottom: 40, // Espace pour le logo en bas
   },
 
 

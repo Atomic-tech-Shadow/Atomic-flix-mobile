@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
   // Hero Section réduite pour laisser place au header
   heroContainer: {
     position: 'relative',
-    height: height * 0.5, // 50% de la hauteur de l'écran au lieu de 70%
+    height: height * 0.35, // 35% de la hauteur de l'écran au lieu de 50%
   },
   heroImageContainer: {
     position: 'absolute',
