@@ -154,23 +154,23 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
       }).start();
     }, 300);
 
-    // Auto-fermeture après 2 secondes
+    // Auto-fermeture après 3 secondes pour mieux voir les animations
     const autoCloseTimer = setTimeout(() => {
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 0,
-          duration: 500,
+          duration: 600,
           useNativeDriver: true,
         }),
         Animated.timing(scaleAnim, {
           toValue: 1.1,
-          duration: 500,
+          duration: 600,
           useNativeDriver: true,
         }),
       ]).start(() => {
         onFinish();
       });
-    }, 2000);
+    }, 3000);
 
     return () => {
       clearTimeout(textTimer);

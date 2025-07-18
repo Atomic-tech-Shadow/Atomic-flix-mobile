@@ -13,8 +13,7 @@ import { queryClient } from './src/utils/queryClient';
 
 // CRITIQUE : Appeler preventAutoHideAsync() dans le scope global
 // avant tout rendu React pour éviter le flash du splash screen par défaut
-SplashScreen.preventAutoHideAsync()
-  .catch(console.warn);
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -23,8 +22,9 @@ export default function App() {
   useEffect(() => {
     async function prepareApp() {
       try {
-        // Ici on peut ajouter des chargements async (fonts, données, etc.)
-        // Pour l'instant, on simule juste un délai minimal
+        // Cache le splash Expo immédiatement pour éviter les superpositions
+        await SplashScreen.hideAsync();
+        // Préparation minimale de l'app 
         await new Promise(resolve => setTimeout(resolve, 100));
       } catch (e) {
         console.warn('Erreur lors de la préparation de l\'app:', e);
@@ -36,16 +36,10 @@ export default function App() {
     prepareApp();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady && !showSplash) {
-      // Cacher le splash screen d'Expo quand l'app est prête
-      try {
-        await SplashScreen.hideAsync();
-      } catch (error) {
-        console.warn('Error hiding splash screen:', error);
-      }
-    }
-  }, [appIsReady, showSplash]);
+  const onLayoutRootView = useCallback(() => {
+    // Le splash Expo est déjà caché dans prepareApp()
+    // Cette fonction peut rester simple pour le layout
+  }, []);
 
   const handleSplashFinish = () => {
     setShowSplash(false);

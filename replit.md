@@ -59,6 +59,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Durée totale réduite à 2 secondes (meilleures pratiques Expo)
 - ✅ Tailles et espacements optimisés selon standards UX mobile
 
+**Correction splash screen APK Android - July 18, 2025**
+- ✅ App.tsx : Cache splash Expo immédiatement dans prepareApp() pour éviter superposition
+- ✅ App.json : Ajout hideExpoLoadingScreen dans configuration splash et plugin expo-splash-screen  
+- ✅ SplashScreen.tsx : Durée étendue à 3 secondes pour meilleure visibilité des animations
+- ✅ Transition optimisée : preventAutoHideAsync() → hideAsync() dans prepareApp() → splash custom
+- ✅ Suppression des conflits entre splash Expo par défaut et splash personnalisé animé
+- ✅ Configuration dark mode ajoutée dans plugin expo-splash-screen
+
 **Réduction taille header mobile - July 17, 2025**
 - ✅ Header principal (SharedHeader) : paddingTop 50 → 20 pixels
 - ✅ Header détails anime (AnimeDetailScreen) : paddingTop 50 → 20 pixels  
