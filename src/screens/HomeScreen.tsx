@@ -606,7 +606,7 @@ const styles = StyleSheet.create({
   },
   heroMosaicContainer: {
     flexDirection: 'row',
-    height: 96,
+    height: 90, // 50% de la hauteur totale (180px)
   },
   heroMosaicImage: {
     flex: 1,
@@ -621,10 +621,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+    height: 90, // 50% de la hauteur totale (180px)
     paddingHorizontal: 20,
     paddingVertical: 20,
     alignItems: 'center', // Contenu centré par défaut
-    justifyContent: 'flex-end', // Contenu vers le bas
+    justifyContent: 'center', // Contenu centré verticalement
   },
   heroLogo: {
     width: 48,
@@ -642,7 +643,7 @@ const styles = StyleSheet.create({
     color: '#d1d5db',
     textAlign: 'center', // Texte centré
     lineHeight: 24,
-    marginBottom: 40, // Espace pour le logo en bas
+    marginBottom: 8, // Réduction de l'espace pour s'adapter à la nouvelle hauteur
   },
 
 
