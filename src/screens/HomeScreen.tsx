@@ -77,7 +77,7 @@ const HomeScreen: React.FC = () => {
         setShowTelegramModal(true);
       }
     } catch (error) {
-      console.log('Erreur vérification Telegram:', error);
+
       setShowTelegramModal(true);
     }
   };
@@ -128,10 +128,10 @@ const HomeScreen: React.FC = () => {
         return await response.json();
       } catch (error) {
         attempt++;
-        console.log(`Tentative ${attempt}/${maxRetries} échouée:`, error);
+
         
         if (attempt >= maxRetries) {
-          console.error('Erreur API après', maxRetries, 'tentatives:', error);
+
           throw error;
         }
         
@@ -153,17 +153,17 @@ const HomeScreen: React.FC = () => {
         
         // Afficher tous les types de contenu de l'API : animes, mangas, films
         setTrendingAnimes(newContent);
-        console.log('Contenu trending chargé:', newContent.length, 'éléments');
+
         
         // Mettre à jour le compteur de notifications non lues
         const unreadCount = await notificationService.getUnreadCount();
         setUnreadNotifications(unreadCount);
       } else {
-        console.warn('Réponse API trending échouée:', response);
+
         setTrendingAnimes([]);
       }
     } catch (error) {
-      console.error('Erreur chargement trending:', error);
+
       setTrendingAnimes([]);
     }
   };
@@ -187,7 +187,7 @@ const HomeScreen: React.FC = () => {
           // Afficher tout le contenu de l'API : animes, mangas, films, etc.
           setSearchResults(results);
         } else {
-          console.warn('Pas de résultats dans la réponse:', response);
+
           setSearchResults([]);
         }
       } else {
@@ -195,7 +195,7 @@ const HomeScreen: React.FC = () => {
       }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur de recherche';
-      console.error('Erreur recherche:', errorMessage);
+
       
       if (errorMessage.includes('504') || errorMessage.includes('timeout')) {
         setError('Le serveur anime-sama-scraper.vercel.app ne répond pas actuellement. Veuillez réessayer plus tard.');
@@ -297,7 +297,7 @@ const HomeScreen: React.FC = () => {
           loadingIndicatorSource={require('../../assets/atomic-flix-logo.png')}
           fadeDuration={200}
           onError={(e) => {
-            console.log('Erreur image:', anime.image);
+
           }}
         />
         
@@ -454,7 +454,7 @@ const HomeScreen: React.FC = () => {
                       style={styles.heroMosaicImageContent}
                       resizeMode="cover"
                       onError={(e) => {
-                        console.log('Hero image error:', anime.image);
+
                       }}
                     />
                   </View>

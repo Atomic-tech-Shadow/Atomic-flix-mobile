@@ -8,7 +8,7 @@ const API_BASE_URL = 'https://your-backend-url.com'; // À remplacer par votre U
  */
 export const verifyTelegramSubscription = async (userId) => {
     try {
-        console.log(`🔍 Vérification abonnement pour l'utilisateur: ${userId}`);
+
         
         const response = await fetch(`${API_BASE_URL}/api/verify-subscription`, {
             method: 'POST',
@@ -71,11 +71,11 @@ export const openTelegramAuth = async (botUsername = 'atomic_flix_verifier_bot')
             await Linking.openURL(authLink);
             return true;
         } else {
-            console.warn('❌ Impossible d\'ouvrir Telegram');
+
             return false;
         }
     } catch (error) {
-        console.error('❌ Erreur lors de l\'ouverture de Telegram:', error);
+
         return false;
     }
 };

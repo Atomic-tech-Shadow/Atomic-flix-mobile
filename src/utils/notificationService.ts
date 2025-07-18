@@ -42,7 +42,7 @@ class NotificationService {
         newMangas: true
       };
     } catch (error) {
-      console.error('Erreur lecture paramètres notifications:', error);
+
       return { enabled: false, newEpisodes: true, newMangas: true };
     }
   }
@@ -52,7 +52,7 @@ class NotificationService {
     try {
       await AsyncStorage.setItem('notification_settings', JSON.stringify(settings));
     } catch (error) {
-      console.error('Erreur sauvegarde paramètres notifications:', error);
+
     }
   }
 
@@ -62,7 +62,7 @@ class NotificationService {
       const notifications = await AsyncStorage.getItem('stored_notifications');
       return notifications ? JSON.parse(notifications) : [];
     } catch (error) {
-      console.error('Erreur lecture notifications:', error);
+
       return [];
     }
   }
@@ -74,7 +74,7 @@ class NotificationService {
       // Notifier les listeners
       this.listeners.forEach(listener => listener(notifications));
     } catch (error) {
-      console.error('Erreur sauvegarde notifications:', error);
+
     }
   }
 

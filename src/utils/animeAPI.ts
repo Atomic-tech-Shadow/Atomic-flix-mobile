@@ -21,7 +21,7 @@ const apiRequest = async (endpoint: string, timeoutMs = 20000) => {
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
   
   try {
-    console.log('Requête API:', endpoint);
+
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'GET',
       headers: {

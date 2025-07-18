@@ -108,7 +108,7 @@ const AnimeDetailScreen: React.FC = () => {
       
       // Extraire l'ID de l'anime depuis l'URL exactement comme dans le code web
       const animeId = animeUrl.split('/').pop() || animeUrl;
-      console.log('Chargement des détails pour:', animeId);
+
       
       // Appeler directement animeAPI.getDetails comme dans le code web
       const apiResponse = await animeAPI.getDetails(animeId);
@@ -121,7 +121,7 @@ const AnimeDetailScreen: React.FC = () => {
       setAnimeData(apiResponse.data);
       
     } catch (err) {
-      console.error('Erreur chargement anime:', err);
+
       const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue';
       
       if (errorMessage.includes('Timeout') || errorMessage.includes('timeout')) {
@@ -275,7 +275,7 @@ const AnimeDetailScreen: React.FC = () => {
               style={styles.heroImage}
               resizeMode="cover"
               onError={(e) => {
-                console.log('Erreur image hero:', animeData.image);
+
               }}
             />
             

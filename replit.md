@@ -8,6 +8,15 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.6.0 - Nettoyage production et optimisation finale - July 18, 2025**
+- ✅ Version augmentée : 2.5.2 → 2.6.0 dans app.json
+- ✅ Nettoyage complet du code : suppression de tous les console.log de debug
+- ✅ Suppression des fichiers temporaires : attached_assets/, documentation redondante
+- ✅ Optimisation de la production : code épuré sans logs de développement
+- ✅ UI améliorée : boutons drapeaux carrés 48x48px avec système d'opacité
+- ✅ Carte héro équilibrée : 50% images, 50% zone noire
+- ✅ Projet propre et prêt pour déploiement production
+
 **Version 2.5.0 - Recherche globale implémentée sur tous les écrans - July 18, 2025**
 - ✅ SearchService.ts créé avec cache intelligent et gestion d'erreurs complète
 - ✅ GlobalSearchModal.tsx ajouté avec interface moderne et navigation automatique

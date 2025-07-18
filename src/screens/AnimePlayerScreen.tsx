@@ -76,7 +76,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
       return await response.json();
     } catch (error) {
-      console.error('Erreur API:', error);
+
       throw error;
     }
   };
@@ -87,13 +87,13 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/anime/${animeId}`);
 
       if (!response || !response.success) {
-        console.error('Erreur API anime details:', response);
+
         return null;
       }
 
       return response;
     } catch (error) {
-      console.error('Erreur chargement anime API:', error);
+
       return null;
     }
   };
@@ -151,13 +151,13 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       setEpisodeLoading(true);
       const languageCode = selectedLanguage.toLowerCase();
 
-      console.log('Chargement épisodes pour:', animeData.id, 'saison:', season.value, 'langue:', selectedLanguage);
+
 
       const data = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeData.id}?season=${season.value}&language=${languageCode}`);
-      console.log('Épisodes reçus de l\'API:', data);
+
 
       if (!data || !data.success) {
-        console.error('Erreur API épisodes:', data);
+
         setError('Erreur lors du chargement des épisodes depuis l\'API');
         return;
       }
