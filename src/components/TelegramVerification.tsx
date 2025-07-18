@@ -259,6 +259,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           Abonnez-vous à notre canal pour accéder au contenu exclusif
         </Text>
         
+        {/* 1. Bouton S'abonner */}
         <TouchableOpacity
           style={styles.subscribeButton}
           onPress={handleSubscribe}
@@ -274,22 +275,25 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           </LinearGradient>
         </TouchableOpacity>
 
-        {hasSubscribed && (
-          <View style={styles.idSection}>
-            <Text style={styles.idHint}>
-              Obtenez votre ID Telegram :
-            </Text>
-            
-            <TouchableOpacity
-              style={styles.getIdButton}
-              onPress={handleGetId}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.getIdButtonText}>🤖 Get your ID</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        {/* 2. Bouton Get your ID */}
+        <TouchableOpacity
+          style={[
+            styles.getIdButton,
+            !hasSubscribed && styles.disabledGetIdButton
+          ]}
+          onPress={handleGetId}
+          disabled={!hasSubscribed}
+          activeOpacity={0.8}
+        >
+          <Text style={[
+            styles.getIdButtonText,
+            !hasSubscribed && styles.disabledGetIdText
+          ]}>
+            🤖 Get your ID
+          </Text>
+        </TouchableOpacity>
 
+        {/* 3. Champ de saisie */}
         <TextInput
           style={[
             styles.idInput,
@@ -303,6 +307,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           keyboardType="numeric"
         />
 
+        {/* 4. Bouton Vérifier */}
         <TouchableOpacity
           style={[
             styles.verifyButton,
@@ -383,30 +388,31 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     marginBottom: 20,
   },
-  idSection: {
-    alignItems: 'center',
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  idHint: {
-    fontSize: 12,
-    color: '#d1d5db',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
   getIdButton: {
+    width: '100%',
     backgroundColor: 'rgba(0, 188, 212, 0.2)',
-    borderRadius: 8,
-    paddingVertical: 8,
+    borderRadius: 10,
+    paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
     borderColor: 'rgba(0, 188, 212, 0.4)',
+    marginVertical: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  disabledGetIdButton: {
+    backgroundColor: 'rgba(107, 114, 128, 0.2)',
+    borderColor: 'rgba(107, 114, 128, 0.3)',
+    opacity: 0.5,
   },
   getIdButtonText: {
     color: '#00bcd4',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
     textAlign: 'center',
+  },
+  disabledGetIdText: {
+    color: '#6b7280',
   },
   idInput: {
     width: '100%',
