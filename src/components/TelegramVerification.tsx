@@ -133,6 +133,28 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
     }
   };
 
+  const handleGetId = async () => {
+    const botUrl = 'https://t.me/UserInfoToBot';
+    try {
+      const supported = await Linking.canOpenURL(botUrl);
+      if (supported) {
+        await Linking.openURL(botUrl);
+      } else {
+        Alert.alert(
+          'Erreur',
+          'Impossible d\'ouvrir Telegram. Veuillez installer l\'application Telegram.',
+          [{ text: 'OK' }]
+        );
+      }
+    } catch (error) {
+      Alert.alert(
+        'Erreur',
+        'Une erreur est survenue lors de l\'ouverture du bot.',
+        [{ text: 'OK' }]
+      );
+    }
+  };
+
   const handleVerify = async () => {
     if (!hasSubscribed) {
       Alert.alert(
@@ -253,9 +275,19 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
         </TouchableOpacity>
 
         {hasSubscribed && (
-          <Text style={styles.idHint}>
-            Trouvez votre ID avec @userinfobot sur Telegram
-          </Text>
+          <View style={styles.idSection}>
+            <Text style={styles.idHint}>
+              Obtenez votre ID Telegram :
+            </Text>
+            
+            <TouchableOpacity
+              style={styles.getIdButton}
+              onPress={handleGetId}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.getIdButtonText}>🤖 Get your ID</Text>
+            </TouchableOpacity>
+          </View>
         )}
 
         <TextInput
@@ -263,7 +295,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
             styles.idInput,
             !hasSubscribed && styles.disabledInput
           ]}
-          placeholder="Votre ID Telegram"
+          placeholder="Collez votre ID Telegram ici"
           placeholderTextColor="#6b7280"
           value={telegramId}
           onChangeText={setTelegramId}
@@ -323,7 +355,7 @@ const styles = StyleSheet.create({
   },
   squareCard: {
     width: 320,
-    height: 380,
+    height: 420,
     backgroundColor: 'rgba(15, 23, 42, 0.9)',
     borderRadius: 20,
     borderWidth: 2,
@@ -351,13 +383,30 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     marginBottom: 20,
   },
-  idHint: {
-    fontSize: 11,
-    color: '#00bcd4',
-    textAlign: 'center',
+  idSection: {
+    alignItems: 'center',
     marginTop: 8,
-    marginBottom: 12,
-    fontStyle: 'italic',
+    marginBottom: 8,
+  },
+  idHint: {
+    fontSize: 12,
+    color: '#d1d5db',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  getIdButton: {
+    backgroundColor: 'rgba(0, 188, 212, 0.2)',
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 188, 212, 0.4)',
+  },
+  getIdButtonText: {
+    color: '#00bcd4',
+    fontSize: 12,
+    fontWeight: '600',
+    textAlign: 'center',
   },
   idInput: {
     width: '100%',
@@ -369,7 +418,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     fontSize: 14,
     color: '#ffffff',
-    marginVertical: 12,
+    marginVertical: 8,
     textAlign: 'center',
   },
   disabledInput: {
