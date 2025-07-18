@@ -7,6 +7,7 @@ import {
   Linking,
   Alert,
   ActivityIndicator,
+  TextInput,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -91,6 +92,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
 }) => {
   const [isVerifying, setIsVerifying] = useState(false);
   const [hasSubscribed, setHasSubscribed] = useState(false);
+  const [telegramId, setTelegramId] = useState('');
 
   useEffect(() => {
     checkVerificationStatus();
@@ -141,46 +143,16 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
       return;
     }
 
-    // Vérifier s'il y a un ID sauvegardé
-    const savedUserId = await AsyncStorage.getItem('telegram_user_id');
-    
-    if (savedUserId) {
-      // Utiliser l'ID sauvegardé
+    if (!telegramId.trim()) {
       Alert.alert(
-        'Vérification Telegram',
-        `Utiliser l'ID sauvegardé ${savedUserId} ?`,
-        [
-          { text: 'Annuler', style: 'cancel' },
-          { text: 'Nouvel ID', onPress: () => promptForNewId() },
-          { text: 'Vérifier', onPress: () => verifySubscription(savedUserId) }
-        ]
+        'ID requis',
+        'Veuillez entrer votre ID Telegram dans le champ ci-dessus.',
+        [{ text: 'OK' }]
       );
-    } else {
-      promptForNewId();
+      return;
     }
-  };
 
-  const promptForNewId = () => {
-    Alert.prompt(
-      'Vérification Telegram',
-      'Entrez votre ID Telegram (vous pouvez le trouver en cherchant @userinfobot sur Telegram)',
-      [
-        { text: 'Annuler', style: 'cancel' },
-        { 
-          text: 'Vérifier', 
-          onPress: (userId) => {
-            if (userId && userId.trim()) {
-              verifySubscription(userId.trim());
-            } else {
-              Alert.alert('Erreur', 'Veuillez entrer un ID Telegram valide.');
-            }
-          }
-        }
-      ],
-      'plain-text',
-      '',
-      'numeric'
-    );
+    verifySubscription(telegramId.trim());
   };
 
   const verifySubscription = async (userId: string) => {
@@ -265,51 +237,62 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           Abonnez-vous à notre canal pour accéder au contenu exclusif
         </Text>
         
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.subscribeButton}
-            onPress={handleSubscribe}
-            activeOpacity={0.8}
+        <TouchableOpacity
+          style={styles.subscribeButton}
+          onPress={handleSubscribe}
+          activeOpacity={0.8}
+        >
+          <LinearGradient
+            colors={['#00bcd4', '#0ea5e9']}
+            style={styles.compactButtonGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
           >
-            <LinearGradient
-              colors={['#00bcd4', '#0ea5e9']}
-              style={styles.compactButtonGradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-            >
-              <Text style={styles.compactButtonText}>S'abonner</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.verifyButton,
-              (!hasSubscribed || isVerifying) && styles.disabledButton
-            ]}
-            onPress={handleVerify}
-            disabled={isVerifying || !hasSubscribed}
-            activeOpacity={0.8}
-          >
-            <LinearGradient
-              colors={hasSubscribed ? ['#00bcd4', '#0ea5e9'] : ['#374151', '#475569']}
-              style={styles.compactButtonGradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-            >
-              {isVerifying ? (
-                <ActivityIndicator size="small" color="#ffffff" />
-              ) : (
-                <Text style={styles.compactButtonText}>Vérifier</Text>
-              )}
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
+            <Text style={styles.compactButtonText}>S'abonner au canal</Text>
+          </LinearGradient>
+        </TouchableOpacity>
 
         {hasSubscribed && (
-          <Text style={styles.compactSuccessMessage}>
-            Cliquez "Vérifier" pour confirmer
+          <Text style={styles.idHint}>
+            Trouvez votre ID avec @userinfobot sur Telegram
           </Text>
         )}
+
+        <TextInput
+          style={[
+            styles.idInput,
+            !hasSubscribed && styles.disabledInput
+          ]}
+          placeholder="Votre ID Telegram"
+          placeholderTextColor="#6b7280"
+          value={telegramId}
+          onChangeText={setTelegramId}
+          editable={hasSubscribed}
+          keyboardType="numeric"
+        />
+
+        <TouchableOpacity
+          style={[
+            styles.verifyButton,
+            (!hasSubscribed || isVerifying || !telegramId.trim()) && styles.disabledButton
+          ]}
+          onPress={handleVerify}
+          disabled={isVerifying || !hasSubscribed || !telegramId.trim()}
+          activeOpacity={0.8}
+        >
+          <LinearGradient
+            colors={(hasSubscribed && telegramId.trim()) ? ['#00bcd4', '#0ea5e9'] : ['#374151', '#475569']}
+            style={styles.compactButtonGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          >
+            {isVerifying ? (
+              <ActivityIndicator size="small" color="#ffffff" />
+            ) : (
+              <Text style={styles.compactButtonText}>Vérifier l'abonnement</Text>
+            )}
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -339,8 +322,8 @@ const styles = StyleSheet.create({
     textShadowRadius: 2,
   },
   squareCard: {
-    width: 300,
-    height: 300,
+    width: 320,
+    height: 380,
     backgroundColor: 'rgba(15, 23, 42, 0.9)',
     borderRadius: 20,
     borderWidth: 2,
@@ -366,11 +349,32 @@ const styles = StyleSheet.create({
     color: '#d1d5db',
     textAlign: 'center',
     lineHeight: 20,
-    marginBottom: 24,
+    marginBottom: 20,
   },
-  buttonContainer: {
+  idHint: {
+    fontSize: 11,
+    color: '#00bcd4',
+    textAlign: 'center',
+    marginTop: 8,
+    marginBottom: 12,
+    fontStyle: 'italic',
+  },
+  idInput: {
     width: '100%',
-    gap: 10,
+    height: 45,
+    backgroundColor: 'rgba(30, 41, 59, 0.8)',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 188, 212, 0.3)',
+    paddingHorizontal: 15,
+    fontSize: 14,
+    color: '#ffffff',
+    marginVertical: 12,
+    textAlign: 'center',
+  },
+  disabledInput: {
+    opacity: 0.5,
+    borderColor: 'rgba(107, 114, 128, 0.3)',
   },
   subscribeButton: {
     borderRadius: 10,
@@ -380,6 +384,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+    width: '100%',
+    marginBottom: 8,
   },
   verifyButton: {
     borderRadius: 10,
@@ -389,6 +395,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+    width: '100%',
+    marginTop: 8,
   },
   disabledButton: {
     opacity: 0.5,
