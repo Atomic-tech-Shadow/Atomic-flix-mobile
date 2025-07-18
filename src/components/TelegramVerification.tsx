@@ -198,11 +198,11 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
         await AsyncStorage.setItem('telegram_user_id', userId);
         
         Alert.alert(
-          'Vérification réussie !',
-          'Merci de vous être abonné à notre canal Telegram. Vous pouvez maintenant accéder à tout le contenu de l\'application !',
+          'Bienvenue dans Atomic Flix !',
+          '🎉 Félicitations ! Explorez maintenant des milliers d\'animes et mangas exclusifs !',
           [
             {
-              text: 'Accéder à l\'app',
+              text: 'Commencer l\'aventure',
               onPress: () => {
                 setIsVerifying(false);
                 onVerified();
@@ -261,8 +261,34 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
         <Text style={styles.title}>Vérification Telegram</Text>
         
         <Text style={styles.description}>
-          Abonnez-vous à notre canal pour accéder au contenu exclusif
+          Rejoignez notre communauté Telegram et débloquez l'accès complet à Atomic Flix !
         </Text>
+        
+        {/* Indicateur de progression */}
+        <View style={styles.progressContainer}>
+          <View style={styles.progressSteps}>
+            <View style={[styles.progressStep, hasSubscribed && styles.progressStepActive]}>
+              <Text style={[styles.progressStepText, hasSubscribed && styles.progressStepTextActive]}>1</Text>
+            </View>
+            <View style={styles.progressLine} />
+            <View style={[styles.progressStep, hasSubscribed && styles.progressStepActive]}>
+              <Text style={[styles.progressStepText, hasSubscribed && styles.progressStepTextActive]}>2</Text>
+            </View>
+            <View style={styles.progressLine} />
+            <View style={[styles.progressStep, telegramId.trim() && styles.progressStepActive]}>
+              <Text style={[styles.progressStepText, telegramId.trim() && styles.progressStepTextActive]}>3</Text>
+            </View>
+            <View style={styles.progressLine} />
+            <View style={styles.progressStep}>
+              <Text style={styles.progressStepText}>4</Text>
+            </View>
+          </View>
+          <Text style={styles.progressLabel}>
+            {!hasSubscribed ? "Étape 1: S'abonner au canal" : 
+             !telegramId.trim() ? "Étape 2-3: Obtenir et saisir l'ID" : 
+             "Étape 4: Vérifier l'abonnement"}
+          </Text>
+        </View>
         
         {/* 1. Bouton S'abonner */}
         <TouchableOpacity
@@ -294,7 +320,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
             styles.getIdButtonText,
             !hasSubscribed && styles.disabledGetIdText
           ]}>
-            🤖 Get your ID
+            📱 Obtenir mon ID
           </Text>
         </TouchableOpacity>
 
@@ -304,7 +330,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
             styles.idInput,
             !hasSubscribed && styles.disabledInput
           ]}
-          placeholder="Collez votre ID Telegram ici"
+          placeholder="Votre ID numérique (ex: 123456789)"
           placeholderTextColor="#6b7280"
           value={telegramId}
           onChangeText={setTelegramId}
@@ -331,9 +357,21 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
             {isVerifying ? (
               <ActivityIndicator size="small" color="#ffffff" />
             ) : (
-              <Text style={styles.compactButtonText}>Vérifier l'abonnement</Text>
+              <Text style={styles.compactButtonText}>🚀 Vérifier l'abonnement</Text>
             )}
           </LinearGradient>
+        </TouchableOpacity>
+        
+        {/* Bouton d'aide */}
+        <TouchableOpacity 
+          style={styles.helpButton}
+          onPress={() => Alert.alert(
+            'Besoin d\'aide ?',
+            'Instructions détaillées :\n\n1️⃣ Cliquez sur "S\'abonner au canal"\n2️⃣ Rejoignez notre canal Telegram\n3️⃣ Cliquez sur "📱 Obtenir mon ID"\n4️⃣ Copiez l\'ID que le bot vous donne\n5️⃣ Revenez ici et collez votre ID\n6️⃣ Cliquez sur "Vérifier"\n\nProblème ? Contactez-nous !',
+            [{ text: 'Compris !' }]
+          )}
+        >
+          <Text style={styles.helpButtonText}>❓ Besoin d'aide ?</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -369,7 +407,7 @@ const styles = StyleSheet.create({
   },
   squareCard: {
     width: 320,
-    height: 420,
+    height: 480,
     backgroundColor: 'rgba(15, 23, 42, 0.9)',
     borderRadius: 20,
     borderWidth: 2,
@@ -422,6 +460,68 @@ const styles = StyleSheet.create({
   },
   disabledGetIdText: {
     color: '#6b7280',
+  },
+  
+  // Styles pour l'indicateur de progression
+  progressContainer: {
+    alignItems: 'center',
+    marginVertical: 16,
+  },
+  progressSteps: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  progressStep: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: 'rgba(107, 114, 128, 0.3)',
+    borderWidth: 1,
+    borderColor: '#6b7280',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  progressStepActive: {
+    backgroundColor: 'rgba(0, 188, 212, 0.3)',
+    borderColor: '#00bcd4',
+  },
+  progressStepText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#6b7280',
+  },
+  progressStepTextActive: {
+    color: '#00bcd4',
+  },
+  progressLine: {
+    width: 16,
+    height: 2,
+    backgroundColor: 'rgba(107, 114, 128, 0.3)',
+    marginHorizontal: 4,
+  },
+  progressLabel: {
+    fontSize: 11,
+    color: '#00bcd4',
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
+  
+  // Style pour le bouton d'aide
+  helpButton: {
+    marginTop: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    backgroundColor: 'rgba(0, 188, 212, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 188, 212, 0.2)',
+  },
+  helpButtonText: {
+    fontSize: 12,
+    color: '#00bcd4',
+    textAlign: 'center',
+    fontWeight: '500',
   },
   idInput: {
     width: '100%',
