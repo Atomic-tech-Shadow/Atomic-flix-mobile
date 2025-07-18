@@ -1177,7 +1177,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    width: 80,
+    width: 48, // Ajusté pour correspondre au bouton carré 48x48
     height: 48,
     opacity: 0.6,
   },
