@@ -855,17 +855,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
     overflow: 'hidden',
-    opacity: 0.5,
+    opacity: 0.5, // 50% d'opacité par défaut
   },
   languageButtonActive: {
-    backgroundColor: '#00bcd4',
-    borderColor: '#0ea5e9',
-    opacity: 1,
-    elevation: 4,
-    shadowColor: '#00bcd4',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
+    opacity: 1, // 100% d'opacité quand actif
+    // Suppression des changements de couleur et effets
   },
   languageFlag: {
     position: 'absolute',
@@ -896,16 +890,21 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   languageTextActive: {
+    // Même style que languageText - pas de changement visuel
     color: '#ffffff',
-    fontWeight: 'bold',
     fontSize: 16,
-    textShadowColor: 'rgba(0, 0, 0, 1)',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    zIndex: 2,
+    position: 'relative',
+    textShadowColor: 'rgba(0, 0, 0, 0.9)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 4,
+    overflow: 'hidden',
   },
   episodeControls: {
     flexDirection: 'row',
