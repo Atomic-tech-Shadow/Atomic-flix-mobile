@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.4.4 - Configuration conforme documentation Expo 53 - July 18, 2025**
+- ✅ Configuration mise aux standards officiels Expo 53
+- ✅ Suppression de la propriété `splash` legacy dépréciée
+- ✅ Configuration expo-splash-screen optimisée avec imageWidth 200px
+- ✅ Utilisation de l'icône officielle au lieu d'une image splash séparée
+- ✅ Animation fade configurée à 1000ms selon la documentation
+- ✅ Code App.tsx conforme aux exemples officiels Expo
+
 **Version 2.4.3 - Splash screen style WhatsApp avec couleurs cohérentes - July 18, 2025**
 - ✅ Couleurs cohérentes avec l'APK (fond sombre #0a0a1a au lieu du blanc)
 - ✅ Icône réelle de l'app centrée (atomic-flix-logo.png avec orbites atomiques)

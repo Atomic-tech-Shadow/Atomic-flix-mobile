@@ -11,13 +11,12 @@ import CustomSplashScreen from './src/components/SplashScreen';
 import TelegramVerification from './src/components/TelegramVerification';
 import { queryClient } from './src/utils/queryClient';
 
-// CRITIQUE : Appeler preventAutoHideAsync() dans le scope global
-// avant tout rendu React pour éviter le flash du splash screen par défaut
+// Appeler preventAutoHideAsync() dans le scope global selon la documentation Expo 53
 SplashScreen.preventAutoHideAsync();
 
-// Configuration de l'animation selon la documentation Expo
+// Configuration de l'animation selon la documentation officielle
 SplashScreen.setOptions({
-  duration: 600,
+  duration: 1000,
   fade: true,
 });
 
@@ -42,7 +41,7 @@ export default function App() {
 
   const onLayoutRootView = useCallback(() => {
     if (appIsReady && !showSplash) {
-      // Utiliser hide() au lieu de hideAsync() selon la documentation Expo
+      // Utiliser hide() selon la documentation Expo 53
       SplashScreen.hide();
     }
   }, [appIsReady, showSplash]);
