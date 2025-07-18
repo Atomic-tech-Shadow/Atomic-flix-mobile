@@ -1179,6 +1179,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    width: 80,
+    height: 48,
     opacity: 0.6,
   },
   // Drapeau français tricolore
@@ -1219,13 +1221,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     backgroundColor: '#BC002D', // Rouge japonais
     transform: [
-      { translateX: -12 },
-      { translateY: -12 }
+      { translateX: -14 },
+      { translateY: -14 }
     ],
   },
 });
