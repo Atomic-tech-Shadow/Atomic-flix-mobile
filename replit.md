@@ -8,6 +8,15 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Correction splash screen selon standards Expo 2025 - July 18, 2025**
+- ✅ Configuration app.json modernisée avec icône centrée (splash-icon.png)
+- ✅ Plugin expo-splash-screen reconfiguré : imageWidth 150px, resizeMode contain
+- ✅ Nouvelle icône splash SVG créée et convertie en PNG (200x200, transparent)
+- ✅ Résolution problème affichage Android selon bonnes pratiques 2025
+- ✅ Approche "icon-centered" adoptée au lieu de plein écran obsolète
+- ✅ Gestion d'erreurs améliorée dans App.tsx pour SplashScreen.hideAsync()
+- ✅ Suppression des logs debug pour optimiser les performances
+
 **Optimisation animations splash screen selon documentation Expo - July 17, 2025**
 - ✅ Suppression des logs de debug pour performance optimale
 - ✅ Animation spring pour l'apparition (tension: 50, friction: 8)

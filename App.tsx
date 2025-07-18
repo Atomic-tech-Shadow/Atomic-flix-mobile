@@ -14,7 +14,6 @@ import { queryClient } from './src/utils/queryClient';
 // CRITIQUE : Appeler preventAutoHideAsync() dans le scope global
 // avant tout rendu React pour éviter le flash du splash screen par défaut
 SplashScreen.preventAutoHideAsync()
-  .then(() => console.log('✅ Splash screen auto-hide prevented'))
   .catch(console.warn);
 
 export default function App() {
@@ -40,7 +39,11 @@ export default function App() {
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady && !showSplash) {
       // Cacher le splash screen d'Expo quand l'app est prête
-      await SplashScreen.hideAsync();
+      try {
+        await SplashScreen.hideAsync();
+      } catch (error) {
+        console.warn('Error hiding splash screen:', error);
+      }
     }
   }, [appIsReady, showSplash]);
 
