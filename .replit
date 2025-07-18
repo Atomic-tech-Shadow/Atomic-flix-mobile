@@ -20,10 +20,6 @@ args = "health-check"
 task = "workflow.run"
 args = "dev-server"
 
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "web-server"
-
 [[workflows.workflow]]
 name = "health-check"
 author = "agent"
@@ -40,15 +36,6 @@ author = "agent"
 task = "shell.exec"
 args = "expo start"
 waitForPort = 8081
-
-[[workflows.workflow]]
-name = "web-server"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "npx expo start --web --port 5000"
-waitForPort = 5000
 
 [[ports]]
 localPort = 5000

@@ -15,6 +15,12 @@ import { queryClient } from './src/utils/queryClient';
 // avant tout rendu React pour éviter le flash du splash screen par défaut
 SplashScreen.preventAutoHideAsync();
 
+// Configuration de l'animation selon la documentation Expo
+SplashScreen.setOptions({
+  duration: 600,
+  fade: true,
+});
+
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
@@ -22,9 +28,7 @@ export default function App() {
   useEffect(() => {
     async function prepareApp() {
       try {
-        // Cache le splash Expo immédiatement pour éviter les superpositions
-        await SplashScreen.hideAsync();
-        // Préparation minimale de l'app 
+        // Préparation de l'app : chargement des ressources nécessaires
         await new Promise(resolve => setTimeout(resolve, 100));
       } catch (e) {
         console.warn('Erreur lors de la préparation de l\'app:', e);
@@ -37,9 +41,11 @@ export default function App() {
   }, []);
 
   const onLayoutRootView = useCallback(() => {
-    // Le splash Expo est déjà caché dans prepareApp()
-    // Cette fonction peut rester simple pour le layout
-  }, []);
+    if (appIsReady && !showSplash) {
+      // Utiliser hide() au lieu de hideAsync() selon la documentation Expo
+      SplashScreen.hide();
+    }
+  }, [appIsReady, showSplash]);
 
   const handleSplashFinish = () => {
     setShowSplash(false);

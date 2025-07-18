@@ -4,46 +4,39 @@
 Dans l'APK Android, seul le splash screen par défaut d'Expo s'affichait (icône sur fond sombre), sans aucune animation ni transition vers le splash screen personnalisé animé.
 
 ## Cause Principale
-- Conflit entre le splash screen Expo par défaut et le splash screen personnalisé
-- Timing incorrect pour cacher le splash Expo et afficher le splash custom
-- Configuration incomplète dans app.json
+- Mauvaise implémentation des méthodes Expo Splash Screen
+- Non-respect de la documentation officielle Expo SDK 53
+- Configuration incorrecte du timing et des méthodes API
 
-## Solutions Implémentées
+## Solutions Implémentées selon Documentation Officielle Expo
 
-### 1. App.tsx - Gestion du Timing ✅
+### 1. App.tsx - Méthode Officielle Expo ✅
 ```typescript
-// AVANT: splash Expo masqué trop tard, causant superposition
-const onLayoutRootView = useCallback(async () => {
+// Configuration dans le scope global (OBLIGATOIRE selon Expo)
+SplashScreen.preventAutoHideAsync();
+
+// Configuration de l'animation (NOUVEAU dans SDK 53)
+SplashScreen.setOptions({
+  duration: 600,
+  fade: true,
+});
+
+// Dans le callback onLayout (MÉTHODE RECOMMANDÉE)
+const onLayoutRootView = useCallback(() => {
   if (appIsReady && !showSplash) {
-    await SplashScreen.hideAsync();
+    // Utiliser hide() au lieu de hideAsync() selon la documentation Expo
+    SplashScreen.hide();
   }
 }, [appIsReady, showSplash]);
-
-// APRÈS: splash Expo masqué immédiatement dans prepareApp()
-useEffect(() => {
-  async function prepareApp() {
-    try {
-      // Cache le splash Expo immédiatement pour éviter les superpositions
-      await SplashScreen.hideAsync();
-      await new Promise(resolve => setTimeout(resolve, 100));
-    } catch (e) {
-      console.warn('Erreur lors de la préparation de l\'app:', e);
-    } finally {
-      setAppIsReady(true);
-    }
-  }
-  prepareApp();
-}, []);
 ```
 
-### 2. App.json - Configuration Optimisée ✅
+### 2. App.json - Configuration Plugin Officiel ✅
 ```json
-// Ajout de hideExpoLoadingScreen dans splash et plugin
+// Configuration selon documentation Expo SDK 53
 "splash": {
   "image": "./assets/splash-icon.png",
   "resizeMode": "contain",
-  "backgroundColor": "#0a0a1a",
-  "hideExpoLoadingScreen": true  // NOUVEAU
+  "backgroundColor": "#0a0a1a"
 },
 "plugins": [
   [
@@ -52,12 +45,7 @@ useEffect(() => {
       "backgroundColor": "#0a0a1a",
       "image": "./assets/splash-icon.png",
       "imageWidth": 150,
-      "resizeMode": "contain",
-      "hideExpoLoadingScreen": true,  // NOUVEAU
-      "dark": {                       // NOUVEAU
-        "backgroundColor": "#0a0a1a",
-        "image": "./assets/splash-icon.png"
-      }
+      "resizeMode": "contain"
     }
   ]
 ]
@@ -78,18 +66,19 @@ const autoCloseTimer = setTimeout(() => {
 }, 3000);
 ```
 
-## Résultat Attendu
+## Résultat Attendu selon Documentation Expo
 
-Après ces corrections, lors du lancement de l'APK :
+Après ces corrections conformes à la documentation officielle :
 
-1. **0ms** : Le splash Expo par défaut apparaît brièvement
-2. **~100ms** : Le splash Expo est masqué immédiatement
-3. **~150ms** : Le splash screen personnalisé apparaît avec :
+1. **0ms** : Le splash Expo configuré apparaît (icon + background #0a0a1a)
+2. **~100ms** : L'app se prépare (`appIsReady = true`)
+3. **~150ms** : Le splash screen personnalisé s'affiche avec :
    - Animation de pulsation du logo (0.97 ↔ 1.03)
    - Rotation des étoiles (360° en 10 secondes)
    - Apparition progressive du texte "ATOMIC FLIX"
    - Barre de chargement animée
-4. **3000ms** : Transition fluide vers l'application principale
+4. **3000ms** : `onLayoutRootView` appelle `SplashScreen.hide()`
+5. **3600ms** : Transition fluide avec fade (600ms) vers l'application principale
 
 ## Fichiers Modifiés
 - `App.tsx` : Timing et gestion des transitions
