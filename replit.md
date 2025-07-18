@@ -58,8 +58,9 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 **Mise à jour style boutons langue et dropdowns selon capture utilisateur - July 18, 2025**
 - ✅ Boutons langue : dimensions exactes 80x48px selon capture utilisateur
-- ✅ Style boutons VO/VF : texte simple sans drapeaux, bordures cyan #00bcd4
-- ✅ Fond boutons langue : #374151 avec bordures 2px cyan
+- ✅ Style boutons VO/VF : drapeaux en arrière-plan (opacité 0.3) avec texte VF/VO au centre
+- ✅ Position boutons langue : alignement à gauche au lieu du centre
+- ✅ Fond boutons langue : #374151 avec bordures 2px cyan #00bcd4
 - ✅ Dropdowns : bordures cyan 2px, fond #374151, hauteur 56px
 - ✅ Libellés dropdowns : "ÉPISODE 1" et "SERVER 2 (HD)" en majuscules
 - ✅ Police dropdowns : taille 16px, poids bold, couleur blanche

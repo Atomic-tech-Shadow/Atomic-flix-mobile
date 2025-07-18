@@ -509,6 +509,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 onPress={() => changeLanguage(lang as 'VF' | 'VOSTFR')}
                 activeOpacity={0.7}
               >
+                {/* Drapeau en arrière-plan */}
+                <Text style={styles.languageFlag}>
+                  {lang === 'VF' ? '🇫🇷' : '🇯🇵'}
+                </Text>
+                {/* Texte VF/VO au centre */}
                 <Text style={[
                   styles.languageText,
                   selectedLanguage === lang && styles.languageTextActive
@@ -807,7 +812,7 @@ const styles = StyleSheet.create({
   languageSelector: {
     flexDirection: 'row',
     padding: 16,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     gap: 16,
   },
   languageButton: {
@@ -819,16 +824,26 @@ const styles = StyleSheet.create({
     borderColor: '#00bcd4',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
+    overflow: 'hidden',
   },
   languageButtonActive: {
     backgroundColor: '#0066cc',
     borderColor: '#00bcd4',
+  },
+  languageFlag: {
+    position: 'absolute',
+    fontSize: 32,
+    opacity: 0.3,
+    zIndex: 1,
   },
   languageText: {
     color: '#ffffff',
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
+    zIndex: 2,
+    position: 'relative',
   },
   languageTextActive: {
     color: '#ffffff',
