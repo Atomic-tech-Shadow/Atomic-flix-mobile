@@ -627,12 +627,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end', // Contenu vers le bas
   },
   heroLogo: {
-    width: 120,
-    height: 36,
-    borderRadius: 60, // Pour rendre le logo rond
+    width: 48,
+    height: 48,
+    borderRadius: 24, // Logo parfaitement rond (la moitié de width/height)
     position: 'absolute',
-    bottom: 20,
-    right: 20, // Positionné en bas à droite
+    bottom: 16,
+    right: 16, // Positionné dans l'angle inférieur droit
+    backgroundColor: 'rgba(255, 255, 255, 0.1)', // Fond léger pour le contraste
+    borderWidth: 2,
+    borderColor: 'rgba(0, 188, 212, 0.3)', // Bordure cyan subtile
   },
   heroSubtitle: {
     fontSize: 16,
