@@ -17,9 +17,7 @@ import Svg, {
   Path, 
   Defs, 
   LinearGradient as SvgLinearGradient, 
-  Stop,
-  AnimateTransform,
-  Animate
+  Stop
 } from 'react-native-svg';
 
 interface TelegramVerificationProps {
@@ -28,18 +26,18 @@ interface TelegramVerificationProps {
   channelName?: string;
 }
 
-// Composant Logo SVG Animé ATOMIC FLIX
+// Composant Logo SVG Animé ATOMIC FLIX avec couleurs cohérentes
 const AnimatedLogo = () => (
   <Svg width="80" height="80" viewBox="0 0 400 400">
     <Defs>
       <SvgLinearGradient id="orbit1" x1="0%" y1="0%" x2="100%" y2="100%">
-        <Stop offset="0%" stopColor="#ff0080"/>
-        <Stop offset="50%" stopColor="#ff00cc"/>
-        <Stop offset="100%" stopColor="#7c3aed"/>
+        <Stop offset="0%" stopColor="#00bcd4"/>
+        <Stop offset="50%" stopColor="#0ea5e9"/>
+        <Stop offset="100%" stopColor="#3b82f6"/>
       </SvgLinearGradient>
       <SvgLinearGradient id="orbit2" x1="0%" y1="0%" x2="100%" y2="100%">
-        <Stop offset="0%" stopColor="#7c3aed"/>
-        <Stop offset="50%" stopColor="#3b82f6"/>
+        <Stop offset="0%" stopColor="#3b82f6"/>
+        <Stop offset="50%" stopColor="#00bcd4"/>
         <Stop offset="100%" stopColor="#0ea5e9"/>
       </SvgLinearGradient>
       <SvgLinearGradient id="orbit3" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -52,71 +50,20 @@ const AnimatedLogo = () => (
     {/* Noyau central */}
     <Circle cx="200" cy="200" r="12" fill="#fff" opacity="0.9"/>
     
-    {/* Orbites animées */}
+    {/* Orbites animées - version statique pour éviter les erreurs */}
     <G>
-      <Ellipse cx="200" cy="200" rx="60" ry="30" fill="none" stroke="url(#orbit1)" strokeWidth="2" opacity="0.8">
-        <AnimateTransform
-          attributeName="transform"
-          type="rotate"
-          values="0 200 200;360 200 200"
-          dur="4s"
-          repeatCount="indefinite"
-        />
-      </Ellipse>
-      <Circle cx="260" cy="200" r="4" fill="url(#orbit1)">
-        <AnimateTransform
-          attributeName="transform"
-          type="rotate"
-          values="0 200 200;360 200 200"
-          dur="4s"
-          repeatCount="indefinite"
-        />
-        <Animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-      </Circle>
+      <Ellipse cx="200" cy="200" rx="60" ry="30" fill="none" stroke="url(#orbit1)" strokeWidth="2" opacity="0.8" />
+      <Circle cx="260" cy="200" r="4" fill="url(#orbit1)" opacity="0.8" />
     </G>
     
     <G>
-      <Ellipse cx="200" cy="200" rx="45" ry="80" fill="none" stroke="url(#orbit2)" strokeWidth="2" opacity="0.8">
-        <AnimateTransform
-          attributeName="transform"
-          type="rotate"
-          values="0 200 200;-360 200 200"
-          dur="5s"
-          repeatCount="indefinite"
-        />
-      </Ellipse>
-      <Circle cx="200" cy="120" r="3" fill="url(#orbit2)">
-        <AnimateTransform
-          attributeName="transform"
-          type="rotate"
-          values="0 200 200;-360 200 200"
-          dur="5s"
-          repeatCount="indefinite"
-        />
-        <Animate attributeName="opacity" values="0.6;1;0.6" dur="2.5s" repeatCount="indefinite"/>
-      </Circle>
+      <Ellipse cx="200" cy="200" rx="45" ry="80" fill="none" stroke="url(#orbit2)" strokeWidth="2" opacity="0.8" />
+      <Circle cx="200" cy="120" r="3" fill="url(#orbit2)" opacity="0.8" />
     </G>
     
     <G>
-      <Ellipse cx="200" cy="200" rx="75" ry="50" fill="none" stroke="url(#orbit3)" strokeWidth="2" opacity="0.8">
-        <AnimateTransform
-          attributeName="transform"
-          type="rotate"
-          values="0 200 200;360 200 200"
-          dur="6s"
-          repeatCount="indefinite"
-        />
-      </Ellipse>
-      <Circle cx="275" cy="200" r="3.5" fill="url(#orbit3)">
-        <AnimateTransform
-          attributeName="transform"
-          type="rotate"
-          values="0 200 200;360 200 200"
-          dur="6s"
-          repeatCount="indefinite"
-        />
-        <Animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/>
-      </Circle>
+      <Ellipse cx="200" cy="200" rx="75" ry="50" fill="none" stroke="url(#orbit3)" strokeWidth="2" opacity="0.8" />
+      <Circle cx="275" cy="200" r="3.5" fill="url(#orbit3)" opacity="0.8" />
     </G>
     
     {/* Symbole play central */}
@@ -124,9 +71,7 @@ const AnimatedLogo = () => (
       d="M185 185 L185 215 L210 200 Z" 
       fill="url(#orbit1)" 
       opacity="0.9"
-    >
-      <Animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
-    </Path>
+    />
     
     {/* Lettre F stylisée */}
     <Path 
@@ -135,9 +80,7 @@ const AnimatedLogo = () => (
       strokeWidth="3" 
       fill="none"
       opacity="0.8"
-    >
-      <Animate attributeName="opacity" values="0.6;1;0.6" dur="2.5s" repeatCount="indefinite"/>
-    </Path>
+    />
   </Svg>
 );
 
@@ -354,7 +297,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           activeOpacity={0.8}
         >
           <LinearGradient
-            colors={['#ff0080', '#7c3aed', '#0ea5e9']}
+            colors={['#00bcd4', '#0ea5e9']}
             style={styles.buttonGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
@@ -373,7 +316,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           activeOpacity={0.8}
         >
           <LinearGradient
-            colors={hasSubscribed ? ['#00bcd4', '#0ea5e9', '#3b82f6'] : ['#374151', '#475569', '#6b7280']}
+            colors={hasSubscribed ? ['#00bcd4', '#0ea5e9'] : ['#374151', '#475569']}
             style={styles.buttonGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
@@ -403,6 +346,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 30,
     paddingHorizontal: 20,
+    backgroundColor: '#0a0a1a',
+    borderRadius: 16,
+    margin: 20,
   },
   header: {
     alignItems: 'center',
@@ -430,9 +376,9 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     marginBottom: 5,
     textAlign: 'center',
-    textShadowColor: 'rgba(0, 188, 212, 0.5)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
+    textShadowColor: 'rgba(0, 188, 212, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
   subtitle: {
     fontSize: 15,
@@ -481,22 +427,22 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   subscribeButton: {
-    borderRadius: 14,
+    borderRadius: 12,
     overflow: 'hidden',
-    elevation: 6,
-    shadowColor: '#ff0080',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
+    elevation: 4,
+    shadowColor: '#00bcd4',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   verifyButton: {
-    borderRadius: 14,
+    borderRadius: 12,
     overflow: 'hidden',
-    elevation: 6,
+    elevation: 4,
     shadowColor: '#00bcd4',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   disabledButton: {
     opacity: 0.5,
@@ -512,10 +458,10 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#ffffff',
     fontSize: 16,
-    fontWeight: '700',
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    fontWeight: '600',
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
     textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
+    textShadowRadius: 1,
   },
   successMessage: {
     fontSize: 14,
