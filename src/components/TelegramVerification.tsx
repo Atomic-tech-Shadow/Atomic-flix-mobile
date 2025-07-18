@@ -197,9 +197,13 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
         await AsyncStorage.setItem('telegram_verified', 'true');
         await AsyncStorage.setItem('telegram_user_id', userId);
         
+        // Extraire le nom de l'utilisateur pour personnaliser le message
+        const userName = data.userInfo?.user?.first_name || data.userInfo?.user?.username || 'Otaku';
+        const userStatus = data.status === 'creator' ? ' 👑 Bienvenue, Créateur !' : '';
+        
         Alert.alert(
-          'Bienvenue dans Atomic Flix !',
-          '🎉 Félicitations ! Explorez maintenant des milliers d\'animes et mangas exclusifs !',
+          `Bienvenue dans Atomic Flix${userStatus}`,
+          `🎉 Félicitations ${userName} ! Explorez maintenant des milliers d'animes et mangas exclusifs !`,
           [
             {
               text: 'Commencer l\'aventure',
