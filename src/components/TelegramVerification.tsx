@@ -40,11 +40,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
     }
   };
 
-  const handleQuickVerify = async () => {
-    // Pour le développement - utiliser votre ID pré-configuré
-    const devUserId = '6968736907';
-    verifySubscription(devUserId);
-  };
+
 
   const handleSubscribe = async () => {
     try {
@@ -265,15 +261,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           </LinearGradient>
         </TouchableOpacity>
 
-        {__DEV__ && (
-          <TouchableOpacity
-            style={styles.devButton}
-            onPress={handleQuickVerify}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.devButtonText}>🚀 Vérification rapide (Dev)</Text>
-          </TouchableOpacity>
-        )}
+
       </View>
 
       {hasSubscribed && (
@@ -423,21 +411,7 @@ const styles = StyleSheet.create({
     color: '#e2e8f0',
     lineHeight: 18,
   },
-  devButton: {
-    backgroundColor: 'rgba(255, 193, 7, 0.2)',
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    marginTop: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 193, 7, 0.5)',
-  },
-  devButtonText: {
-    color: '#ffc107',
-    fontSize: 14,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
+
 });
 
 export default TelegramVerification;
