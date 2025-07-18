@@ -513,7 +513,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   styles.languageText,
                   selectedLanguage === lang && styles.languageTextActive
                 ]}>
-                  {lang === 'VF' ? '🇫🇷 VF' : '🇯🇵 VO'}
+                  {lang === 'VF' ? 'VF' : 'VO'}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -538,16 +538,16 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 dropdownIconColor="#00bcd4"
                 itemStyle={{ 
                   color: '#ffffff', 
-                  fontSize: 14, 
-                  fontWeight: '600',
-                  backgroundColor: '#1a1a2e'
+                  fontSize: 16, 
+                  fontWeight: 'bold',
+                  backgroundColor: '#374151'
                 }}
                 mode="dropdown"
               >
                 {episodes.map((episode) => (
                   <Picker.Item
                     key={episode.id}
-                    label={`Épisode ${episode.episodeNumber}`}
+                    label={`ÉPISODE ${episode.episodeNumber}`}
                     value={episode.id}
                   />
                 ))}
@@ -564,16 +564,16 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   dropdownIconColor="#00bcd4"
                   itemStyle={{ 
                     color: '#ffffff', 
-                    fontSize: 14, 
-                    fontWeight: '600',
-                    backgroundColor: '#1a1a2e'
+                    fontSize: 16, 
+                    fontWeight: 'bold',
+                    backgroundColor: '#374151'
                   }}
                   mode="dropdown"
                 >
                   {episodeDetails.sources.map((source, index) => (
                     <Picker.Item
                       key={`server-${index}-${source.server}`}
-                      label={`${source.server} (${source.quality})`}
+                      label={`SERVER ${index + 1} (${source.quality?.toUpperCase() || 'HD'})`}
                       value={index.toString()}
                     />
                   ))}
@@ -586,14 +586,14 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   dropdownIconColor="#00bcd4"
                   itemStyle={{ 
                     color: '#ffffff', 
-                    fontSize: 14, 
-                    fontWeight: '600',
-                    backgroundColor: '#1a1a2e'
+                    fontSize: 16, 
+                    fontWeight: 'bold',
+                    backgroundColor: '#374151'
                   }}
                   mode="dropdown"
                 >
                   <Picker.Item
-                    label="Aucun serveur disponible"
+                    label="AUCUN SERVEUR DISPONIBLE"
                     value=""
                   />
                 </Picker>
@@ -808,26 +808,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 16,
     justifyContent: 'center',
-    gap: 12,
+    gap: 16,
   },
   languageButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    width: 80,
+    height: 48,
     borderRadius: 8,
-    backgroundColor: '#1a1a2e',
-    borderWidth: 1,
-    borderColor: '#374151',
+    backgroundColor: '#374151',
+    borderWidth: 2,
+    borderColor: '#00bcd4',
     justifyContent: 'center',
     alignItems: 'center',
   },
   languageButtonActive: {
-    backgroundColor: '#00bcd4',
+    backgroundColor: '#0066cc',
     borderColor: '#00bcd4',
   },
   languageText: {
     color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 14,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
   languageTextActive: {
@@ -896,10 +896,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   pickerContainer: {
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#374151',
     borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#374151',
+    borderWidth: 2,
+    borderColor: '#00bcd4',
     height: 56,
     justifyContent: 'center',
     overflow: 'hidden',
@@ -909,11 +909,11 @@ const styles = StyleSheet.create({
   picker: {
     color: '#ffffff',
     backgroundColor: 'transparent',
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: 'bold',
     height: 56,
     marginVertical: 0,
-    paddingHorizontal: 14,
+    paddingHorizontal: 16,
     marginLeft: -8,
     marginRight: -8,
   },

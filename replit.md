@@ -56,10 +56,20 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Ombres boutons : couleur bleue Telegram → cyan application uniforme
 - ✅ Palette de couleurs 100% cohérente dans toute l'application
 
+**Mise à jour style boutons langue et dropdowns selon capture utilisateur - July 18, 2025**
+- ✅ Boutons langue : dimensions exactes 80x48px selon capture utilisateur
+- ✅ Style boutons VO/VF : texte simple sans drapeaux, bordures cyan #00bcd4
+- ✅ Fond boutons langue : #374151 avec bordures 2px cyan
+- ✅ Dropdowns : bordures cyan 2px, fond #374151, hauteur 56px
+- ✅ Libellés dropdowns : "ÉPISODE 1" et "SERVER 2 (HD)" en majuscules
+- ✅ Police dropdowns : taille 16px, poids bold, couleur blanche
+- ✅ Style cohérent avec capture référence fournie par l'utilisateur
+- ✅ Gap entre boutons langue : 16px pour espacement optimal
+
 **Mise à jour tailles boutons AnimePlayerScreen - July 17, 2025**
 - ✅ Boutons navigation (gauche/droite) : 40x40 → 56x56 pixels
 - ✅ Bouton téléchargement (vert) : 40x40 → 56x56 pixels
-- ✅ Boutons langue : 60x45 → 70x55 pixels
+- ✅ Boutons langue : 60x45 → 70x55 pixels (mis à jour vers 80x48px)
 - ✅ Dropdowns épisodes/serveurs : hauteur 48 → 56 pixels
 - ✅ Bordures et espacements augmentés pour meilleure accessibilité mobile
 - ✅ Rayons de bordure uniformisés à 8px pour design moderne
