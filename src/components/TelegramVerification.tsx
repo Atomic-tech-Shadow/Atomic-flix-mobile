@@ -10,12 +10,136 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import Svg, { 
+  Circle, 
+  Ellipse, 
+  G, 
+  Path, 
+  Defs, 
+  LinearGradient as SvgLinearGradient, 
+  Stop,
+  AnimateTransform,
+  Animate
+} from 'react-native-svg';
 
 interface TelegramVerificationProps {
   onVerified: () => void;
   telegramChannelUrl?: string;
   channelName?: string;
 }
+
+// Composant Logo SVG Animé ATOMIC FLIX
+const AnimatedLogo = () => (
+  <Svg width="80" height="80" viewBox="0 0 400 400">
+    <Defs>
+      <SvgLinearGradient id="orbit1" x1="0%" y1="0%" x2="100%" y2="100%">
+        <Stop offset="0%" stopColor="#ff0080"/>
+        <Stop offset="50%" stopColor="#ff00cc"/>
+        <Stop offset="100%" stopColor="#7c3aed"/>
+      </SvgLinearGradient>
+      <SvgLinearGradient id="orbit2" x1="0%" y1="0%" x2="100%" y2="100%">
+        <Stop offset="0%" stopColor="#7c3aed"/>
+        <Stop offset="50%" stopColor="#3b82f6"/>
+        <Stop offset="100%" stopColor="#0ea5e9"/>
+      </SvgLinearGradient>
+      <SvgLinearGradient id="orbit3" x1="0%" y1="0%" x2="100%" y2="100%">
+        <Stop offset="0%" stopColor="#0ea5e9"/>
+        <Stop offset="50%" stopColor="#06b6d4"/>
+        <Stop offset="100%" stopColor="#00bcd4"/>
+      </SvgLinearGradient>
+    </Defs>
+    
+    {/* Noyau central */}
+    <Circle cx="200" cy="200" r="12" fill="#fff" opacity="0.9"/>
+    
+    {/* Orbites animées */}
+    <G>
+      <Ellipse cx="200" cy="200" rx="60" ry="30" fill="none" stroke="url(#orbit1)" strokeWidth="2" opacity="0.8">
+        <AnimateTransform
+          attributeName="transform"
+          type="rotate"
+          values="0 200 200;360 200 200"
+          dur="4s"
+          repeatCount="indefinite"
+        />
+      </Ellipse>
+      <Circle cx="260" cy="200" r="4" fill="url(#orbit1)">
+        <AnimateTransform
+          attributeName="transform"
+          type="rotate"
+          values="0 200 200;360 200 200"
+          dur="4s"
+          repeatCount="indefinite"
+        />
+        <Animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+      </Circle>
+    </G>
+    
+    <G>
+      <Ellipse cx="200" cy="200" rx="45" ry="80" fill="none" stroke="url(#orbit2)" strokeWidth="2" opacity="0.8">
+        <AnimateTransform
+          attributeName="transform"
+          type="rotate"
+          values="0 200 200;-360 200 200"
+          dur="5s"
+          repeatCount="indefinite"
+        />
+      </Ellipse>
+      <Circle cx="200" cy="120" r="3" fill="url(#orbit2)">
+        <AnimateTransform
+          attributeName="transform"
+          type="rotate"
+          values="0 200 200;-360 200 200"
+          dur="5s"
+          repeatCount="indefinite"
+        />
+        <Animate attributeName="opacity" values="0.6;1;0.6" dur="2.5s" repeatCount="indefinite"/>
+      </Circle>
+    </G>
+    
+    <G>
+      <Ellipse cx="200" cy="200" rx="75" ry="50" fill="none" stroke="url(#orbit3)" strokeWidth="2" opacity="0.8">
+        <AnimateTransform
+          attributeName="transform"
+          type="rotate"
+          values="0 200 200;360 200 200"
+          dur="6s"
+          repeatCount="indefinite"
+        />
+      </Ellipse>
+      <Circle cx="275" cy="200" r="3.5" fill="url(#orbit3)">
+        <AnimateTransform
+          attributeName="transform"
+          type="rotate"
+          values="0 200 200;360 200 200"
+          dur="6s"
+          repeatCount="indefinite"
+        />
+        <Animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/>
+      </Circle>
+    </G>
+    
+    {/* Symbole play central */}
+    <Path 
+      d="M185 185 L185 215 L210 200 Z" 
+      fill="url(#orbit1)" 
+      opacity="0.9"
+    >
+      <Animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
+    </Path>
+    
+    {/* Lettre F stylisée */}
+    <Path 
+      d="M220 180 L220 220 M220 180 L235 180 M220 200 L232 200" 
+      stroke="url(#orbit3)" 
+      strokeWidth="3" 
+      fill="none"
+      opacity="0.8"
+    >
+      <Animate attributeName="opacity" values="0.6;1;0.6" dur="2.5s" repeatCount="indefinite"/>
+    </Path>
+  </Svg>
+);
 
 const TelegramVerification: React.FC<TelegramVerificationProps> = ({
   onVerified,
@@ -184,14 +308,11 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
 
   return (
     <View style={styles.modalContent}>
-      {/* Header avec logo */}
+      {/* Header avec logo animé */}
       <View style={styles.header}>
-        <LinearGradient
-          colors={['#00bcd4', '#0094cc']}
-          style={styles.logoContainer}
-        >
-          <Text style={styles.logoText}>⚛️</Text>
-        </LinearGradient>
+        <View style={styles.logoContainer}>
+          <AnimatedLogo />
+        </View>
         <Text style={styles.title}>ATOMIC FLIX</Text>
         <Text style={styles.subtitle}>Accès exclusif requis</Text>
       </View>
@@ -233,10 +354,12 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           activeOpacity={0.8}
         >
           <LinearGradient
-            colors={['#00bcd4', '#0094cc']}
+            colors={['#ff0080', '#7c3aed', '#0ea5e9']}
             style={styles.buttonGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
           >
-            <Text style={styles.buttonText}>📱 S'abonner</Text>
+            <Text style={styles.buttonText}>📱 S'abonner au canal</Text>
           </LinearGradient>
         </TouchableOpacity>
 
@@ -250,13 +373,15 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           activeOpacity={0.8}
         >
           <LinearGradient
-            colors={hasSubscribed ? ['#00bcd4', '#0094cc'] : ['#374151', '#475569']}
+            colors={hasSubscribed ? ['#00bcd4', '#0ea5e9', '#3b82f6'] : ['#374151', '#475569', '#6b7280']}
             style={styles.buttonGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
           >
             {isVerifying ? (
               <ActivityIndicator size="small" color="#ffffff" />
             ) : (
-              <Text style={styles.buttonText}>✅ Vérifier</Text>
+              <Text style={styles.buttonText}>✅ Vérifier l'abonnement</Text>
             )}
           </LinearGradient>
         </TouchableOpacity>
@@ -284,33 +409,37 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   logoContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 15,
+    backgroundColor: 'rgba(0, 188, 212, 0.1)',
+    borderWidth: 2,
+    borderColor: 'rgba(0, 188, 212, 0.3)',
     shadowColor: '#00bcd4',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 8,
   },
-  logoText: {
-    fontSize: 24,
-    color: '#ffffff',
-  },
   title: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#ffffff',
     marginBottom: 5,
     textAlign: 'center',
+    textShadowColor: 'rgba(0, 188, 212, 0.5)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 15,
     color: '#00bcd4',
     textAlign: 'center',
+    fontWeight: '500',
+    opacity: 0.9,
   },
   description: {
     fontSize: 16,
@@ -352,22 +481,22 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   subscribeButton: {
-    borderRadius: 12,
+    borderRadius: 14,
     overflow: 'hidden',
-    elevation: 3,
-    shadowColor: '#00bcd4',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    elevation: 6,
+    shadowColor: '#ff0080',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
   },
   verifyButton: {
-    borderRadius: 12,
+    borderRadius: 14,
     overflow: 'hidden',
-    elevation: 3,
+    elevation: 6,
     shadowColor: '#00bcd4',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
   },
   disabledButton: {
     opacity: 0.5,
@@ -383,7 +512,10 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#ffffff',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
   successMessage: {
     fontSize: 14,
