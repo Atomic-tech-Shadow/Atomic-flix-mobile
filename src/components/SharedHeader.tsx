@@ -6,6 +6,7 @@ import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import NotificationService, { EpisodeNotification } from '../utils/notificationService';
 import NotificationModal from './NotificationModal';
+import GlobalSearchModal from './GlobalSearchModal';
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -25,11 +26,20 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   const [notifications, setNotifications] = useState<EpisodeNotification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [showMenuDrawer, setShowMenuDrawer] = useState(false);
+  const [showGlobalSearchModal, setShowGlobalSearchModal] = useState(false);
   const [slideAnim] = useState(new Animated.Value(-300));
 
   const notificationService = NotificationService.getInstance();
 
-
+  const handleSearchPress = () => {
+    // Si un onSearchPress spécifique est fourni (comme dans HomeScreen), l'utiliser
+    if (onSearchPress) {
+      onSearchPress();
+    } else {
+      // Sinon, ouvrir le modal de recherche globale
+      setShowGlobalSearchModal(true);
+    }
+  };
 
   const handleNotificationPress = async () => {
     // Activer/désactiver les notifications à chaque clic
@@ -160,7 +170,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
         <View style={styles.headerIcons}>
           <TouchableOpacity 
             style={styles.headerIconButton}
-            onPress={onSearchPress}
+            onPress={handleSearchPress}
           >
             <Ionicons name="search" size={22} color="#ffffff" />
           </TouchableOpacity>
@@ -280,6 +290,12 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           </Animated.View>
         </View>
       </Modal>
+
+      {/* Modal de recherche globale */}
+      <GlobalSearchModal
+        visible={showGlobalSearchModal}
+        onClose={() => setShowGlobalSearchModal(false)}
+      />
     </View>
   );
 };

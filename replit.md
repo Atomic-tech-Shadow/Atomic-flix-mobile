@@ -8,6 +8,18 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.5.0 - Recherche globale implémentée sur tous les écrans - July 18, 2025**
+- ✅ SearchService.ts créé avec cache intelligent et gestion d'erreurs complète
+- ✅ GlobalSearchModal.tsx ajouté avec interface moderne et navigation automatique
+- ✅ SharedHeader.tsx modifié pour supporter recherche globale sur tous les écrans
+- ✅ Fonctionnalité de recherche maintenant disponible sur TOUS les écrans (9/9)
+- ✅ Système hybride : HomeScreen garde sa recherche locale, autres écrans utilisent modal global
+- ✅ Navigation intelligente : anime → AnimeDetail, manga → MangaReader selon le type
+- ✅ Cache de recherche avec TTL 5 minutes pour optimiser les performances
+- ✅ Interface utilisateur cohérente avec blur effect et design moderne
+- ✅ Débounce 300ms et gestion d'erreurs réseau complète
+- ✅ Badges visuels par type de contenu (ANIME/MANGA/FILM) avec couleurs distinctes
+
 **Version 2.4.4 - Configuration conforme documentation Expo 53 - July 18, 2025**
 - ✅ Configuration mise aux standards officiels Expo 53
 - ✅ Suppression de la propriété `splash` legacy dépréciée
