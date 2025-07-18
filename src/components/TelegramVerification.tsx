@@ -250,245 +250,170 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
   };
 
   return (
-    <View style={styles.modalContent}>
-      {/* Header avec logo animé */}
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <AnimatedLogo />
-        </View>
-        <Text style={styles.title}>ATOMIC FLIX</Text>
-        <Text style={styles.subtitle}>Accès exclusif requis</Text>
+    <View style={styles.container}>
+      {/* Logo en haut de l'écran */}
+      <View style={styles.topLogo}>
+        <AnimatedLogo />
+        <Text style={styles.logoText}>ATOMIC FLIX</Text>
       </View>
 
-      {/* Contenu */}
-      <Text style={styles.description}>
-        Abonnez-vous à notre canal Telegram pour accéder au contenu exclusif !
-      </Text>
-      
-      {!hasSubscribed && (
-        <Text style={styles.stepsText}>
-          1. Cliquez sur "S'abonner" pour ouvrir Telegram{'\n'}
-          2. Abonnez-vous au canal{'\n'}
-          3. Trouvez votre ID Telegram avec @userinfobot{'\n'}
-          4. Revenez dans l'app et cliquez "Vérifier"
+      {/* Carte carrée centrée */}
+      <View style={styles.squareCard}>
+        <Text style={styles.title}>Vérification Telegram</Text>
+        
+        <Text style={styles.description}>
+          Abonnez-vous à notre canal pour accéder au contenu exclusif
         </Text>
-      )}
-      
-      {hasSubscribed && (
-        <View style={styles.infoBox}>
-          <Text style={styles.infoTitle}>💡 Comment trouver votre ID Telegram :</Text>
-          <Text style={styles.infoText}>
-            1. Ouvrez Telegram{'\n'}
-            2. Cherchez @userinfobot{'\n'}
-            3. Envoyez /start{'\n'}
-            4. Copiez votre ID (nombre)
+        
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.subscribeButton}
+            onPress={handleSubscribe}
+            activeOpacity={0.8}
+          >
+            <LinearGradient
+              colors={['#00bcd4', '#0ea5e9']}
+              style={styles.compactButtonGradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+            >
+              <Text style={styles.compactButtonText}>S'abonner</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.verifyButton,
+              (!hasSubscribed || isVerifying) && styles.disabledButton
+            ]}
+            onPress={handleVerify}
+            disabled={isVerifying || !hasSubscribed}
+            activeOpacity={0.8}
+          >
+            <LinearGradient
+              colors={hasSubscribed ? ['#00bcd4', '#0ea5e9'] : ['#374151', '#475569']}
+              style={styles.compactButtonGradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+            >
+              {isVerifying ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
+                <Text style={styles.compactButtonText}>Vérifier</Text>
+              )}
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+
+        {hasSubscribed && (
+          <Text style={styles.compactSuccessMessage}>
+            Cliquez "Vérifier" pour confirmer
           </Text>
-        </View>
-      )}
-
-      <View style={styles.channelInfo}>
-        <Text style={styles.channelName}>📢 {channelName}</Text>
+        )}
       </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.subscribeButton}
-          onPress={handleSubscribe}
-          activeOpacity={0.8}
-        >
-          <LinearGradient
-            colors={['#00bcd4', '#0ea5e9']}
-            style={styles.buttonGradient}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-          >
-            <Text style={styles.buttonText}>📱 S'abonner au canal</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[
-            styles.verifyButton,
-            (!hasSubscribed || isVerifying) && styles.disabledButton
-          ]}
-          onPress={handleVerify}
-          disabled={isVerifying || !hasSubscribed}
-          activeOpacity={0.8}
-        >
-          <LinearGradient
-            colors={hasSubscribed ? ['#00bcd4', '#0ea5e9'] : ['#374151', '#475569']}
-            style={styles.buttonGradient}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-          >
-            {isVerifying ? (
-              <ActivityIndicator size="small" color="#ffffff" />
-            ) : (
-              <Text style={styles.buttonText}>✅ Vérifier l'abonnement</Text>
-            )}
-          </LinearGradient>
-        </TouchableOpacity>
-
-
-      </View>
-
-      {hasSubscribed && (
-        <Text style={styles.successMessage}>
-          ✅ Parfait ! Maintenant cliquez sur "Vérifier" pour confirmer votre abonnement
-        </Text>
-      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  modalContent: {
-    alignItems: 'center',
-    paddingVertical: 30,
-    paddingHorizontal: 20,
+  container: {
+    flex: 1,
     backgroundColor: '#0a0a1a',
-    borderRadius: 16,
-    margin: 20,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 25,
-  },
-  logoContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 15,
-    backgroundColor: 'rgba(0, 188, 212, 0.1)',
-    borderWidth: 2,
-    borderColor: 'rgba(0, 188, 212, 0.3)',
-    shadowColor: '#00bcd4',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    paddingHorizontal: 20,
   },
-  title: {
-    fontSize: 24,
+  topLogo: {
+    position: 'absolute',
+    top: 60,
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  logoText: {
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#ffffff',
-    marginBottom: 5,
-    textAlign: 'center',
+    color: '#00bcd4',
+    marginTop: 8,
     textShadowColor: 'rgba(0, 188, 212, 0.3)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
-  subtitle: {
-    fontSize: 15,
-    color: '#00bcd4',
+  squareCard: {
+    width: 300,
+    height: 300,
+    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: 'rgba(0, 188, 212, 0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+    shadowColor: '#00bcd4',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    elevation: 12,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginBottom: 12,
     textAlign: 'center',
-    fontWeight: '500',
-    opacity: 0.9,
   },
   description: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#d1d5db',
     textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: 20,
-  },
-  stepsText: {
-    fontSize: 14,
-    color: '#9ca3af',
-    textAlign: 'left',
     lineHeight: 20,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-    backgroundColor: 'rgba(0, 188, 212, 0.05)',
-    borderRadius: 8,
-    padding: 12,
-    borderLeftWidth: 3,
-    borderLeftColor: '#00bcd4',
-  },
-  channelInfo: {
-    backgroundColor: 'rgba(0, 188, 212, 0.1)',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 10,
-    marginBottom: 25,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 188, 212, 0.3)',
-  },
-  channelName: {
-    fontSize: 14,
-    color: '#00bcd4',
-    fontWeight: '600',
-    textAlign: 'center',
+    marginBottom: 24,
   },
   buttonContainer: {
     width: '100%',
-    gap: 12,
+    gap: 10,
   },
   subscribeButton: {
-    borderRadius: 12,
+    borderRadius: 10,
     overflow: 'hidden',
-    elevation: 4,
+    elevation: 3,
     shadowColor: '#00bcd4',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   verifyButton: {
-    borderRadius: 12,
+    borderRadius: 10,
     overflow: 'hidden',
-    elevation: 4,
+    elevation: 3,
     shadowColor: '#00bcd4',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   disabledButton: {
     opacity: 0.5,
     elevation: 1,
     shadowOpacity: 0.1,
   },
-  buttonGradient: {
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+  compactButtonGradient: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonText: {
+  compactButtonText: {
     color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
-    textShadowColor: 'rgba(0, 0, 0, 0.2)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 1,
-  },
-  successMessage: {
     fontSize: 14,
+    fontWeight: '600',
+  },
+  compactSuccessMessage: {
+    fontSize: 12,
     color: '#00bcd4',
     textAlign: 'center',
-    marginTop: 15,
+    marginTop: 12,
     fontWeight: '500',
   },
-  infoBox: {
-    backgroundColor: 'rgba(0, 188, 212, 0.1)',
-    borderRadius: 12,
-    padding: 16,
-    marginVertical: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 188, 212, 0.3)',
-  },
-  infoTitle: {
-    fontSize: 14,
-    color: '#00bcd4',
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  infoText: {
-    fontSize: 13,
-    color: '#e2e8f0',
-    lineHeight: 18,
-  },
+
 
 });
 
