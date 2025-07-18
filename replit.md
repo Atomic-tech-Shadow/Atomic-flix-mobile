@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.4.1 - Suppression animations splash screen - July 18, 2025**
+- ✅ Toutes les animations React Native supprimées du splash screen
+- ✅ Logo SVG converti en version statique (sans animate et animateTransform)
+- ✅ Animations supprimées : fadeAnim, scaleAnim, pulseAnim, rotateAnim, textOpacityAnim
+- ✅ Durée splash screen réduite à 2 secondes (au lieu de 3)
+- ✅ Interface simplifiée pour un affichage plus rapide et stable
+- ✅ Performances optimisées avec suppression des loops et timers d'animation
+
 **Version 2.4.0 - Politiques légales mises à jour et vérification Telegram améliorée - July 18, 2025**
 - ✅ Politique de confidentialité mise à jour (18 juillet 2025) pour l'intégration Telegram
 - ✅ Conditions d'utilisation modernisées avec section vérification Telegram obligatoire
