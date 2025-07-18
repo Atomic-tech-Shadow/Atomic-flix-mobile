@@ -915,7 +915,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#1e293b',
   },
   navButton: {
-```python
     width: 44,
     height: 44,
     justifyContent: 'center',
