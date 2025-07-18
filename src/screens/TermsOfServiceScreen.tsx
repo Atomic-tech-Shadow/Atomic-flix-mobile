@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function TermsOfServiceScreen({ navigation }: Props) {
-  const lastUpdated = "5 juillet 2025";
+  const lastUpdated = "18 juillet 2025";
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
@@ -68,8 +68,8 @@ export default function TermsOfServiceScreen({ navigation }: Props) {
           </View>
 
           <Text style={styles.description}>
-            ATOMIC FLIX est une application de streaming d'anime gratuite qui permet aux utilisateurs 
-            de rechercher, découvrir et regarder des animes en ligne.
+            ATOMIC FLIX est une application mobile de streaming d'anime avec vérification Telegram qui permet 
+            aux membres de notre communauté de rechercher, découvrir et regarder des animes en ligne.
           </Text>
 
           <Text style={styles.listTitle}>Fonctionnalités disponibles :</Text>
@@ -77,8 +77,9 @@ export default function TermsOfServiceScreen({ navigation }: Props) {
             <Text style={styles.listItem}>• Recherche et navigation d'animes</Text>
             <Text style={styles.listItem}>• Streaming vidéo en ligne</Text>
             <Text style={styles.listItem}>• Lecture de manga</Text>
-            <Text style={styles.listItem}>• Interface responsive (web et mobile)</Text>
-            <Text style={styles.listItem}>• Application Progressive Web App (PWA)</Text>
+            <Text style={styles.listItem}>• Application mobile native (React Native)</Text>
+            <Text style={styles.listItem}>• Vérification Telegram pour l'accès exclusif</Text>
+            <Text style={styles.listItem}>• Communauté Telegram intégrée</Text>
           </View>
         </View>
 
@@ -109,6 +110,38 @@ export default function TermsOfServiceScreen({ navigation }: Props) {
           </View>
         </View>
 
+        {/* Telegram Verification Section */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionIcon}>📱</Text>
+            <Text style={styles.sectionTitle}>Vérification Telegram Obligatoire</Text>
+          </View>
+
+          <Text style={styles.description}>
+            Pour accéder au contenu d'ATOMIC FLIX, vous devez obligatoirement vous abonner à notre canal Telegram officiel.
+          </Text>
+
+          <View style={styles.definitionsBox}>
+            <Text style={styles.definitionsTitle}>Processus de vérification</Text>
+            <View style={styles.list}>
+              <Text style={styles.listItem}>1. S'abonner à notre canal Telegram : @Atomic_flix_officiel</Text>
+              <Text style={styles.listItem}>2. Obtenir votre ID Telegram via @UserInfoToBot</Text>
+              <Text style={styles.listItem}>3. Saisir votre ID dans l'application</Text>
+              <Text style={styles.listItem}>4. Validation automatique de votre abonnement</Text>
+            </View>
+          </View>
+
+          <View style={styles.warningBox}>
+            <Text style={styles.warningTitle}>Conditions d'accès</Text>
+            <Text style={styles.warningText}>
+              • L'abonnement au canal Telegram est <Text style={styles.boldText}>gratuit et obligatoire</Text>{'\n'}
+              • Se désabonner du canal entraînera la <Text style={styles.boldText}>perte d'accès immédiate</Text>{'\n'}
+              • Les bannissements du canal sont <Text style={styles.boldText}>définitifs</Text>{'\n'}
+              • Nous nous réservons le droit de refuser l'accès sans justification
+            </Text>
+          </View>
+        </View>
+
         {/* User Responsibilities Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
@@ -121,8 +154,11 @@ export default function TermsOfServiceScreen({ navigation }: Props) {
           </Text>
 
           <View style={styles.list}>
+            <Text style={styles.listItem}>• Maintenir votre abonnement au canal Telegram</Text>
+            <Text style={styles.listItem}>• Fournir un ID Telegram valide et authentique</Text>
             <Text style={styles.listItem}>• Utiliser l'application de manière légale et éthique</Text>
             <Text style={styles.listItem}>• Respecter les droits de propriété intellectuelle</Text>
+            <Text style={styles.listItem}>• Respecter les règles de notre communauté Telegram</Text>
             <Text style={styles.listItem}>• Ne pas tenter de perturber le fonctionnement de l'application</Text>
             <Text style={styles.listItem}>• Ne pas utiliser l'application pour des activités illégales</Text>
             <Text style={styles.listItem}>• Signaler tout problème technique ou contenu inapproprié</Text>

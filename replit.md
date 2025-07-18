@@ -8,6 +8,15 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.4.0 - Politiques légales mises à jour et vérification Telegram améliorée - July 18, 2025**
+- ✅ Politique de confidentialité mise à jour (18 juillet 2025) pour l'intégration Telegram
+- ✅ Conditions d'utilisation modernisées avec section vérification Telegram obligatoire
+- ✅ Transparence complète sur collecte données : ID, nom, statut d'abonnement uniquement
+- ✅ Interface vérification améliorée : indicateur progression, messages personnalisés, bouton aide
+- ✅ Message de bienvenue personnalisé avec nom utilisateur et statut créateur
+- ✅ Logo cohérent sur tous les écrans (header, HomeScreen hero, vérification Telegram)
+- ✅ Tests de vérification validés avec API backend fonctionnelle
+
 **Version 2.3.0 - Optimisations interface et amélioration UX - July 18, 2025**
 - ✅ Card hero HomeScreen réduite (300px → 180px) pour moins d'espace vide
 - ✅ Image AnimeDetailScreen réduite (50% → 35% de la hauteur écran)

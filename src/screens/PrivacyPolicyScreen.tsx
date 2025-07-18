@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function PrivacyPolicyScreen({ navigation }: Props) {
-  const lastUpdated = "5 juillet 2025";
+  const lastUpdated = "18 juillet 2025";
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
@@ -48,19 +48,61 @@ export default function PrivacyPolicyScreen({ navigation }: Props) {
           <View style={styles.highlightBox}>
             <Text style={styles.highlightTitle}>Engagement Principal</Text>
             <Text style={styles.highlightText}>
-              <Text style={styles.boldText}>ATOMIC FLIX ne collecte, ne stocke et ne partage AUCUNE donnée personnelle.</Text> 
-              {'\n'}Nous n'utilisons pas de cookies de suivi, d'analyses comportementales, ou de systèmes de tracking.
+              <Text style={styles.boldText}>ATOMIC FLIX collecte uniquement les données nécessaires à la vérification Telegram.</Text> 
+              {'\n'}Nous n'utilisons pas de cookies de suivi, d'analyses comportementales, ou de systèmes de tracking publicitaire.
             </Text>
           </View>
 
+          <Text style={styles.listTitle}>Données que nous collectons :</Text>
+          <View style={styles.list}>
+            <Text style={styles.listItem}>• <Text style={styles.boldText}>ID Telegram</Text> : Pour vérifier votre abonnement au canal</Text>
+            <Text style={styles.listItem}>• <Text style={styles.boldText}>Nom Telegram</Text> : Pour personnaliser votre expérience</Text>
+            <Text style={styles.listItem}>• <Text style={styles.boldText}>Statut d'abonnement</Text> : Pour contrôler l'accès au contenu</Text>
+          </View>
+          
           <Text style={styles.listTitle}>Ce que nous NE collectons PAS :</Text>
           <View style={styles.list}>
-            <Text style={styles.listItem}>• Aucune information personnelle (nom, email, âge, etc.)</Text>
             <Text style={styles.listItem}>• Aucune donnée de navigation ou d'utilisation</Text>
             <Text style={styles.listItem}>• Aucun historique de visionnage</Text>
             <Text style={styles.listItem}>• Aucune géolocalisation</Text>
-            <Text style={styles.listItem}>• Aucun cookie de suivi</Text>
-            <Text style={styles.listItem}>• Aucune adresse IP stockée</Text>
+            <Text style={styles.listItem}>• Aucun cookie de suivi publicitaire</Text>
+            <Text style={styles.listItem}>• Aucune adresse IP stockée de manière permanente</Text>
+            <Text style={styles.listItem}>• Aucune donnée bancaire ou financière</Text>
+          </View>
+        </View>
+
+        {/* Telegram Integration Section */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionIcon}>📱</Text>
+            <Text style={styles.sectionTitle}>Intégration Telegram</Text>
+          </View>
+          <Text style={styles.sectionSubtitle}>Vérification d'abonnement et protection du contenu</Text>
+
+          <View style={styles.infoBox}>
+            <Text style={styles.infoTitle}>Pourquoi nous utilisons Telegram</Text>
+            <Text style={styles.infoText}>
+              Pour accéder au contenu exclusif d'ATOMIC FLIX, vous devez vous abonner à notre canal Telegram officiel. 
+              Cette vérification nous permet de construire une communauté engagée et de protéger notre contenu.
+            </Text>
+          </View>
+
+          <View style={styles.infoBox}>
+            <Text style={styles.infoTitle}>Données Telegram collectées</Text>
+            <Text style={styles.infoText}>
+              • Votre ID Telegram (numérique unique){'\n'}
+              • Votre prénom/nom d'utilisateur Telegram{'\n'}
+              • Votre statut d'abonnement au canal{'\n'}
+              Ces données sont stockées localement sur votre appareil et utilisées uniquement pour la vérification.
+            </Text>
+          </View>
+
+          <View style={styles.infoBox}>
+            <Text style={styles.infoTitle}>Sécurité et confidentialité</Text>
+            <Text style={styles.infoText}>
+              Vos données Telegram sont traitées via l'API officielle Telegram Bot. 
+              Nous ne stockons pas vos messages privés ou autres informations sensibles.
+            </Text>
           </View>
         </View>
 
@@ -73,10 +115,10 @@ export default function PrivacyPolicyScreen({ navigation }: Props) {
           <Text style={styles.sectionSubtitle}>Comment fonctionne notre application</Text>
 
           <View style={styles.infoBox}>
-            <Text style={styles.infoTitle}>Architecture Frontend-Only</Text>
+            <Text style={styles.infoTitle}>Architecture Mobile Native</Text>
             <Text style={styles.infoText}>
-              ATOMIC FLIX est une application 100% frontend qui fonctionne directement dans votre navigateur. 
-              Nous n'avons pas de serveur backend qui pourrait collecter vos données.
+              ATOMIC FLIX est une application mobile React Native avec un backend minimal pour la vérification Telegram. 
+              La plupart des données restent sur votre appareil.
             </Text>
           </View>
 
@@ -84,7 +126,7 @@ export default function PrivacyPolicyScreen({ navigation }: Props) {
             <Text style={styles.infoTitle}>Sources Externes</Text>
             <Text style={styles.infoText}>
               L'application utilise des API externes pour récupérer les informations sur les animes. 
-              Ces requêtes sont faites directement depuis votre navigateur vers les services tiers.
+              Ces requêtes sont sécurisées et ne transmettent pas vos données personnelles.
             </Text>
           </View>
         </View>
@@ -103,9 +145,11 @@ export default function PrivacyPolicyScreen({ navigation }: Props) {
               Seules les données suivantes peuvent être stockées localement dans votre navigateur :
             </Text>
             <View style={styles.list}>
-              <Text style={styles.listItem}>• Préférences de thème (clair/sombre)</Text>
+              <Text style={styles.listItem}>• Préférences de thème et paramètres d'interface</Text>
+              <Text style={styles.listItem}>• ID et nom Telegram pour la vérification d'accès</Text>
               <Text style={styles.listItem}>• Cache des images pour améliorer les performances</Text>
-              <Text style={styles.listItem}>• Données temporaires de l'application (PWA)</Text>
+              <Text style={styles.listItem}>• Données temporaires de l'application mobile</Text>
+              <Text style={styles.listItem}>• Historique de navigation local (non partagé)</Text>
             </View>
             <Text style={styles.warningText}>
               <Text style={styles.boldText}>Important :</Text> Ces données restent sur votre appareil et ne sont jamais envoyées à nos serveurs.
