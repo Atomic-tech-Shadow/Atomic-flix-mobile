@@ -8,13 +8,13 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
-**Version 2.4.2 - Splash screen style WhatsApp - July 18, 2025**
-- ✅ Redesign complet dans le style WhatsApp minimaliste
-- ✅ Fond blanc/gris clair (#f8fafc) au lieu du fond sombre
-- ✅ Icône de l'app centrée (rond cyan avec play button et lettre A)
-- ✅ Texte "from ATOMIC FLIX" en bas comme "from Meta"
-- ✅ StatusBar adaptée en mode dark pour le fond clair
-- ✅ Design épuré et professionnel identique aux apps natives
+**Version 2.4.3 - Splash screen style WhatsApp avec couleurs cohérentes - July 18, 2025**
+- ✅ Couleurs cohérentes avec l'APK (fond sombre #0a0a1a au lieu du blanc)
+- ✅ Icône réelle de l'app centrée (atomic-flix-logo.png avec orbites atomiques)
+- ✅ Texte "from ATOMIC FLIX" en bas avec couleurs harmonieuses
+- ✅ StatusBar adaptée pour fond sombre (style light)
+- ✅ Design WhatsApp maintenu avec palette cohérente
+- ✅ Suppression du SVG personnalisé pour utiliser l'icône officielle
 
 **Version 2.4.1 - Suppression animations splash screen - July 18, 2025**
 - ✅ Toutes les animations React Native supprimées du splash screen

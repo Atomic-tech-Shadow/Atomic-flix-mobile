@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Image, Text, StyleSheet, Dimensions } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { SvgXml } from 'react-native-svg';
 
 interface SplashScreenProps {
   onFinish: () => void;
@@ -9,31 +8,7 @@ interface SplashScreenProps {
 
 const { width, height } = Dimensions.get('screen');
 
-const appIconSvg = `<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00bcd4"/>
-      <stop offset="100%" stop-color="#0ea5e9"/>
-    </linearGradient>
-    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="100%" stop-color="#f0f9ff"/>
-    </linearGradient>
-  </defs>
-  
-  <!-- Background circle -->
-  <circle cx="60" cy="60" r="58" fill="url(#bgGradient)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
-  
-  <!-- Play button -->
-  <g transform="translate(60, 60)">
-    <polygon points="-15,20 -15,-20 20,0" fill="url(#iconGradient)" opacity="0.95"/>
-  </g>
-  
-  <!-- Letter A -->
-  <g transform="translate(85, 60)" fill="url(#iconGradient)" opacity="0.9">
-    <path d="M-8,-25 L-8,25 M-8,-25 L12,-25 M-8,-5 L8,-5" stroke="url(#iconGradient)" stroke-width="4" stroke-linecap="round" fill="none"/>
-  </g>
-</svg>`;
+
 
 const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
   useEffect(() => {
@@ -49,11 +24,15 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar style="dark" backgroundColor="#f8fafc" translucent={false} />
+      <StatusBar style="light" backgroundColor="#0a0a1a" translucent={false} />
       
       {/* Icône de l'app centrée */}
       <View style={styles.iconContainer}>
-        <SvgXml xml={appIconSvg} width={120} height={120} />
+        <Image
+          source={require('../../assets/atomic-flix-logo.png')}
+          style={styles.appIcon}
+          resizeMode="contain"
+        />
       </View>
       
       {/* Texte "from" en bas */}
@@ -68,7 +47,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#0a0a1a',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -77,6 +56,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
+  appIcon: {
+    width: 120,
+    height: 120,
+  },
   bottomContainer: {
     position: 'absolute',
     bottom: 80,
@@ -84,7 +67,7 @@ const styles = StyleSheet.create({
   },
   fromText: {
     fontSize: 16,
-    color: '#64748b',
+    color: '#94a3b8',
     fontWeight: '400',
     marginBottom: 8,
     letterSpacing: 0.5,
