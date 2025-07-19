@@ -19,6 +19,7 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Suppression menu téléchargement complexe et code inutilisé
 - ✅ Configuration EAS submit ajoutée pour publication Google Play Store
 - ✅ Correction configuration EAS : suppression autoSubmit non supporté
+- ✅ ID projet Expo mis à jour : 708179b4-d51c-4287-ab77-13c5f4a42924
 - ✅ Health checks passés (3/3 vérifications)
 - ✅ Projet fonctionnel en version web et mobile
 
