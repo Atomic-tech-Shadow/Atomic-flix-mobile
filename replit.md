@@ -17,6 +17,9 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Retour automatique au mode portrait quand pas de vidéo active
 - ✅ Nettoyage complet des ressources lors de la navigation
 - ✅ Correction : téléphone ne se met plus en veille en mode paysage
+- ✅ Code production nettoyé (suppression logs debug)
+- ✅ Expo SDK 53.0.20 mis à jour pour compatibilité optimale
+- ✅ Recherche documentation stores : Uptodown, APKPure, Samsung Galaxy Store
 
 **Version 2.6.0 - Nettoyage production et optimisation finale - July 18, 2025**
 - ✅ Version augmentée : 2.5.2 → 2.6.0 dans app.json
