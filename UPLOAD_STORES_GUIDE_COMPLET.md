@@ -93,7 +93,7 @@ Name: "Atomic Flix"
 Operating System: "Android"
 Directory: "Entertainment" > "Video Players"
 Package name: "com.atomicflix.mobile" (auto-détecté)
-Official website: "https://atomic-flix.vercel.app" (si disponible)
+Official website: "https://atomic-flix.vercel.app"
 PEGI: "13+" 
 Ads: ☑ "My app contains ads" (si applicable)
 Country Restriction: "Deselect all countries" (mondial)
@@ -358,7 +358,7 @@ Video Trailer: (Optionnel mais recommandé)
 
 **POLITIQUE DE CONFIDENTIALITÉ:**
 ```yaml
-Privacy Policy URL: [Obligatoire]
+Privacy Policy URL: "https://atomic-flix.vercel.app/privacy" [Obligatoire]
 Content: Doit inclure:
 - Données collectées (ID utilisateur, préférences)
 - Utilisation des données (amélioration service)
@@ -369,8 +369,8 @@ Content: Doit inclure:
 
 **TERMES D'UTILISATION:**
 ```yaml
-Terms of Service URL: [Obligatoire]
-Content: Doit inclure:
+Terms of Service URL: "https://atomic-flix.vercel.app/terms" [Obligatoire]
+Content: Doit incluer:
 - Utilisation autorisée de l'app
 - Restrictions d'usage
 - Propriété intellectuelle
