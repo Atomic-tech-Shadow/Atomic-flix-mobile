@@ -18,7 +18,7 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Bouton téléchargement simplifié avec message "Téléchargements bientôt disponibles ! ⚛️👌"
 - ✅ Suppression menu téléchargement complexe et code inutilisé
 - ✅ Configuration EAS submit ajoutée pour publication Google Play Store
-- ✅ Auto submit activé pour soumission automatique après build réussi
+- ✅ Correction configuration EAS : suppression autoSubmit non supporté
 - ✅ Health checks passés (3/3 vérifications)
 - ✅ Projet fonctionnel en version web et mobile
 
