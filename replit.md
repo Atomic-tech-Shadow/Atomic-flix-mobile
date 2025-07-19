@@ -24,6 +24,9 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Configuration F-Droid complète : metadata fastlane + YAML de soumission
 - ✅ Structure fastlane créée avec descriptions, icône et changelogs
 - ✅ Guide de soumission F-Droid documenté dans F-DROID-SUBMISSION.md
+- ✅ Fichiers de base créés : LICENSE (MIT), README.md, .gitignore, CHANGELOG.md
+- ✅ Script automatisé de préparation F-Droid (scripts/prepare-fdroid.sh)
+- ✅ Documentation contributeur (CONTRIBUTING.md)
 - ✅ Health checks passés (3/3 vérifications)
 - ✅ Projet fonctionnel en version web et mobile
 
