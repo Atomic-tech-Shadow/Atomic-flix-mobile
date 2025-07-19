@@ -8,6 +8,16 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.6.1 - Correction problème veille en mode paysage - July 19, 2025**
+- ✅ Installation expo-keep-awake pour maintenir l'écran allumé pendant la lecture
+- ✅ Installation expo-screen-orientation pour gestion optimale des orientations 
+- ✅ Activation automatique du wake lock dès qu'une vidéo est disponible
+- ✅ Désactivation automatique du wake lock lors de la sortie de l'écran
+- ✅ Orientation libre activée pendant la lecture vidéo (paysage autorisé)
+- ✅ Retour automatique au mode portrait quand pas de vidéo active
+- ✅ Nettoyage complet des ressources lors de la navigation
+- ✅ Correction : téléphone ne se met plus en veille en mode paysage
+
 **Version 2.6.0 - Nettoyage production et optimisation finale - July 18, 2025**
 - ✅ Version augmentée : 2.5.2 → 2.6.0 dans app.json
 - ✅ Nettoyage complet du code : suppression de tous les console.log de debug

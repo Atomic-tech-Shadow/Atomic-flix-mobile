@@ -18,6 +18,8 @@ import { Picker } from '@react-native-picker/picker';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import * as ScreenOrientation from 'expo-screen-orientation';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { Episode, VideoSource, Season, AnimeData, EpisodeDetails } from '../types';
 import SharedHeader from '../components/SharedHeader';
@@ -264,6 +266,36 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     setSelectedEpisode(newEpisode);
     loadEpisodeSources(newEpisode);
   };
+
+  // Effet pour maintenir l'écran allumé pendant la lecture et permettre l'orientation libre
+  useEffect(() => {
+    if (episodeDetails && episodeDetails.sources && episodeDetails.sources.length > 0) {
+      // Activer le wake lock quand une vidéo est disponible
+      activateKeepAwake();
+      
+      // Permettre toutes les orientations pour une meilleure expérience vidéo
+      ScreenOrientation.unlockAsync();
+    } else {
+      // Revenir au mode portrait quand il n'y a pas de vidéo
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    }
+
+    // Nettoyer le wake lock quand le composant se démonte ou quand il n'y a plus de vidéo
+    return () => {
+      deactivateKeepAwake();
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    };
+  }, [episodeDetails]);
+
+  // Effet pour désactiver le wake lock et rétablir l'orientation quand on quitte l'écran
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      deactivateKeepAwake();
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   // Charger les données de l'anime
   useEffect(() => {
