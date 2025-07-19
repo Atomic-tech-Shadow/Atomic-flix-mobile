@@ -322,7 +322,7 @@ const HomeScreen: React.FC = () => {
       </View>
       
       <View style={styles.cardContent}>
-        <Text style={styles.cardTitle} numberOfLines={2}>
+        <Text style={styles.cardTitle} numberOfLines={3}>
           {anime.title}
         </Text>
         <View style={styles.cardMeta}>
@@ -736,6 +736,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     marginBottom: 8,
+    lineHeight: 18,
+    minHeight: 54, // 3 lignes * 18px lineHeight
   },
   cardMeta: {
     flexDirection: 'row',
