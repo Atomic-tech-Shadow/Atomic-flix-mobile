@@ -51,5 +51,14 @@
         "GRADLE_OPTS": "-Xmx4096m -XX:MaxMetaspaceSize=512m"
       }
     }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./credentials.json",
+        "track": "internal",
+        "releaseStatus": "draft"
+      }
+    }
   }
 }

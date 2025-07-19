@@ -17,6 +17,7 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Titres anime maintenant visibles en entier sans troncature "..."
 - ✅ Bouton téléchargement simplifié avec message "Téléchargements bientôt disponibles ! ⚛️👌"
 - ✅ Suppression menu téléchargement complexe et code inutilisé
+- ✅ Configuration EAS submit ajoutée pour publication Google Play Store
 - ✅ Health checks passés (3/3 vérifications)
 - ✅ Projet fonctionnel en version web et mobile
 
