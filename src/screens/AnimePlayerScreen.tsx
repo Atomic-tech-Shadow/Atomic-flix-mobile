@@ -664,7 +664,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   styles.downloadButton,
                   (!episodeDetails || episodeDetails.sources.length === 0) && styles.navButtonDisabled
                 ]}
-                onPress={() => alert('Téléchargements offline bientôt disponibles ! ⚛️👌')}
+                onPress={() => alert('Téléchargements bientôt disponibles ! ⚛️👌')}
                 disabled={!episodeDetails || episodeDetails.sources.length === 0}
                 activeOpacity={0.7}
               >
