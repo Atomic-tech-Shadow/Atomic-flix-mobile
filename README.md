@@ -56,7 +56,7 @@ npx eas build --platform android --profile production
 
 ## F-Droid
 
-This app is configured for F-Droid submission with complete metadata and build instructions. See `F-DROID-SUBMISSION.md` for details.
+App configured for F-Droid with complete metadata. See `TERMUX-FDROID.md` for Termux commands.
 
 ## License
 
@@ -64,11 +64,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-## Support
-
-For issues and feature requests, please use the GitHub Issues tracker.
+Fork, branch, commit, pull request.

@@ -25,8 +25,8 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Structure fastlane créée avec descriptions, icône et changelogs
 - ✅ Guide de soumission F-Droid documenté dans F-DROID-SUBMISSION.md
 - ✅ Fichiers de base créés : LICENSE (MIT), README.md, .gitignore, CHANGELOG.md
-- ✅ Script automatisé de préparation F-Droid (scripts/prepare-fdroid.sh)
-- ✅ Documentation contributeur (CONTRIBUTING.md)
+- ✅ Documentation Termux simplifiée (TERMUX-FDROID.md)
+- ✅ Suppression fichiers redondants pour utilisation Termux
 - ✅ Health checks passés (3/3 vérifications)
 - ✅ Projet fonctionnel en version web et mobile
 
