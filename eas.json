@@ -35,6 +35,7 @@
       }
     },
     "production": {
+      "autoSubmit": true,
       "android": {
         "buildType": "apk",
         "gradleCommand": ":app:assembleRelease",
