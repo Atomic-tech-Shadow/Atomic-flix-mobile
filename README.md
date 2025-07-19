@@ -34,8 +34,8 @@ Mobile app for streaming anime and reading manga with modern interface.
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
-cd atomic-flix-mobile
+git clone https://github.com/Atomic-tech-Shadow/Atomic-flix-mobile.git
+cd Atomic-flix-mobile
 
 # Install dependencies
 npm install

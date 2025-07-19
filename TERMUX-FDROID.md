@@ -1,33 +1,35 @@
 # F-Droid avec Termux
 
-## Configuration terminée ✅
-- Structure fastlane complète (metadata, icône, descriptions)
-- YAML F-Droid prêt : `metadata-fdroid/com.atomicflix.mobile.yml`
-- License MIT
+## ✅ TOUT CONFIGURÉ POUR VOTRE REPO
+- YAML F-Droid: `metadata-fdroid/com.atomicflix.mobile.yml` 
+- SourceCode: https://github.com/Atomic-tech-Shadow/Atomic-flix-mobile
+- License MIT, fastlane metadata complet
 
-## Commandes Termux
+## Commandes Termux complètes
 
 ```bash
-# Setup
+# 1. Setup local
 pkg install git
-git init && git add . && git commit -m "Atomic Flix v1.0.0"
+git init
+git add .
+git commit -m "F-Droid configuration complete"
 git tag v1.0.0
 
-# Upload (créer repo sur GitHub d'abord)
-git remote add origin https://github.com/USERNAME/atomic-flix-mobile.git
+# 2. Push vers votre repo GitHub
+git remote add origin https://github.com/Atomic-tech-Shadow/Atomic-flix-mobile.git
 git push -u origin main --tags
 
-# Modifier YAML
-nano metadata-fdroid/com.atomicflix.mobile.yml
-# Remplacer YOUR_USERNAME par votre username
-
-# Soumission F-Droid
-git clone --depth=1 https://gitlab.com/USERNAME/fdroiddata.git
-cd fdroiddata
+# 3. Fork fdroiddata sur GitLab puis:
+git clone https://gitlab.com/Atomic-tech-Shadow/fdroiddata.git ~/fdroid
+cd ~/fdroid
 git checkout -b com.atomicflix.mobile
-cp ../metadata-fdroid/com.atomicflix.mobile.yml metadata/
-git add . && git commit -m "New App: com.atomicflix.mobile"
+
+# 4. Copier metadata et soumettre
+cp ~/workspace/metadata-fdroid/com.atomicflix.mobile.yml metadata/
+git add metadata/com.atomicflix.mobile.yml
+git commit -m "New App: com.atomicflix.mobile - Atomic Flix"
 git push origin com.atomicflix.mobile
 ```
 
-Ensuite créer merge request sur GitLab.
+## Résultat
+App sur F-Droid dans 2-4 jours après merge request approuvé.
