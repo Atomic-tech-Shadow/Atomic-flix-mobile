@@ -181,12 +181,10 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           };
         });
 
-        console.log('Épisodes formatés depuis API:', formattedEpisodes.length);
         setEpisodes(formattedEpisodes);
 
         // Sélectionner le premier épisode
         const episodeToSelect = formattedEpisodes[0];
-        console.log('Épisode sélectionné:', episodeToSelect.title);
         setSelectedEpisode(episodeToSelect);
 
         // Auto-charger l'épisode avec l'API embed
@@ -197,7 +195,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         setError('Aucun épisode trouvé pour cette saison et langue');
       }
     } catch (err) {
-      console.error('Erreur chargement épisodes API:', err);
       setError('Erreur lors du chargement des épisodes depuis l\'API');
     } finally {
       setEpisodeLoading(false);
@@ -208,7 +205,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   const loadEpisodeSources = async (episode: Episode) => {
     try {
       setEpisodeLoading(true);
-      console.log('Chargement sources pour épisode:', episode.title);
 
       const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/embed?url=${encodeURIComponent(episode.url)}`);
 
@@ -223,13 +219,10 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           url: episode.url
         });
         setSelectedPlayer(0); // Reset au premier serveur
-        console.log('Sources chargées:', response.sources.length, 'serveurs');
       } else {
-        console.warn('Aucune source trouvée dans la réponse embed:', response);
         setError('Aucune source de streaming trouvée pour cet épisode');
       }
     } catch (embedError) {
-      console.error('Erreur chargement sources embed:', embedError);
       setError('Erreur lors du chargement des sources de streaming');
     } finally {
       setEpisodeLoading(false);
@@ -392,7 +385,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             allowsInlineMediaPlayback={true}
             mediaPlaybackRequiresUserAction={false}
             onError={(error) => {
-              console.error('Erreur WebView:', error);
+              // Gérer l'erreur WebView silencieusement
               setError('Erreur du lecteur vidéo');
             }}
             onLoadStart={() => setEpisodeLoading(true)}
