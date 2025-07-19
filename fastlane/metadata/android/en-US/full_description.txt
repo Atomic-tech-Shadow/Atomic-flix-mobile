@@ -1,0 +1,16 @@
+Atomic Flix is a modern React Native application designed for anime and manga enthusiasts. 
+
+Features:
+• Stream anime episodes with multiple server options
+• Read manga with intuitive reader interface
+• Global search functionality across all content
+• Modern dark UI with cyan accent colors
+• Episode navigation and language selection (VF/VO)
+• Telegram integration for community features
+• Optimized for Android devices with safe area support
+
+The app provides a seamless experience for discovering and enjoying anime and manga content. Built with React Native and Expo for optimal performance and user experience.
+
+Open source project developed with modern development practices including TypeScript, proper error handling, and responsive design principles.
+
+Perfect for anime and manga fans looking for a clean, fast, and feature-rich mobile experience.

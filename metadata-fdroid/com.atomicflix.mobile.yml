@@ -1,0 +1,39 @@
+Categories:
+  - Multimedia
+
+License: MIT
+
+SourceCode: https://github.com/YOUR_USERNAME/atomic-flix-mobile
+IssueTracker: https://github.com/YOUR_USERNAME/atomic-flix-mobile/issues
+
+Name: Atomic Flix
+Summary: Mobile app for streaming anime and reading manga
+
+Description: |
+  Atomic Flix is a modern React Native application designed for anime and manga enthusiasts.
+  
+  Features:
+  * Stream anime episodes with multiple server options
+  * Read manga with intuitive reader interface
+  * Global search functionality across all content
+  * Modern dark UI with cyan accent colors
+  * Episode navigation and language selection (VF/VO)
+  * Telegram integration for community features
+  * Optimized for Android devices with safe area support
+  
+  The app provides a seamless experience for discovering and enjoying anime and manga content.
+  Built with React Native and Expo for optimal performance and user experience.
+
+RequiresRoot: false
+
+Builds:
+  - versionName: '1.0.0'
+    versionCode: 1
+    commit: v1.0.0
+    subdir: android/app
+    gradle:
+      - yes
+    prebuild:
+      - cd ../.. && npm install
+      - cd ../.. && npx expo prebuild --platform android --clear
+    output: android/app/build/outputs/apk/release/app-release.apk

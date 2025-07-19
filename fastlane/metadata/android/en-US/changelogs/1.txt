@@ -1,0 +1,7 @@
+Initial release of Atomic Flix
+• Anime streaming with multiple servers
+• Manga reader functionality  
+• Global search across content
+• Modern dark UI design
+• Telegram integration
+• Android optimizations
