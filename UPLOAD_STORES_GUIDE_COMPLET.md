@@ -358,24 +358,28 @@ Video Trailer: (Optionnel mais recommandé)
 
 **POLITIQUE DE CONFIDENTIALITÉ:**
 ```yaml
-Privacy Policy URL: "https://atomic-flix.vercel.app/privacy" [Obligatoire]
-Content: Doit inclure:
-- Données collectées (ID utilisateur, préférences)
-- Utilisation des données (amélioration service)
-- Partage avec tiers (APIs streaming)
-- Droits utilisateur (suppression, accès)
-- Contact développeur
+Privacy Policy: ✅ INTÉGRÉE DIRECTEMENT DANS L'APK
+Location: Écran "PrivacyPolicyScreen.tsx" accessible depuis menu app
+Avantages: Offline, sécurisé, design cohérent, conformité totale
+Content inclus:
+- Engagement principal : données minimales (Telegram uniquement)
+- Transparence totale sur collecte (ID, nom, statut abonnement)
+- Liste claire de ce qui N'est PAS collecté
+- Droits utilisateur complets
+- Contact développeur intégré
 ```
 
 **TERMES D'UTILISATION:**
 ```yaml
-Terms of Service URL: "https://atomic-flix.vercel.app/terms" [Obligatoire]
-Content: Doit incluer:
-- Utilisation autorisée de l'app
-- Restrictions d'usage
-- Propriété intellectuelle
-- Limitation de responsabilité
-- Résiliation compte
+Terms of Service: ✅ INTÉGRÉES DIRECTEMENT DANS L'APK  
+Location: Écran "TermsOfServiceScreen.tsx" accessible depuis menu app
+Avantages: Offline, sécurisé, design cohérent, conformité totale
+Content inclus:
+- Acceptation des conditions claire
+- Définitions précises (App, Utilisateur, Contenu, Développeur)
+- Description complète du service
+- Utilisation autorisée et restrictions
+- Limitation responsabilité et contact
 ```
 
 ### Étape 6: Soumission Final Samsung
@@ -403,8 +407,7 @@ Visual Assets:
 ☐ screenshots-tablet/ (2-4 images si applicable)
 
 Documentation:
-☐ privacy-policy.html (hébergée en ligne)
-☐ terms-of-service.html (hébergée en ligne)
+✅ Privacy Policy & Terms intégrées dans APK (PrivacyPolicyScreen.tsx, TermsOfServiceScreen.tsx)
 ☐ changelog-v2.6.1.txt
 ```
 
