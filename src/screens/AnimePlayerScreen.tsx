@@ -50,7 +50,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   const [episodeLoading, setEpisodeLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
-  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+
   const webViewRef = useRef<WebView>(null);
 
 
@@ -413,38 +413,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
 
 
-  // Fonction pour télécharger la vidéo - Identique au web
-  const downloadVideo = (quality: 'faible' | 'moyenne' | 'HD') => {
-    if (!episodeDetails || !episodeDetails.sources[selectedPlayer]) {
-      Alert.alert('Erreur', 'Aucune source vidéo disponible pour le téléchargement.');
-      return;
-    }
 
-    const qualityText = quality === 'faible' ? '360p' : quality === 'moyenne' ? '720p' : '1080p';
-    const source = episodeDetails.sources[selectedPlayer];
-
-    Alert.alert(
-      'Téléchargement',
-      `Téléchargement de ${episodeDetails.animeTitle} - Épisode ${episodeDetails.episodeNumber} en qualité ${qualityText}`,
-      [
-        { text: 'Annuler', style: 'cancel' },
-        { 
-          text: 'Télécharger', 
-          onPress: () => {
-            // Fermer le menu
-            setShowDownloadMenu(false);
-
-            // Simuler le téléchargement (à implémenter selon les besoins)
-            Alert.alert(
-              'Téléchargement commencé',
-              `Le téléchargement de l'épisode ${episodeDetails.episodeNumber} en ${qualityText} depuis ${source.server} a commencé.`,
-              [{ text: 'OK' }]
-            );
-          }
-        }
-      ]
-    );
-  };
 
   if (loading) {
     return (
@@ -695,47 +664,14 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   styles.downloadButton,
                   (!episodeDetails || episodeDetails.sources.length === 0) && styles.navButtonDisabled
                 ]}
-                onPress={() => setShowDownloadMenu(!showDownloadMenu)}
+                onPress={() => alert('Le système de téléchargement est en développement... ⚛️👌')}
                 disabled={!episodeDetails || episodeDetails.sources.length === 0}
                 activeOpacity={0.7}
               >
                 <Ionicons name="download" size={24} color="#ffffff" />
               </TouchableOpacity>
 
-              {/* Menu de téléchargement */}
-              {showDownloadMenu && episodeDetails && (
-                <View style={styles.downloadMenu}>
-                  <View style={styles.downloadMenuHeader}>
-                    <Text style={styles.downloadMenuTitle}>Télécharger en :</Text>
-                  </View>
-                  <View style={styles.downloadMenuContent}>
-                    <TouchableOpacity
-                      style={styles.downloadMenuItem}
-                      onPress={() => downloadVideo('faible')}
-                      activeOpacity={0.7}
-                    >
-                      <View style={[styles.qualityIndicator, { backgroundColor: '#eab308' }]} />
-                      <Text style={styles.downloadMenuText}>Qualité Faible (360p)</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.downloadMenuItem}
-                      onPress={() => downloadVideo('moyenne')}
-                      activeOpacity={0.7}
-                    >
-                      <View style={[styles.qualityIndicator, { backgroundColor: '#3b82f6' }]} />
-                      <Text style={styles.downloadMenuText}>Qualité Moyenne (720p)</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.downloadMenuItem}
-                      onPress={() => downloadVideo('HD')}
-                      activeOpacity={0.7}
-                    >
-                      <View style={[styles.qualityIndicator, { backgroundColor: '#10b981' }]} />
-                      <Text style={styles.downloadMenuText}>Qualité HD (1080p)</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
+
             </View>
 
             <TouchableOpacity

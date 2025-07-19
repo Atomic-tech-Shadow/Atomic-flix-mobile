@@ -8,13 +8,15 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
-**Version 2.6.2 - Migration Replit et correction affichage titres anime - July 19, 2025**
+**Version 2.6.2 - Migration Replit et améliorations UX - July 19, 2025**
 - ✅ Migration réussie de Replit Agent vers environnement Replit standard
 - ✅ Support web activé avec react-dom et react-native-web
 - ✅ Serveur de développement Expo configuré sur port 5000
 - ✅ Correction affichage titres anime : numberOfLines 2→3 lignes
 - ✅ Hauteur titre ajustée : lineHeight 18px, minHeight 54px pour 3 lignes
 - ✅ Titres anime maintenant visibles en entier sans troncature "..."
+- ✅ Bouton téléchargement simplifié avec message "Système en développement... ⚛️👌"
+- ✅ Suppression menu téléchargement complexe et code inutilisé
 - ✅ Health checks passés (3/3 vérifications)
 - ✅ Projet fonctionnel en version web et mobile
 
