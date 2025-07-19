@@ -15,7 +15,7 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Correction affichage titres anime : numberOfLines 2→3 lignes
 - ✅ Hauteur titre ajustée : lineHeight 18px, minHeight 54px pour 3 lignes
 - ✅ Titres anime maintenant visibles en entier sans troncature "..."
-- ✅ Bouton téléchargement simplifié avec message "Système en développement... ⚛️👌"
+- ✅ Bouton téléchargement simplifié avec message "Téléchargements offline bientôt disponibles ! ⚛️👌"
 - ✅ Suppression menu téléchargement complexe et code inutilisé
 - ✅ Health checks passés (3/3 vérifications)
 - ✅ Projet fonctionnel en version web et mobile
