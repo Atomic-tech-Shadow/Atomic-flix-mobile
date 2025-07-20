@@ -140,6 +140,48 @@ const HomeScreen: React.FC = () => {
     }
   };
 
+  // Enrichir les données anime avec les informations détaillées
+  const enrichAnimeData = async (animes: SearchResult[]): Promise<SearchResult[]> => {
+    const enrichedAnimes = await Promise.all(
+      animes.map(async (anime) => {
+        try {
+          // Récupérer les détails de l'anime pour obtenir les saisons
+          const detailsResponse = await apiRequest(`/api/anime/${anime.id}`);
+          
+          if (detailsResponse.success && detailsResponse.data?.seasons) {
+            const seasons = detailsResponse.data.seasons;
+            
+            // Calculer le nombre total d'épisodes
+            const totalEpisodes = seasons.reduce((total: number, season: any) => {
+              return total + (season.episodeCount || 0);
+            }, 0);
+            
+            // Récupérer toutes les langues disponibles (VF, VOSTFR, etc.)
+            const allLanguages = new Set<string>();
+            seasons.forEach((season: any) => {
+              if (season.languages && Array.isArray(season.languages)) {
+                season.languages.forEach((lang: string) => allLanguages.add(lang));
+              }
+            });
+            
+            return {
+              ...anime,
+              episodeCount: totalEpisodes > 0 ? totalEpisodes : undefined,
+              languages: Array.from(allLanguages),
+              totalSeasons: seasons.length
+            };
+          }
+        } catch (error) {
+          // En cas d'erreur, retourner l'anime sans enrichissement
+        }
+        
+        return anime;
+      })
+    );
+    
+    return enrichedAnimes;
+  };
+
   // Charger tout le contenu trending depuis l'API et détecter les nouveaux épisodes
   const loadTrendingAnimes = async () => {
     try {
@@ -151,8 +193,11 @@ const HomeScreen: React.FC = () => {
         // Détecter les nouveaux épisodes avant de mettre à jour l'état
         await notificationService.detectNewEpisodes(newContent);
 
+        // Enrichir les données avec les informations d'épisodes et langues
+        const enrichedData = await enrichAnimeData(newContent);
+
         // Afficher tous les types de contenu de l'API : animes, mangas, films
-        setTrendingAnimes(newContent);
+        setTrendingAnimes(enrichedData);
 
 
         // Mettre à jour le compteur de notifications non lues
@@ -184,8 +229,10 @@ const HomeScreen: React.FC = () => {
       if (response && response.success) {
         const results = response.results || [];
         if (Array.isArray(results)) {
+          // Enrichir les résultats de recherche avec les informations d'épisodes et langues
+          const enrichedResults = await enrichAnimeData(results);
           // Afficher tout le contenu de l'API : animes, mangas, films, etc.
-          setSearchResults(results);
+          setSearchResults(enrichedResults);
         } else {
 
           setSearchResults([]);
@@ -329,10 +376,21 @@ const HomeScreen: React.FC = () => {
           <Text style={styles.statusText}>
             {anime.status || 'En cours'}
           </Text>
-          <Text style={styles.typeText}>
-            #{index + 1}
-          </Text>
+          {anime.episodeCount && (
+            <Text style={styles.episodeText}>
+              {anime.episodeCount} épisodes
+            </Text>
+          )}
         </View>
+        {anime.languages && anime.languages.length > 0 && (
+          <View style={styles.languageContainer}>
+            {anime.languages.slice(0, 2).map((lang, langIndex) => (
+              <View key={langIndex} style={styles.languageBadge}>
+                <Text style={styles.languageText}>{lang}</Text>
+              </View>
+            ))}
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   ), []);
@@ -755,6 +813,29 @@ const styles = StyleSheet.create({
     color: '#00bcd4',
     fontSize: 11,
     fontWeight: '500',
+  },
+  episodeText: {
+    color: '#fbbf24',
+    fontSize: 11,
+    fontWeight: '500',
+  },
+  languageContainer: {
+    flexDirection: 'row',
+    gap: 6,
+    marginTop: 6,
+  },
+  languageBadge: {
+    backgroundColor: 'rgba(0, 188, 212, 0.2)',
+    borderWidth: 1,
+    borderColor: '#00bcd4',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
+  },
+  languageText: {
+    color: '#00bcd4',
+    fontSize: 9,
+    fontWeight: '600',
   },
 
   // États
