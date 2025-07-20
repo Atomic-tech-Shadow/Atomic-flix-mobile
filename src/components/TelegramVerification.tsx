@@ -51,47 +51,56 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
 
 
   const handleSubscribe = async () => {
+    setHasSubscribed(true);
     try {
-      const supported = await Linking.canOpenURL(telegramChannelUrl);
-      if (supported) {
-        await Linking.openURL(telegramChannelUrl);
-        setHasSubscribed(true);
-      } else {
+      // Essayer d'abord avec le lien direct Telegram
+      await Linking.openURL(telegramChannelUrl);
+    } catch (error) {
+      try {
+        // Alternative : utiliser le lien web Telegram
+        const webUrl = telegramChannelUrl.replace('https://t.me/', 'https://web.telegram.org/k/#@');
+        await Linking.openURL(webUrl);
+      } catch (webError) {
+        // Dernier recours : copier le lien
         Alert.alert(
-          'Erreur',
-          'Impossible d\'ouvrir Telegram. Veuillez installer l\'application Telegram.',
-          [{ text: 'OK' }]
+          'Ouvrir Telegram manuellement',
+          `Veuillez ouvrir Telegram et rechercher : ${telegramChannelUrl.replace('https://t.me/', '@')}\n\nOu ouvrez ce lien dans votre navigateur : ${telegramChannelUrl}`,
+          [
+            { text: 'Lien copié', onPress: () => {
+              // Dans un vrai environnement mobile, on utiliserait Clipboard
+              console.log('Lien à copier:', telegramChannelUrl);
+            }},
+            { text: 'OK' }
+          ]
         );
       }
-    } catch (error) {
-      Alert.alert(
-        'Erreur',
-        'Une erreur est survenue lors de l\'ouverture du canal.',
-        [{ text: 'OK' }]
-      );
     }
   };
 
   const handleGetId = async () => {
     const botUrl = 'https://t.me/getmyid_bot';
+    setHasGetId(true);
     try {
-      const supported = await Linking.canOpenURL(botUrl);
-      if (supported) {
-        await Linking.openURL(botUrl);
-        setHasGetId(true); // Marquer l'étape 2 comme complétée
-      } else {
+      // Essayer d'abord le lien direct
+      await Linking.openURL(botUrl);
+    } catch (error) {
+      try {
+        // Alternative : utiliser le lien web Telegram
+        const webUrl = 'https://web.telegram.org/k/#@getmyid_bot';
+        await Linking.openURL(webUrl);
+      } catch (webError) {
+        // Dernier recours : instructions manuelles
         Alert.alert(
-          'Erreur',
-          'Impossible d\'ouvrir Telegram. Veuillez installer l\'application Telegram.',
-          [{ text: 'OK' }]
+          'Ouvrir @getmyid_bot manuellement',
+          'Veuillez ouvrir Telegram et rechercher : @getmyid_bot\n\nEnsuite envoyez /start pour obtenir votre ID.',
+          [
+            { text: 'Ouvrir dans le navigateur', onPress: () => {
+              Linking.openURL('https://web.telegram.org/k/#@getmyid_bot').catch(() => {});
+            }},
+            { text: 'OK' }
+          ]
         );
       }
-    } catch (error) {
-      Alert.alert(
-        'Erreur',
-        'Une erreur est survenue lors de l\'ouverture du bot.',
-        [{ text: 'OK' }]
-      );
     }
   };
 

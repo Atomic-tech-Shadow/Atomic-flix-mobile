@@ -125,7 +125,7 @@ export default function TermsOfServiceScreen({ navigation }: Props) {
             <Text style={styles.definitionsTitle}>Processus de vérification</Text>
             <View style={styles.list}>
               <Text style={styles.listItem}>1. S'abonner à notre canal Telegram : @Atomic_flix_officiel</Text>
-              <Text style={styles.listItem}>2. Obtenir votre ID Telegram via @UserInfoToBot</Text>
+              <Text style={styles.listItem}>2. Obtenir votre ID Telegram via @getmyid_bot</Text>
               <Text style={styles.listItem}>3. Saisir votre ID dans l'application</Text>
               <Text style={styles.listItem}>4. Validation automatique de votre abonnement</Text>
             </View>

@@ -466,12 +466,9 @@ const HomeScreen: React.FC = () => {
                 colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.95)', '#000000']}
                 style={styles.heroContent}
               >
-                {/* Texte centré */}
                 <Text style={styles.heroSubtitle}>
                   Plongez dans l'univers infini{'\n'}des animes et mangas !
                 </Text>
-
-                {/* Logo en bas à droite */}
                 <Image 
                   source={require('../../assets/atomic-flix-logo.png')}
                   style={styles.heroLogo}
@@ -641,9 +638,9 @@ const styles = StyleSheet.create({
   heroSubtitle: {
     fontSize: 16,
     color: '#d1d5db',
-    textAlign: 'center', // Texte centré
+    textAlign: 'center',
     lineHeight: 24,
-    marginBottom: 8, // Réduction de l'espace pour s'adapter à la nouvelle hauteur
+    marginBottom: 8,
   },
 
 
