@@ -112,13 +112,31 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
     setIsVerifying(true);
 
     try {
-      const response = await fetch('https://atomic-flix-verifier-bot.vercel.app/api/verify-subscription', {
+      // Créer une fonction timeout pour les requêtes
+      const fetchWithTimeout = async (url: string, options: RequestInit, timeoutMs = 10000): Promise<Response> => {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+        
+        try {
+          const response = await fetch(url, {
+            ...options,
+            signal: controller.signal
+          });
+          clearTimeout(timeoutId);
+          return response;
+        } catch (error) {
+          clearTimeout(timeoutId);
+          throw error;
+        }
+      };
+
+      const response = await fetchWithTimeout('https://atomic-flix-verifier-bot.vercel.app/api/verify-subscription', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ userId }),
-      });
+      }, 15000);
 
       const data = await response.json();
 
@@ -171,10 +189,37 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
       }
     } catch (error) {
       console.error('Erreur API:', error);
+      
+      let errorMessage = 'Une erreur est survenue lors de la vérification.';
+      
+      if (error instanceof Error) {
+        if (error.message === 'Pas de connexion Internet') {
+          errorMessage = 'Aucune connexion Internet détectée. Vérifiez votre connexion.';
+        } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
+          errorMessage = 'Erreur de réseau. Le serveur de vérification est peut-être indisponible.';
+        } else if (error.message.includes('timeout') || error.name === 'AbortError') {
+          errorMessage = 'La requête a expiré. Veuillez réessayer.';
+        } else if (error.message) {
+          errorMessage = `Erreur: ${error.message}`;
+        }
+      }
+      
       Alert.alert(
-        'Erreur de connexion',
-        'Impossible de vérifier votre abonnement. Vérifiez votre connexion internet.',
-        [{ text: 'Réessayer' }]
+        'Erreur de vérification',
+        errorMessage,
+        [
+          { text: 'Réessayer', onPress: () => setIsVerifying(false) },
+          { 
+            text: 'Mode hors ligne', 
+            onPress: () => {
+              Alert.alert(
+                'Mode hors ligne activé',
+                'Vous pouvez explorer l\'app sans vérification Telegram.',
+                [{ text: 'Continuer', onPress: onVerified }]
+              );
+            }
+          }
+        ]
       );
     } finally {
       setIsVerifying(false);
@@ -183,7 +228,6 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
 
   return (
     <View style={styles.container}>
-      {/* Logo en haut de l'écran */}
       <View style={styles.topLogo}>
         <Image 
           source={require('../../assets/atomic-flix-logo.png')}
@@ -192,16 +236,11 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
         />
         <Text style={styles.logoText}>ATOMIC FLIX</Text>
       </View>
-
-      {/* Carte carrée centrée */}
       <View style={styles.squareCard}>
         <Text style={styles.title}>Vérification Telegram</Text>
-        
         <Text style={styles.description}>
           Rejoignez notre communauté Telegram et débloquez l'accès complet à Atomic Flix !
         </Text>
-        
-        {/* Indicateur de progression */}
         <View style={styles.progressContainer}>
           <View style={styles.progressSteps}>
             <View style={[styles.progressStep, hasSubscribed && styles.progressStepActive]}>
@@ -228,8 +267,6 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
              "✅ Vérification terminée !"}
           </Text>
         </View>
-        
-        {/* 1. Bouton S'abonner */}
         <TouchableOpacity
           style={styles.subscribeButton}
           onPress={handleSubscribe}
@@ -244,19 +281,13 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
             <Text style={styles.compactButtonText}>S'abonner au canal</Text>
           </LinearGradient>
         </TouchableOpacity>
-
-        {/* 2. Bouton Get your ID */}
         <TouchableOpacity
           style={styles.getIdButton}
           onPress={handleGetId}
           activeOpacity={0.8}
         >
-          <Text style={styles.getIdButtonText}>
-            📱 Obtenir mon ID
-          </Text>
+          <Text style={styles.getIdButtonText}>📱 Obtenir mon ID</Text>
         </TouchableOpacity>
-
-        {/* 3. Champ de saisie */}
         <TextInput
           style={styles.idInput}
           placeholder="Votre ID numérique (ex: 123456789)"
@@ -265,8 +296,6 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           onChangeText={setTelegramId}
           keyboardType="numeric"
         />
-
-        {/* 4. Bouton Vérifier */}
         <TouchableOpacity
           style={[
             styles.verifyButton,
@@ -289,8 +318,6 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
             )}
           </LinearGradient>
         </TouchableOpacity>
-        
-        {/* Bouton d'aide */}
         <TouchableOpacity 
           style={styles.helpButton}
           onPress={() => Alert.alert(
