@@ -55,7 +55,7 @@ const HomeScreen: React.FC = () => {
 
   // Configuration API identique au site web
   const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';
-  
+
   // Service de notifications
   const notificationService = NotificationService.getInstance();
 
@@ -64,7 +64,7 @@ const HomeScreen: React.FC = () => {
     loadTrendingAnimes();
     initializeNotifications();
     checkTelegramVerification();
-    
+
     // Nettoyer les anciennes notifications au démarrage
     notificationService.cleanOldNotifications();
   }, []);
@@ -92,16 +92,16 @@ const HomeScreen: React.FC = () => {
     try {
       const settings = await notificationService.getSettings();
       setNotificationsEnabled(settings.enabled);
-      
+
       const unreadCount = await notificationService.getUnreadCount();
       setUnreadNotifications(unreadCount);
-      
+
       // Écouter les changements de notifications
       const unsubscribe = notificationService.addListener((notifications) => {
         const unread = notifications.filter(n => !n.read).length;
         setUnreadNotifications(unread);
       });
-      
+
       return unsubscribe;
     } catch (error) {
       console.error('Erreur initialisation notifications:', error);
@@ -113,28 +113,28 @@ const HomeScreen: React.FC = () => {
   const apiRequest = async (endpoint: string, options = {}) => {
     const maxRetries = 2;
     let attempt = 0;
-    
+
     while (attempt < maxRetries) {
       try {
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
           method: 'GET',
           ...options
         });
-        
+
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
-        
+
         return await response.json();
       } catch (error) {
         attempt++;
 
-        
+
         if (attempt >= maxRetries) {
 
           throw error;
         }
-        
+
         await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
       }
     }
@@ -144,17 +144,17 @@ const HomeScreen: React.FC = () => {
   const loadTrendingAnimes = async () => {
     try {
       const response = await apiRequest('/api/trending');
-      
+
       if (response && response.success && response.results) {
         const newContent = response.results.slice(0, 24);
-        
+
         // Détecter les nouveaux épisodes avant de mettre à jour l'état
         await notificationService.detectNewEpisodes(newContent);
-        
+
         // Afficher tous les types de contenu de l'API : animes, mangas, films
         setTrendingAnimes(newContent);
 
-        
+
         // Mettre à jour le compteur de notifications non lues
         const unreadCount = await notificationService.getUnreadCount();
         setUnreadNotifications(unreadCount);
@@ -177,10 +177,10 @@ const HomeScreen: React.FC = () => {
 
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await apiRequest(`/api/search?query=${encodeURIComponent(query)}`);
-      
+
       if (response && response.success) {
         const results = response.results || [];
         if (Array.isArray(results)) {
@@ -196,7 +196,7 @@ const HomeScreen: React.FC = () => {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur de recherche';
 
-      
+
       if (errorMessage.includes('504') || errorMessage.includes('timeout')) {
         setError('Le serveur anime-sama-scraper.vercel.app ne répond pas actuellement. Veuillez réessayer plus tard.');
       } else if (errorMessage.includes('500')) {
@@ -256,10 +256,10 @@ const HomeScreen: React.FC = () => {
         ...currentSettings,
         enabled: !currentSettings.enabled
       };
-      
+
       await notificationService.saveSettings(newSettings);
       setNotificationsEnabled(newSettings.enabled);
-      
+
       if (newSettings.enabled) {
         // Marquer toutes les notifications comme lues quand on active
         await notificationService.markAllAsRead();
@@ -300,7 +300,7 @@ const HomeScreen: React.FC = () => {
 
           }}
         />
-        
+
         {/* Badge type de contenu (identique au site web) */}
         <View style={[
           styles.contentBadge,
@@ -320,7 +320,7 @@ const HomeScreen: React.FC = () => {
           style={styles.cardGradient}
         />
       </View>
-      
+
       <View style={styles.cardContent}>
         <Text style={styles.cardTitle} numberOfLines={3}>
           {anime.title}
@@ -340,7 +340,7 @@ const HomeScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <StatusBar style="light" backgroundColor="#0a0a1a" />
-      
+
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
         <SharedHeader 
@@ -348,7 +348,7 @@ const HomeScreen: React.FC = () => {
           onNotificationPress={handleNotificationPress}
         />
       </View>
-      
+
       <ScrollView
         style={styles.scrollView}
         refreshControl={
@@ -369,7 +369,7 @@ const HomeScreen: React.FC = () => {
         alwaysBounceVertical={false}
         nestedScrollEnabled={true}
       >
-        
+
         {/* Barre de recherche locale (identique au site web) */}
         {showSearchBar && (
           <View style={styles.searchBarContainer}>
@@ -406,15 +406,15 @@ const HomeScreen: React.FC = () => {
             />
           </View>
         )}
-        
 
-        
+
+
         {searchResults.length > 0 && !loading && (
           <View style={styles.searchResultsGrid}>
             {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
           </View>
         )}
-        
+
         {/* Message d'erreur de recherche */}
         {error && searchQuery && (
           <View style={styles.errorContainer}>
@@ -430,7 +430,7 @@ const HomeScreen: React.FC = () => {
             </TouchableOpacity>
           </View>
         )}
-        
+
         {/* Message si aucun résultat */}
         {searchQuery && !loading && searchResults.length === 0 && !error && (
           <View style={styles.emptyContainer}>
@@ -470,7 +470,7 @@ const HomeScreen: React.FC = () => {
                 <Text style={styles.heroSubtitle}>
                   Plongez dans l'univers infini{'\n'}des animes et mangas !
                 </Text>
-                
+
                 {/* Logo en bas à droite */}
                 <Image 
                   source={require('../../assets/atomic-flix-logo.png')}
@@ -533,7 +533,7 @@ const HomeScreen: React.FC = () => {
           </View>
         )}
       </ScrollView>
-      
+
       {/* Modal de vérification Telegram avec effet blur */}
       {showTelegramModal && (
         <View style={styles.telegramModalOverlay}>
@@ -561,7 +561,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  
+
 
 
   // Recherche
@@ -676,6 +676,8 @@ const styles = StyleSheet.create({
   // Cards Anime optimisées pour les performances
   animeCard: {
     width: (width - 48) / 2,
+    minHeight: 200, // minHeight au lieu de height fixe
+    height: 'auto', // Hauteur automatique pour s'adapter au contenu
     marginBottom: 16,
     borderRadius: 12,
     overflow: 'hidden',
@@ -733,9 +735,9 @@ const styles = StyleSheet.create({
     paddingBottom: 8, // Réduit le padding bas
   },
   cardTitle: {
-    color: '#ffffff',
     fontSize: 14,
     fontWeight: '600',
+    color: '#ffffff',
     marginBottom: 6,
     lineHeight: 16,
     minHeight: 48, // Réduit pour plus d'espace
