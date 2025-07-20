@@ -157,15 +157,6 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
   };
 
   const handleVerify = async () => {
-    if (!hasSubscribed) {
-      Alert.alert(
-        'Abonnement requis',
-        'Veuillez d\'abord vous abonner au canal Telegram avant de vérifier.',
-        [{ text: 'OK' }]
-      );
-      return;
-    }
-
     if (!telegramId.trim()) {
       Alert.alert(
         'ID requis',
@@ -288,9 +279,8 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
             </View>
           </View>
           <Text style={styles.progressLabel}>
-            {!hasSubscribed ? "Étape 1: S'abonner au canal" : 
-             !telegramId.trim() ? "Étape 2-3: Obtenir et saisir l'ID" : 
-             "Étape 4: Vérifier l'abonnement"}
+            {!telegramId.trim() ? "Saisissez votre ID Telegram pour continuer" : 
+             "Prêt pour la vérification"}
           </Text>
         </View>
         
@@ -312,33 +302,22 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
 
         {/* 2. Bouton Get your ID */}
         <TouchableOpacity
-          style={[
-            styles.getIdButton,
-            !hasSubscribed && styles.disabledGetIdButton
-          ]}
+          style={styles.getIdButton}
           onPress={handleGetId}
-          disabled={!hasSubscribed}
           activeOpacity={0.8}
         >
-          <Text style={[
-            styles.getIdButtonText,
-            !hasSubscribed && styles.disabledGetIdText
-          ]}>
+          <Text style={styles.getIdButtonText}>
             📱 Obtenir mon ID
           </Text>
         </TouchableOpacity>
 
         {/* 3. Champ de saisie */}
         <TextInput
-          style={[
-            styles.idInput,
-            !hasSubscribed && styles.disabledInput
-          ]}
+          style={styles.idInput}
           placeholder="Votre ID numérique (ex: 123456789)"
           placeholderTextColor="#6b7280"
           value={telegramId}
           onChangeText={setTelegramId}
-          editable={hasSubscribed}
           keyboardType="numeric"
         />
 
@@ -346,14 +325,14 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
         <TouchableOpacity
           style={[
             styles.verifyButton,
-            (!hasSubscribed || isVerifying || !telegramId.trim()) && styles.disabledButton
+            isVerifying && styles.disabledButton
           ]}
           onPress={handleVerify}
-          disabled={isVerifying || !hasSubscribed || !telegramId.trim()}
+          disabled={isVerifying}
           activeOpacity={0.8}
         >
           <LinearGradient
-            colors={(hasSubscribed && telegramId.trim()) ? ['#00bcd4', '#0ea5e9'] : ['#374151', '#475569']}
+            colors={['#00bcd4', '#0ea5e9']}
             style={styles.compactButtonGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
