@@ -3,10 +3,21 @@ export interface SearchResult {
   id: string;
   title: string;
   url: string;
-  type: string;
-  status: string;
+  type?: string;
+  status?: string;
   image: string;
   contentType?: string;
+  // Champs réels de l'API trending
+  language?: {
+    code: string;
+    name: string;
+    fullName: string;
+    flag: string;
+    priority: number;
+  };
+  releaseDay?: string | null;
+  isTrending?: boolean;
+  extractedFrom?: string;
 }
 
 export interface Episode {

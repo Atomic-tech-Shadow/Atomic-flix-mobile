@@ -282,60 +282,77 @@ const HomeScreen: React.FC = () => {
   }, [notificationsEnabled]);
 
   // Composant Carte Anime optimisé avec React.memo
-  const renderAnimeCard = React.useCallback((anime: SearchResult, index: number) => (
-    <TouchableOpacity
-      key={anime.id || index}
-      style={styles.animeCard}
-      onPress={() => loadAnimeDetails(anime.id, anime.type)}
-      activeOpacity={0.8}
-    >
-      <View style={styles.cardImageContainer}>
-        <Image
-          source={{ uri: anime.image }}
-          style={styles.cardImage}
-          resizeMode="cover"
-          loadingIndicatorSource={require('../../assets/atomic-flix-logo.png')}
-          fadeDuration={200}
-          onError={(e) => {
+  const renderAnimeCard = React.useCallback((anime: SearchResult, index: number) => {
+    // Nettoyer le titre des caractères parasites
+    const cleanTitle = anime.title.replace(/\n\t+/g, ' ').replace(/\s+/g, ' ').trim();
+    
+    // Extraire le vrai titre (avant les infos d'épisode)
+    const titleParts = cleanTitle.split(/\s+(VF|VOSTFR|VJSTFR)\s+/);
+    const realTitle = titleParts[0].trim();
+    
+    // Extraire les infos d'épisode/saison du titre complet
+    const episodeMatch = cleanTitle.match(/(Saison\s+\d+\s+Episode\s+\d+|Episode\s+\d+|Saison\s+\d+)/i);
+    const episodeInfo = episodeMatch ? episodeMatch[0] : null;
+    
+    return (
+      <TouchableOpacity
+        key={anime.id || index}
+        style={styles.animeCard}
+        onPress={() => loadAnimeDetails(anime.id, anime.contentType || anime.type)}
+        activeOpacity={0.8}
+      >
+        <View style={styles.cardImageContainer}>
+          <Image
+            source={{ uri: anime.image }}
+            style={styles.cardImage}
+            resizeMode="cover"
+            loadingIndicatorSource={require('../../assets/atomic-flix-logo.png')}
+            fadeDuration={200}
+            onError={(e) => {
 
-          }}
-        />
+            }}
+          />
 
-        {/* Badge type de contenu (identique au site web) */}
-        <View style={[
-          styles.contentBadge,
-          anime.type === 'manga' ? styles.mangaBadge :
-          anime.type === 'film' || anime.type === 'movie' ? styles.movieBadge :
-          styles.animeBadge
-        ]}>
-          <Text style={styles.badgeText}>
-            {anime.type === 'manga' ? 'MANGA' :
-             anime.type === 'film' || anime.type === 'movie' ? 'FILM' :
-             'ANIME'}
-          </Text>
+          {/* Badge type de contenu (identique au site web) */}
+          <View style={[
+            styles.contentBadge,
+            anime.contentType === 'manga' ? styles.mangaBadge :
+            anime.contentType === 'film' || anime.contentType === 'movie' ? styles.movieBadge :
+            styles.animeBadge
+          ]}>
+            <Text style={styles.badgeText}>
+              {anime.contentType === 'manga' ? 'MANGA' :
+               anime.contentType === 'film' || anime.contentType === 'movie' ? 'FILM' :
+               'ANIME'}
+            </Text>
+          </View>
+
+          <LinearGradient
+            colors={['transparent', 'rgba(0,0,0,0.95)']}
+            style={styles.cardGradient}
+          />
         </View>
 
-        <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.95)']}
-          style={styles.cardGradient}
-        />
-      </View>
-
-      <View style={styles.cardContent}>
-        <Text style={styles.cardTitle} numberOfLines={3}>
-          {anime.title}
-        </Text>
-        <View style={styles.cardMeta}>
-          <Text style={styles.statusText}>
-            {anime.status || 'En cours'}
+        <View style={styles.cardContent}>
+          <Text style={styles.cardTitle} numberOfLines={3}>
+            {realTitle}
           </Text>
-          <Text style={styles.typeText}>
-            #{index + 1}
-          </Text>
+          <View style={styles.cardMeta}>
+            {episodeInfo && (
+              <Text style={styles.episodeText}>
+                {episodeInfo}
+              </Text>
+            )}
+            {anime.language && (
+              <View style={styles.languageBadge}>
+                <Text style={styles.languageText}>{anime.language.name}</Text>
+              </View>
+            )}
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  ), []);
+      </TouchableOpacity>
+    );
+  }, []);
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
@@ -755,6 +772,26 @@ const styles = StyleSheet.create({
     color: '#00bcd4',
     fontSize: 11,
     fontWeight: '500',
+  },
+  episodeText: {
+    color: '#fbbf24',
+    fontSize: 11,
+    fontWeight: '500',
+    flex: 1,
+  },
+  languageBadge: {
+    backgroundColor: 'rgba(0, 188, 212, 0.2)',
+    borderWidth: 1,
+    borderColor: '#00bcd4',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
+    alignSelf: 'flex-end',
+  },
+  languageText: {
+    color: '#00bcd4',
+    fontSize: 9,
+    fontWeight: '600',
   },
 
   // États

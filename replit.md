@@ -8,11 +8,15 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
-**Version 2.6.4 - Simplification splash screen avec Expo natif uniquement - July 20, 2025**
-- ✅ Suppression du composant SplashScreen.tsx personnalisé selon demande utilisateur
-- ✅ Utilisation exclusive du splash screen natif d'Expo (plus performant et simple)
-- ✅ Code App.tsx simplifié : suppression de la logique splash screen personnalisé
-- ✅ Configuration app.json conservée pour splash screen Expo (logo centré, fond sombre)
+**Version 2.6.4 - Optimisation cartes anime avec données réelles API - July 20, 2025**
+- ✅ Analyse complète endpoint /api/trending pour utiliser toutes les données disponibles
+- ✅ Nettoyage des titres : suppression caractères parasites (\n\t) et extraction titre propre
+- ✅ Extraction automatique infos épisodes/saisons depuis les titres API
+- ✅ Affichage badge langue (VF, VOSTFR) avec données réelles de l'API
+- ✅ Interface SearchResult enrichie avec champs language, releaseDay, isTrending
+- ✅ Utilisation contentType au lieu de type pour détection contenu (anime/manga/film)
+- ✅ Suppression données fictives : statut "En cours" et index position remplacés par vraies données
+- ✅ Simplification splash screen : utilisation Expo natif uniquement
 
 **Version 2.6.3 - Optimisations interface Telegram et corrections techniques - July 20, 2025**
 - ✅ Logo ATOMIC FLIX supprimé du composant de vérification Telegram pour interface plus épurée
