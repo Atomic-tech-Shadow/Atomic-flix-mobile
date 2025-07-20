@@ -8,6 +8,16 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.6.3 - Optimisations interface Telegram et corrections techniques - July 20, 2025**
+- ✅ Logo ATOMIC FLIX supprimé du composant de vérification Telegram pour interface plus épurée
+- ✅ Système de progression par étapes avec indicateurs visuels amélioré
+- ✅ Correction erreurs TypeScript avec gestion d'erreur typée appropriée
+- ✅ Amélioration gestion d'erreur réseau avec timeout et mode hors ligne
+- ✅ Suppression nœuds de texte indésirables causant erreurs console "Unexpected text node"
+- ✅ Fonction fetchWithTimeout ajoutée pour meilleure gestion des requêtes API
+- ✅ Nettoyage des commentaires HTML dans les composants React Native
+- ✅ Interface Telegram maintenant centrée sans éléments visuels distrayants
+
 **Version 2.6.2 - Migration Replit et améliorations UX - July 19, 2025**
 - ✅ Migration réussie de Replit Agent vers environnement Replit standard
 - ✅ Support web activé avec react-dom et react-native-web

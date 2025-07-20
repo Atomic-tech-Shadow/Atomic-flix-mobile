@@ -25,8 +25,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
   return (
     <View style={styles.container}>
       <StatusBar style="light" backgroundColor="#0a0a1a" translucent={false} />
-      
-      {/* Icône de l'app centrée */}
       <View style={styles.iconContainer}>
         <Image
           source={require('../../assets/atomic-flix-logo.png')}
@@ -34,8 +32,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
           resizeMode="contain"
         />
       </View>
-      
-      {/* Texte "from" en bas */}
       <View style={styles.bottomContainer}>
         <Text style={styles.fromText}>from</Text>
         <Text style={styles.companyText}>ATOMIC FLIX</Text>

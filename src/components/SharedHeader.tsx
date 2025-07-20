@@ -156,7 +156,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   return (
     <View style={styles.mobileHeader}>
       <View style={styles.headerRow}>
-        {/* Logo ATOMIC FLIX à gauche */}
         <View style={styles.logoSection}>
           <Image 
             source={require('../../assets/atomic-flix-logo.png')}
@@ -165,8 +164,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           />
           <Text style={styles.logoText}>ATOMIC FLIX 🇹🇬</Text>
         </View>
-
-        {/* Icônes navigation droite */}
         <View style={styles.headerIcons}>
           <TouchableOpacity 
             style={styles.headerIconButton}
@@ -203,8 +200,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           </TouchableOpacity>
         </View>
       </View>
-
-      {/* Modal des notifications */}
       <NotificationModal
         visible={showNotificationModal}
         notifications={notifications}
@@ -212,8 +207,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
         onNotificationPress={handleNotificationItemPress}
         onMarkAllRead={handleMarkAllRead}
       />
-
-      {/* Menu Drawer */}
       <Modal
         visible={showMenuDrawer}
         transparent={true}
@@ -231,7 +224,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
               { transform: [{ translateX: slideAnim }] }
             ]}
           >
-            {/* Header du menu */}
             <View style={styles.drawerHeader}>
               <Image 
                 source={require('../../assets/atomic-flix-logo.png')}
@@ -246,8 +238,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 <Ionicons name="close" size={24} color="#ffffff" />
               </TouchableOpacity>
             </View>
-
-            {/* Menu items */}
             <View style={styles.menuItems}>
               <TouchableOpacity 
                 style={styles.menuItem}

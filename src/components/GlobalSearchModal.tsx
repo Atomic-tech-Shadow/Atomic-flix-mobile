@@ -181,7 +181,6 @@ const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ visible, onClose 
             },
           ]}
         >
-          {/* Header avec barre de recherche */}
           <View style={styles.header}>
             <View style={styles.searchBar}>
               <Ionicons name="search" size={20} color="#00bcd4" />
@@ -198,8 +197,6 @@ const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ visible, onClose 
               </TouchableOpacity>
             </View>
           </View>
-
-          {/* Contenu des résultats */}
           <View style={styles.content}>
             {loading && (
               <View style={styles.loadingContainer}>

@@ -228,14 +228,6 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.topLogo}>
-        <Image 
-          source={require('../../assets/atomic-flix-logo.png')}
-          style={styles.headerLogoImage}
-          resizeMode="contain"
-        />
-        <Text style={styles.logoText}>ATOMIC FLIX</Text>
-      </View>
       <View style={styles.squareCard}>
         <Text style={styles.title}>Vérification Telegram</Text>
         <Text style={styles.description}>
@@ -341,25 +333,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-  topLogo: {
-    position: 'absolute',
-    top: 60,
-    alignItems: 'center',
-    zIndex: 10,
-  },
-  logoText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#00bcd4',
-    marginTop: 8,
-    textShadowColor: 'rgba(0, 188, 212, 0.3)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
-  },
-  headerLogoImage: {
-    width: 40,
-    height: 40,
-  },
+
   squareCard: {
     width: 320,
     height: 480,
