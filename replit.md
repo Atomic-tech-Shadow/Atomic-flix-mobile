@@ -19,6 +19,8 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Fonction fetchWithTimeout ajoutée pour meilleure gestion des requêtes API
 - ✅ Nettoyage des commentaires HTML dans les composants React Native
 - ✅ Interface Telegram maintenant centrée sans éléments visuels distrayants
+- ✅ Correction affichage titres anime : gradient et padding cartes augmentés pour titres complets
+- ✅ Amélioration gestion liens Telegram avec fallback web et instructions manuelles
 
 **Version 2.6.2 - Migration Replit et améliorations UX - July 19, 2025**
 - ✅ Migration réussie de Replit Agent vers environnement Replit standard

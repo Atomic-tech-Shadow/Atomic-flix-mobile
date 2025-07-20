@@ -721,24 +721,23 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 120, // Augmenté pour plus d'espace
+    height: 140,
   },
   cardContent: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    padding: 10,
-    paddingBottom: 8, // Réduit le padding bas
+    padding: 12,
+    paddingBottom: 10,
   },
   cardTitle: {
     fontSize: 14,
     fontWeight: '600',
     color: '#ffffff',
-    marginBottom: 6,
-    lineHeight: 16,
-    minHeight: 48, // Réduit pour plus d'espace
-    maxHeight: 48, // Limite la hauteur
+    marginBottom: 8,
+    lineHeight: 18,
+    minHeight: 54,
   },
   cardMeta: {
     flexDirection: 'row',
