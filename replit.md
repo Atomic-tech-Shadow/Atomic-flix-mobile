@@ -10,6 +10,8 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 **Version 2.6.3 - Optimisations interface Telegram et corrections techniques - July 20, 2025**
 - ✅ Logo ATOMIC FLIX supprimé du composant de vérification Telegram pour interface plus épurée
+- ✅ Bot ID Telegram changé vers @getmyid_bot pour meilleure fiabilité
+- ✅ Instructions d'aide mises à jour avec le nouveau bot et étapes clarifiées  
 - ✅ Système de progression par étapes avec indicateurs visuels amélioré
 - ✅ Correction erreurs TypeScript avec gestion d'erreur typée appropriée
 - ✅ Amélioration gestion d'erreur réseau avec timeout et mode hors ligne

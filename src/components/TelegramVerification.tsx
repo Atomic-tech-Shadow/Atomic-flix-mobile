@@ -73,7 +73,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
   };
 
   const handleGetId = async () => {
-    const botUrl = 'https://t.me/UserInfoToBot';
+    const botUrl = 'https://t.me/getmyid_bot';
     try {
       const supported = await Linking.canOpenURL(botUrl);
       if (supported) {
@@ -314,7 +314,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           style={styles.helpButton}
           onPress={() => Alert.alert(
             'Besoin d\'aide ?',
-            'Instructions détaillées :\n\n1️⃣ Cliquez sur "S\'abonner au canal"\n2️⃣ Rejoignez notre canal Telegram\n3️⃣ Cliquez sur "📱 Obtenir mon ID"\n4️⃣ Copiez l\'ID que le bot vous donne\n5️⃣ Revenez ici et collez votre ID\n6️⃣ Cliquez sur "Vérifier"\n\nProblème ? Contactez-nous !',
+            'Instructions détaillées :\n\n1️⃣ Cliquez sur "S\'abonner au canal"\n2️⃣ Rejoignez notre canal Telegram\n3️⃣ Cliquez sur "📱 Obtenir mon ID"\n4️⃣ Envoyez /start au bot @getmyid_bot\n5️⃣ Copiez l\'ID numérique que le bot vous donne\n6️⃣ Revenez ici et collez votre ID\n7️⃣ Cliquez sur "Vérifier"\n\nProblème ? Contactez-nous !',
             [{ text: 'Compris !' }]
           )}
         >
