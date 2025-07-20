@@ -7,10 +7,6 @@ export interface SearchResult {
   status: string;
   image: string;
   contentType?: string;
-  // Informations enrichies pour l'affichage des cartes
-  episodeCount?: number;
-  languages?: string[];
-  totalSeasons?: number;
 }
 
 export interface Episode {
