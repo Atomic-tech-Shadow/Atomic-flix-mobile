@@ -29,7 +29,9 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
 }) => {
   const [isVerifying, setIsVerifying] = useState(false);
   const [hasSubscribed, setHasSubscribed] = useState(false);
+  const [hasGetId, setHasGetId] = useState(false);
   const [telegramId, setTelegramId] = useState('');
+  const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
     checkVerificationStatus();
@@ -76,6 +78,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
       const supported = await Linking.canOpenURL(botUrl);
       if (supported) {
         await Linking.openURL(botUrl);
+        setHasGetId(true); // Marquer l'étape 2 comme complétée
       } else {
         Alert.alert(
           'Erreur',
@@ -123,6 +126,9 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
         // Marquer comme vérifié dans le stockage local
         await AsyncStorage.setItem('telegram_verified', 'true');
         await AsyncStorage.setItem('telegram_user_id', userId);
+        
+        // Marquer l'étape finale comme complétée
+        setIsVerified(true);
         
         // Extraire le nom de l'utilisateur pour personnaliser le message
         const userName = data.userInfo?.user?.first_name || data.userInfo?.user?.username || 'Otaku';
@@ -202,21 +208,24 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
               <Text style={[styles.progressStepText, hasSubscribed && styles.progressStepTextActive]}>1</Text>
             </View>
             <View style={styles.progressLine} />
-            <View style={[styles.progressStep, hasSubscribed && styles.progressStepActive]}>
-              <Text style={[styles.progressStepText, hasSubscribed && styles.progressStepTextActive]}>2</Text>
+            <View style={[styles.progressStep, hasGetId && styles.progressStepActive]}>
+              <Text style={[styles.progressStepText, hasGetId && styles.progressStepTextActive]}>2</Text>
             </View>
             <View style={styles.progressLine} />
             <View style={[styles.progressStep, telegramId.trim() && styles.progressStepActive]}>
               <Text style={[styles.progressStepText, telegramId.trim() && styles.progressStepTextActive]}>3</Text>
             </View>
             <View style={styles.progressLine} />
-            <View style={styles.progressStep}>
-              <Text style={styles.progressStepText}>4</Text>
+            <View style={[styles.progressStep, isVerified && styles.progressStepActive]}>
+              <Text style={[styles.progressStepText, isVerified && styles.progressStepTextActive]}>4</Text>
             </View>
           </View>
           <Text style={styles.progressLabel}>
-            {!telegramId.trim() ? "Saisissez votre ID Telegram pour continuer" : 
-             "Prêt pour la vérification"}
+            {!hasSubscribed ? "Étape 1 : S'abonner au canal Telegram" :
+             !hasGetId ? "Étape 2 : Obtenir votre ID Telegram" :
+             !telegramId.trim() ? "Étape 3 : Saisir votre ID Telegram" : 
+             !isVerified ? "Étape 4 : Cliquer sur Vérifier" :
+             "✅ Vérification terminée !"}
           </Text>
         </View>
         
