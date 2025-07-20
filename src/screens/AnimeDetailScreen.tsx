@@ -330,12 +330,7 @@ const AnimeDetailScreen: React.FC = () => {
                 </View>
               </View>
               
-              {/* Badge Type avec couleurs cohérentes */}
-              <View style={styles.animeBadgeContainer}>
-                <View style={[styles.animeBadge, styles.animeBadgeMain]}>
-                  <Text style={styles.animeBadgeText}>ANIME</Text>
-                </View>
-              </View>
+
             </View>
           </View>
         </View>
