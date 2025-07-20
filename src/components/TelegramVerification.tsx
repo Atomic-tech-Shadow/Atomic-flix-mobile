@@ -12,15 +12,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
-import Svg, { 
-  Circle, 
-  Ellipse, 
-  G, 
-  Path, 
-  Defs, 
-  LinearGradient as SvgLinearGradient, 
-  Stop
-} from 'react-native-svg';
+
 
 interface TelegramVerificationProps {
   onVerified: () => void;
@@ -28,63 +20,7 @@ interface TelegramVerificationProps {
   channelName?: string;
 }
 
-// Composant Logo SVG Animé ATOMIC FLIX avec couleurs cohérentes
-const AnimatedLogo = () => (
-  <Svg width="80" height="80" viewBox="0 0 400 400">
-    <Defs>
-      <SvgLinearGradient id="orbit1" x1="0%" y1="0%" x2="100%" y2="100%">
-        <Stop offset="0%" stopColor="#00bcd4"/>
-        <Stop offset="50%" stopColor="#0ea5e9"/>
-        <Stop offset="100%" stopColor="#3b82f6"/>
-      </SvgLinearGradient>
-      <SvgLinearGradient id="orbit2" x1="0%" y1="0%" x2="100%" y2="100%">
-        <Stop offset="0%" stopColor="#3b82f6"/>
-        <Stop offset="50%" stopColor="#00bcd4"/>
-        <Stop offset="100%" stopColor="#0ea5e9"/>
-      </SvgLinearGradient>
-      <SvgLinearGradient id="orbit3" x1="0%" y1="0%" x2="100%" y2="100%">
-        <Stop offset="0%" stopColor="#0ea5e9"/>
-        <Stop offset="50%" stopColor="#06b6d4"/>
-        <Stop offset="100%" stopColor="#00bcd4"/>
-      </SvgLinearGradient>
-    </Defs>
-    
-    {/* Noyau central */}
-    <Circle cx="200" cy="200" r="12" fill="#fff" opacity="0.9"/>
-    
-    {/* Orbites animées - version statique pour éviter les erreurs */}
-    <G>
-      <Ellipse cx="200" cy="200" rx="60" ry="30" fill="none" stroke="url(#orbit1)" strokeWidth="2" opacity="0.8" />
-      <Circle cx="260" cy="200" r="4" fill="url(#orbit1)" opacity="0.8" />
-    </G>
-    
-    <G>
-      <Ellipse cx="200" cy="200" rx="45" ry="80" fill="none" stroke="url(#orbit2)" strokeWidth="2" opacity="0.8" />
-      <Circle cx="200" cy="120" r="3" fill="url(#orbit2)" opacity="0.8" />
-    </G>
-    
-    <G>
-      <Ellipse cx="200" cy="200" rx="75" ry="50" fill="none" stroke="url(#orbit3)" strokeWidth="2" opacity="0.8" />
-      <Circle cx="275" cy="200" r="3.5" fill="url(#orbit3)" opacity="0.8" />
-    </G>
-    
-    {/* Symbole play central */}
-    <Path 
-      d="M185 185 L185 215 L210 200 Z" 
-      fill="url(#orbit1)" 
-      opacity="0.9"
-    />
-    
-    {/* Lettre F stylisée */}
-    <Path 
-      d="M220 180 L220 220 M220 180 L235 180 M220 200 L232 200" 
-      stroke="url(#orbit3)" 
-      strokeWidth="3" 
-      fill="none"
-      opacity="0.8"
-    />
-  </Svg>
-);
+
 
 const TelegramVerification: React.FC<TelegramVerificationProps> = ({
   onVerified,
