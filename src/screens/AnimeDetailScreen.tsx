@@ -65,6 +65,8 @@ interface AnimeData {
   image: string;
   genres: string[];
   status: string;
+  progressInfo: string;
+  correspondence: string;
   year: string;
   seasons: Season[];
   url: string;
@@ -289,31 +291,24 @@ const AnimeDetailScreen: React.FC = () => {
             <View style={styles.heroContent}>
               <Text style={styles.heroTitle}>{animeData.title}</Text>
               
-              {/* Badges d'informations avec vraies données API */}
+              {/* Badges avec données exactes de l'API */}
               <View style={styles.heroBadges}>
                 <View style={styles.heroBadge}>
                   <View style={styles.badgeDot} />
-                  <Text style={styles.badgeText}>{animeData.seasons.length} saison{animeData.seasons.length > 1 ? 's' : ''}</Text>
+                  <Text style={styles.badgeText}>Status: {animeData.status}</Text>
                 </View>
-                
-                {/* Badge langues disponibles */}
-                {animeData.seasons[0]?.languages && animeData.seasons[0].languages.length > 0 && (
-                  <View style={[styles.heroBadge, styles.languageBadge]}>
-                    <View style={[styles.badgeDot, styles.languageDot]} />
-                    <Text style={styles.badgeText}>
-                      {animeData.seasons[0].languages.slice(0, 2).join(', ')}
-                      {animeData.seasons[0].languages.length > 2 && ` +${animeData.seasons[0].languages.length - 2}`}
-                    </Text>
-                  </View>
-                )}
-                
-                {/* Badge année seulement si différent de 2000 (valeur par défaut) */}
-                {animeData.year && animeData.year !== '2000' && (
-                  <View style={[styles.heroBadge, styles.yearBadge]}>
-                    <View style={[styles.badgeDot, styles.yearDot]} />
-                    <Text style={styles.badgeText}>{animeData.year}</Text>
-                  </View>
-                )}
+                <View style={[styles.heroBadge, styles.yearBadge]}>
+                  <View style={[styles.badgeDot, styles.yearDot]} />
+                  <Text style={styles.badgeText}>Année: {animeData.year}</Text>
+                </View>
+                <View style={styles.heroBadge}>
+                  <View style={styles.badgeDot} />
+                  <Text style={styles.badgeText}>Progrès: {animeData.progressInfo}</Text>
+                </View>
+                <View style={styles.heroBadge}>
+                  <View style={styles.badgeDot} />
+                  <Text style={styles.badgeText}>Corresp.: {animeData.correspondence}</Text>
+                </View>
               </View>
               
               {/* Badge Anime comme dans l'image */}
