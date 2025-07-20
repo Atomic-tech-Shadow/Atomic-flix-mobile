@@ -318,10 +318,10 @@ const AnimeDetailScreen: React.FC = () => {
                 </View>
               </View>
               
-              {/* Badge Anime comme dans l'image */}
+              {/* Badge Type avec couleurs cohérentes */}
               <View style={styles.animeBadgeContainer}>
-                <View style={styles.animeBadge}>
-                  <Text style={styles.animeBadgeText}>Anime</Text>
+                <View style={[styles.animeBadge, styles.animeBadgeMain]}>
+                  <Text style={styles.animeBadgeText}>ANIME</Text>
                 </View>
               </View>
             </View>
@@ -532,16 +532,17 @@ const styles = StyleSheet.create({
   heroBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,188,212,0.3)',
+    backgroundColor: 'rgba(26,26,46,0.8)', // Même fond que les cartes
     borderRadius: 16,
     paddingHorizontal: 10,
     paddingVertical: 4,
     flex: 0.48, // Prend environ la moitié de la largeur
     borderWidth: 1,
-    borderColor: 'rgba(0,188,212,0.5)',
+    borderColor: 'rgba(0,188,212,0.4)', // Cyan cohérent
   },
   yearBadge: {
-    backgroundColor: 'rgba(59,130,246,0.3)',
+    backgroundColor: 'rgba(139,92,246,0.3)', // Violet cohérent avec app
+    borderColor: 'rgba(139,92,246,0.5)',
   },
   badgeDot: {
     width: 6,
@@ -552,7 +553,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   yearDot: {
-    backgroundColor: '#3b82f6',
+    backgroundColor: '#8b5cf6', // Violet cohérent avec palette
   },
   badgeText: {
     color: '#ffffff',
@@ -564,10 +565,15 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   animeBadge: {
-    backgroundColor: '#00bcd4',
+    backgroundColor: '#00bcd4', // Cyan cohérent
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 8,
+  },
+  animeBadgeMain: {
+    backgroundColor: '#00bcd4', // Cyan principal de l'app
+    borderWidth: 1,
+    borderColor: 'rgba(0,188,212,0.6)',
   },
   animeBadgeText: {
     color: '#ffffff',
