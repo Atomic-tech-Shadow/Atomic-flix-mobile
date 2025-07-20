@@ -13,9 +13,9 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Nettoyage des titres : suppression caractères parasites (\n\t) et extraction titre propre
 - ✅ Extraction automatique infos épisodes/saisons depuis les titres API
 - ✅ Affichage badge langue (VF, VOSTFR) avec données réelles de l'API
-- ✅ Interface SearchResult enrichie avec champs language, releaseDay, isTrending
+- ✅ Interface SearchResult avec champ language uniquement (releaseDay, isTrending, extractedFrom exclus)
 - ✅ Utilisation contentType au lieu de type pour détection contenu (anime/manga/film)
-- ✅ Suppression données fictives : statut "En cours" et index position remplacés par vraies données
+- ✅ Cartes affichent uniquement : titre propre, info épisode, badge langue
 - ✅ Simplification splash screen : utilisation Expo natif uniquement
 
 **Version 2.6.3 - Optimisations interface Telegram et corrections techniques - July 20, 2025**

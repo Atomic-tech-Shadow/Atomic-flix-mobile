@@ -7,7 +7,7 @@ export interface SearchResult {
   status?: string;
   image: string;
   contentType?: string;
-  // Champs réels de l'API trending
+  // Champs réels de l'API trending (pour stockage seulement, pas d'affichage)
   language?: {
     code: string;
     name: string;
@@ -15,9 +15,6 @@ export interface SearchResult {
     flag: string;
     priority: number;
   };
-  releaseDay?: string | null;
-  isTrending?: boolean;
-  extractedFrom?: string;
 }
 
 export interface Episode {
