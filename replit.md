@@ -8,6 +8,13 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.6.7 - Optimisation position badges hero - July 20, 2025**
+- ✅ Badges repositionnés plus bas dans le hero (bottom: 40→20px) pour être en bas d'image
+- ✅ Badge "ANIME" cyan supprimé pour interface plus épurée
+- ✅ Espacement badges optimisé : marginBottom 4→3px, padding réduit
+- ✅ Badges plus compacts avec borderRadius 12→10px et backgroundColor plus opaque
+- ✅ maxWidth badges réduit à 75% pour préserver davantage la visibilité de l'image
+
 **Version 2.6.6 - Badges hero compacts avec détection intelligente de genre - July 20, 2025**
 - ✅ Badges repositionnés à gauche, plus petits et discrets pour préserver visibilité image
 - ✅ Nouveau système de détection genre : "Anime", "Manga" ou "Anime & Manga" selon saisons

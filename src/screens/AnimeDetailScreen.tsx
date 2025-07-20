@@ -515,7 +515,7 @@ const styles = StyleSheet.create({
   },
   heroContent: {
     position: 'absolute',
-    bottom: 40,
+    bottom: 20, // Plus proche du bas
     left: 20,
     right: 20,
     alignItems: 'flex-start', // Tout aligné à gauche
@@ -531,19 +531,20 @@ const styles = StyleSheet.create({
   },
   heroBadgesCompact: {
     alignItems: 'flex-start', // Alignés à gauche
-    marginBottom: 16,
-    maxWidth: '80%', // Limite la largeur pour garder l'image visible
+    marginBottom: 8, // Réduit l'espace en bas
+    marginTop: 8, // Petit espace après le titre
+    maxWidth: '75%', // Plus compact pour garder l'image visible
   },
   heroBadgeSmall: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(26,26,46,0.7)', // Plus transparent
-    borderRadius: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    marginBottom: 4,
+    backgroundColor: 'rgba(26,26,46,0.8)', // Plus opaque pour meilleure lisibilité
+    borderRadius: 10,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    marginBottom: 3, // Espace réduit entre badges
     borderWidth: 1,
-    borderColor: 'rgba(0,188,212,0.3)',
+    borderColor: 'rgba(0,188,212,0.4)',
     alignSelf: 'flex-start', // Chaque badge s'ajuste à son contenu
   },
   yearBadge: {
