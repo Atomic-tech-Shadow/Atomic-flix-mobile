@@ -8,6 +8,12 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.6.5 - Nettoyage badges hero AnimeDetailScreen - July 20, 2025**
+- ✅ Suppression badges "Status" et "Année" non pertinents selon feedback utilisateur
+- ✅ Conservation badges "Progrès" et "Correspondance" avec données API exactes
+- ✅ Interface plus épurée avec une seule ligne de badges au lieu de 2x2
+- ✅ Couleurs cohérentes avec palette principale (#00bcd4, #1a1a2e, #8b5cf6)
+
 **Version 2.6.4 - Optimisation cartes anime avec données réelles API - July 20, 2025**
 - ✅ Analyse complète endpoint /api/trending pour utiliser toutes les données disponibles
 - ✅ Nettoyage des titres : suppression caractères parasites (\n\t) et extraction titre propre

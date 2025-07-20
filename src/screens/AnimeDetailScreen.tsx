@@ -291,21 +291,8 @@ const AnimeDetailScreen: React.FC = () => {
             <View style={styles.heroContent}>
               <Text style={styles.heroTitle}>{animeData.title}</Text>
               
-              {/* Badges avec données exactes de l'API - Grille 2x2 */}
+              {/* Badges avec données exactes de l'API - Une seule ligne */}
               <View style={styles.heroBadgesGrid}>
-                {/* Première ligne */}
-                <View style={styles.heroBadgesRow}>
-                  <View style={styles.heroBadge}>
-                    <View style={styles.badgeDot} />
-                    <Text style={styles.badgeText}>Status: {animeData.status}</Text>
-                  </View>
-                  <View style={[styles.heroBadge, styles.yearBadge]}>
-                    <View style={[styles.badgeDot, styles.yearDot]} />
-                    <Text style={styles.badgeText}>Année: {animeData.year}</Text>
-                  </View>
-                </View>
-                
-                {/* Deuxième ligne */}
                 <View style={styles.heroBadgesRow}>
                   <View style={styles.heroBadge}>
                     <View style={styles.badgeDot} />
