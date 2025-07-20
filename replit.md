@@ -8,6 +8,13 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.6.6 - Badges hero compacts avec détection intelligente de genre - July 20, 2025**
+- ✅ Badges repositionnés à gauche, plus petits et discrets pour préserver visibilité image
+- ✅ Nouveau système de détection genre : "Anime", "Manga" ou "Anime & Manga" selon saisons
+- ✅ Badges compacts : fontSize 10px, padding réduit, alignement gauche, maxWidth 80%
+- ✅ Analyse intelligente de toutes les saisons pour détecter contenu mixte
+- ✅ Interface optimisée : "Progrès:", "Correspondance:", "Genre:" avec données API exactes
+
 **Version 2.6.5 - Nettoyage badges hero AnimeDetailScreen - July 20, 2025**
 - ✅ Suppression badges "Status" et "Année" non pertinents selon feedback utilisateur
 - ✅ Conservation badges "Progrès" et "Correspondance" avec données API exactes

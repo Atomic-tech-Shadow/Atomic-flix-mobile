@@ -304,10 +304,28 @@ const AnimeDetailScreen: React.FC = () => {
                 <View style={[styles.heroBadgeSmall, styles.genreBadge]}>
                   <View style={[styles.badgeDotSmall, styles.genreDot]} />
                   <Text style={styles.badgeTextSmall}>
-                    Genre: {animeData.seasons[0]?.name.toLowerCase().includes('scan') || 
-                            animeData.seasons[0]?.name.toLowerCase().includes('manga') || 
-                            animeData.seasons[0]?.name.toLowerCase().includes('tome') || 
-                            animeData.seasons[0]?.name.toLowerCase().includes('chapitre') ? 'Manga' : 'Anime'}
+                    Genre: {(() => {
+                      const hasAnime = animeData.seasons.some(season => 
+                        !season.name.toLowerCase().includes('scan') && 
+                        !season.name.toLowerCase().includes('manga') && 
+                        !season.name.toLowerCase().includes('tome') && 
+                        !season.name.toLowerCase().includes('chapitre')
+                      );
+                      const hasManga = animeData.seasons.some(season => 
+                        season.name.toLowerCase().includes('scan') || 
+                        season.name.toLowerCase().includes('manga') || 
+                        season.name.toLowerCase().includes('tome') || 
+                        season.name.toLowerCase().includes('chapitre')
+                      );
+                      
+                      if (hasAnime && hasManga) {
+                        return 'Anime & Manga';
+                      } else if (hasManga) {
+                        return 'Manga';
+                      } else {
+                        return 'Anime';
+                      }
+                    })()}
                   </Text>
                 </View>
               </View>
