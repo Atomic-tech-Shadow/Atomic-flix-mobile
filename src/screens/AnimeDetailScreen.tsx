@@ -291,17 +291,24 @@ const AnimeDetailScreen: React.FC = () => {
             <View style={styles.heroContent}>
               <Text style={styles.heroTitle}>{animeData.title}</Text>
               
-              {/* Badges avec données exactes de l'API - Une seule ligne */}
-              <View style={styles.heroBadgesGrid}>
-                <View style={styles.heroBadgesRow}>
-                  <View style={styles.heroBadge}>
-                    <View style={styles.badgeDot} />
-                    <Text style={styles.badgeText}>Progrès: {animeData.progressInfo}</Text>
-                  </View>
-                  <View style={styles.heroBadge}>
-                    <View style={styles.badgeDot} />
-                    <Text style={styles.badgeText}>Corresp.: {animeData.correspondence}</Text>
-                  </View>
+              {/* Badges compacts alignés à gauche */}
+              <View style={styles.heroBadgesCompact}>
+                <View style={styles.heroBadgeSmall}>
+                  <View style={styles.badgeDotSmall} />
+                  <Text style={styles.badgeTextSmall}>Progrès: {animeData.progressInfo}</Text>
+                </View>
+                <View style={styles.heroBadgeSmall}>
+                  <View style={styles.badgeDotSmall} />
+                  <Text style={styles.badgeTextSmall}>Correspondance: {animeData.correspondence}</Text>
+                </View>
+                <View style={[styles.heroBadgeSmall, styles.genreBadge]}>
+                  <View style={[styles.badgeDotSmall, styles.genreDot]} />
+                  <Text style={styles.badgeTextSmall}>
+                    Genre: {animeData.seasons[0]?.name.toLowerCase().includes('scan') || 
+                            animeData.seasons[0]?.name.toLowerCase().includes('manga') || 
+                            animeData.seasons[0]?.name.toLowerCase().includes('tome') || 
+                            animeData.seasons[0]?.name.toLowerCase().includes('chapitre') ? 'Manga' : 'Anime'}
+                  </Text>
                 </View>
               </View>
               
@@ -498,6 +505,7 @@ const styles = StyleSheet.create({
     bottom: 40,
     left: 20,
     right: 20,
+    alignItems: 'flex-start', // Tout aligné à gauche
   },
   heroTitle: {
     fontSize: 24,
@@ -508,45 +516,45 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
   },
-  heroBadgesGrid: {
+  heroBadgesCompact: {
+    alignItems: 'flex-start', // Alignés à gauche
     marginBottom: 16,
+    maxWidth: '80%', // Limite la largeur pour garder l'image visible
   },
-  heroBadgesRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  heroBadge: {
+  heroBadgeSmall: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(26,26,46,0.8)', // Même fond que les cartes
-    borderRadius: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    flex: 0.48, // Prend environ la moitié de la largeur
+    backgroundColor: 'rgba(26,26,46,0.7)', // Plus transparent
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    marginBottom: 4,
     borderWidth: 1,
-    borderColor: 'rgba(0,188,212,0.4)', // Cyan cohérent
+    borderColor: 'rgba(0,188,212,0.3)',
+    alignSelf: 'flex-start', // Chaque badge s'ajuste à son contenu
   },
   yearBadge: {
     backgroundColor: 'rgba(139,92,246,0.3)', // Violet cohérent avec app
     borderColor: 'rgba(139,92,246,0.5)',
   },
-  badgeDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
+  badgeDotSmall: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
     backgroundColor: '#00bcd4',
-    marginRight: 6,
+    marginRight: 4,
     flexShrink: 0,
   },
-  yearDot: {
-    backgroundColor: '#8b5cf6', // Violet cohérent avec palette
+  genreBadge: {
+    borderColor: 'rgba(139,92,246,0.4)',
   },
-  badgeText: {
+  genreDot: {
+    backgroundColor: '#8b5cf6', // Violet pour le genre
+  },
+  badgeTextSmall: {
     color: '#ffffff',
-    fontSize: 12,
-    fontWeight: '600',
-    flex: 1,
+    fontSize: 10,
+    fontWeight: '500',
   },
   animeBadgeContainer: {
     alignSelf: 'flex-start',
