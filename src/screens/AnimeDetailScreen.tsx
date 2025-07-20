@@ -291,23 +291,30 @@ const AnimeDetailScreen: React.FC = () => {
             <View style={styles.heroContent}>
               <Text style={styles.heroTitle}>{animeData.title}</Text>
               
-              {/* Badges avec données exactes de l'API */}
-              <View style={styles.heroBadges}>
-                <View style={styles.heroBadge}>
-                  <View style={styles.badgeDot} />
-                  <Text style={styles.badgeText}>Status: {animeData.status}</Text>
+              {/* Badges avec données exactes de l'API - Grille 2x2 */}
+              <View style={styles.heroBadgesGrid}>
+                {/* Première ligne */}
+                <View style={styles.heroBadgesRow}>
+                  <View style={styles.heroBadge}>
+                    <View style={styles.badgeDot} />
+                    <Text style={styles.badgeText}>Status: {animeData.status}</Text>
+                  </View>
+                  <View style={[styles.heroBadge, styles.yearBadge]}>
+                    <View style={[styles.badgeDot, styles.yearDot]} />
+                    <Text style={styles.badgeText}>Année: {animeData.year}</Text>
+                  </View>
                 </View>
-                <View style={[styles.heroBadge, styles.yearBadge]}>
-                  <View style={[styles.badgeDot, styles.yearDot]} />
-                  <Text style={styles.badgeText}>Année: {animeData.year}</Text>
-                </View>
-                <View style={styles.heroBadge}>
-                  <View style={styles.badgeDot} />
-                  <Text style={styles.badgeText}>Progrès: {animeData.progressInfo}</Text>
-                </View>
-                <View style={styles.heroBadge}>
-                  <View style={styles.badgeDot} />
-                  <Text style={styles.badgeText}>Corresp.: {animeData.correspondence}</Text>
+                
+                {/* Deuxième ligne */}
+                <View style={styles.heroBadgesRow}>
+                  <View style={styles.heroBadge}>
+                    <View style={styles.badgeDot} />
+                    <Text style={styles.badgeText}>Progrès: {animeData.progressInfo}</Text>
+                  </View>
+                  <View style={styles.heroBadge}>
+                    <View style={styles.badgeDot} />
+                    <Text style={styles.badgeText}>Corresp.: {animeData.correspondence}</Text>
+                  </View>
                 </View>
               </View>
               
@@ -514,36 +521,44 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
   },
-  heroBadges: {
-    flexDirection: 'row',
+  heroBadgesGrid: {
     marginBottom: 16,
+  },
+  heroBadgesRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
   },
   heroBadge: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(0,188,212,0.3)',
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    marginRight: 12,
+    borderRadius: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    flex: 0.48, // Prend environ la moitié de la largeur
+    borderWidth: 1,
+    borderColor: 'rgba(0,188,212,0.5)',
   },
   yearBadge: {
     backgroundColor: 'rgba(59,130,246,0.3)',
   },
   badgeDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
     backgroundColor: '#00bcd4',
-    marginRight: 8,
+    marginRight: 6,
+    flexShrink: 0,
   },
   yearDot: {
     backgroundColor: '#3b82f6',
   },
   badgeText: {
     color: '#ffffff',
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: 12,
+    fontWeight: '600',
+    flex: 1,
   },
   animeBadgeContainer: {
     alignSelf: 'flex-start',
