@@ -722,35 +722,40 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 100,
+    height: 120, // Augmenté pour plus d'espace
   },
   cardContent: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    padding: 12,
+    padding: 10,
+    paddingBottom: 8, // Réduit le padding bas
   },
   cardTitle: {
     color: '#ffffff',
     fontSize: 14,
     fontWeight: '600',
-    marginBottom: 8,
-    lineHeight: 18,
-    minHeight: 54, // 3 lignes * 18px lineHeight
+    marginBottom: 6,
+    lineHeight: 16,
+    minHeight: 48, // Réduit pour plus d'espace
+    maxHeight: 48, // Limite la hauteur
   },
   cardMeta: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 4, // Plus d'espace au-dessus
   },
   statusText: {
     color: '#d1d5db',
-    fontSize: 12,
+    fontSize: 11,
+    flex: 1,
+    marginRight: 8,
   },
   typeText: {
     color: '#00bcd4',
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '500',
   },
 
