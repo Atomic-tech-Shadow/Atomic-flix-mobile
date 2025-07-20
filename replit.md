@@ -8,11 +8,11 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
-**Version 2.6.4 - Correction affichage texte splash screen APK - July 20, 2025**
-- ✅ Correction logique App.tsx : splash screen natif se cache immédiatement pour afficher composant personnalisé
-- ✅ Texte splash screen modifié : "ATOMIC FLIX" → "shadow" selon demande utilisateur
-- ✅ Résolution problème APK où texte "from shadow" n'apparaissait pas
-- ✅ Splash screen personnalisé maintenant visible correctement dans APK compilé
+**Version 2.6.4 - Simplification splash screen avec Expo natif uniquement - July 20, 2025**
+- ✅ Suppression du composant SplashScreen.tsx personnalisé selon demande utilisateur
+- ✅ Utilisation exclusive du splash screen natif d'Expo (plus performant et simple)
+- ✅ Code App.tsx simplifié : suppression de la logique splash screen personnalisé
+- ✅ Configuration app.json conservée pour splash screen Expo (logo centré, fond sombre)
 
 **Version 2.6.3 - Optimisations interface Telegram et corrections techniques - July 20, 2025**
 - ✅ Logo ATOMIC FLIX supprimé du composant de vérification Telegram pour interface plus épurée

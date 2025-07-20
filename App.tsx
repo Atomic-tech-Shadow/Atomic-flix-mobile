@@ -7,7 +7,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import 'react-native-gesture-handler';
 
 import AppNavigator from './src/navigation/AppNavigator';
-import CustomSplashScreen from './src/components/SplashScreen';
 import TelegramVerification from './src/components/TelegramVerification';
 import { queryClient } from './src/utils/queryClient';
 
@@ -22,7 +21,6 @@ SplashScreen.setOptions({
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
     async function prepareApp() {
@@ -41,14 +39,10 @@ export default function App() {
 
   const onLayoutRootView = useCallback(() => {
     if (appIsReady) {
-      // Cacher immédiatement le splash screen natif pour afficher notre composant personnalisé
+      // Cacher le splash screen natif d'Expo quand l'app est prête
       SplashScreen.hide();
     }
   }, [appIsReady]);
-
-  const handleSplashFinish = () => {
-    setShowSplash(false);
-  };
 
   // Ne rien rendre jusqu'à ce que l'app soit prête
   if (!appIsReady) {
@@ -60,11 +54,7 @@ export default function App() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <QueryClientProvider client={queryClient}>
           <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-            {showSplash ? (
-              <CustomSplashScreen onFinish={handleSplashFinish} />
-            ) : (
-              <AppNavigator />
-            )}
+            <AppNavigator />
           </View>
         </QueryClientProvider>
       </GestureHandlerRootView>
