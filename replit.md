@@ -8,6 +8,12 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.6.4 - Correction affichage texte splash screen APK - July 20, 2025**
+- ✅ Correction logique App.tsx : splash screen natif se cache immédiatement pour afficher composant personnalisé
+- ✅ Texte splash screen modifié : "ATOMIC FLIX" → "shadow" selon demande utilisateur
+- ✅ Résolution problème APK où texte "from shadow" n'apparaissait pas
+- ✅ Splash screen personnalisé maintenant visible correctement dans APK compilé
+
 **Version 2.6.3 - Optimisations interface Telegram et corrections techniques - July 20, 2025**
 - ✅ Logo ATOMIC FLIX supprimé du composant de vérification Telegram pour interface plus épurée
 - ✅ Bot ID Telegram changé vers @getmyid_bot pour meilleure fiabilité

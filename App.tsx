@@ -40,11 +40,11 @@ export default function App() {
   }, []);
 
   const onLayoutRootView = useCallback(() => {
-    if (appIsReady && !showSplash) {
-      // Utiliser hide() selon la documentation Expo 53
+    if (appIsReady) {
+      // Cacher immédiatement le splash screen natif pour afficher notre composant personnalisé
       SplashScreen.hide();
     }
-  }, [appIsReady, showSplash]);
+  }, [appIsReady]);
 
   const handleSplashFinish = () => {
     setShowSplash(false);

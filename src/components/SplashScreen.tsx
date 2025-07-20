@@ -34,7 +34,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
       </View>
       <View style={styles.bottomContainer}>
         <Text style={styles.fromText}>from</Text>
-        <Text style={styles.companyText}>ATOMIC FLIX</Text>
+        <Text style={styles.companyText}>shadow</Text>
       </View>
     </View>
   );
