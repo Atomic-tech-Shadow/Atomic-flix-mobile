@@ -153,13 +153,9 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       setEpisodeLoading(true);
       const languageCode = selectedLanguage.toLowerCase();
 
-
-
       const data = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeData.id}?season=${season.value}&language=${languageCode}`);
 
-
       if (!data || !data.success) {
-
         setError('Erreur lors du chargement des épisodes depuis l\'API');
         return;
       }
@@ -530,11 +526,18 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                     <View style={styles.frenchFlagStripe3} />
                   </View>
                 ) : lang === 'VA' ? (
-                  // Drapeau américain pour Version Américaine
+                  // Drapeau américain authentique pour Version Américaine
                   <View style={styles.flagBackground}>
-                    <View style={styles.americanFlagBg} />
-                    <View style={styles.americanFlagStripes} />
-                    <View style={styles.americanFlagCanton} />
+                    {/* Rayures rouges et blanches */}
+                    <View style={styles.americanStripe1} />
+                    <View style={styles.americanStripe2} />
+                    <View style={styles.americanStripe3} />
+                    <View style={styles.americanStripe4} />
+                    <View style={styles.americanStripe5} />
+                    <View style={styles.americanStripe6} />
+                    <View style={styles.americanStripe7} />
+                    {/* Canton bleu avec effet étoiles */}
+                    <View style={styles.americanCanton} />
                   </View>
                 ) : (
                   // Drapeau japonais pour VOSTFR et autres
@@ -816,7 +819,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   languageButton: {
-    width: 48, // Même dimension que la hauteur pour un bouton carré
+    width: 80, // Dimensions exactes selon les spécifications
     height: 48,
     borderRadius: 8,
     backgroundColor: '#374151',
@@ -1148,7 +1151,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    width: 48, // Ajusté pour correspondre au bouton carré 48x48
+    width: 80, // Dimensions exactes du bouton 80x48
     height: 48,
     opacity: 0.6,
   },
@@ -1190,43 +1193,83 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 24, // Ajusté pour les nouvelles proportions 80x48
+    height: 24,
+    borderRadius: 12,
     backgroundColor: '#BC002D', // Rouge japonais
     transform: [
-      { translateX: -14 },
-      { translateY: -14 }
+      { translateX: -12 },
+      { translateY: -12 }
     ],
   },
-  // Drapeau américain
-  americanFlagBg: {
+  // Drapeau américain authentique avec rayures
+  americanStripe1: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
-    backgroundColor: '#B22234', // Rouge américain (rayures rouges)
+    height: Math.floor(48 / 7), // Première rayure rouge
+    backgroundColor: '#B22234',
   },
-  americanFlagStripes: {
+  americanStripe2: {
     position: 'absolute',
-    top: 0,
+    top: Math.floor(48 / 7),
     left: 0,
     right: 0,
-    bottom: 0,
-    // Créer un effet de rayures avec des lignes blanches
-    borderTopWidth: 2,
-    borderTopColor: '#FFFFFF',
-    borderBottomWidth: 2,
-    borderBottomColor: '#FFFFFF',
+    height: Math.floor(48 / 7), // Rayure blanche
+    backgroundColor: '#FFFFFF',
   },
-  americanFlagCanton: {
+  americanStripe3: {
+    position: 'absolute',
+    top: Math.floor(48 / 7) * 2,
+    left: 0,
+    right: 0,
+    height: Math.floor(48 / 7), // Rayure rouge
+    backgroundColor: '#B22234',
+  },
+  americanStripe4: {
+    position: 'absolute',
+    top: Math.floor(48 / 7) * 3,
+    left: 0,
+    right: 0,
+    height: Math.floor(48 / 7), // Rayure blanche
+    backgroundColor: '#FFFFFF',
+  },
+  americanStripe5: {
+    position: 'absolute',
+    top: Math.floor(48 / 7) * 4,
+    left: 0,
+    right: 0,
+    height: Math.floor(48 / 7), // Rayure rouge
+    backgroundColor: '#B22234',
+  },
+  americanStripe6: {
+    position: 'absolute',
+    top: Math.floor(48 / 7) * 5,
+    left: 0,
+    right: 0,
+    height: Math.floor(48 / 7), // Rayure blanche
+    backgroundColor: '#FFFFFF',
+  },
+  americanStripe7: {
+    position: 'absolute',
+    top: Math.floor(48 / 7) * 6,
+    left: 0,
+    right: 0,
+    height: 48 - Math.floor(48 / 7) * 6, // Dernière rayure rouge (ajustée)
+    backgroundColor: '#B22234',
+  },
+  americanCanton: {
     position: 'absolute',
     top: 0,
     left: 0,
-    width: '40%', // Canton bleu sur environ 40% de la largeur
-    height: '60%', // Sur environ 60% de la hauteur
+    width: 32, // 40% de 80px
+    height: 29, // 60% de 48px
     backgroundColor: '#3C3B6E', // Bleu américain
+    // Effet étoiles simulé avec des points
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
+    borderStyle: 'dotted',
   },
 });
 

@@ -154,16 +154,13 @@ const HomeScreen: React.FC = () => {
         // Afficher tous les types de contenu de l'API : animes, mangas, films
         setTrendingAnimes(newContent);
 
-
         // Mettre à jour le compteur de notifications non lues
         const unreadCount = await notificationService.getUnreadCount();
         setUnreadNotifications(unreadCount);
       } else {
-
         setTrendingAnimes([]);
       }
     } catch (error) {
-
       setTrendingAnimes([]);
     }
   };
