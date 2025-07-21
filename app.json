@@ -8,16 +8,7 @@
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0a0a1a",
 
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.atomicflix.mobile",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false,
-        "NSAppTransportSecurity": {
-          "NSAllowsArbitraryLoads": true
-        }
-      }
-    },
+
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/atomic-flix-logo.png",
