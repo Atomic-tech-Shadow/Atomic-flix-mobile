@@ -522,26 +522,35 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 activeOpacity={0.7}
               >
                 {/* Fond drapeau personnalisé */}
-                {lang === 'VF' ? (
-                  // Drapeau français tricolore
+                {(lang === 'VF' || lang === 'VF1' || lang === 'VF2') ? (
+                  // Drapeau français tricolore pour toutes les versions françaises
                   <View style={styles.flagBackground}>
                     <View style={styles.frenchFlagStripe1} />
                     <View style={styles.frenchFlagStripe2} />
                     <View style={styles.frenchFlagStripe3} />
                   </View>
+                ) : lang === 'VA' ? (
+                  // Drapeau américain pour Version Américaine
+                  <View style={styles.flagBackground}>
+                    <View style={styles.americanFlagBg} />
+                    <View style={styles.americanFlagStripes} />
+                  </View>
                 ) : (
-                  // Drapeau japonais - cercle rouge sur fond blanc
+                  // Drapeau japonais pour VOSTFR et autres
                   <View style={styles.flagBackground}>
                     <View style={styles.japaneseFlagBg} />
                     <View style={styles.japaneseRedCircle} />
                   </View>
                 )}
-                {/* Texte VF/VO au centre */}
+                {/* Texte de langue au centre */}
                 <Text style={[
                   styles.languageText,
                   selectedLanguage === lang && styles.languageTextActive
                 ]}>
-                  {lang === 'VF' ? 'VF' : 'VO'}
+                  {(lang === 'VF' || lang === 'VF1' || lang === 'VF2') ? 'VF' : 
+                   lang === 'VA' ? 'VA' :
+                   lang === 'VOSTFR' ? 'VO' : 
+                   lang}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -1188,6 +1197,24 @@ const styles = StyleSheet.create({
       { translateX: -14 },
       { translateY: -14 }
     ],
+  },
+  // Drapeau américain
+  americanFlagBg: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#B22234', // Rouge américain
+  },
+  americanFlagStripes: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#FFFFFF',
+    opacity: 0.7, // Effet de rayures blanches
   },
 });
 
