@@ -11,6 +11,9 @@
         "gradleCommand": ":app:assembleDebug",
         "withoutCredentials": true
       },
+      "ios": {
+        "simulator": true
+      },
       "env": {
         "NODE_ENV": "development",
         "EXPO_USE_HERMES": "false"
@@ -22,6 +25,9 @@
         "buildType": "apk",
         "gradleCommand": ":app:assembleRelease --no-daemon",
         "credentialsSource": "local"
+      },
+      "ios": {
+        "credentialsSource": "remote"
       },
       "env": {
         "NODE_ENV": "production",
@@ -60,6 +66,11 @@
       "android": {
         "track": "internal",
         "releaseStatus": "draft"
+      },
+      "ios": {
+        "appleId": "your-apple-id@example.com",
+        "ascAppId": "1234567890",
+        "appleTeamId": "XXXXXXXXXX"
       }
     }
   }
