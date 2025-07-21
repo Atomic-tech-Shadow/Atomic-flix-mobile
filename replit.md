@@ -8,7 +8,7 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
-**Version 2.6.8 - Correction badges langue et drapeaux authentiques - July 21, 2025**
+**Version 1.0.1 - Correction badges langue et drapeaux authentiques - July 21, 2025**
 - ✅ Badges langue dynamiques sur HomeScreen : détection VF/VOSTFR/VJSTFR depuis API
 - ✅ Suppression affichage par défaut "VOSTFR" pour respecter données API réelles
 - ✅ Drapeaux nationaux authentiques dans AnimePlayerScreen : français tricolore, japonais avec cercle rouge, américain avec rayures
