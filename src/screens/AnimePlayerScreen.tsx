@@ -534,6 +534,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   <View style={styles.flagBackground}>
                     <View style={styles.americanFlagBg} />
                     <View style={styles.americanFlagStripes} />
+                    <View style={styles.americanFlagCanton} />
                   </View>
                 ) : (
                   // Drapeau japonais pour VOSTFR et autres
@@ -1205,7 +1206,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#B22234', // Rouge américain
+    backgroundColor: '#B22234', // Rouge américain (rayures rouges)
   },
   americanFlagStripes: {
     position: 'absolute',
@@ -1213,8 +1214,19 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#FFFFFF',
-    opacity: 0.7, // Effet de rayures blanches
+    // Créer un effet de rayures avec des lignes blanches
+    borderTopWidth: 2,
+    borderTopColor: '#FFFFFF',
+    borderBottomWidth: 2,
+    borderBottomColor: '#FFFFFF',
+  },
+  americanFlagCanton: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '40%', // Canton bleu sur environ 40% de la largeur
+    height: '60%', // Sur environ 60% de la hauteur
+    backgroundColor: '#3C3B6E', // Bleu américain
   },
 });
 

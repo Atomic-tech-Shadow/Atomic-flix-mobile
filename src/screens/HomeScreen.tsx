@@ -442,8 +442,6 @@ const HomeScreen: React.FC = () => {
           </View>
         )}
 
-
-
         {searchResults.length > 0 && !loading && (
           <View style={styles.searchResultsGrid}>
             {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
