@@ -819,7 +819,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   languageButton: {
-    width: 80, // Dimensions exactes selon les spécifications
+    width: 48, // Bouton carré 48x48 comme spécifié
     height: 48,
     borderRadius: 8,
     backgroundColor: '#374151',
@@ -1151,7 +1151,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    width: 80, // Dimensions exactes du bouton 80x48
+    width: 48, // Dimensions exactes du bouton carré 48x48
     height: 48,
     opacity: 0.6,
   },
@@ -1263,7 +1263,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    width: 32, // 40% de 80px
+    width: 19, // 40% de 48px pour format carré
     height: 29, // 60% de 48px
     backgroundColor: '#3C3B6E', // Bleu américain
     // Effet étoiles simulé avec des points
