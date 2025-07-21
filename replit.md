@@ -8,7 +8,11 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
-**Version 1.0.1 - Correction badges langue et drapeaux authentiques - July 21, 2025**
+**Version 1.0.1 - ID Projet Expo mis à jour et corrections JSX - July 21, 2025**
+- ✅ ID projet Expo changé vers 1ff415af-e48a-43d4-b841-ec50c1dc8e0c dans app.json
+- ✅ Configuration iOS supprimée complètement (app.json et eas.json) pour éviter coûts Apple Developer
+- ✅ Correction erreurs JSX "Unexpected text node" : suppression lignes vides dans AnimePlayerScreen
+- ✅ Projet optimisé exclusivement pour builds Android gratuits via EAS
 - ✅ Badges langue dynamiques sur HomeScreen : détection VF/VOSTFR/VJSTFR depuis API
 - ✅ Suppression affichage par défaut "VOSTFR" pour respecter données API réelles
 - ✅ Drapeaux nationaux authentiques dans AnimePlayerScreen : français tricolore, japonais avec cercle rouge, américain avec rayures

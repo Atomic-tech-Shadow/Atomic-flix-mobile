@@ -53,8 +53,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const webViewRef = useRef<WebView>(null);
 
-
-
   // Fonction pour les requêtes API externes
   const apiRequest = async (endpoint: string, timeoutMs = 20000) => {
     try {
@@ -78,7 +76,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
       return await response.json();
     } catch (error) {
-
       throw error;
     }
   };
@@ -89,13 +86,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/anime/${animeId}`);
 
       if (!response || !response.success) {
-
         return null;
       }
 
       return response;
     } catch (error) {
-
       return null;
     }
   };

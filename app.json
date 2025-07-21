@@ -1,9 +1,14 @@
 {
   "expo": {
     "name": "Atomic Flix",
-    "slug": "atomic-flix-mobile",
+    "slug": "atomic-flix-mobile", 
     "version": "1.0.1",
     "orientation": "portrait",
+    "extra": {
+      "eas": {
+        "projectId": "1ff415af-e48a-43d4-b841-ec50c1dc8e0c"
+      }
+    },
     "icon": "./assets/atomic-flix-logo.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0a0a1a",
