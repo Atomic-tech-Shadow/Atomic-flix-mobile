@@ -10,7 +10,13 @@
 
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.atomicflix.mobile"
+      "bundleIdentifier": "com.atomicflix.mobile",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {

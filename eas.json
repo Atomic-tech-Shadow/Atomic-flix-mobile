@@ -40,6 +40,9 @@
         "gradleCommand": ":app:assembleRelease",
         "credentialsSource": "local"
       },
+      "ios": {
+        "credentialsSource": "remote"
+      },
       "env": {
         "NODE_ENV": "production",
         "ANDROID_COMPILE_SDK": "35",
