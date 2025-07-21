@@ -292,8 +292,8 @@ const HomeScreen: React.FC = () => {
       return 'VOSTFR';
     }
     
-    // Par défaut, retourner VOSTFR si aucune langue détectée
-    return 'VOSTFR';
+    // Retourner null si aucune langue détectée
+    return null;
   };
 
   // Composant Carte Anime optimisé avec React.memo
@@ -361,9 +361,11 @@ const HomeScreen: React.FC = () => {
                 {episodeInfo}
               </Text>
             )}
-            <View style={styles.languageBadge}>
-              <Text style={styles.languageText}>{detectedLanguage}</Text>
-            </View>
+            {detectedLanguage && (
+              <View style={styles.languageBadge}>
+                <Text style={styles.languageText}>{detectedLanguage}</Text>
+              </View>
+            )}
           </View>
         </View>
       </TouchableOpacity>
