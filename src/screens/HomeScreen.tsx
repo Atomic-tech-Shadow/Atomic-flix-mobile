@@ -281,8 +281,26 @@ const HomeScreen: React.FC = () => {
     return () => clearInterval(interval);
   }, [notificationsEnabled]);
 
+  // Fonction pour détecter la vraie langue disponible depuis le titre
+  const detectLanguageFromTitle = (title: string) => {
+    // Vérifier si le titre contient VF, VOSTFR ou VJSTFR dans le format de l'API
+    if (title.includes('\n\t\t\t\t\t\tVF\n') || title.includes(' VF ') || title.includes(' VF\n')) {
+      return 'VF';
+    } else if (title.includes('\n\t\t\t\t\t\tVJSTFR\n') || title.includes(' VJSTFR ') || title.includes(' VJSTFR\n')) {
+      return 'VJSTFR';
+    } else if (title.includes('\n\t\t\t\t\t\tVOSTFR\n') || title.includes(' VOSTFR ') || title.includes(' VOSTFR\n')) {
+      return 'VOSTFR';
+    }
+    
+    // Par défaut, retourner VOSTFR si aucune langue détectée
+    return 'VOSTFR';
+  };
+
   // Composant Carte Anime optimisé avec React.memo
   const renderAnimeCard = React.useCallback((anime: SearchResult, index: number) => {
+    // Détecter la vraie langue depuis le titre brut avant nettoyage
+    const detectedLanguage = detectLanguageFromTitle(anime.title);
+    
     // Nettoyer le titre des caractères parasites
     const cleanTitle = anime.title.replace(/\n\t+/g, ' ').replace(/\s+/g, ' ').trim();
     
@@ -343,11 +361,9 @@ const HomeScreen: React.FC = () => {
                 {episodeInfo}
               </Text>
             )}
-            {anime.language && (
-              <View style={styles.languageBadge}>
-                <Text style={styles.languageText}>{anime.language.name}</Text>
-              </View>
-            )}
+            <View style={styles.languageBadge}>
+              <Text style={styles.languageText}>{detectedLanguage}</Text>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
