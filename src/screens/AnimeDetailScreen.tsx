@@ -520,15 +520,17 @@ const styles = StyleSheet.create({
   },
   heroBadgeSmall: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     backgroundColor: 'rgba(26,26,46,0.8)', // Plus opaque pour meilleure lisibilité
     borderRadius: 10,
     paddingHorizontal: 6,
-    paddingVertical: 2,
+    paddingVertical: 4,
     marginBottom: 3, // Espace réduit entre badges
     borderWidth: 1,
     borderColor: 'rgba(0,188,212,0.4)',
     alignSelf: 'flex-start', // Chaque badge s'ajuste à son contenu
+    maxWidth: '90%', // Plus large pour les genres longs
+    flexWrap: 'wrap',
   },
   yearBadge: {
     backgroundColor: 'rgba(139,92,246,0.3)', // Violet cohérent avec app
@@ -552,6 +554,8 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 10,
     fontWeight: '500',
+    flexShrink: 1,
+    lineHeight: 14,
   },
   animeBadgeContainer: {
     alignSelf: 'flex-start',
