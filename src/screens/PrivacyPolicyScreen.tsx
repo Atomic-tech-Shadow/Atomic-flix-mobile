@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function PrivacyPolicyScreen({ navigation }: Props) {
-  const lastUpdated = "18 juillet 2025";
+  const lastUpdated = "22 juillet 2025";
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
@@ -102,6 +102,66 @@ export default function PrivacyPolicyScreen({ navigation }: Props) {
             <Text style={styles.infoText}>
               Vos données Telegram sont traitées via l'API officielle Telegram Bot. 
               Nous ne stockons pas vos messages privés ou autres informations sensibles.
+            </Text>
+          </View>
+        </View>
+
+        {/* Legal Disclaimer Section */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionIcon}>⚖️</Text>
+            <Text style={styles.sectionTitle}>Disclaimer Légal Important</Text>
+          </View>
+          <Text style={styles.sectionSubtitle}>Nature de l'application et responsabilités</Text>
+
+          <View style={styles.disclaimerBox}>
+            <Text style={styles.disclaimerTitle}>🚨 NON-HÉBERGEMENT DE CONTENU</Text>
+            <Text style={styles.disclaimerText}>
+              <Text style={styles.boldText}>ATOMIC FLIX N'HÉBERGE AUCUN CONTENU VIDÉO OU MANGA.</Text>
+              {'\n\n'}Cette application fonctionne exclusivement comme un agrégateur de liens publiquement disponibles sur Internet. Nous ne stockons, n'hébergeons, ni ne distribuons aucun fichier multimédia protégé par le droit d'auteur.
+            </Text>
+          </View>
+
+          <View style={styles.disclaimerBox}>
+            <Text style={styles.disclaimerTitle}>📡 FONCTIONNEMENT TECHNIQUE</Text>
+            <Text style={styles.disclaimerText}>
+              • L'application utilise des APIs publiques pour indexer le contenu{'\n'}
+              • Tous les liens proviennent de sources externes tierces{'\n'}
+              • Aucun fichier média n'est stocké sur nos serveurs{'\n'}
+              • Nous agissons uniquement comme interface utilisateur
+            </Text>
+          </View>
+
+          <View style={styles.disclaimerBox}>
+            <Text style={styles.disclaimerTitle}>⚠️ RESPONSABILITÉ UTILISATEUR</Text>
+            <Text style={styles.disclaimerText}>
+              L'utilisateur est seul responsable de l'utilisation qu'il fait des liens fournis par l'application. Il appartient à chaque utilisateur de s'assurer de la légalité du contenu consulté dans sa juridiction.
+            </Text>
+          </View>
+        </View>
+
+        {/* Copyright Section */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionIcon}>📋</Text>
+            <Text style={styles.sectionTitle}>Droits d'Auteur et DMCA</Text>
+          </View>
+          <Text style={styles.sectionSubtitle}>Respect de la propriété intellectuelle</Text>
+
+          <View style={styles.copyrightBox}>
+            <Text style={styles.copyrightTitle}>🛡️ RESPECT DES DROITS D'AUTEUR</Text>
+            <Text style={styles.copyrightText}>
+              ATOMIC FLIX respecte les droits de propriété intellectuelle. Si vous êtes propriétaire de droits d'auteur et pensez qu'un contenu porte atteinte à vos droits, contactez directement les plateformes d'hébergement concernées.
+            </Text>
+          </View>
+
+          <View style={styles.copyrightBox}>
+            <Text style={styles.copyrightTitle}>📞 PROCÉDURE DE RÉCLAMATION</Text>
+            <Text style={styles.copyrightText}>
+              Pour toute réclamation concernant le droit d'auteur :{'\n'}
+              1. Identifiez la source d'hébergement du contenu{'\n'}
+              2. Contactez directement cette plateforme{'\n'}
+              3. ATOMIC FLIX ne peut pas retirer un contenu qu'elle n'héberge pas
             </Text>
           </View>
         </View>
@@ -376,6 +436,25 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#d1d5db',
     lineHeight: 22,
+  },
+  copyrightBox: {
+    backgroundColor: 'rgba(0, 188, 212, 0.1)',
+    borderRadius: 12,
+    padding: 16,
+    marginVertical: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 188, 212, 0.3)',
+  },
+  copyrightTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#00bcd4',
+    marginBottom: 8,
+  },
+  copyrightText: {
+    color: '#ffffff',
+    fontSize: 14,
+    lineHeight: 20,
   },
   contactText: {
     fontSize: 15,

@@ -73,12 +73,13 @@ const HomeScreen: React.FC = () => {
   const checkTelegramVerification = async () => {
     try {
       const verified = await AsyncStorage.getItem('telegram_verified');
-      if (verified !== 'true') {
+      // Désactivé temporairement pour le développement
+      if (verified !== 'true' && false) {
         setShowTelegramModal(true);
       }
     } catch (error) {
-
-      setShowTelegramModal(true);
+      console.log('Erreur lors de la vérification Telegram:', error);
+      // setShowTelegramModal(true); // Désactivé temporairement
     }
   };
 

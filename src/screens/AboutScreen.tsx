@@ -63,10 +63,22 @@ export default function AboutScreen({ navigation }: Props) {
             </Text>
             
             <View style={styles.warningBox}>
-              <Text style={styles.warningTitle}>Avertissement Important</Text>
+              <Text style={styles.warningTitle}>🚨 Disclaimer Légal - Non-Hébergement</Text>
               <Text style={styles.warningText}>
-                ATOMIC FLIX n'héberge aucune vidéo sur son serveur. Contactez directement la plateforme d'hébergement vidéo 
-                pour toute réclamation de droit relative aux contenus en question.
+                <Text style={styles.boldText}>ATOMIC FLIX N'HÉBERGE AUCUN CONTENU VIDÉO OU MANGA.</Text>
+                {'\n\n'}Cette application fonctionne exclusivement comme un agrégateur de liens publiquement disponibles sur Internet. Nous ne stockons, n'hébergeons, ni ne distribuons aucun fichier multimédia protégé par le droit d'auteur.
+                {'\n\n'}• Aucun serveur d'hébergement vidéo{'\n'}
+                • Interface utilisateur uniquement{'\n'}
+                • APIs publiques pour indexer le contenu{'\n'}
+                • Tous les liens proviennent de sources tierces{'\n'}
+                • L'utilisateur est responsable de l'utilisation qu'il fait des liens
+              </Text>
+            </View>
+
+            <View style={styles.copyrightBox}>
+              <Text style={styles.copyrightTitle}>📋 Droits d'Auteur et DMCA</Text>
+              <Text style={styles.copyrightText}>
+                Pour toute réclamation concernant le droit d'auteur, contactez directement les plateformes d'hébergement concernées. ATOMIC FLIX ne peut pas retirer un contenu qu'elle n'héberge pas.
               </Text>
             </View>
             
@@ -254,7 +266,7 @@ const styles = StyleSheet.create({
   },
   warningText: {
     fontSize: 14,
-    color: '#d1d5db',
+    color: '#ffffff',
     lineHeight: 20,
   },
   privacyBox: {
@@ -367,5 +379,23 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#6b7280',
     textAlign: 'center',
+  },
+  copyrightBox: {
+    backgroundColor: 'rgba(0, 188, 212, 0.1)',
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 188, 212, 0.3)',
+  },
+  copyrightTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#00bcd4',
+    marginBottom: 8,
+  },
+  boldText: {
+    fontWeight: 'bold',
+    color: '#ef4444',
   },
 });

@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function TermsOfServiceScreen({ navigation }: Props) {
-  const lastUpdated = "18 juillet 2025";
+  const lastUpdated = "22 juillet 2025";
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
