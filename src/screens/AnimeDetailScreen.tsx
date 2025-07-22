@@ -301,12 +301,14 @@ const AnimeDetailScreen: React.FC = () => {
                   <View style={styles.badgeDotSmall} />
                   <Text style={styles.badgeTextSmall}>Correspondance: {animeData.correspondence}</Text>
                 </View>
-                <View style={[styles.heroBadgeSmall, styles.genreBadge]}>
-                  <View style={[styles.badgeDotSmall, styles.genreDot]} />
-                  <Text style={styles.badgeTextSmall}>
-                    Genre: {animeData.genres && animeData.genres.length > 0 ? animeData.genres.join(', ') : 'Non spécifié'}
-                  </Text>
-                </View>
+                {animeData.genres && animeData.genres.length > 0 && (
+                  <View style={[styles.heroBadgeSmall, styles.genreBadge]}>
+                    <View style={[styles.badgeDotSmall, styles.genreDot]} />
+                    <Text style={styles.badgeTextSmall}>
+                      Genre: {animeData.genres.join(', ')}
+                    </Text>
+                  </View>
+                )}
               </View>
               
 

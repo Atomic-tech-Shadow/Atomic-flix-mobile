@@ -18,6 +18,16 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Toutes les vérifications de santé réussies (3/3)
 - ✅ Application prête pour le développement et les builds Android
 
+**Version 1.0.2 - Migration Replit et correction bug genres - July 22, 2025**
+- ✅ Migration réussie de Replit Agent vers environnement Replit standard
+- ✅ Expo CLI installé et configuré pour développement 
+- ✅ Bug de genres corrigé : utilise maintenant les vrais genres de l'API au lieu de "Anime/Manga"
+- ✅ Badge "Genre:" affiche maintenant tous les genres de l'API (ex: "Action, Comédie, Horreur, Mystère, Romance")
+- ✅ Suppression de la logique de détection manuelle des genres basée sur les noms de saisons
+- ✅ Serveur de développement opérationnel sur port 5000
+- ✅ Toutes les vérifications de santé réussies (3/3)
+- ✅ Application prête pour le développement et les builds Android
+
 **Version 1.0.1 - ID Projet Expo mis à jour et corrections JSX - July 21, 2025**
 - ✅ ID projet Expo changé vers 1ff415af-e48a-43d4-b841-ec50c1dc8e0c dans app.json
 - ✅ Configuration iOS supprimée complètement (app.json et eas.json) pour éviter coûts Apple Developer
