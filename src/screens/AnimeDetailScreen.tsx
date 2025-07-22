@@ -304,28 +304,7 @@ const AnimeDetailScreen: React.FC = () => {
                 <View style={[styles.heroBadgeSmall, styles.genreBadge]}>
                   <View style={[styles.badgeDotSmall, styles.genreDot]} />
                   <Text style={styles.badgeTextSmall}>
-                    Genre: {animeData.genres && animeData.genres.length > 0 ? animeData.genres.slice(0, 2).join(', ') : (() => {
-                      const hasAnime = animeData.seasons.some(season => 
-                        !season.name.toLowerCase().includes('scan') && 
-                        !season.name.toLowerCase().includes('manga') && 
-                        !season.name.toLowerCase().includes('tome') && 
-                        !season.name.toLowerCase().includes('chapitre')
-                      );
-                      const hasManga = animeData.seasons.some(season => 
-                        season.name.toLowerCase().includes('scan') || 
-                        season.name.toLowerCase().includes('manga') || 
-                        season.name.toLowerCase().includes('tome') || 
-                        season.name.toLowerCase().includes('chapitre')
-                      );
-                      
-                      if (hasAnime && hasManga) {
-                        return 'Anime & Manga';
-                      } else if (hasManga) {
-                        return 'Manga';
-                      } else {
-                        return 'Anime';
-                      }
-                    })()}
+                    Genre: {animeData.genres && animeData.genres.length > 0 ? animeData.genres.join(', ') : 'Non spécifié'}
                   </Text>
                 </View>
               </View>
@@ -347,23 +326,7 @@ const AnimeDetailScreen: React.FC = () => {
           </View>
         </View>
 
-        {/* Section Genres avec badges individuels */}
-        {animeData.genres && animeData.genres.length > 0 && (
-          <View style={styles.mobileSection}>
-            <View style={styles.mobileSectionHeader}>
-              <Ionicons name="pricetags" size={20} color="#00bcd4" />
-              <Text style={styles.mobileSectionTitle}>Genres</Text>
-            </View>
-            
-            <View style={styles.genresContainer}>
-              {animeData.genres.map((genre, index) => (
-                <View key={index} style={styles.genreBadgeIndividual}>
-                  <Text style={styles.genreBadgeText}>{genre}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
-        )}
+
 
         {/* Section Saisons exactement comme le code web */}
         <View style={styles.mobileSection}>
@@ -637,26 +600,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   
-  // Styles pour les badges de genres individuels
-  genresContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  genreBadgeIndividual: {
-    backgroundColor: '#1a1a2e',
-    borderWidth: 1,
-    borderColor: '#00bcd4',
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    marginBottom: 8,
-  },
-  genreBadgeText: {
-    color: '#00bcd4',
-    fontSize: 12,
-    fontWeight: '600',
-  },
+
   
   // États de chargement et erreur
   loadingContainer: {
