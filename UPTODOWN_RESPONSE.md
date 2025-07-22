@@ -67,4 +67,4 @@ Ces modifications devraient permettre à ATOMIC FLIX de respecter les critères 
 4. Mettre en avant la nature d'interface utilisateur uniquement
 
 Date : 22 juillet 2025  
-Version : 1.0.3
+Version : 2.6.2

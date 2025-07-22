@@ -6,7 +6,7 @@
 ```yaml
 App Name: "Atomic Flix"
 Package Name: "com.atomicflix.mobile"
-Version: "2.6.1"
+Version: "2.6.2"
 Category: "Entertainment" / "Video Players & Editors"
 Rating: 13+ (Teen)
 Developer: "Atomic Studios"
@@ -138,7 +138,7 @@ Development stage: "Final Release"
 Min SDK Version: "21" (Android 5.0) [auto-détecté]
 Max SDK Version: "34" (Android 14) [auto-détecté]
 Languages: "Français, English"
-Description: "Version 2.6.1 - Wake lock intelligent, orientation optimisée, interface améliorée"
+Description: "Version 2.6.2 - Politique confidentialité renforcée, conformité stores, disclaimers légaux"
 
 Options:
 ☐ Disable uploads by Uptodown editors
@@ -183,7 +183,7 @@ Profile Information:
 ```yaml
 App Name: "Atomic Flix"
 Package Name: com.atomicflix.mobile [auto-détecté]
-Version: 2.6.1 [auto-détecté]
+Version: 2.6.2 [auto-détecté]
 Category: "Entertainment"
 App Icon: [auto-extrait]
 Description: [Description complète]
@@ -266,8 +266,8 @@ Monetization:
 **ONGLET 2 - BINARY:**
 ```yaml
 APK Upload:
-  File: atomic-flix-v2.6.1.apk
-  Version Name: "2.6.1"
+  File: atomic-flix-v2.6.2.apk
+  Version Name: "2.6.2"
   Version Code: [auto-détecté]
   
 Device Support:
@@ -397,8 +397,8 @@ Content inclus:
 ### Fichiers à Préparer:
 ```yaml
 APK Files:
-☐ atomic-flix-v2.6.1.apk (signé, testé)
-☐ atomic-flix-v2.6.1-release.apk (version release)
+☐ atomic-flix-v2.6.2.apk (signé, testé)
+☐ atomic-flix-v2.6.2-release.apk (version release)
 
 Visual Assets:
 ☐ app-icon-512.png (512x512, PNG transparent)
