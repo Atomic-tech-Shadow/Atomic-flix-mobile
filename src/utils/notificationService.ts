@@ -1,5 +1,8 @@
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
+import Constants from 'expo-constants';
 import { SearchResult } from '../types/index';
 
 export interface NotificationSettings {
@@ -20,10 +23,22 @@ export interface EpisodeNotification {
   animeTitle: string; // Titre complet de l'anime/manga
 }
 
+// Configuration des notifications push
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
+
 class NotificationService {
   private static instance: NotificationService;
   private listeners: Set<(notifications: EpisodeNotification[]) => void> = new Set();
   private previousContent: Map<string, SearchResult> = new Map();
+  private expoPushToken: string | null = null;
   
   static getInstance(): NotificationService {
     if (!NotificationService.instance) {
@@ -32,12 +47,55 @@ class NotificationService {
     return NotificationService.instance;
   }
 
+  // Initialiser les notifications push
+  async initializePushNotifications(): Promise<string | null> {
+    try {
+      if (!Device.isDevice) {
+        console.log('Les notifications push ne fonctionnent que sur un appareil physique');
+        return null;
+      }
+
+      // Demander les permissions
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      
+      if (finalStatus !== 'granted') {
+        Alert.alert('Erreur', 'Permissions de notification refusées');
+        return null;
+      }
+
+      // Obtenir le token push
+      const projectId = Constants.expoConfig?.extra?.eas?.projectId ?? Constants.easConfig?.projectId;
+      if (!projectId) {
+        console.log('Pas de projet ID trouvé');
+        return null;
+      }
+
+      const pushTokenData = await Notifications.getExpoPushTokenAsync({
+        projectId,
+      });
+      
+      this.expoPushToken = pushTokenData.data;
+      console.log('Token push obtenu:', this.expoPushToken);
+      
+      return this.expoPushToken;
+    } catch (error) {
+      console.error('Erreur initialisation notifications:', error);
+      return null;
+    }
+  }
+
   // Obtenir les paramètres de notification
   async getSettings(): Promise<NotificationSettings> {
     try {
       const settings = await AsyncStorage.getItem('notification_settings');
       return settings ? JSON.parse(settings) : {
-        enabled: false,
+        enabled: true,
         newEpisodes: true,
         newMangas: true
       };
@@ -137,8 +195,8 @@ class NotificationService {
       
       await this.saveNotifications(limitedNotifications);
       
-      // Afficher une alerte pour la première nouvelle notification
-      this.showNotificationAlert(newNotifications[0]);
+      // Envoyer une notification push pour la première nouvelle notification
+      this.sendLocalNotification(newNotifications[0]);
     }
   }
 
@@ -233,6 +291,53 @@ class NotificationService {
       ],
       { cancelable: true }
     );
+  }
+
+  // Envoyer une notification push locale
+  private async sendLocalNotification(notification: EpisodeNotification): Promise<void> {
+    try {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: `Nouveau ${notification.type === 'anime' ? 'épisode' : 'chapitre'} disponible ! 🎉`,
+          body: notification.message,
+          data: { 
+            animeId: notification.id,
+            animeTitle: notification.animeTitle,
+            type: notification.type
+          },
+          sound: true,
+          priority: Notifications.AndroidNotificationPriority.HIGH,
+        },
+        trigger: null, // Envoyer immédiatement
+      });
+
+      // Afficher aussi l'alerte en cas de premier plan
+      Alert.alert(
+        `Nouveau ${notification.type === 'anime' ? 'épisode' : 'chapitre'} disponible ! 🎉`,
+        notification.message,
+        [
+          {
+            text: 'Voir plus tard',
+            style: 'cancel'
+          },
+          {
+            text: 'Regarder maintenant',
+            onPress: () => {
+              // TODO: Navigation vers l'anime/manga
+              console.log('Navigation vers:', notification.animeTitle);
+            }
+          }
+        ],
+        { cancelable: true }
+      );
+    } catch (error) {
+      console.error('Erreur envoi notification:', error);
+      // Fallback sur Alert si les notifications push échouent
+      Alert.alert(
+        `Nouveau ${notification.type === 'anime' ? 'épisode' : 'chapitre'} disponible ! 🎉`,
+        notification.message
+      );
+    }
   }
 
   // Marquer une notification comme lue

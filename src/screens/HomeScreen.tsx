@@ -90,6 +90,9 @@ const HomeScreen: React.FC = () => {
   // Initialiser les paramètres de notification
   const initializeNotifications = async () => {
     try {
+      // Initialiser les notifications push
+      await notificationService.initializePushNotifications();
+      
       const settings = await notificationService.getSettings();
       setNotificationsEnabled(settings.enabled);
 
