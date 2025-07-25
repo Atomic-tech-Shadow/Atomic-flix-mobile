@@ -22,6 +22,10 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Interface utilisateur cloche intuitive : clic pour activer/désactiver ou voir notifications
 - ✅ Permissions notifications demandées automatiquement, gestion erreurs production
 - ✅ Logs de debug supprimés pour sécurité, fallbacks silencieux en production
+- ✅ Case à cocher conditions d'utilisation dans écran vérification Telegram
+- ✅ Validation obligatoire avant vérification (comme vraies apps mobiles)
+- ✅ Interface professionnelle avec checkbox cyan et lien cliquable
+- ✅ Bouton vérification désactivé tant que conditions pas acceptées
 
 **Version 1.0.2 - Migration Replit et correction bug genres - July 22, 2025**
 - ✅ Migration réussie de Replit Agent vers environnement Replit standard

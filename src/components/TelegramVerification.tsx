@@ -32,6 +32,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
   const [hasGetId, setHasGetId] = useState(false);
   const [telegramId, setTelegramId] = useState('');
   const [isVerified, setIsVerified] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   useEffect(() => {
     checkVerificationStatus();
@@ -297,13 +298,43 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
           onChangeText={setTelegramId}
           keyboardType="numeric"
         />
+        
+        {/* Case à cocher pour les conditions d'utilisation */}
+        <TouchableOpacity
+          style={styles.termsContainer}
+          onPress={() => setAcceptedTerms(!acceptedTerms)}
+          activeOpacity={0.8}
+        >
+          <View style={[styles.checkbox, acceptedTerms && styles.checkboxChecked]}>
+            {acceptedTerms && <Text style={styles.checkmark}>✓</Text>}
+          </View>
+          <Text style={styles.termsText}>
+            J'ai lu et j'accepte les{' '}
+            <Text 
+              style={styles.termsLink}
+              onPress={() => {
+                Alert.alert(
+                  'Conditions d\'utilisation',
+                  'En utilisant Atomic Flix, vous acceptez nos conditions d\'utilisation et notre politique de confidentialité. L\'application est destinée au streaming légal d\'animes et mangas.',
+                  [
+                    { text: 'Refuser', style: 'cancel' },
+                    { text: 'Accepter', onPress: () => setAcceptedTerms(true) }
+                  ]
+                );
+              }}
+            >
+              conditions d'utilisation
+            </Text>
+          </Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={[
             styles.verifyButton,
-            isVerifying && styles.disabledButton
+            (isVerifying || !acceptedTerms || !telegramId.trim()) && styles.disabledButton
           ]}
           onPress={handleVerify}
-          disabled={isVerifying}
+          disabled={isVerifying || !acceptedTerms || !telegramId.trim()}
           activeOpacity={0.8}
         >
           <LinearGradient
@@ -524,7 +555,44 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 
-
+  // Styles pour la case à cocher des conditions
+  termsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 12,
+    paddingHorizontal: 4,
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: '#6b7280',
+    backgroundColor: 'transparent',
+    marginRight: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkboxChecked: {
+    backgroundColor: '#00bcd4',
+    borderColor: '#00bcd4',
+  },
+  checkmark: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  termsText: {
+    flex: 1,
+    fontSize: 12,
+    color: '#d1d5db',
+    lineHeight: 16,
+  },
+  termsLink: {
+    color: '#00bcd4',
+    textDecorationLine: 'underline',
+    fontWeight: '600',
+  },
 });
 
 export default TelegramVerification;
