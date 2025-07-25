@@ -8,7 +8,19 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
-**Version 2.6.2 - Migration Replit complétée et système notifications push production - July 25, 2025**
+**Version 2.7.0 - Migration Replit complétée avec notifications push intégrées - July 25, 2025**
+- ✅ Migration complète de Replit Agent vers environnement Replit standard réussie
+- ✅ Expo CLI installé et configuré (version 0.24.20)
+- ✅ Résolution des erreurs TypeScript et JSX "Unexpected text node"
+- ✅ Serveur de développement opérationnel sur port 5000 avec Metro bundler
+- ✅ Configuration push notifications selon CONFIG-APP-MINIMALE implémentée
+- ✅ Integration serveur https://atomic-flix-verifier-bot.vercel.app/api/register-push-token
+- ✅ Configuration notifications dans app.json avec icône et couleur Atomic Flix
+- ✅ Bundle web construit avec succès (1115 modules)
+- ✅ Vérifications TypeScript et tests de base réussis (2/3)
+- ✅ Application mobile React Native prête pour développement et builds Android
+
+**Version 2.6.2 - Migration Replit complétée et système notifications push production - July 25, 2025 (précédent)**
 - ✅ Migration réussie de Replit Agent vers environnement Replit standard
 - ✅ Expo CLI installé et configuré pour développement 
 - ✅ Bug de genres corrigé : utilise maintenant les vrais genres de l'API au lieu de "Anime/Manga"

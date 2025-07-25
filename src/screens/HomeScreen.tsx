@@ -326,9 +326,7 @@ const HomeScreen: React.FC = () => {
             resizeMode="cover"
             loadingIndicatorSource={require('../../assets/atomic-flix-logo.png')}
             fadeDuration={200}
-            onError={(e) => {
-
-            }}
+            onError={(e) => {}}
           />
 
           {/* Badge type de contenu (identique au site web) */}
@@ -486,9 +484,7 @@ const HomeScreen: React.FC = () => {
                       source={{ uri: anime.image }}
                       style={styles.heroMosaicImageContent}
                       resizeMode="cover"
-                      onError={(e) => {
-
-                      }}
+                      onError={(e) => {}}
                     />
                   </View>
                 ))}

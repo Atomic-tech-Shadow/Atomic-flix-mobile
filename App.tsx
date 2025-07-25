@@ -9,6 +9,7 @@ import 'react-native-gesture-handler';
 import AppNavigator from './src/navigation/AppNavigator';
 import TelegramVerification from './src/components/TelegramVerification';
 import { queryClient } from './src/utils/queryClient';
+import * as Notifications from 'expo-notifications';
 
 // Appeler preventAutoHideAsync() dans le scope global selon la documentation Expo 53
 SplashScreen.preventAutoHideAsync();
@@ -19,6 +20,33 @@ SplashScreen.setOptions({
   fade: true,
 });
 
+// Configuration minimale push notifications selon CONFIG-APP-MINIMALE
+async function initPushNotifications() {
+  try {
+    // Demander permission (obligatoire)
+    const { status } = await Notifications.requestPermissionsAsync();
+    if (status !== 'granted') return;
+    
+    // Obtenir le token push
+    const token = await Notifications.getExpoPushTokenAsync();
+    
+    // Enregistrer sur votre serveur
+    await fetch('https://atomic-flix-verifier-bot.vercel.app/api/register-push-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'register',
+        userId: 'user_' + Math.random().toString(36).substr(2, 9),
+        pushToken: token.data
+      })
+    });
+    
+    console.log('✅ Push notifications configured');
+  } catch (error) {
+    console.log('❌ Push setup failed:', error);
+  }
+}
+
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
 
@@ -27,6 +55,9 @@ export default function App() {
       try {
         // Préparation de l'app : chargement des ressources nécessaires
         await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Initialiser les notifications push
+        await initPushNotifications();
       } catch (e) {
         console.warn('Erreur lors de la préparation de l\'app:', e);
       } finally {

@@ -276,9 +276,7 @@ const AnimeDetailScreen: React.FC = () => {
               source={{ uri: animeData.image }}
               style={styles.heroImage}
               resizeMode="cover"
-              onError={(e) => {
-
-              }}
+              onError={(e) => {}}
             />
             
             {/* Gradient overlay pour le contenu */}
