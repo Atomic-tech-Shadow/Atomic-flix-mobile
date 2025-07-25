@@ -51,7 +51,9 @@ class NotificationService {
   async initializePushNotifications(): Promise<string | null> {
     try {
       if (!Device.isDevice) {
-        console.log('Les notifications push ne fonctionnent que sur un appareil physique');
+        if (__DEV__) {
+          console.log('Les notifications push ne fonctionnent que sur un appareil physique');
+        }
         return null;
       }
 
@@ -81,7 +83,10 @@ class NotificationService {
       });
       
       this.expoPushToken = pushTokenData.data;
-      console.log('Token push obtenu:', this.expoPushToken);
+      // Supprimer le log de production pour la sécurité
+      if (__DEV__) {
+        console.log('Token push obtenu:', this.expoPushToken);
+      }
       
       return this.expoPushToken;
     } catch (error) {
@@ -101,7 +106,7 @@ class NotificationService {
       };
     } catch (error) {
 
-      return { enabled: false, newEpisodes: true, newMangas: true };
+      return { enabled: true, newEpisodes: true, newMangas: true };
     }
   }
 
@@ -311,32 +316,14 @@ class NotificationService {
         trigger: null, // Envoyer immédiatement
       });
 
-      // Afficher aussi l'alerte en cas de premier plan
-      Alert.alert(
-        `Nouveau ${notification.type === 'anime' ? 'épisode' : 'chapitre'} disponible ! 🎉`,
-        notification.message,
-        [
-          {
-            text: 'Voir plus tard',
-            style: 'cancel'
-          },
-          {
-            text: 'Regarder maintenant',
-            onPress: () => {
-              // TODO: Navigation vers l'anime/manga
-              console.log('Navigation vers:', notification.animeTitle);
-            }
-          }
-        ],
-        { cancelable: true }
-      );
+      // En production, ne pas afficher d'Alert automatique pour éviter d'interrompre l'utilisateur
+      // Les notifications push système suffisent
     } catch (error) {
-      console.error('Erreur envoi notification:', error);
-      // Fallback sur Alert si les notifications push échouent
-      Alert.alert(
-        `Nouveau ${notification.type === 'anime' ? 'épisode' : 'chapitre'} disponible ! 🎉`,
-        notification.message
-      );
+      if (__DEV__) {
+        console.error('Erreur envoi notification:', error);
+      }
+      // Fallback silencieux en production - les notifications en app suffisent
+      // Pas d'Alert en production pour éviter de déranger l'utilisateur
     }
   }
 

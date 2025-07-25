@@ -8,7 +8,7 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
-**Version 2.6.2 - Migration Replit complétée et correction versionCode - July 25, 2025**
+**Version 2.6.2 - Migration Replit complétée et système notifications push production - July 25, 2025**
 - ✅ Migration réussie de Replit Agent vers environnement Replit standard
 - ✅ Expo CLI installé et configuré pour développement 
 - ✅ Bug de genres corrigé : utilise maintenant les vrais genres de l'API au lieu de "Anime/Manga"
@@ -18,6 +18,10 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Toutes les vérifications de santé réussies (3/3)
 - ✅ Application prête pour le développement et les builds Android
 - ✅ VersionCode Android corrigé (262) pour compatibilité stores APKPure/Google Play
+- ✅ Système notifications push production complet avec expo-notifications
+- ✅ Interface utilisateur cloche intuitive : clic pour activer/désactiver ou voir notifications
+- ✅ Permissions notifications demandées automatiquement, gestion erreurs production
+- ✅ Logs de debug supprimés pour sécurité, fallbacks silencieux en production
 
 **Version 1.0.2 - Migration Replit et correction bug genres - July 22, 2025**
 - ✅ Migration réussie de Replit Agent vers environnement Replit standard

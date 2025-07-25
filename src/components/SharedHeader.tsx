@@ -42,34 +42,55 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   };
 
   const handleNotificationPress = async () => {
-    // Activer/désactiver les notifications à chaque clic
-    const newState = !notificationsEnabled;
-    setNotificationsEnabled(newState);
+    if (notificationsEnabled && (unreadCount > 0 || hasNewNotifications)) {
+      // Si les notifications sont activées et qu'il y a des notifications non lues, ouvrir le modal
+      const currentNotifications = await notificationService.getNotifications();
+      setNotifications(currentNotifications);
+      setShowNotificationModal(true);
+    } else {
+      // Sinon, activer/désactiver les notifications
+      const newState = !notificationsEnabled;
+      
+      if (newState) {
+        // Demander la permission avant d'activer
+        const token = await notificationService.initializePushNotifications();
+        if (!token) {
+          Alert.alert(
+            'Erreur',
+            'Impossible d\'activer les notifications. Vérifiez les permissions dans les paramètres de votre appareil.',
+            [{ text: 'OK' }]
+          );
+          return;
+        }
+      }
+      
+      setNotificationsEnabled(newState);
 
-    // Sauvegarder l'état dans les paramètres
-    await notificationService.saveSettings({
-      enabled: newState,
-      newEpisodes: newState,
-      newMangas: newState,
-    });
+      // Sauvegarder l'état dans les paramètres
+      await notificationService.saveSettings({
+        enabled: newState,
+        newEpisodes: newState,
+        newMangas: newState,
+      });
 
-    // Marquer les notifications comme lues quand on les active
-    if (newState) {
-      setHasNewNotifications(false);
-    }
+      // Marquer les notifications comme lues quand on les active
+      if (newState) {
+        setHasNewNotifications(false);
+      }
 
-    // Afficher une confirmation à l'utilisateur
-    Alert.alert(
-      'Notifications',
-      newState 
-        ? 'Notifications activées ! Vous recevrez les alertes pour les nouveaux épisodes et mangas.' 
-        : 'Notifications désactivées. Vous ne recevrez plus d\'alertes.',
-      [{ text: 'OK' }]
-    );
+      // Afficher une confirmation à l'utilisateur
+      Alert.alert(
+        'Notifications',
+        newState 
+          ? '✅ Notifications activées ! Vous recevrez les alertes pour les nouveaux épisodes et mangas.' 
+          : '🔕 Notifications désactivées. Vous ne recevrez plus d\'alertes.',
+        [{ text: 'OK' }]
+      );
 
-    // Appeler la fonction callback si fournie
-    if (onNotificationPress) {
-      onNotificationPress();
+      // Appeler la fonction callback si fournie
+      if (onNotificationPress) {
+        onNotificationPress();
+      }
     }
   };
 
