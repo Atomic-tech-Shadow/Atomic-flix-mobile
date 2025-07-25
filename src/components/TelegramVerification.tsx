@@ -13,14 +13,11 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 
-
 interface TelegramVerificationProps {
   onVerified: () => void;
   telegramChannelUrl?: string;
   channelName?: string;
 }
-
-
 
 const TelegramVerification: React.FC<TelegramVerificationProps> = ({
   onVerified,
@@ -48,8 +45,6 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
       console.log('Erreur vérification status:', error);
     }
   };
-
-
 
   const handleSubscribe = async () => {
     setHasSubscribed(true);
