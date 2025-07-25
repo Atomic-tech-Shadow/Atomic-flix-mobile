@@ -15,6 +15,7 @@
 
 
     "android": {
+      "versionCode": 262,
       "adaptiveIcon": {
         "foregroundImage": "./assets/atomic-flix-logo.png",
         "backgroundColor": "#0f172a"
