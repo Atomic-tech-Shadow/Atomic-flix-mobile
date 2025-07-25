@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import PushNotificationService from '../services/pushNotifications';
+import UserService from '../services/userService';
 
 interface TelegramVerificationProps {
   onVerified: () => void;
@@ -149,6 +151,15 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
         // Marquer comme vérifié dans le stockage local
         await AsyncStorage.setItem('telegram_verified', 'true');
         await AsyncStorage.setItem('telegram_user_id', userId);
+        
+        // Enregistrer l'utilisateur pour les notifications push
+        try {
+          const appUserId = await UserService.getUserId();
+          await PushNotificationService.registerPushToken(appUserId);
+          console.log('✅ User registered for push notifications');
+        } catch (error) {
+          console.log('⚠️ Push notification registration failed:', error);
+        }
         
         // Marquer l'étape finale comme complétée
         setIsVerified(true);

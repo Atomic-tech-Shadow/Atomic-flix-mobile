@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View } from 'react-native';
+import { View, AppState, AppStateStatus } from 'react-native';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -9,7 +9,8 @@ import 'react-native-gesture-handler';
 import AppNavigator from './src/navigation/AppNavigator';
 import TelegramVerification from './src/components/TelegramVerification';
 import { queryClient } from './src/utils/queryClient';
-import * as Notifications from 'expo-notifications';
+import PushNotificationService from './src/services/pushNotifications';
+import UserService from './src/services/userService';
 
 // Appeler preventAutoHideAsync() dans le scope global selon la documentation Expo 53
 SplashScreen.preventAutoHideAsync();
@@ -20,30 +21,33 @@ SplashScreen.setOptions({
   fade: true,
 });
 
-// Configuration minimale push notifications selon CONFIG-APP-MINIMALE
+// Configuration complète des notifications push
 async function initPushNotifications() {
   try {
-    // Demander permission (obligatoire)
-    const { status } = await Notifications.requestPermissionsAsync();
-    if (status !== 'granted') return;
+    // Obtenir l'ID utilisateur persistant
+    const userId = await UserService.getUserId();
+    console.log('✅ User ID obtained:', userId);
     
-    // Obtenir le token push
-    const token = await Notifications.getExpoPushTokenAsync();
+    // Configurer les listeners de notifications
+    PushNotificationService.setupNotificationListeners();
+    console.log('✅ Notification listeners configured');
     
-    // Enregistrer sur votre serveur
-    await fetch('https://atomic-flix-verifier-bot.vercel.app/api/register-push-token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'register',
-        userId: 'user_' + Math.random().toString(36).substr(2, 9),
-        pushToken: token.data
+    // Enregistrer le token push en arrière-plan (non bloquant)
+    PushNotificationService.registerPushToken(userId)
+      .then(success => {
+        if (success) {
+          console.log('✅ Push notifications registered');
+          // Mettre à jour l'activité utilisateur en arrière-plan
+          return PushNotificationService.updateActivity(userId);
+        }
+        return Promise.resolve();
       })
-    });
+      .catch(error => {
+        console.log('⚠️ Push setup error (non-blocking):', error);
+      });
     
-    console.log('✅ Push notifications configured');
   } catch (error) {
-    console.log('❌ Push setup failed:', error);
+    console.log('❌ Push setup failed (non-blocking):', error);
   }
 }
 
@@ -66,6 +70,29 @@ export default function App() {
     }
 
     prepareApp();
+  }, []);
+
+  // Gérer les changements d'état de l'app (foreground/background)
+  useEffect(() => {
+    const handleAppStateChange = async (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'active') {
+        // App redevient active - mettre à jour l'activité utilisateur en arrière-plan
+        try {
+          const userId = await UserService.getUserId();
+          PushNotificationService.updateActivity(userId).catch(error => {
+            console.log('Activity update error (non-blocking):', error);
+          });
+        } catch (error) {
+          console.log('Activity update setup error (non-blocking):', error);
+        }
+      }
+    };
+
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    
+    return () => {
+      subscription?.remove();
+    };
   }, []);
 
   const onLayoutRootView = useCallback(() => {

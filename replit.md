@@ -53,6 +53,13 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Commande /update [URL] pour diffusion massive instantanée
 - ✅ Confirmation avant diffusion et statistiques détaillées
 - ✅ UpdateService.ts et UpdateModal.tsx pour interface mobile
+- ✅ Service PushNotificationService complet avec gestion tokens Expo
+- ✅ UserService pour gestion persistante des IDs utilisateur uniques
+- ✅ Intégration notifications push lors de la vérification Telegram
+- ✅ Écran paramètres notifications avec toggles et informations utilisateur
+- ✅ Configuration app.json avec plugin expo-notifications
+- ✅ Gestion état app (foreground/background) pour activité utilisateur
+- ✅ Bouton paramètres notifications dans SharedHeader
 
 **Version 1.0.2 - Migration Replit et correction bug genres - July 22, 2025**
 - ✅ Migration réussie de Replit Agent vers environnement Replit standard

@@ -25,6 +25,7 @@ import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import NotificationService from '../utils/notificationService';
 import TelegramVerification from '../components/TelegramVerification';
+import NotificationSettings from '../components/NotificationSettings';
 import { BlurView } from 'expo-blur';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -52,6 +53,7 @@ const HomeScreen: React.FC = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [showTelegramModal, setShowTelegramModal] = useState(false);
+  const [showNotificationSettings, setShowNotificationSettings] = useState(false);
 
   // Configuration API identique au site web
   const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';
@@ -379,6 +381,7 @@ const HomeScreen: React.FC = () => {
         <SharedHeader 
           onSearchPress={handleSearchPress}
           onNotificationPress={handleNotificationPress}
+          onSettingsPress={() => setShowNotificationSettings(true)}
         />
       </View>
 
@@ -570,6 +573,16 @@ const HomeScreen: React.FC = () => {
           </BlurView>
         </View>
       )}
+
+      {/* Modal des paramètres de notification */}
+      <Modal
+        visible={showNotificationSettings}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setShowNotificationSettings(false)}
+      >
+        <NotificationSettings onClose={() => setShowNotificationSettings(false)} />
+      </Modal>
     </SafeAreaView>
   );
 };
