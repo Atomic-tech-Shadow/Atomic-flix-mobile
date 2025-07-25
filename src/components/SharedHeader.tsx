@@ -13,13 +13,11 @@ type NavigationProp = StackNavigationProp<RootStackParamList>;
 interface SharedHeaderProps {
   onSearchPress?: () => void;
   onNotificationPress?: () => void;
-  onSettingsPress?: () => void;
 }
 
 const SharedHeader: React.FC<SharedHeaderProps> = ({ 
   onSearchPress,
-  onNotificationPress,
-  onSettingsPress 
+  onNotificationPress 
 }) => {
   const navigation = useNavigation<NavigationProp>();
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -215,14 +213,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             </View>
           </TouchableOpacity>
 
-          {onSettingsPress && (
-            <TouchableOpacity 
-              style={styles.headerIconButton}
-              onPress={onSettingsPress}
-            >
-              <Ionicons name="settings-outline" size={22} color="#ffffff" />
-            </TouchableOpacity>
-          )}
+
 
           <TouchableOpacity 
             style={styles.headerIconButton}
