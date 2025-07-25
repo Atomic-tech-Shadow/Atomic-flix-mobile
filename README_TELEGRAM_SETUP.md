@@ -1,74 +1,141 @@
-# 🤖 Configuration Bot Telegram - ATOMIC FLIX
+# Configuration Bot Telegram - Système /update
 
-## 📖 RÉSUMÉ
+## 🚀 Fonctionnalité /update Implémentée
 
-Voici **exactement** ce que vous devez créer pour activer la vérification Telegram réelle dans l'application ATOMIC FLIX.
-
-## 🎯 ACTIONS REQUISES
-
-### 1. 🤖 Créer le Bot Telegram
+### Commande Principale
 ```
-📱 Ouvrir Telegram
-🔍 Rechercher @BotFather
-💬 Envoyer : /newbot
-📝 Nom : ATOMIC FLIX Verifier
-📝 Username : atomic_flix_verifier_bot
-🔑 SAUVEGARDER LE TOKEN (1234567890:ABCDEF...)
+/update https://apkpure.com/fr/atomic-flix/com.atomicflix.mobile/download
 ```
 
-### 2. 🔧 Configurer le Canal
-```
-🌐 Aller sur : https://t.me/Atomic_flix_officiel
-⚙️ Gérer le canal → Administrateurs → Ajouter
-🔍 Rechercher : atomic_flix_verifier_bot
-✅ Permissions : "Gérer les messages" + "Voir les membres"
-```
+Cette commande envoie automatiquement une notification de mise à jour à **TOUS** les utilisateurs vérifiés de votre app !
 
-### 3. 🚀 Déployer le Serveur
+## 🎯 Comment ça fonctionne
+
+### 1. Vous tapez la commande
 ```
-📂 Créer dossier : atomic-flix-telegram-server
-📄 Copier les fichiers du dossier server/
-🔧 Configurer .env avec votre BOT_TOKEN
-🌐 Déployer sur Replit/Vercel/Heroku
+/update [URL_APKPure]
 ```
 
-### 4. 🧪 Tester le Système
+### 2. Le bot confirme avant diffusion
 ```
-🔗 Accéder à : https://votre-url.com/health
-🤖 Tester le bot : /start puis /verify sur Telegram
-✅ Vérifier que tout fonctionne
+🚀 DIFFUSION MISE À JOUR
+
+📱 Lien: https://apkpure.com/fr/atomic-flix/...
+📊 Utilisateurs ciblés: 1,247
+
+Confirmer la diffusion ?
+[✅ Confirmer] [❌ Annuler]
 ```
 
-## 📦 FICHIERS À DÉPLOYER
+### 3. Diffusion massive instantanée
+- Message envoyé à tous les utilisateurs vérifiés
+- Boutons "Télécharger APK" et "Voir sur APKPure"  
+- Respect des limites Telegram (30 messages/seconde)
 
-J'ai créé tous les fichiers nécessaires dans le dossier `server/` :
+### 4. Rapport de diffusion
+```
+✅ MISE À JOUR DIFFUSÉE
 
-- **`telegramBot.js`** - Serveur principal avec API
-- **`package.json`** - Configuration des dépendances
-- **`.env.example`** - Variables d'environnement (à renommer en `.env`)
+📤 Envoyé à: 1,204 utilisateurs
+❌ Échecs: 43
+⏱️ Durée: 2,340ms
+```
 
-## 🔄 WORKFLOW
+## 💬 Message reçu par les utilisateurs
 
-1. **Vous créez** le bot Telegram (5 min)
-2. **Vous déployez** le serveur (10 min)
-3. **Vous m'envoyez** l'URL du backend
-4. **Je finalise** l'intégration dans l'app React Native
+```
+🎉 NOUVELLE MISE À JOUR ATOMIC FLIX !
 
-## 📞 PROCHAINE ÉTAPE
+✨ Une nouvelle version est disponible sur APKPure
 
-Une fois votre serveur déployé, envoyez-moi :
-- 🔗 URL du backend (ex: https://votre-app.replit.app)
-- ✅ Confirmation que `/health` fonctionne
+📱 Fonctionnalités améliorées:
+• Performance optimisée
+• Corrections de bugs  
+• Nouvelles fonctionnalités
 
-Je vais immédiatement :
-- Intégrer l'URL dans `src/utils/telegramAPI.js`
-- Remplacer la simulation par la vérification réelle
-- Tester le système complet
+⬇️ Téléchargez maintenant pour profiter des dernières améliorations !
 
-## 🎯 OBJECTIF
+[📥 Télécharger APK] [📰 Voir sur APKPure]
+```
 
-Passer de la **simulation actuelle** à la **vérification authentique** avec l'API Telegram Bot officielle.
+## 🔧 Configuration Requise
 
----
+### Variables d'environnement
+```env
+TELEGRAM_BOT_TOKEN=votre_token_bot
+SUPABASE_URL=votre_url_supabase
+SUPABASE_ANON_KEY=votre_cle_supabase
+```
 
-**📋 Consultez `DEPLOYMENT_CHECKLIST.md` pour le guide détaillé ou `QUICK_SETUP_GUIDE.md` pour la version rapide.**
+### Base de données
+Table `verified_users` avec colonnes :
+- `telegram_id` (bigint)
+- `username` (text)
+- `created_at` (timestamp)
+
+### Permissions Admin
+Modifiez dans le code :
+```javascript
+const adminIds = [
+  123456789, // Votre ID Telegram
+  // Ajouter d'autres admins
+];
+```
+
+## 📊 Commandes Bonus
+
+### Statistiques
+```
+/stats
+```
+Affiche :
+- Nombre d'utilisateurs vérifiés
+- Nouveaux utilisateurs (7 jours)
+- Versions bot/app
+
+## 🎯 Avantages de cette approche
+
+### ✅ Avantages
+- **Diffusion instantanée** à tous vos utilisateurs
+- **Contrôle total** du message et timing
+- **Boutons interactifs** pour téléchargement direct
+- **Statistiques précises** d'envoi
+- **Confirmation avant envoi** (sécurité)
+- **Rate limiting** respecté automatiquement
+
+### 🚀 vs Autres Solutions
+| Fonctionnalité | Bot Telegram | Firebase FCM | OneSignal |
+|---|---|---|---|
+| Coût | Gratuit | Limité gratuit | Payant |
+| Contrôle | Total | Partiel | Partiel |
+| Rich messaging | ✅ | ❌ | Limité |
+| Boutons interactifs | ✅ | ❌ | Limité |
+| Analytics | ✅ | ✅ | ✅ |
+
+## 📱 Intégration App Mobile
+
+### Détection automatique
+L'app vérifie aussi au démarrage :
+```javascript
+// Au startup de l'app
+const update = await UpdateService.autoCheckUpdates();
+if (update) {
+  // Afficher modal UpdateModal
+}
+```
+
+### Double notification
+- Notification Telegram (immédiate)
+- Notification in-app (au prochain démarrage)
+- = Taux de réception maximisé
+
+## 🎉 Résultat Final
+
+**Une simple commande** :
+```
+/update https://apkpure.com/fr/atomic-flix/com.atomicflix.mobile/download
+```
+
+**= Notification instantanée à tous vos utilisateurs !**
+
+C'est exactement ce que font les grandes apps, mais vous contrôlez tout ! 🔥

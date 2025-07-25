@@ -26,6 +26,10 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Validation obligatoire avant vérification (comme vraies apps mobiles)
 - ✅ Interface professionnelle avec checkbox cyan et lien cliquable
 - ✅ Bouton vérification désactivé tant que conditions pas acceptées
+- ✅ Système notifications mises à jour via Bot Telegram intégré
+- ✅ Commande /update [URL] pour diffusion massive instantanée
+- ✅ Confirmation avant diffusion et statistiques détaillées
+- ✅ UpdateService.ts et UpdateModal.tsx pour interface mobile
 
 **Version 1.0.2 - Migration Replit et correction bug genres - July 22, 2025**
 - ✅ Migration réussie de Replit Agent vers environnement Replit standard
