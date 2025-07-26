@@ -8,6 +8,13 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.7.2 - Correction erreur notifications Android - July 26, 2025**
+- ✅ Erreur "Impossible d'activer les notifications" corrigée sur Android
+- ✅ Gestion permissions notifications améliorée pour mobile vs web
+- ✅ Messages d'erreur inutiles supprimés en mode web/émulateur
+- ✅ Système push notifications optimisé pour production mobile
+- ✅ Tests d'intégration complets validés pour déploiement APK
+
 **Version 2.7.1 - Configuration push notifications finalisée - July 25, 2025**
 - ✅ Configuration notifications push complète selon CONFIG-APP-MINIMALE implémentée
 - ✅ app.json configuré avec icône et couleur notifications Atomic Flix
