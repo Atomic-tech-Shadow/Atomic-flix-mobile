@@ -59,12 +59,33 @@ class NotificationService {
         return null;
       }
 
+      // CRITIQUE: Configurer le canal Android AVANT de demander les permissions
+      // Requis pour Android 13+ selon la documentation Expo 2024
+      if (Platform.OS === 'android') {
+        await Notifications.setNotificationChannelAsync('atomic-flix-updates', {
+          name: 'ATOMIC FLIX Updates',
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 250, 250, 250],
+          lightColor: '#00bcd4',
+          description: 'Notifications pour les nouvelles mises à jour ATOMIC FLIX',
+        });
+      }
+
       // Demander les permissions
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
       
       if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
+        // Demander avec paramètres iOS spécifiques si nécessaire
+        const { status } = await Notifications.requestPermissionsAsync({
+          ios: {
+            allowAlert: true,
+            allowBadge: true,
+            allowSound: true,
+            allowDisplayInCarPlay: true,
+            allowCriticalAlerts: false,
+          },
+        });
         finalStatus = status;
       }
       
@@ -97,6 +118,20 @@ class NotificationService {
     } catch (error) {
       console.error('Erreur initialisation notifications:', error);
       return null;
+    }
+  }
+
+  // Vérifier si les notifications sont autorisées (compatible iOS provisional)
+  async allowsNotificationsAsync(): Promise<boolean> {
+    try {
+      const settings = await Notifications.getPermissionsAsync();
+      return (
+        settings.granted || 
+        (settings.ios?.status === Notifications.IosAuthorizationStatus.PROVISIONAL)
+      );
+    } catch (error) {
+      console.error('Erreur vérification permissions:', error);
+      return false;
     }
   }
 

@@ -10,8 +10,12 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 **Version 2.7.2 - Correction erreur notifications Android - July 26, 2025**
 - ✅ Erreur "Impossible d'activer les notifications" corrigée sur Android
-- ✅ Gestion permissions notifications améliorée pour mobile vs web
+- ✅ Canal Android obligatoire configuré AVANT requestPermissionsAsync (fix Android 13+)
+- ✅ setNotificationChannelAsync avec importance MAX et vibration personnalisée
+- ✅ Permissions iOS spécifiques configurées (alert, badge, sound, CarPlay)
+- ✅ Gestion permissions notifications améliorée pour mobile vs web selon documentation Expo 2024
 - ✅ Messages d'erreur inutiles supprimés en mode web/émulateur
+- ✅ Helper allowsNotificationsAsync avec support iOS provisional
 - ✅ Système push notifications optimisé pour production mobile
 - ✅ Tests d'intégration complets validés pour déploiement APK
 
