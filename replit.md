@@ -8,6 +8,12 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.7.3 - Correction logique permissions accordées - July 26, 2025**
+- ✅ Bug critique réparé : popup "Permissions requises" même avec notifications activées
+- ✅ Logique améliorée : vérification allowsNotificationsAsync() AVANT demande permissions
+- ✅ Permissions déjà accordées → création token directe sans re-prompt
+- ✅ Permissions manquantes → demande initializePushNotifications avec canal Android
+
 **Version 2.7.2 - Correction erreur notifications Android - July 26, 2025**
 - ✅ Erreur "Impossible d'activer les notifications" corrigée sur Android
 - ✅ Canal Android obligatoire configuré AVANT requestPermissionsAsync (fix Android 13+)

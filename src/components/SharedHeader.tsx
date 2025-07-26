@@ -56,16 +56,23 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
         if (Platform.OS === 'web') {
           console.log('Mode web - notifications simulées activées');
         } else {
-          // Sur mobile, demander les permissions
-          const token = await notificationService.initializePushNotifications();
-          if (!token) {
-            // Si les permissions sont refusées, informer l'utilisateur
-            Alert.alert(
-              'Permissions requises',
-              'Pour recevoir les notifications de nouvelles sorties, activez les permissions dans Paramètres > Applications > ATOMIC FLIX > Notifications.',
-              [{ text: 'OK' }]
-            );
-            return;
+          // Sur mobile, vérifier d'abord si les permissions sont déjà accordées
+          const isAllowed = await notificationService.allowsNotificationsAsync();
+          if (isAllowed) {
+            // Permissions déjà accordées, juste obtenir/créer le token
+            await notificationService.initializePushNotifications();
+          } else {
+            // Demander les permissions
+            const token = await notificationService.initializePushNotifications();
+            if (!token) {
+              // Si les permissions sont refusées, informer l'utilisateur
+              Alert.alert(
+                'Permissions requises',
+                'Pour recevoir les notifications de nouvelles sorties, activez les permissions dans Paramètres > Applications > ATOMIC FLIX > Notifications.',
+                [{ text: 'OK' }]
+              );
+              return;
+            }
           }
         }
       }
