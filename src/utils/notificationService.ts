@@ -51,8 +51,10 @@ class NotificationService {
   async initializePushNotifications(): Promise<string | null> {
     try {
       if (!Device.isDevice) {
+        // En mode web/émulateur, retourner un token fictif pour éviter les erreurs
         if (__DEV__) {
-          console.log('Les notifications push ne fonctionnent que sur un appareil physique');
+          console.log('Mode web/émulateur détecté - notifications push simulées');
+          return 'web_simulation_token';
         }
         return null;
       }
@@ -67,7 +69,10 @@ class NotificationService {
       }
       
       if (finalStatus !== 'granted') {
-        Alert.alert('Erreur', 'Permissions de notification refusées');
+        // Ne pas afficher d'erreur en production, juste retourner null
+        if (__DEV__) {
+          console.log('Permissions de notification refusées par l\'utilisateur');
+        }
         return null;
       }
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, Modal, Animated, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, Modal, Animated, Dimensions, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
@@ -52,15 +52,21 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
       const newState = !notificationsEnabled;
       
       if (newState) {
-        // Demander la permission avant d'activer
-        const token = await notificationService.initializePushNotifications();
-        if (!token) {
-          Alert.alert(
-            'Erreur',
-            'Impossible d\'activer les notifications. Vérifiez les permissions dans les paramètres de votre appareil.',
-            [{ text: 'OK' }]
-          );
-          return;
+        // En mode web, activer directement (notifications simulées)
+        if (Platform.OS === 'web') {
+          console.log('Mode web - notifications simulées activées');
+        } else {
+          // Sur mobile, demander les permissions
+          const token = await notificationService.initializePushNotifications();
+          if (!token) {
+            // Si les permissions sont refusées, informer l'utilisateur
+            Alert.alert(
+              'Permissions requises',
+              'Pour recevoir les notifications de nouvelles sorties, activez les permissions dans Paramètres > Applications > ATOMIC FLIX > Notifications.',
+              [{ text: 'OK' }]
+            );
+            return;
+          }
         }
       }
       
