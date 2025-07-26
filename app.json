@@ -2,7 +2,7 @@
   "expo": {
     "name": "Atomic Flix",
     "slug": "atomic-flix-mobile", 
-    "version": "2.7.3",
+    "version": "2.7.4",
     "orientation": "portrait",
     "extra": {
       "eas": {
@@ -19,7 +19,7 @@
 
 
     "android": {
-      "versionCode": 273,
+      "versionCode": 274,
       "adaptiveIcon": {
         "foregroundImage": "./assets/atomic-flix-logo.png",
         "backgroundColor": "#0f172a"

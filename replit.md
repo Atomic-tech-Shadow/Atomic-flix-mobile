@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.7.4 - Correction erreurs texte et affichage Telegram - July 26, 2025**
+- ✅ Erreurs "Unexpected text node" corrigées dans TelegramVerification
+- ✅ Texte d'aide réorganisé et mieux adapté au cadre
+- ✅ Suppression balises Text imbriquées causant les erreurs console
+- ✅ Padding optimisé pour éviter débordement texte
+- ✅ Hauteur carte augmentée (480→500px) pour meilleur espacement
+- ✅ Interface plus propre sans erreurs JavaScript
+
 **Version 2.7.3 - Correction logique permissions accordées - July 26, 2025**
 - ✅ Bug critique réparé : popup "Permissions requises" même avec notifications activées
 - ✅ Logique améliorée : vérification allowsNotificationsAsync() AVANT demande permissions

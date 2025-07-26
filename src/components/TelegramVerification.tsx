@@ -315,22 +315,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
             {acceptedTerms && <Text style={styles.checkmark}>✓</Text>}
           </View>
           <Text style={styles.termsText}>
-            J'ai lu et j'accepte les{' '}
-            <Text 
-              style={styles.termsLink}
-              onPress={() => {
-                Alert.alert(
-                  'Conditions d\'utilisation',
-                  'En utilisant Atomic Flix, vous acceptez nos conditions d\'utilisation et notre politique de confidentialité. L\'application est destinée au streaming légal d\'animes et mangas.',
-                  [
-                    { text: 'Refuser', style: 'cancel' },
-                    { text: 'Accepter', onPress: () => setAcceptedTerms(true) }
-                  ]
-                );
-              }}
-            >
-              conditions d'utilisation
-            </Text>
+            J'ai lu et j'accepte les conditions d'utilisation
           </Text>
         </TouchableOpacity>
 
@@ -382,14 +367,15 @@ const styles = StyleSheet.create({
 
   squareCard: {
     width: 320,
-    height: 480,
+    height: 500,
     backgroundColor: 'rgba(15, 23, 42, 0.9)',
     borderRadius: 20,
     borderWidth: 2,
     borderColor: 'rgba(0, 188, 212, 0.3)',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
     shadowColor: '#00bcd4',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
@@ -409,6 +395,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20,
     marginBottom: 20,
+    paddingHorizontal: 8,
   },
   getIdButton: {
     width: '100%',
@@ -480,6 +467,9 @@ const styles = StyleSheet.create({
     color: '#00bcd4',
     textAlign: 'center',
     fontStyle: 'italic',
+    paddingHorizontal: 8,
+    flexWrap: 'wrap',
+    maxWidth: '100%',
   },
   
   // Style pour le bouton d'aide
@@ -593,6 +583,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#d1d5db',
     lineHeight: 16,
+    flexWrap: 'wrap',
   },
   termsLink: {
     color: '#00bcd4',
