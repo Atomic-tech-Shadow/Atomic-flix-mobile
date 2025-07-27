@@ -48,11 +48,14 @@ const HomeScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [trendingAnimes, setTrendingAnimes] = useState<SearchResult[]>([]);
+  const [classiquesAnimes, setClassiquesAnimes] = useState<SearchResult[]>([]);
+  const [pepitesAnimes, setPepitesAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [showTelegramModal, setShowTelegramModal] = useState(false);
+  const [popularLoading, setPopularLoading] = useState(true);
 
 
   // Configuration API identique au site web
@@ -61,9 +64,19 @@ const HomeScreen: React.FC = () => {
   // Service de notifications
   const notificationService = NotificationService.getInstance();
 
+  // Fonction utilitaire pour obtenir le badge de langue
+  const getLanguageBadge = (language: any): string => {
+    if (!language) return 'VO';
+    if (language.vf) return 'VF';
+    if (language.vostfr) return 'VOSTFR';
+    if (language.vjstfr) return 'VJSTFR';
+    return 'VO';
+  };
+
   // Charger les animes trending au démarrage et initialiser les notifications
   useEffect(() => {
     loadTrendingAnimes();
+    loadPopularAnimes();
     initializeNotifications();
     checkTelegramVerification();
 
@@ -170,6 +183,31 @@ const HomeScreen: React.FC = () => {
     }
   };
 
+  // Charger le contenu populaire (classiques et pépites) depuis l'API
+  const loadPopularAnimes = async () => {
+    try {
+      setPopularLoading(true);
+      const response = await apiRequest('/api/popular');
+
+      if (response && response.success && response.results) {
+        // Séparer les classiques et les pépites
+        const classiques = response.results.filter((item: any) => item.category === 'classiques');
+        const pepites = response.results.filter((item: any) => item.category === 'pépites');
+
+        setClassiquesAnimes(classiques);
+        setPepitesAnimes(pepites);
+      } else {
+        setClassiquesAnimes([]);
+        setPepitesAnimes([]);
+      }
+    } catch (error) {
+      setClassiquesAnimes([]);
+      setPepitesAnimes([]);
+    } finally {
+      setPopularLoading(false);
+    }
+  };
+
   // Recherche d'animes (identique au site web)
   const searchAnimes = async (query: string) => {
     if (query.trim().length < 2) {
@@ -238,7 +276,7 @@ const HomeScreen: React.FC = () => {
   // Refresh control
   const onRefresh = async () => {
     setRefreshing(true);
-    await loadTrendingAnimes();
+    await Promise.all([loadTrendingAnimes(), loadPopularAnimes()]);
     setRefreshing(false);
   };
 
@@ -506,7 +544,108 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
+            {/* Section Classiques */}
+            {classiquesAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>🏛️ Classiques</Text>
+                </View>
+                <ScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                >
+                  {classiquesAnimes.map((anime, index) => (
+                    <TouchableOpacity
+                      key={`classique-${anime.id || index}`}
+                      style={styles.horizontalCard}
+                      onPress={() => loadAnimeDetails(anime.url, anime.contentType)}
+                      activeOpacity={0.8}
+                    >
+                      <Image
+                        source={{ uri: anime.image }}
+                        style={styles.horizontalCardImage}
+                        resizeMode="cover"
+                      />
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        style={styles.horizontalCardGradient}
+                      >
+                        <View style={styles.horizontalCardContent}>
+                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
+                            {anime.title}
+                          </Text>
+                          {anime.language && (
+                            <View style={styles.horizontalCardBadge}>
+                              <Text style={styles.horizontalCardBadgeText}>
+                                {getLanguageBadge(anime.language)}
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
+
+            {/* Section Pépites */}
+            {pepitesAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>💎 Pépites</Text>
+                </View>
+                <ScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                >
+                  {pepitesAnimes.map((anime, index) => (
+                    <TouchableOpacity
+                      key={`pepite-${anime.id || index}`}
+                      style={styles.horizontalCard}
+                      onPress={() => loadAnimeDetails(anime.url, anime.contentType)}
+                      activeOpacity={0.8}
+                    >
+                      <Image
+                        source={{ uri: anime.image }}
+                        style={styles.horizontalCardImage}
+                        resizeMode="cover"
+                      />
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        style={styles.horizontalCardGradient}
+                      >
+                        <View style={styles.horizontalCardContent}>
+                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
+                            {anime.title}
+                          </Text>
+                          {anime.language && (
+                            <View style={styles.horizontalCardBadge}>
+                              <Text style={styles.horizontalCardBadgeText}>
+                                {getLanguageBadge(anime.language)}
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
+
             {/* Message de chargement */}
+            {popularLoading && (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#00bcd4" />
+                <Text style={styles.loadingText}>Chargement du contenu populaire...</Text>
+              </View>
+            )}
+
             {loading && (
               <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#00bcd4" />
@@ -844,6 +983,79 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 20,
     elevation: 20,
+  },
+
+  // Styles pour les sections horizontales (Classiques et Pépites)
+  horizontalSection: {
+    marginBottom: 24,
+  },
+  sectionHeader: {
+    paddingHorizontal: 16,
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#ffffff',
+  },
+  horizontalScroll: {
+    paddingLeft: 16,
+  },
+  horizontalScrollContainer: {
+    paddingRight: 16,
+  },
+  horizontalCard: {
+    width: 120,
+    height: 180,
+    marginRight: 12,
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: '#1a1a2e',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  horizontalCardImage: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#1a1a2e',
+  },
+  horizontalCardGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 80,
+  },
+  horizontalCardContent: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 8,
+  },
+  horizontalCardTitle: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#ffffff',
+    marginBottom: 4,
+    lineHeight: 14,
+  },
+  horizontalCardBadge: {
+    backgroundColor: 'rgba(0, 188, 212, 0.2)',
+    borderWidth: 1,
+    borderColor: '#00bcd4',
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    borderRadius: 6,
+    alignSelf: 'flex-start',
+  },
+  horizontalCardBadgeText: {
+    color: '#00bcd4',
+    fontSize: 8,
+    fontWeight: '600',
   },
 
 });

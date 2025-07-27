@@ -8,6 +8,17 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.7.5 - Sections horizontales Classiques et Pépites ajoutées - July 27, 2025**
+- ✅ API /api/popular intégrée avec endpoint complet testé et fonctionnel
+- ✅ Section "🏛️ Classiques" avec défilement horizontal implémentée
+- ✅ Section "💎 Pépites" avec défilement horizontal implémentée
+- ✅ Cartes horizontales (120x180px) avec design cohérent et badges langue
+- ✅ Fonction utilitaire getLanguageBadge() pour éviter duplication de code
+- ✅ Séparation correcte des catégories classiques/pépites depuis l'API
+- ✅ Système de chargement séparé pour contenu populaire (popularLoading)
+- ✅ Refresh control mis à jour pour inclure toutes les sections
+- ✅ Navigation intelligente vers AnimeDetail/MangaReader selon contentType
+
 **Version 2.7.4 - Adaptation configuration badges langue API - July 27, 2025**
 - ✅ API /api/trending analysée : structure language{} au lieu d'infos dans titre
 - ✅ Fonction detectLanguageFromTitle supprimée, remplacée par getLanguageFromAPI
