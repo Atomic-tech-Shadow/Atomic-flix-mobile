@@ -8,6 +8,15 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.7.4 - Adaptation configuration badges langue API - July 27, 2025**
+- ✅ API /api/trending analysée : structure language{} au lieu d'infos dans titre
+- ✅ Fonction detectLanguageFromTitle supprimée, remplacée par getLanguageFromAPI
+- ✅ Code obsolète nettoyé : extraction épisodes/saisons depuis titre supprimée
+- ✅ Interface SearchResult mise à jour avec objet language complet
+- ✅ Styles episodeText supprimés, cardMeta repositionné pour badge langue uniquement
+- ✅ Titre section changé : "📢 Nouveaux épisodes ajoutés" → "🔥 Tendances du moment"
+- ✅ Configuration synchronisée avec vraies données API au lieu de parsing manuel
+
 **Version 2.7.3 - Correction logique permissions accordées - July 26, 2025**
 - ✅ Bug critique réparé : popup "Permissions requises" même avec notifications activées
 - ✅ Logique améliorée : vérification allowsNotificationsAsync() AVANT demande permissions

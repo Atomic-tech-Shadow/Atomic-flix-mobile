@@ -497,7 +497,7 @@ const HomeScreen: React.FC = () => {
               <View style={styles.trendingSection}>
                 <View style={styles.trendingSectionHeader}>
                   <Text style={styles.trendingSectionTitle}>
-                    📢 Nouveaux épisodes ajoutés
+                    🔥 Tendances du moment
                   </Text>
                 </View>
                 <View style={styles.trendingGrid}>
