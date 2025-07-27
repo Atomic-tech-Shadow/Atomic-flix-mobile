@@ -8,6 +8,24 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.7.9 - Système notifications push trending complet - July 27, 2025**
+- ✅ TrendingNotificationService.ts créé selon documentation Expo 2025
+- ✅ Configuration app.json avec plugin expo-notifications optimisé
+- ✅ Canal Android automatique "atomic-flix-trending" configuré
+- ✅ Permissions iOS spécifiques avec CarPlay support
+- ✅ Détection intelligente nouvelles tendances avec comparaison API
+- ✅ Notifications push via API Expo (exp.host/--/api/v2/push/send)
+- ✅ Navigation automatique vers AnimeDetail sur tap notification
+- ✅ Système anti-spam : max 3 notifications, interval 5 minutes
+- ✅ Component NotificationTester pour validation développement
+- ✅ Script test complet : 25/25 vérifications réussies
+- ✅ Guide documentation GUIDE_NOTIFICATIONS_TRENDING.md créé
+- ✅ Intégration HomeScreen avec service trending initialisé
+- ✅ Stockage AsyncStorage pour persistance données trending
+- ✅ Nettoyage automatique données anciennes (7 jours)
+- ✅ Support background notifications pour app fermée
+- ✅ Configuration production ready pour build APK physique
+
 **Version 2.7.8 - Carte héro affiche les Légendaires - July 27, 2025**
 - ✅ Carte héro HomeScreen affiche maintenant les animes Légendaires au lieu des Trending
 - ✅ Fallback intelligent : affiche Trending si Légendaires pas encore chargés

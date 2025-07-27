@@ -24,6 +24,7 @@ import type { RootStackParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import NotificationService from '../utils/notificationService';
+import TrendingNotificationService from '../services/TrendingNotificationService';
 import TelegramVerification from '../components/TelegramVerification';
 
 import { BlurView } from 'expo-blur';
@@ -61,8 +62,9 @@ const HomeScreen: React.FC = () => {
   // Configuration API identique au site web
   const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';
 
-  // Service de notifications
+  // Services de notifications
   const notificationService = NotificationService.getInstance();
+  const trendingNotificationService = TrendingNotificationService.getInstance();
 
   // Fonction utilitaire pour obtenir le badge de langue
   const getLanguageBadge = (language: any): string => {
@@ -107,6 +109,12 @@ const HomeScreen: React.FC = () => {
     try {
       // Initialiser les notifications push
       await notificationService.initializePushNotifications();
+      
+      // Initialiser le service de notifications trending
+      await trendingNotificationService.initialize();
+      
+      // Configurer les listeners de navigation
+      trendingNotificationService.setupNotificationListeners(navigation);
       
       const settings = await notificationService.getSettings();
       setNotificationsEnabled(settings.enabled);
@@ -168,6 +176,9 @@ const HomeScreen: React.FC = () => {
 
         // Détecter les nouveaux épisodes avant de mettre à jour l'état
         await notificationService.detectNewEpisodes(newContent);
+        
+        // Vérifier nouvelles tendances et envoyer notifications si besoin
+        await trendingNotificationService.checkForNewTrending(newContent);
 
         // Afficher tous les types de contenu de l'API : animes, mangas, films
         setTrendingAnimes(newContent);

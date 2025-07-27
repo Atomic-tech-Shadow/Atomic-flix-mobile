@@ -2,7 +2,7 @@
   "expo": {
     "name": "Atomic Flix",
     "slug": "atomic-flix-mobile", 
-    "version": "2.7.8",
+    "version": "2.7.9",
     "orientation": "portrait",
     "extra": {
       "eas": {
@@ -15,7 +15,7 @@
 
 
     "android": {
-      "versionCode": 278,
+      "versionCode": 279,
       "adaptiveIcon": {
         "foregroundImage": "./assets/atomic-flix-logo.png",
         "backgroundColor": "#0f172a"
@@ -40,7 +40,9 @@
         {
           "icon": "./assets/atomic-flix-logo.png",
           "color": "#00bcd4",
-          "sounds": []
+          "defaultChannel": "atomic-flix-trending",
+          "sounds": [],
+          "enableBackgroundRemoteNotifications": true
         }
       ],
       [
