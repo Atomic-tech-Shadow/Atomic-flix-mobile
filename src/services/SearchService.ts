@@ -9,6 +9,14 @@ export interface SearchResult {
   description?: string;
   year?: string;
   status?: string;
+  contentType?: string;
+  language?: {
+    code: string;
+    name: string;
+    fullName: string;
+    flag: string;
+    priority: number;
+  };
 }
 
 class SearchService {

@@ -283,36 +283,25 @@ const HomeScreen: React.FC = () => {
     return () => clearInterval(interval);
   }, [notificationsEnabled]);
 
-  // Fonction pour détecter la vraie langue disponible depuis le titre
-  const detectLanguageFromTitle = (title: string) => {
-    // Vérifier si le titre contient VF, VOSTFR ou VJSTFR dans le format de l'API
-    if (title.includes('\n\t\t\t\t\t\tVF\n') || title.includes(' VF ') || title.includes(' VF\n')) {
-      return 'VF';
-    } else if (title.includes('\n\t\t\t\t\t\tVJSTFR\n') || title.includes(' VJSTFR ') || title.includes(' VJSTFR\n')) {
-      return 'VJSTFR';
-    } else if (title.includes('\n\t\t\t\t\t\tVOSTFR\n') || title.includes(' VOSTFR ') || title.includes(' VOSTFR\n')) {
-      return 'VOSTFR';
+  // Fonction pour extraire la langue depuis l'objet language de l'API
+  const getLanguageFromAPI = (anime: SearchResult) => {
+    // Utiliser l'objet language de l'API si disponible
+    if (anime.language && anime.language.name) {
+      return anime.language.name; // VOSTFR, VF, etc.
     }
-    
-    // Retourner null si aucune langue détectée
     return null;
   };
 
   // Composant Carte Anime optimisé avec React.memo
   const renderAnimeCard = React.useCallback((anime: SearchResult, index: number) => {
-    // Détecter la vraie langue depuis le titre brut avant nettoyage
-    const detectedLanguage = detectLanguageFromTitle(anime.title);
+    // Utiliser la langue directement depuis l'objet language de l'API
+    const detectedLanguage = getLanguageFromAPI(anime);
     
-    // Nettoyer le titre des caractères parasites
-    const cleanTitle = anime.title.replace(/\n\t+/g, ' ').replace(/\s+/g, ' ').trim();
+    // Le titre est déjà propre dans la nouvelle API
+    const realTitle = anime.title;
     
-    // Extraire le vrai titre (avant les infos d'épisode)
-    const titleParts = cleanTitle.split(/\s+(VF|VOSTFR|VJSTFR)\s+/);
-    const realTitle = titleParts[0].trim();
-    
-    // Extraire les infos d'épisode/saison du titre complet
-    const episodeMatch = cleanTitle.match(/(Saison\s+\d+\s+Episode\s+\d+|Episode\s+\d+|Saison\s+\d+)/i);
-    const episodeInfo = episodeMatch ? episodeMatch[0] : null;
+    // L'API n'envoie plus d'infos d'épisode dans le titre, utiliser d'autres champs si disponibles
+    const episodeInfo = null; // Supprimer car plus dans l'API
     
     return (
       <TouchableOpacity
@@ -356,11 +345,6 @@ const HomeScreen: React.FC = () => {
             {realTitle}
           </Text>
           <View style={styles.cardMeta}>
-            {episodeInfo && (
-              <Text style={styles.episodeText}>
-                {episodeInfo}
-              </Text>
-            )}
             {detectedLanguage && (
               <View style={styles.languageBadge}>
                 <Text style={styles.languageText}>{detectedLanguage}</Text>
@@ -774,26 +758,9 @@ const styles = StyleSheet.create({
   },
   cardMeta: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    marginTop: 4, // Plus d'espace au-dessus
-  },
-  statusText: {
-    color: '#d1d5db',
-    fontSize: 11,
-    flex: 1,
-    marginRight: 8,
-  },
-  typeText: {
-    color: '#00bcd4',
-    fontSize: 11,
-    fontWeight: '500',
-  },
-  episodeText: {
-    color: '#fbbf24',
-    fontSize: 11,
-    fontWeight: '500',
-    flex: 1,
+    marginTop: 4,
   },
   languageBadge: {
     backgroundColor: 'rgba(0, 188, 212, 0.2)',
