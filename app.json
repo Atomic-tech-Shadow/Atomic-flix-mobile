@@ -12,10 +12,6 @@
     "icon": "./assets/atomic-flix-logo.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0a0a1a",
-    "notifications": {
-      "icon": "./assets/atomic-flix-logo.png",
-      "color": "#00bcd4"
-    },
 
 
     "android": {
