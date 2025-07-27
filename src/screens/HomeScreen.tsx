@@ -548,7 +548,7 @@ const HomeScreen: React.FC = () => {
             {classiquesAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
                 <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>🏛️ Classiques</Text>
+                  <Text style={styles.sectionTitle}>👑 Légendaires</Text>
                 </View>
                 <ScrollView 
                   horizontal 
@@ -595,7 +595,7 @@ const HomeScreen: React.FC = () => {
             {pepitesAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
                 <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>💎 Pépites</Text>
+                  <Text style={styles.sectionTitle}>🔍 Découvertes</Text>
                 </View>
                 <ScrollView 
                   horizontal 

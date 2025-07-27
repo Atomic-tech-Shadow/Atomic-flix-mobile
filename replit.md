@@ -8,6 +8,13 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.7.7 - Amélioration noms sections et UX - July 27, 2025**
+- ✅ Changement nom sections : "🏛️ Classiques" → "👑 Légendaires"
+- ✅ Changement nom sections : "💎 Pépites" → "🔍 Découvertes"
+- ✅ Noms plus engageants et explicites pour les utilisateurs
+- ✅ Défilement horizontal droite-gauche fonctionnel avec cartes 120x180px
+- ✅ Espacement cards (marginRight: 12px) pour navigation fluide
+
 **Version 2.7.6 - Correction API popular et affichage sections - July 27, 2025**
 - ✅ Analyse API /api/popular : structure categories.classiques.anime et categories.pépites.anime
 - ✅ Correction parsing loadPopularAnimes pour utiliser response.categories au lieu de response.results
