@@ -75,8 +75,7 @@ const HomeScreen: React.FC = () => {
 
   // Charger les animes trending au démarrage et initialiser les notifications
   useEffect(() => {
-    loadTrendingAnimes();
-    loadPopularAnimes();
+    loadTrendingAnimes(); // Cela chargera aussi le contenu populaire
     initializeNotifications();
     checkTelegramVerification();
 
@@ -175,6 +174,9 @@ const HomeScreen: React.FC = () => {
         // Mettre à jour le compteur de notifications non lues
         const unreadCount = await notificationService.getUnreadCount();
         setUnreadNotifications(unreadCount);
+
+        // Charger le contenu populaire après avoir obtenu le trending (pour les fallbacks)
+        setTimeout(() => loadPopularAnimes(), 500);
       } else {
         setTrendingAnimes([]);
       }
@@ -197,12 +199,31 @@ const HomeScreen: React.FC = () => {
         setClassiquesAnimes(classiques);
         setPepitesAnimes(pepites);
       } else {
+        // Si l'API popular ne fonctionne pas, utiliser le contenu trending comme fallback
+        if (trendingAnimes.length > 0) {
+          // Prendre une partie du contenu trending pour les classiques et pépites
+          const classiques = trendingAnimes.slice(8, 16).map(anime => ({ ...anime, category: 'classiques' }));
+          const pepites = trendingAnimes.slice(16, 24).map(anime => ({ ...anime, category: 'pépites' }));
+          
+          setClassiquesAnimes(classiques);
+          setPepitesAnimes(pepites);
+        } else {
+          setClassiquesAnimes([]);
+          setPepitesAnimes([]);
+        }
+      }
+    } catch (error) {
+      // En cas d'erreur, utiliser le contenu trending comme fallback
+      if (trendingAnimes.length > 0) {
+        const classiques = trendingAnimes.slice(8, 16).map(anime => ({ ...anime, category: 'classiques' }));
+        const pepites = trendingAnimes.slice(16, 24).map(anime => ({ ...anime, category: 'pépites' }));
+        
+        setClassiquesAnimes(classiques);
+        setPepitesAnimes(pepites);
+      } else {
         setClassiquesAnimes([]);
         setPepitesAnimes([]);
       }
-    } catch (error) {
-      setClassiquesAnimes([]);
-      setPepitesAnimes([]);
     } finally {
       setPopularLoading(false);
     }
@@ -545,7 +566,7 @@ const HomeScreen: React.FC = () => {
             )}
 
             {/* Section Classiques */}
-            {classiquesAnimes.length > 0 && (
+            {(classiquesAnimes.length > 0 || (!popularLoading && trendingAnimes.length > 8)) && (
               <View style={styles.horizontalSection}>
                 <View style={styles.sectionHeader}>
                   <Text style={styles.sectionTitle}>🏛️ Classiques</Text>
@@ -556,11 +577,11 @@ const HomeScreen: React.FC = () => {
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
                 >
-                  {classiquesAnimes.map((anime, index) => (
+                  {(classiquesAnimes.length > 0 ? classiquesAnimes : trendingAnimes.slice(8, 16)).map((anime, index) => (
                     <TouchableOpacity
                       key={`classique-${anime.id || index}`}
                       style={styles.horizontalCard}
-                      onPress={() => loadAnimeDetails(anime.url, anime.contentType)}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
                       activeOpacity={0.8}
                     >
                       <Image
@@ -592,7 +613,7 @@ const HomeScreen: React.FC = () => {
             )}
 
             {/* Section Pépites */}
-            {pepitesAnimes.length > 0 && (
+            {(pepitesAnimes.length > 0 || (!popularLoading && trendingAnimes.length > 16)) && (
               <View style={styles.horizontalSection}>
                 <View style={styles.sectionHeader}>
                   <Text style={styles.sectionTitle}>💎 Pépites</Text>
@@ -603,11 +624,11 @@ const HomeScreen: React.FC = () => {
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
                 >
-                  {pepitesAnimes.map((anime, index) => (
+                  {(pepitesAnimes.length > 0 ? pepitesAnimes : trendingAnimes.slice(16, 24)).map((anime, index) => (
                     <TouchableOpacity
                       key={`pepite-${anime.id || index}`}
                       style={styles.horizontalCard}
-                      onPress={() => loadAnimeDetails(anime.url, anime.contentType)}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
                       activeOpacity={0.8}
                     >
                       <Image
