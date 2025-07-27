@@ -8,6 +8,12 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.7.8 - Carte héro affiche les Légendaires - July 27, 2025**
+- ✅ Carte héro HomeScreen affiche maintenant les animes Légendaires au lieu des Trending
+- ✅ Fallback intelligent : affiche Trending si Légendaires pas encore chargés
+- ✅ Mosaïque héro mise à jour pour valoriser les classiques
+- ✅ Version app : 2.7.7 → 2.7.8 et versionCode : 277 → 278
+
 **Version 2.7.7 - Amélioration noms sections et UX - July 27, 2025**
 - ✅ Changement nom sections : "🏛️ Classiques" → "👑 Légendaires"
 - ✅ Changement nom sections : "💎 Pépites" → "🔍 Découvertes"

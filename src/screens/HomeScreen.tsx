@@ -499,7 +499,7 @@ const HomeScreen: React.FC = () => {
             <View style={styles.heroSection}>
               {/* Images d'animes en mosaïque visible en haut */}
               <View style={styles.heroMosaicContainer}>
-                {trendingAnimes.slice(0, 8).map((anime, index) => (
+                {(classiquesAnimes.length > 0 ? classiquesAnimes : trendingAnimes).slice(0, 8).map((anime, index) => (
                   <View
                     key={`hero-mosaic-${index}`}
                     style={styles.heroMosaicImage}
