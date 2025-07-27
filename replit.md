@@ -8,6 +8,13 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.7.6 - Correction API popular et affichage sections - July 27, 2025**
+- ✅ Analyse API /api/popular : structure categories.classiques.anime et categories.pépites.anime
+- ✅ Correction parsing loadPopularAnimes pour utiliser response.categories au lieu de response.results
+- ✅ Test endpoints confirme API fonctionnelle avec 20 classiques et 20 pépites
+- ✅ Sections classiques et pépites positionnées correctement après trending
+- ✅ Correction erreur syntaxe guillemets manquants dans JSX
+
 **Version 2.7.5 - Sections horizontales Classiques et Pépites ajoutées - July 27, 2025**
 - ✅ API /api/popular intégrée avec endpoint complet testé et fonctionnel
 - ✅ Section "🏛️ Classiques" avec défilement horizontal implémentée
