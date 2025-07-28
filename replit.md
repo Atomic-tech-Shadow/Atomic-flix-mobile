@@ -8,6 +8,18 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.9.1 - Système notifications push planning complet - July 28, 2025**
+- ✅ PlanningNotificationService créé avec programmation intelligente des rappels
+- ✅ Notifications temporelles : 1h avant, jour J matin (9h), heure exacte de sortie
+- ✅ Parsing automatique des heures de sortie (20h15, 12h00, etc.)
+- ✅ Canal Android "planning-reminders" avec vibration et couleur jaune (#FFC107)
+- ✅ Intégration complète HomeScreen : activation/désactivation, refresh, scheduling
+- ✅ Types de notifications : hour_before, morning_reminder, day_of
+- ✅ Annulation automatique si notifications désactivées
+- ✅ Navigation directe vers anime depuis notifications planning
+- ✅ Stats programmation et nettoyage automatique notifications anciennes
+- ✅ Tests complets validés : 7/7 vérifications réussies
+
 **Version 2.9.0 - Refonte complète sections avec Planning et badges spécialisés - July 28, 2025**
 - ✅ Nouveau endpoint /api/planning intégré avec succès (80 animes prévus)
 - ✅ Section Planning ajoutée avec cartes et badges horaires dorés

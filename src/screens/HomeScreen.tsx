@@ -25,6 +25,7 @@ import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import NotificationService from '../utils/notificationService';
 import TrendingNotificationService from '../services/TrendingNotificationService';
+import PlanningNotificationService from '../services/PlanningNotificationService';
 import TelegramVerification from '../components/TelegramVerification';
 import { animeAPI } from '../utils/animeAPI';
 
@@ -68,6 +69,7 @@ const HomeScreen: React.FC = () => {
   // Services de notifications
   const notificationService = NotificationService.getInstance();
   const trendingNotificationService = TrendingNotificationService.getInstance();
+  const planningNotificationService = PlanningNotificationService.getInstance();
 
   // Fonction utilitaire pour obtenir le badge de langue
   const getLanguageBadge = (language: any): string => {
@@ -116,6 +118,9 @@ const HomeScreen: React.FC = () => {
       
       // Initialiser le service de notifications trending
       await trendingNotificationService.initialize();
+      
+      // Initialiser le service de notifications planning
+      await planningNotificationService.initialize();
       
       // Configurer les listeners de navigation
       trendingNotificationService.setupNotificationListeners(navigation);
@@ -248,6 +253,11 @@ const HomeScreen: React.FC = () => {
         }));
 
         setPlanningAnimes(planningData.slice(0, 20)); // Limiter à 20 animes
+        
+        // Programmer les notifications planning si les notifications sont activées
+        if (notificationsEnabled) {
+          await planningNotificationService.schedulePlanningNotifications(planningData.slice(0, 15));
+        }
       } else {
         setPlanningAnimes([]);
       }
@@ -328,6 +338,21 @@ const HomeScreen: React.FC = () => {
   const onRefresh = async () => {
     setRefreshing(true);
     await Promise.all([loadTrendingAnimes(), loadPopularAnimes(), loadPlanningAnimes()]);
+    
+    // Reprogrammer les notifications planning après refresh si activées
+    if (notificationsEnabled && planningAnimes.length > 0) {
+      const planningData = planningAnimes.map(anime => ({
+        id: anime.id,
+        title: anime.title,
+        releaseTime: anime.releaseTime || '',
+        language: getLanguageBadge(anime.language),
+        image: anime.image,
+        animeId: anime.id,
+        url: anime.url
+      }));
+      await planningNotificationService.schedulePlanningNotifications(planningData.slice(0, 15));
+    }
+    
     setRefreshing(false);
   };
 
@@ -355,6 +380,23 @@ const HomeScreen: React.FC = () => {
         // Marquer toutes les notifications comme lues quand on active
         await notificationService.markAllAsRead();
         setUnreadNotifications(0);
+        
+        // Reprogrammer les notifications planning
+        if (planningAnimes.length > 0) {
+          const planningData = planningAnimes.map(anime => ({
+            id: anime.id,
+            title: anime.title,
+            releaseTime: anime.releaseTime || '',
+            language: getLanguageBadge(anime.language),
+            image: anime.image,
+            animeId: anime.id,
+            url: anime.url
+          }));
+          await planningNotificationService.schedulePlanningNotifications(planningData.slice(0, 15));
+        }
+      } else {
+        // Annuler toutes les notifications planning si désactivées
+        await planningNotificationService.cancelAllPlanningNotifications();
       }
     } catch (error) {
       console.error('Erreur gestion notifications:', error);
@@ -668,7 +710,7 @@ const HomeScreen: React.FC = () => {
                 >
                   {planningAnimes.map((anime, index) => (
                     <TouchableOpacity
-                      key={`planning-${anime.id || index}`}
+                      key={`planning-${anime.id || anime.title.replace(/\s+/g, '-')}-${index}`}
                       style={styles.planningCard}
                       onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
                       activeOpacity={0.8}
