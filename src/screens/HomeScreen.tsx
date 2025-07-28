@@ -288,7 +288,6 @@ const HomeScreen: React.FC = () => {
           // Afficher tout le contenu de l'API : animes, mangas, films, etc.
           setSearchResults(results);
         } else {
-
           setSearchResults([]);
         }
       } else {
@@ -296,7 +295,6 @@ const HomeScreen: React.FC = () => {
       }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur de recherche';
-
 
       if (errorMessage.includes('504') || errorMessage.includes('timeout')) {
         setError('Le serveur anime-sama-scraper.vercel.app ne répond pas actuellement. Veuillez réessayer plus tard.');
