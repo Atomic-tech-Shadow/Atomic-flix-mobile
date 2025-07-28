@@ -56,9 +56,8 @@ class PlanningNotificationService {
       });
 
       this.isInitialized = true;
-      console.log('🕐 PlanningNotificationService initialisé');
     } catch (error) {
-      console.error('Erreur initialisation PlanningNotificationService:', error);
+      // Erreur silencieuse en production
     }
   }
 
@@ -151,9 +150,9 @@ class PlanningNotificationService {
         JSON.stringify(scheduledNotifications)
       );
 
-      console.log(`🕐 ${scheduledNotifications.length} notifications planning programmées`);
+      // Notifications programmées silencieusement
     } catch (error) {
-      console.error('Erreur programmation notifications planning:', error);
+      // Erreur silencieuse en production
     }
   }
 
@@ -178,7 +177,6 @@ class PlanningNotificationService {
 
       return releaseDate;
     } catch (error) {
-      console.error('Erreur parsing heure:', timeStr, error);
       return null;
     }
   }
@@ -210,12 +208,14 @@ class PlanningNotificationService {
           sound: 'notification_sound_default',
           vibrate: [0, 250, 250, 250],
         },
-        trigger: { date: scheduledDate },
+        trigger: { 
+          type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+          seconds: Math.floor((scheduledDate.getTime() - Date.now()) / 1000) 
+        },
       });
 
       return notificationId;
     } catch (error) {
-      console.error('Erreur programmation notification:', error);
       return null;
     }
   }
@@ -236,9 +236,8 @@ class PlanningNotificationService {
 
       // Nettoyer le storage
       await AsyncStorage.removeItem(this.SCHEDULED_KEY);
-      console.log('🧹 Notifications planning annulées');
     } catch (error) {
-      console.error('Erreur annulation notifications planning:', error);
+      // Erreur silencieuse en production
     }
   }
 
@@ -253,9 +252,9 @@ class PlanningNotificationService {
       // Programmer les nouvelles notifications
       await this.schedulePlanningNotifications(response.data.slice(0, 15)); // Top 15
       
-      console.log('🔄 Planning mis à jour et notifications reprogrammées');
+      // Planning mis à jour silencieusement
     } catch (error) {
-      console.error('Erreur mise à jour planning:', error);
+      // Erreur silencieuse en production
     }
   }
 
@@ -276,7 +275,6 @@ class PlanningNotificationService {
         morning: scheduled.filter(n => n.type === 'morning_reminder').length
       };
     } catch (error) {
-      console.error('Erreur stats notifications:', error);
       return { total: 0, hourBefore: 0, dayOf: 0, morning: 0 };
     }
   }

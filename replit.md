@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.9.2 - Nettoyage production et optimisation finale - July 28, 2025**
+- ✅ Suppression complète NotificationTester et composants de test
+- ✅ Élimination de tous les fichiers test-*.js (6 fichiers supprimés)
+- ✅ Logs de debug supprimés des services notifications pour optimiser production
+- ✅ Messages d'erreur silencieux pour interface utilisateur propre
+- ✅ Code production optimisé sans éléments de développement
+- ✅ Application prête pour déploiement final sans composants debug
+
 **Version 2.9.1 - Système notifications push planning complet - July 28, 2025**
 - ✅ PlanningNotificationService créé avec programmation intelligente des rappels
 - ✅ Notifications temporelles : 1h avant, jour J matin (9h), heure exacte de sortie
