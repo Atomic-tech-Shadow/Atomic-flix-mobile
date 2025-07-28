@@ -423,29 +423,7 @@ class NotificationService {
     }
   }
 
-  // 🧪 Fonction de test pour forcer une notification (dev uniquement)
-  async sendTestNotification(): Promise<void> {
-    if (!__DEV__) return;
-    
-    const testNotification: EpisodeNotification = {
-      id: `test-${Date.now()}`,
-      title: 'Food Court de Mata Ashita',
-      type: 'anime',
-      message: 'Food Court de Mata Ashita - Saison 1 Episode 5',
-      timestamp: Date.now(),
-      read: false,
-      image: 'https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/food-court-de-mata-ashita.jpg',
-      episodeInfo: 'Saison 1 Episode 5',
-      animeTitle: 'Food Court de Mata Ashita'
-    };
-    
-    console.log('🧪 Envoi notification de test:', testNotification.message);
-    await this.sendLocalNotification(testNotification);
-    
-    // Sauvegarder aussi dans les notifications locales
-    const existingNotifications = await this.getNotifications();
-    await this.saveNotifications([testNotification, ...existingNotifications]);
-  }
+
 }
 
 export default NotificationService;
