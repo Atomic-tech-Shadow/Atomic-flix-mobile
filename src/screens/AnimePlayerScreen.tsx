@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
   ActivityIndicator,
   Alert,
   RefreshControl,
@@ -12,6 +11,7 @@ import {
   StatusBar,
   Image,
 } from 'react-native';
+import OptimizedScrollView from '../components/OptimizedScrollView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { Picker } from '@react-native-picker/picker';
@@ -477,7 +477,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         <SharedHeader />
       </View>
 
-      <ScrollView 
+      <OptimizedScrollView 
         style={styles.scrollContainer}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#00bcd4" />
@@ -735,7 +735,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
         )}
-      </ScrollView>
+      </OptimizedScrollView>
     </SafeAreaView>
   );
 };

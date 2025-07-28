@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
-  ScrollView,
   TouchableOpacity,
   Image,
   ActivityIndicator,
@@ -11,6 +10,7 @@ import {
   Alert,
   RefreshControl,
 } from 'react-native';
+import OptimizedScrollView from '../components/OptimizedScrollView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
@@ -256,7 +256,7 @@ const AnimeDetailScreen: React.FC = () => {
         />
       </View>
       
-      <ScrollView
+      <OptimizedScrollView
         style={styles.scrollView}
         refreshControl={
           <RefreshControl
@@ -266,26 +266,6 @@ const AnimeDetailScreen: React.FC = () => {
             tintColor="#00bcd4"
           />
         }
-        showsVerticalScrollIndicator={false}
-        // 🔥 Optimisations pour scroll ultra-fluide
-        removeClippedSubviews={true}
-        scrollEventThrottle={16}
-        keyboardShouldPersistTaps="handled"
-        decelerationRate="fast"
-        bounces={true}
-        bouncesZoom={false}
-        alwaysBounceVertical={false}
-        maximumZoomScale={1}
-        minimumZoomScale={1}
-        scrollsToTop={true}
-        automaticallyAdjustContentInsets={false}
-        contentInsetAdjustmentBehavior="never"
-        overScrollMode="auto"
-        fadingEdgeLength={0}
-        directionalLockEnabled={true}
-        disableIntervalMomentum={false}
-        snapToInterval={0}
-        snapToAlignment="start"
       >
         {/* Image hero ajustée */}
         <View style={styles.heroContainer}>
@@ -400,7 +380,7 @@ const AnimeDetailScreen: React.FC = () => {
         </View>
 
 
-      </ScrollView>
+      </OptimizedScrollView>
     </SafeAreaView>
   );
 };
