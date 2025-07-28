@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, Modal, Animated, Dimensions, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
@@ -184,8 +185,8 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
     return unsubscribe;
   }, []);
 
-  // Import package.json
-  const packageJson = require('../../package.json');
+  // Utiliser la version d'app.json via Constants Expo
+  const appVersion = Constants.expoConfig?.version || '2.9.3';
 
   return (
     <View style={styles.mobileHeader}>
@@ -310,7 +311,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
             {/* Footer du menu */}
             <View style={styles.drawerFooter}>
-              <Text style={styles.footerText}>Version {packageJson.version}</Text>
+              <Text style={styles.footerText}>Version {appVersion}</Text>
               <Text style={styles.footerSubtext}>Développé par Cid AKUE</Text>
             </View>
           </Animated.View>

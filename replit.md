@@ -8,6 +8,13 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.9.3 - Configuration version finale et menu optimisé - July 28, 2025**
+- ✅ Version augmentée : 2.7.9 → 2.9.3 dans app.json et versionCode Android : 279 → 293
+- ✅ Menu utilise maintenant la version d'app.json via Constants.expoConfig au lieu de package.json
+- ✅ Affichage version unifié depuis configuration Expo pour cohérence totale
+- ✅ Import Constants ajouté dans SharedHeader pour accès version app.json
+- ✅ Configuration production finalisée avec gestion version automatique
+
 **Version 2.9.2 - Nettoyage production et optimisation finale - July 28, 2025**
 - ✅ Suppression complète NotificationTester et composants de test
 - ✅ Élimination de tous les fichiers test-*.js (6 fichiers supprimés)
