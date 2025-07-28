@@ -8,6 +8,13 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.9.8 - Correction complète navigation trending avec ID propre - July 28, 2025**
+- ✅ Problème navigation "Erreur temporaire du serveur" résolu
+- ✅ Utilisation anime.animeId (ID propre) au lieu de anime.id (avec saison)
+- ✅ Extraction intelligente ID depuis URLs complètes (/catalogue/anime-name/)
+- ✅ Logs debug ajoutés pour traçabilité navigation
+- ✅ API testée : /api/anime/kaoru-hana-wa-rin-to-saku fonctionne vs /api/anime/kaoru-hana-wa-rin-to-saku-saison1-vostfr- échoue
+
 **Version 2.9.7 - Optimisation titre section et correction navigation - July 28, 2025**
 - ✅ Titre section simplifié : "📺 Nouveaux épisodes ajoutés" → "📺 Nouveaux épisodes"
 - ✅ Interface plus concise et moderne

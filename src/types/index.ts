@@ -1,6 +1,7 @@
 // Types identiques au site web pour assurer la synchronisation
 export interface SearchResult {
   id: string;
+  animeId?: string; // ID propre de l'anime (sans saison)
   title: string;
   url: string;
   type?: string;

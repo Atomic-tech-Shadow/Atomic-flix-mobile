@@ -311,20 +311,33 @@ const HomeScreen: React.FC = () => {
 
   // Naviguer vers la page dédiée (anime ou manga) (identique au site web)
   const loadAnimeDetails = async (animeId: string, contentType?: string) => {
-    console.log('loadAnimeDetails called with:', { animeId, contentType });
+    console.log('🎯 loadAnimeDetails called with:', { animeId, contentType });
     
     // Vérifier que l'ID n'est pas vide
     if (!animeId || animeId === 'undefined') {
-      console.error('ID anime invalide:', animeId);
+      console.error('❌ ID anime invalide:', animeId);
       setError('Erreur: ID anime introuvable');
       return;
     }
     
+    // Si l'ID est une URL complète, extraire seulement l'ID propre
+    let cleanId = animeId;
+    if (animeId.includes('anime-sama.fr')) {
+      // Extraire l'ID depuis l'URL : /catalogue/kaoru-hana-wa-rin-to-saku/saison1/vostfr/
+      const urlParts = animeId.split('/');
+      const catalogueIndex = urlParts.findIndex(part => part === 'catalogue');
+      if (catalogueIndex !== -1 && urlParts[catalogueIndex + 1]) {
+        cleanId = urlParts[catalogueIndex + 1];
+      }
+    }
+    
+    console.log('🔄 ID nettoyé:', cleanId);
+    
     // Détecter si c'est un manga pour rediriger vers le lecteur approprié
     if (contentType === 'manga') {
-      navigation.navigate('MangaReader', { mangaUrl: animeId, mangaTitle: 'Manga' });
+      navigation.navigate('MangaReader', { mangaUrl: cleanId, mangaTitle: 'Manga' });
     } else {
-      navigation.navigate('AnimeDetail', { animeUrl: animeId, animeTitle: 'Anime' });
+      navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: 'Anime' });
     }
   };
 
@@ -503,7 +516,7 @@ const HomeScreen: React.FC = () => {
       <TouchableOpacity
         key={`trending-${anime.id || index}`}
         style={styles.horizontalCard}
-        onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType || anime.type)}
+        onPress={() => loadAnimeDetails(anime.animeId || anime.id || anime.url, anime.contentType || anime.type)}
         activeOpacity={0.8}
       >
         <Image
