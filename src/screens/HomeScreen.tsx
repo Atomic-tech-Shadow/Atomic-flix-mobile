@@ -342,6 +342,51 @@ const HomeScreen: React.FC = () => {
     }
   };
 
+  // 🚀 Nouvelle fonction pour naviguer directement vers l'épisode depuis les "Nouveaux épisodes"
+  const loadEpisodeDirectly = async (anime: SearchResult) => {
+    console.log('🎬 loadEpisodeDirectly called with:', { anime });
+    
+    let cleanId = anime.animeId || anime.id || anime.url;
+    if (!cleanId || cleanId === 'undefined') {
+      console.error('❌ ID anime invalide:', cleanId);
+      setError('Erreur: ID anime introuvable');
+      return;
+    }
+    
+    // Nettoyer l'ID si c'est une URL complète
+    if (cleanId.includes('anime-sama.fr')) {
+      const urlParts = cleanId.split('/');
+      const catalogueIndex = urlParts.findIndex(part => part === 'catalogue');
+      if (catalogueIndex !== -1 && urlParts[catalogueIndex + 1]) {
+        cleanId = urlParts[catalogueIndex + 1];
+      }
+    }
+
+    // Créer des données de saison par défaut pour les trending (nouvel épisode)
+    const defaultSeasonData = {
+      number: 1,
+      name: "Saison 1",
+      value: "saison1",
+      languages: ["VF", "VOSTFR"],
+      episodeCount: 12,
+      url: cleanId,
+      available: true
+    };
+
+    console.log('🎬 Navigation vers AnimePlayer avec:', { 
+      animeUrl: cleanId, 
+      animeTitle: anime.title,
+      seasonData: defaultSeasonData
+    });
+
+    // Naviguer directement vers AnimePlayer avec les données de saison
+    navigation.navigate('AnimePlayer', { 
+      animeUrl: cleanId, 
+      animeTitle: anime.title,
+      seasonData: defaultSeasonData
+    });
+  };
+
   // Gérer la recherche en temps réel (identique au site web)
   useEffect(() => {
     if (searchQuery) {
@@ -517,7 +562,7 @@ const HomeScreen: React.FC = () => {
       <TouchableOpacity
         key={`trending-${anime.id || index}`}
         style={styles.horizontalCard}
-        onPress={() => loadAnimeDetails(anime.animeId || anime.id || anime.url, anime.contentType || anime.type)}
+        onPress={() => loadEpisodeDirectly(anime)}
         activeOpacity={0.8}
       >
         <Image
