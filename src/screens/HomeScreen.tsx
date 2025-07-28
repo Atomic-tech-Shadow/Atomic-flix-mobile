@@ -362,8 +362,60 @@ const HomeScreen: React.FC = () => {
       }
     }
 
-    // 🎯 Utiliser les données exactes de l'API trending !
-    const seasonData = {
+    try {
+      // 🎯 Récupérer les vraies données de saisons depuis l'API pour éviter les erreurs saga/saison
+      const animeDetails = await apiRequest(`/api/anime/${cleanId}`);
+      
+      if (animeDetails && animeDetails.success && animeDetails.data && animeDetails.data.seasons) {
+        const seasons = animeDetails.data.seasons;
+        
+        // Trouver la saison correspondante en utilisant currentSeason
+        const targetSeasonNumber = anime.currentSeason || 1;
+        let matchingSeason = seasons.find((s: any) => s.number === targetSeasonNumber);
+        
+        // Si pas trouvé par numéro, chercher par valeur saison
+        if (!matchingSeason) {
+          matchingSeason = seasons.find((s: any) => 
+            s.value === `saison${targetSeasonNumber}` || 
+            s.value.includes(`saison${targetSeasonNumber}`) ||
+            s.name.toLowerCase().includes(`saison ${targetSeasonNumber}`) ||
+            s.name.toLowerCase().includes(`saga ${targetSeasonNumber}`)
+          );
+        }
+        
+        // Si toujours pas trouvé, prendre la première saison disponible
+        if (!matchingSeason && seasons.length > 0) {
+          matchingSeason = seasons[0];
+        }
+        
+        if (matchingSeason) {
+          console.log('🎬 Navigation avec vraie saison API:', { 
+            animeUrl: cleanId, 
+            animeTitle: anime.title,
+            seasonData: matchingSeason,
+            currentEpisode: anime.currentEpisode,
+            language: anime.language?.name,
+            episodeInfo: anime.episodeInfo
+          });
+
+          // Naviguer avec les vraies données de saison de l'API
+          navigation.navigate('AnimePlayer', { 
+            animeUrl: cleanId, 
+            animeTitle: anime.title,
+            seasonData: matchingSeason,
+            // 🔥 Paramètres additionnels pour navigation précise
+            initialEpisode: anime.currentEpisode,
+            initialLanguage: anime.language?.code?.toUpperCase() as 'VF' | 'VOSTFR' || 'VOSTFR'
+          });
+          return;
+        }
+      }
+    } catch (apiError) {
+      console.log('⚠️ Erreur API, utilisation fallback seasonData:', apiError);
+    }
+
+    // 🔄 Fallback : utiliser les données de base si l'API échoue
+    const fallbackSeasonData = {
       number: anime.currentSeason || 1,
       name: `Saison ${anime.currentSeason || 1}`,
       value: `saison${anime.currentSeason || 1}`,
@@ -373,21 +425,19 @@ const HomeScreen: React.FC = () => {
       available: true
     };
 
-    console.log('🎬 Navigation vers AnimePlayer avec données API exactes:', { 
+    console.log('🎬 Navigation fallback avec données construites:', { 
       animeUrl: cleanId, 
       animeTitle: anime.title,
-      seasonData,
+      seasonData: fallbackSeasonData,
       currentEpisode: anime.currentEpisode,
-      language: anime.language?.name,
-      episodeInfo: anime.episodeInfo
+      language: anime.language?.name
     });
 
-    // Naviguer directement vers AnimePlayer avec les données exactes de l'API
+    // Naviguer avec les données de fallback
     navigation.navigate('AnimePlayer', { 
       animeUrl: cleanId, 
       animeTitle: anime.title,
-      seasonData,
-      // 🔥 Paramètres additionnels pour navigation précise
+      seasonData: fallbackSeasonData,
       initialEpisode: anime.currentEpisode,
       initialLanguage: anime.language?.code?.toUpperCase() as 'VF' | 'VOSTFR' || 'VOSTFR'
     });

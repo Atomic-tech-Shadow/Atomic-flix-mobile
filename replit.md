@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.9.11 - Correction navigation animes avec saga/saison - July 28, 2025**
+- ✅ Bug navigation "Nouveaux épisodes" corrigé pour animes utilisant "saga" au lieu de "saison"
+- ✅ loadEpisodeDirectly récupère maintenant les vraies données API saisons avant navigation
+- ✅ Logique intelligente de matching : number → value → name (saison/saga) → première disponible
+- ✅ Fallback sécurisé si l'API échoue avec données construites comme avant
+- ✅ Support complet One Piece (Saga 1, Saga 2) et autres animes structure particulière
+- ✅ Logs debug ajoutés pour traçabilité navigation avec vraies données API
+
 **Version 2.9.10 - Migration compte Expo et mise à jour Project ID - July 28, 2025**
 - ✅ EAS CLI installé globalement pour nouveau compte Expo
 - ✅ Project ID mis à jour : 1ff415af-e48a-43d4-b841-ec50c1dc8e0c → fb66f23b-3bd2-4757-b406-fbc1e5bf6af9

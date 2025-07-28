@@ -1,0 +1,262 @@
+[
+  {
+    "id": "food-court-de-mata-ashita-saison1-vostfr-",
+    "animeId": "food-court-de-mata-ashita",
+    "title": "Food Court de Mata Ashita",
+    "image": "https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/food-court-de-mata-ashita.jpg",
+    "url": "https://anime-sama.fr/catalogue/food-court-de-mata-ashita/saison1/vostfr/",
+    "contentType": "anime",
+    "language": {
+      "code": "vostfr",
+      "name": "VOSTFR",
+      "fullName": "Version Originale Sous-Titrée Française",
+      "flag": "jp",
+      "priority": 1
+    },
+    "episodeInfo": "Saison 1 Episode 4",
+    "currentEpisode": 4,
+    "currentSeason": 1,
+    "isTrending": true,
+    "isFinale": false,
+    "isVFCrunchyroll": false,
+    "extractedFrom": "Recent Episodes (bg-cyan-600 buttons)",
+    "specialIndicators": {
+      "finale": false,
+      "crunchyrollVF": false
+    }
+  },
+  {
+    "id": "nyaight-of-the-living-cat-saison1-vf-",
+    "animeId": "nyaight-of-the-living-cat",
+    "title": "Nyaight of the Living Cat",
+    "image": "https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/nyaight-of-the-living-cat.jpg",
+    "url": "https://anime-sama.fr/catalogue/nyaight-of-the-living-cat/saison1/vf/",
+    "contentType": "anime",
+    "language": {
+      "code": "vf",
+      "name": "VF",
+      "fullName": "Version Française",
+      "flag": "fr",
+      "priority": 2
+    },
+    "episodeInfo": "Saison 1 Episode 1",
+    "currentEpisode": 1,
+    "currentSeason": 1,
+    "isTrending": true,
+    "isFinale": false,
+    "isVFCrunchyroll": false,
+    "extractedFrom": "Recent Episodes (bg-cyan-600 buttons)",
+    "specialIndicators": {
+      "finale": false,
+      "crunchyrollVF": false
+    }
+  },
+  {
+    "id": "rick-et-morty-saison8-vf-",
+    "animeId": "rick-et-morty",
+    "title": "Rick & Morty",
+    "image": "https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/rick-et-morty.jpg",
+    "url": "https://anime-sama.fr/catalogue/rick-et-morty/saison8/vf/",
+    "contentType": "anime",
+    "language": {
+      "code": "vf",
+      "name": "VF",
+      "fullName": "Version Française",
+      "flag": "fr",
+      "priority": 2
+    },
+    "episodeInfo": "Saison 8 Episode 10 [FIN]",
+    "currentEpisode": 10,
+    "currentSeason": 8,
+    "isTrending": true,
+    "isFinale": true,
+    "isVFCrunchyroll": false,
+    "extractedFrom": "Recent Episodes (bg-cyan-600 buttons)",
+    "specialIndicators": {
+      "finale": true,
+      "crunchyrollVF": false
+    }
+  },
+  {
+    "id": "rick-et-morty-saison8-vostfr-",
+    "animeId": "rick-et-morty",
+    "title": "Rick & Morty",
+    "image": "https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/rick-et-morty.jpg",
+    "url": "https://anime-sama.fr/catalogue/rick-et-morty/saison8/vostfr/",
+    "contentType": "anime",
+    "language": {
+      "code": "vostfr",
+      "name": "VOSTFR",
+      "fullName": "Version Originale Sous-Titrée Française",
+      "flag": "jp",
+      "priority": 1
+    },
+    "episodeInfo": "Saison 8 Episode 10 [FIN]",
+    "currentEpisode": 10,
+    "currentSeason": 8,
+    "isTrending": true,
+    "isFinale": true,
+    "isVFCrunchyroll": false,
+    "extractedFrom": "Recent Episodes (bg-cyan-600 buttons)",
+    "specialIndicators": {
+      "finale": true,
+      "crunchyrollVF": false
+    }
+  },
+  {
+    "id": "kaoru-hana-wa-rin-to-saku-saison1-vostfr-",
+    "animeId": "kaoru-hana-wa-rin-to-saku",
+    "title": "Kaoru Hana wa Rin to Saku",
+    "image": "https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/kaoru-hana-wa-rin-to-saku.jpg",
+    "url": "https://anime-sama.fr/catalogue/kaoru-hana-wa-rin-to-saku/saison1/vostfr/",
+    "contentType": "anime",
+    "language": {
+      "code": "vostfr",
+      "name": "VOSTFR",
+      "fullName": "Version Originale Sous-Titrée Française",
+      "flag": "jp",
+      "priority": 1
+    },
+    "episodeInfo": "Saison 1 Episode 4",
+    "currentEpisode": 4,
+    "currentSeason": 1,
+    "isTrending": true,
+    "isFinale": false,
+    "isVFCrunchyroll": false,
+    "extractedFrom": "Recent Episodes (bg-cyan-600 buttons)",
+    "specialIndicators": {
+      "finale": false,
+      "crunchyrollVF": false
+    }
+  },
+  {
+    "id": "one-piece-saison11-vostfr-",
+    "animeId": "one-piece",
+    "title": "One Piece",
+    "image": "https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/one-piece.jpg",
+    "url": "https://anime-sama.fr/catalogue/one-piece/saison11/vostfr/",
+    "contentType": "anime",
+    "language": {
+      "code": "vostfr",
+      "name": "VOSTFR",
+      "fullName": "Version Originale Sous-Titrée Française",
+      "flag": "jp",
+      "priority": 1
+    },
+    "episodeInfo": "Episode 1137",
+    "currentEpisode": 1137,
+    "currentSeason": null,
+    "isTrending": true,
+    "isFinale": false,
+    "isVFCrunchyroll": false,
+    "extractedFrom": "Recent Episodes (bg-cyan-600 buttons)",
+    "specialIndicators": {
+      "finale": false,
+      "crunchyrollVF": false
+    }
+  },
+  {
+    "id": "hotel-inhumans-saison1-vostfr-",
+    "animeId": "hotel-inhumans",
+    "title": "Hotel Inhumans",
+    "image": "https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/hotel-inhumans.jpg",
+    "url": "https://anime-sama.fr/catalogue/hotel-inhumans/saison1/vostfr/",
+    "contentType": "anime",
+    "language": {
+      "code": "vostfr",
+      "name": "VOSTFR",
+      "fullName": "Version Originale Sous-Titrée Française",
+      "flag": "jp",
+      "priority": 1
+    },
+    "episodeInfo": "Saison 1 Episode 4",
+    "currentEpisode": 4,
+    "currentSeason": 1,
+    "isTrending": true,
+    "isFinale": false,
+    "isVFCrunchyroll": false,
+    "extractedFrom": "Recent Episodes (bg-cyan-600 buttons)",
+    "specialIndicators": {
+      "finale": false,
+      "crunchyrollVF": false
+    }
+  },
+  {
+    "id": "city-the-animation-saison1-vf-",
+    "animeId": "city-the-animation",
+    "title": "CITY THE ANIMATION",
+    "image": "https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/city-the-animation.jpg",
+    "url": "https://anime-sama.fr/catalogue/city-the-animation/saison1/vf/",
+    "contentType": "anime",
+    "language": {
+      "code": "vf",
+      "name": "VF",
+      "fullName": "Version Française",
+      "flag": "fr",
+      "priority": 2
+    },
+    "episodeInfo": "Saison 1 Episode 4",
+    "currentEpisode": 4,
+    "currentSeason": 1,
+    "isTrending": true,
+    "isFinale": false,
+    "isVFCrunchyroll": false,
+    "extractedFrom": "Recent Episodes (bg-cyan-600 buttons)",
+    "specialIndicators": {
+      "finale": false,
+      "crunchyrollVF": false
+    }
+  },
+  {
+    "id": "city-the-animation-saison1-vostfr-",
+    "animeId": "city-the-animation",
+    "title": "CITY THE ANIMATION",
+    "image": "https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/city-the-animation.jpg",
+    "url": "https://anime-sama.fr/catalogue/city-the-animation/saison1/vostfr/",
+    "contentType": "anime",
+    "language": {
+      "code": "vostfr",
+      "name": "VOSTFR",
+      "fullName": "Version Originale Sous-Titrée Française",
+      "flag": "jp",
+      "priority": 1
+    },
+    "episodeInfo": "Saison 1 Episode 4",
+    "currentEpisode": 4,
+    "currentSeason": 1,
+    "isTrending": true,
+    "isFinale": false,
+    "isVFCrunchyroll": false,
+    "extractedFrom": "Recent Episodes (bg-cyan-600 buttons)",
+    "specialIndicators": {
+      "finale": false,
+      "crunchyrollVF": false
+    }
+  },
+  {
+    "id": "uglymug-epicfighter-saison1-vostfr-",
+    "animeId": "uglymug-epicfighter",
+    "title": "Uglymug, Epicfighter",
+    "image": "https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/uglymug-epicfighter.jpg",
+    "url": "https://anime-sama.fr/catalogue/uglymug-epicfighter/saison1/vostfr/",
+    "contentType": "anime",
+    "language": {
+      "code": "vostfr",
+      "name": "VOSTFR",
+      "fullName": "Version Originale Sous-Titrée Française",
+      "flag": "jp",
+      "priority": 1
+    },
+    "episodeInfo": "Saison 1 Episode 4",
+    "currentEpisode": 4,
+    "currentSeason": 1,
+    "isTrending": true,
+    "isFinale": false,
+    "isVFCrunchyroll": false,
+    "extractedFrom": "Recent Episodes (bg-cyan-600 buttons)",
+    "specialIndicators": {
+      "finale": false,
+      "crunchyrollVF": false
+    }
+  }
+]
