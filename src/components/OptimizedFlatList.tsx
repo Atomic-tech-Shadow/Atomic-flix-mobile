@@ -1,68 +1,47 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { FlatList, FlatListProps } from 'react-native';
-import { getOptimizedListProps } from '../utils/performanceUtils';
+import { getOptimizedListProps, getUltraPerformanceListProps } from '../utils/performanceUtils';
 
 interface OptimizedFlatListProps<T> extends FlatListProps<T> {
   data: T[];
+  renderItem: FlatListProps<T>['renderItem'];
   itemHeight?: number;
-  enableVirtualization?: boolean;
+  ultraPerformance?: boolean;
 }
 
 /**
- * 🔥 FlatList optimisé pour des performances ultra-fluides
- * Utilise la virtualisation et des optimisations avancées pour grandes listes
+ * 🚀 FlatList optimisé pour des performances ultra-fluides
  */
 function OptimizedFlatList<T>({
   data,
+  renderItem,
   itemHeight,
-  enableVirtualization = true,
-  horizontal = false,
+  ultraPerformance = false,
+  keyExtractor,
   ...props
 }: OptimizedFlatListProps<T>) {
-  const optimizedProps = {
-    // 🔥 Propriétés de base pour performances optimales
-    showsVerticalScrollIndicator: false,
-    showsHorizontalScrollIndicator: false,
-    keyboardShouldPersistTaps: 'handled' as const,
-    
-    // 🔥 Optimisations de virtualisation
-    ...(enableVirtualization ? getOptimizedListProps(itemHeight) : {}),
-    
-    // 🔥 Optimisations de scroll fluide
-    scrollEventThrottle: 16,
-    decelerationRate: 'fast' as const,
-    bounces: true,
-    bouncesZoom: false,
-    
-    // 🔥 Configuration conditionnelle selon l'orientation
-    ...(horizontal ? {
-      alwaysBounceHorizontal: false,
-      snapToAlignment: 'start' as const,
-    } : {
-      alwaysBounceVertical: false,
-      scrollsToTop: true,
-    }),
-    
-    // Optimisations pour la mémoire et performance
-    removeClippedSubviews: true,
-    automaticallyAdjustContentInsets: false,
-    contentInsetAdjustmentBehavior: 'never' as const,
-    overScrollMode: 'auto' as const,
-    fadingEdgeLength: 0,
-    directionalLockEnabled: true,
-    disableIntervalMomentum: false,
-    
-    // Surcharger avec les props passées
-    ...props,
-  };
+  
+  const shouldUseUltraPerformance = ultraPerformance || (data && data.length > 200);
+  const optimizedProps = shouldUseUltraPerformance && itemHeight
+    ? getUltraPerformanceListProps(itemHeight)
+    : getOptimizedListProps(itemHeight);
+
+  const defaultKeyExtractor = useCallback((item: T, index: number): string => {
+    const candidate = item as any;
+    if (candidate?.id) return String(candidate.id);
+    if (candidate?.key) return String(candidate.key);
+    return `item-${index}`;
+  }, []);
 
   return (
     <FlatList
       data={data}
-      horizontal={horizontal}
+      renderItem={renderItem}
+      keyExtractor={keyExtractor || defaultKeyExtractor}
       {...optimizedProps}
+      {...props}
     />
   );
 }
 
-export default OptimizedFlatList;
+export default memo(OptimizedFlatList) as <T>(props: OptimizedFlatListProps<T>) => React.ReactElement;

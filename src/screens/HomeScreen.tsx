@@ -12,6 +12,7 @@ import {
   RefreshControl,
   Modal,
 } from 'react-native';
+import OptimizedScrollView from '../components/OptimizedScrollView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
@@ -576,7 +577,7 @@ const HomeScreen: React.FC = () => {
         />
       </View>
 
-      <ScrollView
+      <OptimizedScrollView
         style={styles.scrollView}
         refreshControl={
           <RefreshControl
@@ -586,21 +587,6 @@ const HomeScreen: React.FC = () => {
             tintColor="#00bcd4"
           />
         }
-        showsVerticalScrollIndicator={false}
-        scrollEventThrottle={4}
-        keyboardShouldPersistTaps="handled"
-        bounces={true}
-        scrollsToTop={true}
-        nestedScrollEnabled={true}
-        decelerationRate={0.985}
-        removeClippedSubviews={true}
-        overScrollMode="always"
-        scrollIndicatorInsets={{ right: 1 }}
-        maximumZoomScale={1}
-        minimumZoomScale={1}
-        automaticallyAdjustContentInsets={false}
-        contentInsetAdjustmentBehavior="never"
-        alwaysBounceVertical={false}
       >
 
         {/* Barre de recherche locale (identique au site web) */}
@@ -714,7 +700,7 @@ const HomeScreen: React.FC = () => {
                     📺 Nouveaux épisodes
                   </Text>
                 </View>
-                <ScrollView 
+                <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
@@ -731,7 +717,7 @@ const HomeScreen: React.FC = () => {
                   disableIntervalMomentum={true}
                 >
                   {trendingAnimes.map((anime, index) => renderTrendingAnimeCard(anime, index))}
-                </ScrollView>
+                </OptimizedScrollView>
               </View>
             )}
 
@@ -741,7 +727,7 @@ const HomeScreen: React.FC = () => {
                 <View style={styles.sectionHeader}>
                   <Text style={styles.sectionTitle}>🕐 Sorties cette semaine</Text>
                 </View>
-                <ScrollView 
+                <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
@@ -801,7 +787,7 @@ const HomeScreen: React.FC = () => {
                       </LinearGradient>
                     </TouchableOpacity>
                   ))}
-                </ScrollView>
+                </OptimizedScrollView>
               </View>
             )}
 
@@ -811,7 +797,7 @@ const HomeScreen: React.FC = () => {
                 <View style={styles.sectionHeader}>
                   <Text style={styles.sectionTitle}>👑 Légendaires</Text>
                 </View>
-                <ScrollView 
+                <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
@@ -862,7 +848,7 @@ const HomeScreen: React.FC = () => {
                       </LinearGradient>
                     </TouchableOpacity>
                   ))}
-                </ScrollView>
+                </OptimizedScrollView>
               </View>
             )}
 
@@ -872,7 +858,7 @@ const HomeScreen: React.FC = () => {
                 <View style={styles.sectionHeader}>
                   <Text style={styles.sectionTitle}>💎 Pépites cachées</Text>
                 </View>
-                <ScrollView 
+                <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
@@ -923,7 +909,7 @@ const HomeScreen: React.FC = () => {
                       </LinearGradient>
                     </TouchableOpacity>
                   ))}
-                </ScrollView>
+                </OptimizedScrollView>
               </View>
             )}
 
@@ -980,7 +966,7 @@ const HomeScreen: React.FC = () => {
             )}
           </View>
         )}
-      </ScrollView>
+      </OptimizedScrollView>
 
       {/* Modal de vérification Telegram avec effet blur */}
       {showTelegramModal && (

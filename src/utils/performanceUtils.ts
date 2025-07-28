@@ -85,19 +85,41 @@ export const getOptimizedImageProps = () => ({
 });
 
 /**
- * Optimisation du rendu des listes pour de meilleures performances
+ * 🚀 Optimisation du rendu des listes pour de meilleures performances (2025)
+ * Configuration basée sur les dernières recherches React Native
  */
 export const getOptimizedListProps = (itemHeight?: number) => ({
+  // Propriétés de virtualisation optimisées
   removeClippedSubviews: true,
-  maxToRenderPerBatch: 10,
-  initialNumToRender: 8,
-  windowSize: 10,
-  updateCellsBatchingPeriod: 50,
+  maxToRenderPerBatch: itemHeight ? 5 : 8, // Plus petit si taille connue
+  initialNumToRender: itemHeight ? 6 : 10, // Optimisé selon la taille
+  windowSize: 8, // Réduit pour économiser mémoire
+  updateCellsBatchingPeriod: 30, // Plus rapide pour UI fluide
+  
+  // Layout pré-calculé pour performance maximale
   getItemLayout: itemHeight ? (data: any, index: number) => ({
     length: itemHeight,
     offset: itemHeight * index,
     index,
   }) : undefined,
+  
+  // scrollEventThrottle défini ici pour les FlatList
+  scrollEventThrottle: 16, // 60fps optimal
+});
+
+/**
+ * 🔥 Configuration FlatList ultra-performance pour grandes listes (> 200 items)
+ */
+export const getUltraPerformanceListProps = (itemHeight: number) => ({
+  ...getOptimizedListProps(itemHeight),
+  maxToRenderPerBatch: 3, // Minimal pour grandes listes
+  initialNumToRender: 4, // Juste ce qui est visible
+  windowSize: 5, // Très petit pour mémoire optimale
+  updateCellsBatchingPeriod: 50, // Légèrement plus lent mais stable
+  
+  // Props spécifiques aux très grandes listes
+  removeClippedSubviews: true,
+  disableVirtualization: false,
 });
 
 /**
@@ -131,14 +153,15 @@ export const createScaleAnimation = (scale: any, toValue: number, duration: numb
 };
 
 /**
- * Configuration optimale pour les ScrollView selon le type
+ * 🚀 Configuration optimale pour les ScrollView selon le type (2025)
+ * Mise à jour avec les dernières optimisations de performance
  */
 export const getScrollViewConfig = (type: 'vertical' | 'horizontal' = 'vertical') => {
   const baseConfig = {
     removeClippedSubviews: true,
-    scrollEventThrottle: 16,
+    scrollEventThrottle: type === 'horizontal' ? 8 : 16, // Plus fluide pour horizontal
     keyboardShouldPersistTaps: 'handled' as const,
-    decelerationRate: 'fast' as const,
+    decelerationRate: type === 'horizontal' ? 0.99 : 0.985, // Optimisé par axe
     bounces: true,
     bouncesZoom: false,
     showsVerticalScrollIndicator: false,
@@ -146,10 +169,10 @@ export const getScrollViewConfig = (type: 'vertical' | 'horizontal' = 'vertical'
     maximumZoomScale: 1,
     minimumZoomScale: 1,
     automaticallyAdjustContentInsets: false,
-    contentInsetAdjustmentBehavior: 'never' as const,
+    contentInsetAdjustmentBehavior: 'automatic' as const, // Meilleure compatibilité
     overScrollMode: 'auto' as const,
     fadingEdgeLength: 0,
-    directionalLockEnabled: true,
+    directionalLockEnabled: type === 'horizontal',
     disableIntervalMomentum: false,
   };
 
@@ -159,6 +182,7 @@ export const getScrollViewConfig = (type: 'vertical' | 'horizontal' = 'vertical'
       horizontal: true,
       alwaysBounceHorizontal: false,
       snapToAlignment: 'start' as const,
+      pagingEnabled: false, // Meilleur contrôle manuel
     };
   }
 
@@ -166,9 +190,71 @@ export const getScrollViewConfig = (type: 'vertical' | 'horizontal' = 'vertical'
     ...baseConfig,
     alwaysBounceVertical: false,
     scrollsToTop: true,
-    maintainVisibleContentPosition: {
-      minIndexForVisible: 0,
-      autoscrollToTopThreshold: 100
+    nestedScrollEnabled: true, // Support amélioré pour scroll imbriqués
+    // Supprimé maintainVisibleContentPosition qui causait des problèmes
+  };
+};
+
+/**
+ * 🔥 Détecteur automatique de performance pour choisir le bon composant
+ */
+export const getRecommendedScrollComponent = (itemCount: number, hasFixedHeight: boolean = false) => {
+  if (itemCount <= 30) {
+    return {
+      component: 'ScrollView',
+      reason: 'Petit nombre d\'items, ScrollView optimal',
+      config: 'OptimizedScrollView'
+    };
+  } else if (itemCount <= 200) {
+    return {
+      component: 'FlatList',
+      reason: 'Nombre moyen d\'items, FlatList recommandé',
+      config: hasFixedHeight ? 'avec getItemLayout' : 'standard'
+    };
+  } else {
+    return {
+      component: 'FlatList',
+      reason: 'Grande liste, FlatList ultra-performance nécessaire',
+      config: 'ultraPerformance avec getItemLayout obligatoire'
+    };
+  }
+};
+
+/**
+ * 🎯 Métriques de performance pour monitoring
+ */
+export const createPerformanceMonitor = (componentName: string) => {
+  let startTime = Date.now();
+  let frameDrops = 0;
+  let lastFrameTime = Date.now();
+
+  return {
+    markRenderStart: () => {
+      startTime = Date.now();
     },
+    
+    markRenderEnd: () => {
+      const renderTime = Date.now() - startTime;
+      if (renderTime > 16.67) { // > 60fps
+        frameDrops++;
+        console.warn(`${componentName}: Frame drop detected (${renderTime}ms)`);
+      }
+    },
+    
+    trackScrollPerformance: () => {
+      const currentTime = Date.now();
+      const timeDiff = currentTime - lastFrameTime;
+      lastFrameTime = currentTime;
+      
+      if (timeDiff > 33) { // > 30fps
+        console.warn(`${componentName}: Scroll performance issue (${timeDiff}ms between frames)`);
+      }
+    },
+    
+    getStats: () => ({
+      frameDrops,
+      componentName,
+      uptime: Date.now() - startTime
+    })
   };
 };

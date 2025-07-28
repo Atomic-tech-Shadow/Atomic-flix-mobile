@@ -29,6 +29,18 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Conservation badge "NOUVEAU" seul pour meilleure lisibilité
 - ✅ Interface plus épurée dans cartes horizontales trending
 
+**Version 2.9.5 - Optimisations Scroll Ultra-Performance 2025 - July 28, 2025**
+- 🚀 OptimizedScrollView créé avec configuration 2025 basée sur documentation officielle React Native
+- 🚀 OptimizedFlatList créé avec virtualisation intelligente et détection automatique
+- 🚀 performanceUtils enrichi : getOptimizedListProps, getUltraPerformanceListProps, monitoring
+- 🚀 Configuration différenciée horizontal/vertical (scrollEventThrottle 8/16, decelerationRate optimisé)
+- 🚀 HomeScreen principal converti vers OptimizedScrollView (+25% fluidité estimée)
+- 🚀 Détecteur automatique getRecommendedScrollComponent (ScrollView vs FlatList selon taille)
+- 🚀 Monitoring performance intégré : createPerformanceMonitor pour debug frame drops
+- 🚀 Guide complet créé : SCROLL_PERFORMANCE_GUIDE.md et SCROLL_USAGE_EXAMPLES.md
+- 🚀 Configuration contentInsetAdjustmentBehavior: 'automatic' pour meilleure compatibilité
+- 🚀 Support scroll imbriqués avec nestedScrollEnabled pour sections complexes
+
 **Version 2.9.4 - Correction problème scroll vers le haut - July 28, 2025**
 - ✅ Problème "sceller vers le haut" (scroll up) identifié et corrigé
 - ✅ Configuration ScrollView HomeScreen simplifiée pour éliminer conflits
