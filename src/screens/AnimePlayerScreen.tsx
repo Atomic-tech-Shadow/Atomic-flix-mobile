@@ -36,12 +36,12 @@ interface Props {
 const { width, height } = Dimensions.get('window');
 
 const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
-  const { animeUrl, seasonData, animeTitle } = route.params;
+  const { animeUrl, seasonData, animeTitle, initialEpisode, initialLanguage } = route.params;
 
   // États pour les données
   const [animeData, setAnimeData] = useState<AnimeData | null>(null);
   const [selectedSeason, setSelectedSeason] = useState<Season | null>(seasonData || null);
-  const [selectedLanguage, setSelectedLanguage] = useState<'VF' | 'VOSTFR'>('VF');
+  const [selectedLanguage, setSelectedLanguage] = useState<'VF' | 'VOSTFR'>(initialLanguage || 'VF');
   const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
   const [selectedPlayer, setSelectedPlayer] = useState<number>(0);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
@@ -121,10 +121,15 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         });
 
         setEpisodes(formattedEpisodes);
-        setSelectedEpisode(formattedEpisodes[0]);
+        
+        // 🎯 Sélectionner l'épisode spécifique si fourni depuis navigation directe, sinon le premier
+        const episodeToSelect = initialEpisode 
+          ? formattedEpisodes.find(ep => ep.episodeNumber === initialEpisode) || formattedEpisodes[0]
+          : formattedEpisodes[0];
+        setSelectedEpisode(episodeToSelect);
 
         if (autoLoadEpisode) {
-          loadEpisodeSources(formattedEpisodes[0]);
+          loadEpisodeSources(episodeToSelect);
         }
       } else {
         setError('Aucun épisode trouvé pour cette saison');
@@ -174,11 +179,13 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
         setEpisodes(formattedEpisodes);
 
-        // Sélectionner le premier épisode
-        const episodeToSelect = formattedEpisodes[0];
+        // 🎯 Sélectionner l'épisode spécifique si fourni depuis navigation directe, sinon le premier
+        const episodeToSelect = initialEpisode 
+          ? formattedEpisodes.find(ep => ep.episodeNumber === initialEpisode) || formattedEpisodes[0]
+          : formattedEpisodes[0];
         setSelectedEpisode(episodeToSelect);
 
-        // Auto-charger l'épisode avec l'API embed
+        // Auto-charger l'épisode spécifique avec l'API embed
         if (autoLoadEpisode) {
           loadEpisodeSources(episodeToSelect);
         }

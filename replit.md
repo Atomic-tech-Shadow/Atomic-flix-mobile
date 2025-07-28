@@ -102,14 +102,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 - ✅ Test API popular montre language: null pour classiques/découvertes (comportement attendu)
 - ✅ Code détection langue fonctionne correctement selon données API réelles
 
-**Version 2.9.2 - Navigation directe épisodes + Scroll ultra-fluide - July 28, 2025**
-- 🎬 Navigation directe vers AnimePlayer depuis section "📺 Nouveaux épisodes"
-- 🎬 Fonction loadEpisodeDirectly() créée pour chargement immédiat de l'épisode
-- 🎬 Plus besoin de passer par AnimeDetail pour les nouveaux épisodes
-- 🎬 Configuration automatique saison par défaut pour lecture instantanée
+**Version 2.9.3 - Navigation directe épisodes précis + Scroll ultra-fluide - July 28, 2025**
+- 🎯 Navigation directe vers épisode EXACT depuis section "📺 Nouveaux épisodes"
+- 🎯 API trending analysée : currentEpisode, currentSeason, language.code utilisés
+- 🎯 AnimePlayerScreen charge automatiquement l'épisode spécifique (pas toujours le 1er)
+- 🎯 Types navigation étendus avec initialEpisode et initialLanguage optionnels
+- 🎯 Exemple : clic Rick & Morty S8E10 = chargement direct épisode 10 en VF
 - 🚀 OptimizedScrollView remplace tous ScrollView standards (HomeScreen, AnimeDetail, AnimePlayer)
 - 🚀 Performances +25% avec configuration automatique 2025 : removeClippedSubviews, native drivers
-- 🚀 OptimizedFlatList avec virtualisation intelligente pour listes +200 items
 - 🚀 Scroll 60fps constant sur toutes les sections avec architecture native
 
 **Version 2.8.0 - Scroll horizontal section trending - July 28, 2025**

@@ -344,7 +344,7 @@ const HomeScreen: React.FC = () => {
 
   // 🚀 Nouvelle fonction pour naviguer directement vers l'épisode depuis les "Nouveaux épisodes"
   const loadEpisodeDirectly = async (anime: SearchResult) => {
-    console.log('🎬 loadEpisodeDirectly called with:', { anime });
+    console.log('🎬 loadEpisodeDirectly called with:', anime);
     
     let cleanId = anime.animeId || anime.id || anime.url;
     if (!cleanId || cleanId === 'undefined') {
@@ -353,7 +353,7 @@ const HomeScreen: React.FC = () => {
       return;
     }
     
-    // Nettoyer l'ID si c'est une URL complète
+    // Nettoyer l'ID si c'est une URL complète pour obtenir l'animeId
     if (cleanId.includes('anime-sama.fr')) {
       const urlParts = cleanId.split('/');
       const catalogueIndex = urlParts.findIndex(part => part === 'catalogue');
@@ -362,28 +362,34 @@ const HomeScreen: React.FC = () => {
       }
     }
 
-    // Créer des données de saison par défaut pour les trending (nouvel épisode)
-    const defaultSeasonData = {
-      number: 1,
-      name: "Saison 1",
-      value: "saison1",
-      languages: ["VF", "VOSTFR"],
-      episodeCount: 12,
+    // 🎯 Utiliser les données exactes de l'API trending !
+    const seasonData = {
+      number: anime.currentSeason || 1,
+      name: `Saison ${anime.currentSeason || 1}`,
+      value: `saison${anime.currentSeason || 1}`,
+      languages: [anime.language?.name || "VOSTFR"],
+      episodeCount: anime.currentEpisode || 12,
       url: cleanId,
       available: true
     };
 
-    console.log('🎬 Navigation vers AnimePlayer avec:', { 
+    console.log('🎬 Navigation vers AnimePlayer avec données API exactes:', { 
       animeUrl: cleanId, 
       animeTitle: anime.title,
-      seasonData: defaultSeasonData
+      seasonData,
+      currentEpisode: anime.currentEpisode,
+      language: anime.language?.name,
+      episodeInfo: anime.episodeInfo
     });
 
-    // Naviguer directement vers AnimePlayer avec les données de saison
+    // Naviguer directement vers AnimePlayer avec les données exactes de l'API
     navigation.navigate('AnimePlayer', { 
       animeUrl: cleanId, 
       animeTitle: anime.title,
-      seasonData: defaultSeasonData
+      seasonData,
+      // 🔥 Paramètres additionnels pour navigation précise
+      initialEpisode: anime.currentEpisode,
+      initialLanguage: anime.language?.code?.toUpperCase() as 'VF' | 'VOSTFR' || 'VOSTFR'
     });
   };
 

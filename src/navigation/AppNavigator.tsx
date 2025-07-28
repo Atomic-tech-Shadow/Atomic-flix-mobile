@@ -17,7 +17,13 @@ import AnimePlayerScreen from '../screens/AnimePlayerScreen';
 export type RootStackParamList = {
   Home: undefined;
   AnimeDetail: { animeUrl: string; animeTitle: string };
-  AnimePlayer: { animeUrl: string; seasonData: Season; animeTitle: string };
+  AnimePlayer: { 
+    animeUrl: string; 
+    seasonData: Season; 
+    animeTitle: string;
+    initialEpisode?: number;
+    initialLanguage?: 'VF' | 'VOSTFR';
+  };
   MangaReader: { mangaUrl: string; mangaTitle: string };
   About: undefined;
   NotFound: undefined;
