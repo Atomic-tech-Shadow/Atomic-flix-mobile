@@ -232,6 +232,9 @@ class NotificationService {
 
     // Ajouter les nouvelles notifications aux existantes
     if (newNotifications.length > 0) {
+      console.log(`🔔 ${newNotifications.length} nouvelle(s) notification(s) détectée(s):`, 
+        newNotifications.map(n => `${n.animeTitle} - ${n.episodeInfo}`));
+      
       const existingNotifications = await this.getNotifications();
       const allNotifications = [...newNotifications, ...existingNotifications];
       
@@ -242,15 +245,20 @@ class NotificationService {
       
       // Envoyer une notification push pour la première nouvelle notification
       this.sendLocalNotification(newNotifications[0]);
+    } else {
+      console.log('📱 Aucun nouveau contenu détecté dans trending');
     }
   }
 
   // Vérifier si le contenu a changé (détection de nouveaux épisodes)
   private hasContentChanged(previous: SearchResult, current: SearchResult): boolean {
-    // Comparaison basique - pourrait être améliorée avec plus de métadonnées
+    // Comparaison complète incluant épisodes et infos détaillées
     return previous.status !== current.status || 
            previous.title !== current.title ||
-           previous.image !== current.image;
+           previous.image !== current.image ||
+           previous.currentEpisode !== current.currentEpisode ||
+           previous.episodeInfo !== current.episodeInfo ||
+           previous.currentSeason !== current.currentSeason;
   }
 
   // Déterminer si une notification doit être créée
@@ -263,6 +271,16 @@ class NotificationService {
 
   // Extraire les informations d'épisode du titre ou du status
   private extractEpisodeInfo(item: SearchResult, previousItem?: SearchResult): string {
+    // 🎯 Utiliser episodeInfo de l'API trending en priorité
+    if (item.episodeInfo) {
+      return item.episodeInfo;
+    }
+    
+    // 🎯 Utiliser currentEpisode et currentSeason de l'API
+    if (item.currentEpisode && item.currentSeason) {
+      return `Saison ${item.currentSeason} Episode ${item.currentEpisode}`;
+    }
+    
     // Rechercher des patterns d'épisodes dans le titre et le status
     const episodePatterns = [
       /Episode?\s*(\d+)/i,
@@ -343,15 +361,17 @@ class NotificationService {
     try {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: `Nouveau ${notification.type === 'anime' ? 'épisode' : 'chapitre'} disponible ! 🎉`,
+          title: `Atomic Flix • ${notification.type === 'anime' ? 'Nouvel épisode' : 'Nouveau chapitre'}`,
           body: notification.message,
           data: { 
             animeId: notification.id,
             animeTitle: notification.animeTitle,
-            type: notification.type
+            type: notification.type,
+            image: notification.image
           },
           sound: true,
           priority: Notifications.AndroidNotificationPriority.HIGH,
+          color: '#00bcd4',
         },
         trigger: null, // Envoyer immédiatement
       });
@@ -401,6 +421,30 @@ class NotificationService {
     if (recentNotifications.length !== notifications.length) {
       await this.saveNotifications(recentNotifications);
     }
+  }
+
+  // 🧪 Fonction de test pour forcer une notification (dev uniquement)
+  async sendTestNotification(): Promise<void> {
+    if (!__DEV__) return;
+    
+    const testNotification: EpisodeNotification = {
+      id: `test-${Date.now()}`,
+      title: 'Food Court de Mata Ashita',
+      type: 'anime',
+      message: 'Food Court de Mata Ashita - Saison 1 Episode 5',
+      timestamp: Date.now(),
+      read: false,
+      image: 'https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/food-court-de-mata-ashita.jpg',
+      episodeInfo: 'Saison 1 Episode 5',
+      animeTitle: 'Food Court de Mata Ashita'
+    };
+    
+    console.log('🧪 Envoi notification de test:', testNotification.message);
+    await this.sendLocalNotification(testNotification);
+    
+    // Sauvegarder aussi dans les notifications locales
+    const existingNotifications = await this.getNotifications();
+    await this.saveNotifications([testNotification, ...existingNotifications]);
   }
 }
 

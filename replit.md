@@ -8,6 +8,15 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.9.12 - Correction système notifications : logo + détection épisodes - July 28, 2025**
+- ✅ Bug notifications corrigé : titre affiche maintenant "Atomic Flix • Nouvel épisode"
+- ✅ Détection nouveaux épisodes améliorée : vérifie currentEpisode, episodeInfo, currentSeason
+- ✅ extractEpisodeInfo utilise priorité : episodeInfo API → currentEpisode/Season → patterns
+- ✅ Logs debug ajoutés pour traçabilité détection (nombre notifications détectées)
+- ✅ Configuration notifications: couleur #00bcd4, logo ./assets/atomic-flix-logo.png (1305KB)
+- ✅ Fonction test sendTestNotification ajoutée pour validation dev
+- ✅ Test automatique confirme : détection changement ✅, config ✅, logo ✅
+
 **Version 2.9.11 - Correction navigation animes avec saga/saison - July 28, 2025**
 - ✅ Bug navigation "Nouveaux épisodes" corrigé pour animes utilisant "saga" au lieu de "saison"
 - ✅ loadEpisodeDirectly récupère maintenant les vraies données API saisons avant navigation
