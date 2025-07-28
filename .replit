@@ -2,7 +2,7 @@ modules = ["nodejs-20", "web"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["unzip", "imagemagick", "jq"]
+packages = ["unzip", "imagemagick", "jq", "eas-cli"]
 
 [workflows]
 runButton = "Project"

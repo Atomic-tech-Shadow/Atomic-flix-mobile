@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.9.10 - Migration compte Expo et mise à jour Project ID - July 28, 2025**
+- ✅ EAS CLI installé globalement pour nouveau compte Expo
+- ✅ Project ID mis à jour : 1ff415af-e48a-43d4-b841-ec50c1dc8e0c → fb66f23b-3bd2-4757-b406-fbc1e5bf6af9
+- ✅ Configuration app.json mise à jour avec nouveau compte
+- ✅ Configuration EAS eas.json préservée et compatible
+- ✅ Application prête pour builds avec nouveau compte Expo
+- ➡️ Prochaine étape : eas login puis eas init --id fb66f23b-3bd2-4757-b406-fbc1e5bf6af9
+
 **Version 2.9.9 - Navigation intelligente finalisée avec langue par défaut VOSTFR - July 28, 2025**
 - ✅ Navigation directe "Nouveaux épisodes" : charge épisode exact selon API (S8E10 VF)
 - ✅ Navigation AnimeDetail → saison : charge premier épisode avec langue par défaut 
