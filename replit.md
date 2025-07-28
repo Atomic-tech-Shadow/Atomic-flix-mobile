@@ -8,7 +8,7 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
-**Version 2.9.13 - Protection anti-publicité AnimePlayerScreen - July 28, 2025**
+**Version 3.0.0 - Protection anti-publicité et version majeure - July 28, 2025**
 - ✅ Bloqueur publicité intégré dans WebView du lecteur vidéo
 - ✅ Protection contre redirections externes (market://, intent://, apps stores)
 - ✅ Liste noire domaines publicitaires : Google Ads, Facebook, Amazon, Taboola, etc.
