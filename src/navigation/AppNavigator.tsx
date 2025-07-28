@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { Season } from '../types';
 
@@ -46,6 +46,35 @@ const AppNavigator: React.FC = () => {
           },
           cardStyle: {
             backgroundColor: '#0f172a',
+          },
+          // Optimisations pour des transitions rapides et fluides
+          ...TransitionPresets.SlideFromRightIOS,
+          animationEnabled: true,
+          gestureEnabled: true,
+          gestureDirection: 'horizontal',
+          transitionSpec: {
+            open: {
+              animation: 'timing',
+              config: { duration: 300 }
+            },
+            close: {
+              animation: 'timing', 
+              config: { duration: 250 }
+            }
+          },
+          cardStyleInterpolator: ({ current, layouts }) => {
+            return {
+              cardStyle: {
+                transform: [
+                  {
+                    translateX: current.progress.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [layouts.screen.width, 0],
+                    }),
+                  },
+                ],
+              },
+            };
           },
         }}
       >

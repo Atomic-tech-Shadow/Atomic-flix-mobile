@@ -267,6 +267,25 @@ const AnimeDetailScreen: React.FC = () => {
           />
         }
         showsVerticalScrollIndicator={false}
+        // 🔥 Optimisations pour scroll ultra-fluide
+        removeClippedSubviews={true}
+        scrollEventThrottle={16}
+        keyboardShouldPersistTaps="handled"
+        decelerationRate="fast"
+        bounces={true}
+        bouncesZoom={false}
+        alwaysBounceVertical={false}
+        maximumZoomScale={1}
+        minimumZoomScale={1}
+        scrollsToTop={true}
+        automaticallyAdjustContentInsets={false}
+        contentInsetAdjustmentBehavior="never"
+        overScrollMode="auto"
+        fadingEdgeLength={0}
+        directionalLockEnabled={true}
+        disableIntervalMomentum={false}
+        snapToInterval={0}
+        snapToAlignment="start"
       >
         {/* Image hero ajustée */}
         <View style={styles.heroContainer}>
