@@ -369,18 +369,74 @@ const HomeScreen: React.FC = () => {
       if (animeDetails && animeDetails.success && animeDetails.data && animeDetails.data.seasons) {
         const seasons = animeDetails.data.seasons;
         
-        // Trouver la saison correspondante en utilisant currentSeason
+        // Trouver la saison correspondante avec logique intelligente
         const targetSeasonNumber = anime.currentSeason || 1;
-        let matchingSeason = seasons.find((s: any) => s.number === targetSeasonNumber);
+        console.log('🔍 Recherche saison/saga:', { 
+          targetSeasonNumber, 
+          animeTitle: anime.title,
+          availableSeasons: seasons.map((s: any) => ({ number: s.number, value: s.value, name: s.name })) 
+        });
         
-        // Si pas trouvé par numéro, chercher par valeur saison
+        let matchingSeason = null;
+        
+        // 1. Essayer de matcher par number exact d'abord
+        matchingSeason = seasons.find((s: any) => s.number === targetSeasonNumber);
+        
+        // 2. Si pas trouvé par number, essayer par value et name avec logique précise
         if (!matchingSeason) {
-          matchingSeason = seasons.find((s: any) => 
-            s.value === `saison${targetSeasonNumber}` || 
-            s.value.includes(`saison${targetSeasonNumber}`) ||
-            s.name.toLowerCase().includes(`saison ${targetSeasonNumber}`) ||
-            s.name.toLowerCase().includes(`saga ${targetSeasonNumber}`)
-          );
+          matchingSeason = seasons.find((s: any) => {
+            const value = s.value?.toLowerCase() || '';
+            const name = s.name?.toLowerCase() || '';
+            
+            // Détection si c'est un anime avec structure "saga"
+            const hasSagaStructure = value.includes('saga') || name.includes('saga');
+            
+            if (hasSagaStructure) {
+              // Pour One Piece et autres animes "saga" : chercher saga exacte
+              return value === `saga${targetSeasonNumber}` || 
+                     value === `saga-${targetSeasonNumber}` ||
+                     value === `saga_${targetSeasonNumber}` ||
+                     name.toLowerCase() === `saga ${targetSeasonNumber}` ||
+                     name.toLowerCase() === `saga${targetSeasonNumber}`;
+            } else {
+              // Pour animes classiques "saison" : chercher saison exacte
+              return value === `saison${targetSeasonNumber}` || 
+                     value === `saison-${targetSeasonNumber}` ||
+                     value === `saison_${targetSeasonNumber}` ||
+                     name.toLowerCase() === `saison ${targetSeasonNumber}` ||
+                     name.toLowerCase() === `saison${targetSeasonNumber}`;
+            }
+          });
+        }
+        
+        // 3. Si toujours pas trouvé, chercher avec matching partiel mais plus strict
+        if (!matchingSeason) {
+          matchingSeason = seasons.find((s: any) => {
+            const value = s.value?.toLowerCase() || '';
+            const name = s.name?.toLowerCase() || '';
+            
+            // Matching partiel mais uniquement si le numéro suit directement
+            return (value.includes(`saga${targetSeasonNumber}`) && value.charAt(value.indexOf(`saga${targetSeasonNumber}`) + `saga${targetSeasonNumber}`.length) === '-') ||
+                   (value.includes(`saison${targetSeasonNumber}`) && value.charAt(value.indexOf(`saison${targetSeasonNumber}`) + `saison${targetSeasonNumber}`.length) === '-') ||
+                   name.includes(`saga ${targetSeasonNumber}`) ||
+                   name.includes(`saison ${targetSeasonNumber}`);
+          });
+        }
+        
+        // Log détaillé du matching
+        if (matchingSeason) {
+          console.log('✅ Saison/saga trouvée:', { 
+            number: matchingSeason.number, 
+            value: matchingSeason.value, 
+            name: matchingSeason.name,
+            targetWas: targetSeasonNumber
+          });
+        } else {
+          console.log('❌ Aucune saison/saga correspondante trouvée pour:', targetSeasonNumber);
+          // Log toutes les saisons disponibles pour debug
+          seasons.forEach((s: any, index: number) => {
+            console.log(`Option ${index + 1}:`, { number: s.number, value: s.value, name: s.name });
+          });
         }
         
         // Si toujours pas trouvé, prendre la première saison disponible
@@ -689,7 +745,6 @@ const HomeScreen: React.FC = () => {
           />
         }
       >
-
         {/* Barre de recherche locale (identique au site web) */}
         {showSearchBar && (
           <View style={styles.searchBarContainer}>

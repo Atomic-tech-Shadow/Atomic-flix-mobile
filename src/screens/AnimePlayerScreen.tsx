@@ -493,10 +493,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     );
   };
 
-
-
-
-
   if (loading) {
     return (
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>

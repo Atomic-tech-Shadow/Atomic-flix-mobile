@@ -116,7 +116,11 @@ class NotificationService {
       
       return this.expoPushToken;
     } catch (error) {
-      console.error('Erreur initialisation notifications:', error);
+      // Gestion d'erreur améliorée pour éviter confusion avec Firebase
+      if (__DEV__) {
+        console.log('ℹ️ Notifications push non disponibles:', error);
+      }
+      // Retourner silencieusement null en production pour éviter popups d'erreur
       return null;
     }
   }
