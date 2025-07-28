@@ -449,7 +449,7 @@ const HomeScreen: React.FC = () => {
             {detectedLanguage && (
               <View style={styles.horizontalCardBadge}>
                 <Text style={styles.horizontalCardBadgeText}>
-                  {getLanguageBadge(detectedLanguage)}
+                  {detectedLanguage}
                 </Text>
               </View>
             )}
