@@ -382,6 +382,90 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             allowsFullscreenVideo={true}
             allowsInlineMediaPlayback={true}
             mediaPlaybackRequiresUserAction={false}
+            onShouldStartLoadWithRequest={(request) => {
+              // Bloquer les redirections vers des apps externes ou sites de pub
+              const url = request.url;
+              const mainUrl = new URL(currentSource.url);
+              const requestUrl = new URL(url);
+              
+              // Listes des domaines publicitaires couramment bloqués
+              const adDomains = [
+                'googleads.g.doubleclick.net',
+                'googlesyndication.com',
+                'googletagmanager.com',
+                'google-analytics.com',
+                'facebook.com',
+                'adsystem.com',
+                'ads.yahoo.com',
+                'amazon-adsystem.com',
+                'adsense.google.com',
+                'pubmatic.com',
+                'rubiconproject.com',
+                'openx.net',
+                'adsystem.com',
+                'popads.net',
+                'popcash.net',
+                'propellerads.com',
+                'revcontent.com',
+                'outbrain.com',
+                'taboola.com',
+                'bidgear.com',
+                'exoclick.com',
+                'clickadu.com',
+                'adnxs.com',
+                'adskeeper.co.uk',
+                'mgid.com'
+              ];
+              
+              // Bloquer les domaines publicitaires
+              if (adDomains.some(domain => requestUrl.hostname.includes(domain))) {
+                console.log('🚫 Publicité bloquée:', url);
+                return false;
+              }
+              
+              // Bloquer les redirections vers des apps ou protocoles externes
+              if (url.startsWith('intent://') || 
+                  url.startsWith('market://') || 
+                  url.startsWith('play.google.com') ||
+                  url.startsWith('itunes.apple.com') ||
+                  url.startsWith('apps.apple.com') ||
+                  url.includes('redirect') ||
+                  url.includes('click') ||
+                  url.includes('ad.') ||
+                  url.includes('ads.') ||
+                  url.includes('popup')) {
+                console.log('🚫 Redirection bloquée:', url);
+                return false;
+              }
+              
+              // Autoriser seulement les domaines de streaming légitimes
+              const allowedDomains = [
+                mainUrl.hostname,
+                'vudeo.net',
+                'uqload.com',
+                'sibnet.ru',
+                'sendvid.com',
+                'streamtape.com',
+                'doodstream.com',
+                'filemoon.sx',
+                'upstream.to'
+              ];
+              
+              if (!allowedDomains.some(domain => requestUrl.hostname.includes(domain))) {
+                console.log('🚫 Domaine non autorisé:', requestUrl.hostname);
+                return false;
+              }
+              
+              return true;
+            }}
+            onNavigationStateChange={(navState) => {
+              // Empêcher la navigation vers des pages externes
+              if (navState.url !== currentSource.url && 
+                  !navState.url.includes(new URL(currentSource.url).hostname)) {
+                console.log('🚫 Navigation externe bloquée:', navState.url);
+                webViewRef.current?.goBack();
+              }
+            }}
             onError={(error) => {
               // Gérer l'erreur WebView silencieusement
               setError('Erreur du lecteur vidéo');

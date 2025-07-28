@@ -8,6 +8,16 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.9.13 - Protection anti-publicité AnimePlayerScreen - July 28, 2025**
+- ✅ Bloqueur publicité intégré dans WebView du lecteur vidéo
+- ✅ Protection contre redirections externes (market://, intent://, apps stores)
+- ✅ Liste noire domaines publicitaires : Google Ads, Facebook, Amazon, Taboola, etc.
+- ✅ Liste blanche domaines streaming légitimes uniquement
+- ✅ onShouldStartLoadWithRequest bloque requêtes malveillantes
+- ✅ onNavigationStateChange empêche navigation externe forcée
+- ✅ Logs console pour traçabilité des blocages de pubs
+- ✅ Interface utilisateur protégée contre détournement publicitaire
+
 **Version 2.9.12 - Correction système notifications production - July 28, 2025**
 - ✅ Bug notifications corrigé : titre affiche maintenant "Atomic Flix • Nouvel épisode"
 - ✅ Détection nouveaux épisodes améliorée : vérifie currentEpisode, episodeInfo, currentSeason
