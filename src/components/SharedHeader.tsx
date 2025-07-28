@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, Modal, Animated, Dimensions, Platform } from 'react-native';
-import * as Notifications from 'expo-notifications';
-import * as Device from 'expo-device';
+
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
@@ -32,87 +31,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   const [showGlobalSearchModal, setShowGlobalSearchModal] = useState(false);
   const [slideAnim] = useState(new Animated.Value(-300));
 
-  // 🧪 BOUTON TEST TEMPORAIRE pour les notifications push
-  const sendTestNotification = async () => {
-    try {
-      // Les imports sont déjà disponibles en haut du fichier
-      
-      // Vérifier si c'est un appareil physique
-      if (!Device.isDevice) {
-        Alert.alert('Test Notification', 'Les notifications push ne fonctionnent que sur des appareils physiques.');
-        return;
-      }
 
-      // Configurer le canal de notifications pour Android (obligatoire Android 8+)
-      if (Platform.OS === 'android') {
-        await Notifications.setNotificationChannelAsync('atomic-flix-test', {
-          name: 'Test ATOMIC FLIX',
-          importance: Notifications.AndroidImportance.MAX,
-          vibrationPattern: [0, 250, 250, 250],
-          lightColor: '#FF6B35',
-        });
-      }
-
-      // Vérifier et demander les permissions
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      
-      if (finalStatus !== 'granted') {
-        Alert.alert('Test Notification', 'Impossible d\'obtenir le token push. Vérifiez les permissions.');
-        return;
-      }
-
-      // Obtenir le token Expo push
-      const pushToken = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig?.extra?.eas?.projectId,
-      });
-      
-      if (!pushToken?.data) {
-        Alert.alert('Test Notification', 'Impossible d\'obtenir le token push. Vérifiez les permissions.');
-        return;
-      }
-
-      // Envoyer une notification de test via l'API Expo
-      const message = {
-        to: pushToken.data,
-        sound: 'default',
-        title: '🧪 Test ATOMIC FLIX',
-        body: 'Notification de test réussie ! Les notifications push fonctionnent correctement.',
-        channelId: Platform.OS === 'android' ? 'atomic-flix-test' : undefined,
-        data: { 
-          screen: 'test',
-          timestamp: Date.now()
-        },
-      };
-
-      const response = await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Accept-encoding': 'gzip, deflate',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-      });
-
-      const result = await response.json();
-      
-      if (result.data && result.data[0] && result.data[0].status === 'ok') {
-        Alert.alert('Test réussi !', 'Notification push envoyée avec succès. Vous devriez la recevoir dans quelques secondes.');
-      } else {
-        Alert.alert('Erreur test', `Échec envoi: ${JSON.stringify(result)}`);
-      }
-      
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
-      Alert.alert('Erreur test', `Erreur: ${errorMessage}`);
-    }
-  };
 
   const notificationService = NotificationService.getInstance();
 
@@ -311,13 +230,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             </View>
           </TouchableOpacity>
 
-          {/* 🧪 BOUTON TEST TEMPORAIRE */}
-          <TouchableOpacity 
-            style={[styles.headerIconButton, { backgroundColor: '#ff6b35' }]}
-            onPress={sendTestNotification}
-          >
-            <Ionicons name="flask" size={18} color="#ffffff" />
-          </TouchableOpacity>
+
 
           <TouchableOpacity 
             style={styles.headerIconButton}
