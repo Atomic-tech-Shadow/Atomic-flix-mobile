@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 3.0.1 - Correction navigation One Piece Saga 11 - July 28, 2025**
+- ✅ Bug navigation One Piece Saga 11 → Saison 1 corrigé
+- ✅ Problème identifié : API trending currentSeason=null pour One Piece
+- ✅ Solution : extraction numéro saison depuis ID ("one-piece-saison11-vostfr-" → 11)
+- ✅ Logique extraction regex ajoutée : match(/saison(\d+)/i) 
+- ✅ Navigation précise vers saga exacte au lieu de première saison
+- ✅ Version app.json : 3.0.0 → 3.0.1, versionCode : 300 → 301
+
 **Version 3.0.0 - Protection anti-publicité et version majeure - July 28, 2025**
 - ✅ Bloqueur publicité intégré dans WebView du lecteur vidéo
 - ✅ Protection contre redirections externes (market://, intent://, apps stores)
