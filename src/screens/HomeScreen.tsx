@@ -630,7 +630,7 @@ const HomeScreen: React.FC = () => {
                     <TouchableOpacity
                       key={`classique-${anime.id || index}`}
                       style={styles.horizontalCard}
-                      onPress={() => loadAnimeDetails(anime.url, anime.contentType)}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
                       activeOpacity={0.8}
                     >
                       <Image
@@ -677,7 +677,7 @@ const HomeScreen: React.FC = () => {
                     <TouchableOpacity
                       key={`pepite-${anime.id || index}`}
                       style={styles.horizontalCard}
-                      onPress={() => loadAnimeDetails(anime.url, anime.contentType)}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
                       activeOpacity={0.8}
                     >
                       <Image

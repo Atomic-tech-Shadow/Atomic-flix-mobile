@@ -8,6 +8,15 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.8.1 - Corrections navigation et affichage langue - July 28, 2025**
+- ✅ Problème navigation sections Légendaires/Découvertes corrigé (erreur "Cet anime n'a pas été trouvé")
+- ✅ Sections Légendaires/Découvertes utilisent maintenant anime.id || anime.url au lieu de anime.url
+- ✅ Navigation cohérente avec cartes trending qui fonctionnaient correctement
+- ✅ Problème badges langue section trending analysé : API retourne VOSTFR pour tous trending (normal)
+- ✅ Test API https://anime-sama-scraper.vercel.app/api/trending confirme tous animes en VOSTFR
+- ✅ Test API popular montre language: null pour classiques/découvertes (comportement attendu)
+- ✅ Code détection langue fonctionne correctement selon données API réelles
+
 **Version 2.8.0 - Scroll horizontal section trending - July 28, 2025**
 - ✅ Section "Tendances du moment" mise à jour avec défilement horizontal (droite vers gauche)
 - ✅ Nouveau composant renderTrendingAnimeCard créé pour cartes trending horizontales
