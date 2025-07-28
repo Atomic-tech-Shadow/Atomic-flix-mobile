@@ -689,7 +689,7 @@ const HomeScreen: React.FC = () => {
               <View style={styles.horizontalSection}>
                 <View style={styles.sectionHeader}>
                   <Text style={styles.sectionTitle}>
-                    📺 Nouveaux épisodes ajoutés
+                    📺 Nouveaux épisodes
                   </Text>
                 </View>
                 <ScrollView 
