@@ -203,7 +203,7 @@ const HomeScreen: React.FC = () => {
       if (response && response.success && response.categories) {
         // Extraire les classiques et les pépites de la nouvelle structure API
         const classiques = response.categories.classiques?.anime || [];
-        const pepites = response.categories.pépites?.anime || [];
+        const pepites = response.categories.pepites?.anime || [];
 
         setClassiquesAnimes(classiques);
         setPepitesAnimes(pepites);

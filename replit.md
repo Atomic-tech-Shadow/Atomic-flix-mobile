@@ -8,6 +8,12 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.8.2 - Correction affichage section Découvertes - July 28, 2025**
+- ✅ Section Découvertes (Pépites) maintenant visible après correction faute de frappe
+- ✅ API utilise "pepites" sans accent, code cherchait "pépites" avec accent
+- ✅ 20 animes disponibles dans section Découvertes confirmé via test API
+- ✅ Toutes les sections (Trending, Légendaires, Découvertes) fonctionnelles
+
 **Version 2.8.1 - Corrections navigation et affichage langue - July 28, 2025**
 - ✅ Problème navigation sections Légendaires/Découvertes corrigé (erreur "Cet anime n'a pas été trouvé")
 - ✅ Sections Légendaires/Découvertes utilisent maintenant anime.id || anime.url au lieu de anime.url
