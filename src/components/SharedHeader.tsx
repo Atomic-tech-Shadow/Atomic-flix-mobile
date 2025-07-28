@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, Modal, Animated, Dimensions, Platform } from 'react-native';
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
@@ -33,23 +35,55 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   // 🧪 BOUTON TEST TEMPORAIRE pour les notifications push
   const sendTestNotification = async () => {
     try {
-      // Importer le service de notifications push
-      const PushNotificationService = require('../services/pushNotifications.js').default;
+      // Les imports sont déjà disponibles en haut du fichier
       
-      // Obtenir le token push
-      const pushToken = await PushNotificationService.getExpoPushToken();
+      // Vérifier si c'est un appareil physique
+      if (!Device.isDevice) {
+        Alert.alert('Test Notification', 'Les notifications push ne fonctionnent que sur des appareils physiques.');
+        return;
+      }
+
+      // Configurer le canal de notifications pour Android (obligatoire Android 8+)
+      if (Platform.OS === 'android') {
+        await Notifications.setNotificationChannelAsync('atomic-flix-test', {
+          name: 'Test ATOMIC FLIX',
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 250, 250, 250],
+          lightColor: '#FF6B35',
+        });
+      }
+
+      // Vérifier et demander les permissions
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
       
-      if (!pushToken) {
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      
+      if (finalStatus !== 'granted') {
+        Alert.alert('Test Notification', 'Impossible d\'obtenir le token push. Vérifiez les permissions.');
+        return;
+      }
+
+      // Obtenir le token Expo push
+      const pushToken = await Notifications.getExpoPushTokenAsync({
+        projectId: Constants.expoConfig?.extra?.eas?.projectId,
+      });
+      
+      if (!pushToken?.data) {
         Alert.alert('Test Notification', 'Impossible d\'obtenir le token push. Vérifiez les permissions.');
         return;
       }
 
       // Envoyer une notification de test via l'API Expo
       const message = {
-        to: pushToken,
+        to: pushToken.data,
         sound: 'default',
         title: '🧪 Test ATOMIC FLIX',
         body: 'Notification de test réussie ! Les notifications push fonctionnent correctement.',
+        channelId: Platform.OS === 'android' ? 'atomic-flix-test' : undefined,
         data: { 
           screen: 'test',
           timestamp: Date.now()
