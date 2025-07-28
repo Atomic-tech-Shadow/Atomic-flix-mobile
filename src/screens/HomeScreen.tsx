@@ -313,6 +313,15 @@ const HomeScreen: React.FC = () => {
 
   // Naviguer vers la page dédiée (anime ou manga) (identique au site web)
   const loadAnimeDetails = async (animeId: string, contentType?: string) => {
+    console.log('loadAnimeDetails called with:', { animeId, contentType });
+    
+    // Vérifier que l'ID n'est pas vide
+    if (!animeId || animeId === 'undefined') {
+      console.error('ID anime invalide:', animeId);
+      setError('Erreur: ID anime introuvable');
+      return;
+    }
+    
     // Détecter si c'est un manga pour rediriger vers le lecteur approprié
     if (contentType === 'manga') {
       navigation.navigate('MangaReader', { mangaUrl: animeId, mangaTitle: 'Manga' });
@@ -496,7 +505,7 @@ const HomeScreen: React.FC = () => {
       <TouchableOpacity
         key={`trending-${anime.id || index}`}
         style={styles.horizontalCard}
-        onPress={() => loadAnimeDetails(anime.id, anime.contentType || anime.type)}
+        onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType || anime.type)}
         activeOpacity={0.8}
       >
         <Image

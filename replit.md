@@ -8,6 +8,12 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.9.6 - Correction navigation section trending - July 28, 2025**
+- ✅ Problème navigation animes section "Nouveaux épisodes ajoutés" corrigé
+- ✅ Utilisation anime.id || anime.url au lieu de anime.id seul (cohérent avec autres sections)
+- ✅ Ajout vérification sécurité ID vide/undefined pour éviter erreurs navigation
+- ✅ Logging debug ajouté pour identifier problèmes navigation futurs
+
 **Version 2.9.5 - Correction superposition badges section trending - July 28, 2025**
 - ✅ Problème superposition badges "NOUVEAU" et "ANIME" corrigé
 - ✅ Suppression badge type contenu redondant dans section "Nouveaux épisodes ajoutés"
