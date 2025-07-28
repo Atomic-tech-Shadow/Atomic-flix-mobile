@@ -369,8 +369,25 @@ const HomeScreen: React.FC = () => {
       if (animeDetails && animeDetails.success && animeDetails.data && animeDetails.data.seasons) {
         const seasons = animeDetails.data.seasons;
         
-        // Trouver la saison correspondante avec logique intelligente
-        const targetSeasonNumber = anime.currentSeason || 1;
+        // Extraire le numéro de saison depuis l'ID si currentSeason est null
+        let targetSeasonNumber = anime.currentSeason;
+        
+        if (!targetSeasonNumber && anime.id) {
+          // Essayer d'extraire depuis l'ID : "one-piece-saison11-vostfr-" -> 11
+          const seasonMatch = anime.id.match(/saison(\d+)/i);
+          if (seasonMatch) {
+            targetSeasonNumber = parseInt(seasonMatch[1], 10);
+            console.log('🎯 Saison extraite depuis ID:', { 
+              animeId: anime.id, 
+              extractedSeason: targetSeasonNumber 
+            });
+          }
+        }
+        
+        // Fallback si toujours pas trouvé
+        if (!targetSeasonNumber) {
+          targetSeasonNumber = 1;
+        }
         console.log('🔍 Recherche saison/saga:', { 
           targetSeasonNumber, 
           animeTitle: anime.title,
