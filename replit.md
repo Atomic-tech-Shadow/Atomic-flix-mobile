@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.8.0 - Scroll horizontal section trending - July 28, 2025**
+- ✅ Section "Tendances du moment" mise à jour avec défilement horizontal (droite vers gauche)
+- ✅ Nouveau composant renderTrendingAnimeCard créé pour cartes trending horizontales
+- ✅ Cartes trending utilisent maintenant format horizontal (120x180px) comme sections Légendaires/Découvertes
+- ✅ Styles trendingContentBadge et trendingBadgeText ajoutés pour badges cartes trending
+- ✅ Interface cohérente : toutes les sections utilisent maintenant le scroll horizontal
+- ✅ Section trending remplace style grid par ScrollView avec showsHorizontalScrollIndicator={false}
+
 **Version 2.7.9 - Système notifications push trending complet - July 27, 2025**
 - ✅ TrendingNotificationService.ts créé selon documentation Expo 2025
 - ✅ Configuration app.json avec plugin expo-notifications optimisé

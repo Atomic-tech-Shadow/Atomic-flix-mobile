@@ -405,6 +405,60 @@ const HomeScreen: React.FC = () => {
     );
   }, []);
 
+  // Composant Carte Anime Horizontale pour la section Tendance
+  const renderTrendingAnimeCard = React.useCallback((anime: SearchResult, index: number) => {
+    // Utiliser la langue directement depuis l'objet language de l'API
+    const detectedLanguage = getLanguageFromAPI(anime);
+    
+    return (
+      <TouchableOpacity
+        key={`trending-${anime.id || index}`}
+        style={styles.horizontalCard}
+        onPress={() => loadAnimeDetails(anime.id, anime.contentType || anime.type)}
+        activeOpacity={0.8}
+      >
+        <Image
+          source={{ uri: anime.image }}
+          style={styles.horizontalCardImage}
+          resizeMode="cover"
+          onError={(e) => {}}
+        />
+
+        {/* Badge type de contenu */}
+        <View style={[
+          styles.trendingContentBadge,
+          anime.contentType === 'manga' ? styles.mangaBadge :
+          anime.contentType === 'film' || anime.contentType === 'movie' ? styles.movieBadge :
+          styles.animeBadge
+        ]}>
+          <Text style={styles.trendingBadgeText}>
+            {anime.contentType === 'manga' ? 'MANGA' :
+             anime.contentType === 'film' || anime.contentType === 'movie' ? 'FILM' :
+             'ANIME'}
+          </Text>
+        </View>
+
+        <LinearGradient
+          colors={['transparent', 'rgba(0,0,0,0.8)']}
+          style={styles.horizontalCardGradient}
+        >
+          <View style={styles.horizontalCardContent}>
+            <Text style={styles.horizontalCardTitle} numberOfLines={2}>
+              {anime.title}
+            </Text>
+            {detectedLanguage && (
+              <View style={styles.horizontalCardBadge}>
+                <Text style={styles.horizontalCardBadgeText}>
+                  {getLanguageBadge(detectedLanguage)}
+                </Text>
+              </View>
+            )}
+          </View>
+        </LinearGradient>
+      </TouchableOpacity>
+    );
+  }, []);
+
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <StatusBar style="light" backgroundColor="#0a0a1a" />
@@ -541,17 +595,22 @@ const HomeScreen: React.FC = () => {
               </LinearGradient>
             </View>
 
-            {/* Section Animes Trending (identique au site web) */}
+            {/* Section Animes Trending avec scroll horizontal */}
             {trendingAnimes.length > 0 && (
-              <View style={styles.trendingSection}>
-                <View style={styles.trendingSectionHeader}>
-                  <Text style={styles.trendingSectionTitle}>
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>
                     🔥 Tendances du moment
                   </Text>
                 </View>
-                <View style={styles.trendingGrid}>
-                  {trendingAnimes.map((anime, index) => renderAnimeCard(anime, index))}
-                </View>
+                <ScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                >
+                  {trendingAnimes.map((anime, index) => renderTrendingAnimeCard(anime, index))}
+                </ScrollView>
               </View>
             )}
 
@@ -1067,6 +1126,21 @@ const styles = StyleSheet.create({
     color: '#00bcd4',
     fontSize: 8,
     fontWeight: '600',
+  },
+
+  // Styles pour les badges de contenu des cartes trending
+  trendingContentBadge: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 8,
+  },
+  trendingBadgeText: {
+    color: '#ffffff',
+    fontSize: 8,
+    fontWeight: 'bold',
   },
 
 });
