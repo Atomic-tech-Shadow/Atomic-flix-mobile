@@ -91,6 +91,30 @@ export const animeAPI = {
         error: error instanceof Error ? error.message : 'Erreur chargement sources'
       };
     }
+  },
+
+  // Fonction pour obtenir le planning des animes prévus
+  getPlanning: async (): Promise<ApiResponse<any>> => {
+    try {
+      const response = await apiRequest('/api/planning');
+      return {
+        success: true,
+        data: response.planning || response.results || [],
+        timestamp: new Date().toISOString(),
+        meta: {
+          total: response.count || response.planning?.length || 0,
+          extractedAt: response.extractedAt
+        }
+      };
+    } catch (error) {
+      console.error('Erreur getPlanning:', error);
+      return {
+        success: false,
+        data: [],
+        timestamp: new Date().toISOString(),
+        error: error instanceof Error ? error.message : 'Erreur chargement planning'
+      };
+    }
   }
 };
 

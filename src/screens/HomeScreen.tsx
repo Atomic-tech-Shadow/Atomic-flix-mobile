@@ -26,6 +26,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import NotificationService from '../utils/notificationService';
 import TrendingNotificationService from '../services/TrendingNotificationService';
 import TelegramVerification from '../components/TelegramVerification';
+import { animeAPI } from '../utils/animeAPI';
 
 import { BlurView } from 'expo-blur';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -51,12 +52,14 @@ const HomeScreen: React.FC = () => {
   const [trendingAnimes, setTrendingAnimes] = useState<SearchResult[]>([]);
   const [classiquesAnimes, setClassiquesAnimes] = useState<SearchResult[]>([]);
   const [pepitesAnimes, setPepitesAnimes] = useState<SearchResult[]>([]);
+  const [planningAnimes, setPlanningAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [showTelegramModal, setShowTelegramModal] = useState(false);
   const [popularLoading, setPopularLoading] = useState(true);
+  const [planningLoading, setPlanningLoading] = useState(true);
 
 
   // Configuration API identique au site web
@@ -79,6 +82,7 @@ const HomeScreen: React.FC = () => {
   useEffect(() => {
     loadTrendingAnimes();
     loadPopularAnimes();
+    loadPlanningAnimes();
     initializeNotifications();
     checkTelegramVerification();
 
@@ -219,6 +223,42 @@ const HomeScreen: React.FC = () => {
     }
   };
 
+  // Charger le planning des animes prévus depuis l'API
+  const loadPlanningAnimes = async () => {
+    try {
+      setPlanningLoading(true);
+      const response = await animeAPI.getPlanning();
+
+      if (response && response.success && response.data) {
+        // Adapter les données du planning au format SearchResult
+        const planningData = response.data.map((anime: any) => ({
+          id: anime.animeId,
+          url: anime.animeId,
+          title: anime.title,
+          image: anime.image,
+          contentType: 'anime',
+          language: { 
+            vf: anime.language === 'VF',
+            vostfr: anime.language === 'VOSTFR',
+            vjstfr: anime.language === 'VJSTFR'
+          },
+          releaseTime: anime.releaseTime,
+          isVFCrunchyroll: anime.isVFCrunchyroll,
+          planningType: anime.type
+        }));
+
+        setPlanningAnimes(planningData.slice(0, 20)); // Limiter à 20 animes
+      } else {
+        setPlanningAnimes([]);
+      }
+    } catch (error) {
+      console.error('Erreur chargement planning:', error);
+      setPlanningAnimes([]);
+    } finally {
+      setPlanningLoading(false);
+    }
+  };
+
   // Recherche d'animes (identique au site web)
   const searchAnimes = async (query: string) => {
     if (query.trim().length < 2) {
@@ -287,7 +327,7 @@ const HomeScreen: React.FC = () => {
   // Refresh control
   const onRefresh = async () => {
     setRefreshing(true);
-    await Promise.all([loadTrendingAnimes(), loadPopularAnimes()]);
+    await Promise.all([loadTrendingAnimes(), loadPopularAnimes(), loadPlanningAnimes()]);
     setRefreshing(false);
   };
 
@@ -708,11 +748,75 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
+            {/* Section Planning */}
+            {planningAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>📅 Planning de la semaine</Text>
+                </View>
+                <ScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                >
+                  {planningAnimes.map((anime, index) => (
+                    <TouchableOpacity
+                      key={`planning-${anime.id || index}`}
+                      style={styles.planningCard}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
+                      activeOpacity={0.8}
+                    >
+                      <Image
+                        source={{ uri: anime.image }}
+                        style={styles.horizontalCardImage}
+                        resizeMode="cover"
+                      />
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.9)']}
+                        style={styles.horizontalCardGradient}
+                      >
+                        <View style={styles.planningCardContent}>
+                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
+                            {anime.title}
+                          </Text>
+                          <View style={styles.planningInfoRow}>
+                            {anime.releaseTime && (
+                              <View style={styles.planningTimeBadge}>
+                                <Text style={styles.planningTimeText}>
+                                  {anime.releaseTime}
+                                </Text>
+                              </View>
+                            )}
+                            {anime.language && (
+                              <View style={styles.horizontalCardBadge}>
+                                <Text style={styles.horizontalCardBadgeText}>
+                                  {getLanguageBadge(anime.language)}
+                                </Text>
+                              </View>
+                            )}
+                          </View>
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
+
             {/* Message de chargement */}
             {popularLoading && (
               <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#00bcd4" />
                 <Text style={styles.loadingText}>Chargement du contenu populaire...</Text>
+              </View>
+            )}
+
+            {/* Indicateur de chargement du planning */}
+            {planningLoading && (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#00bcd4" />
+                <Text style={styles.loadingText}>Chargement du planning...</Text>
               </View>
             )}
 
@@ -1141,6 +1245,50 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 8,
     fontWeight: 'bold',
+  },
+
+  // Styles pour la section Planning
+  planningCard: {
+    width: 120,
+    height: 180,
+    marginRight: 12,
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: '#1a1a2e',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 193, 7, 0.3)', // Bordure dorée pour différencier du planning
+  },
+  planningCardContent: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 8,
+  },
+  planningInfoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  planningTimeBadge: {
+    backgroundColor: 'rgba(255, 193, 7, 0.2)',
+    borderWidth: 1,
+    borderColor: '#ffc107',
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    borderRadius: 6,
+    marginRight: 4,
+  },
+  planningTimeText: {
+    color: '#ffc107',
+    fontSize: 8,
+    fontWeight: '600',
   },
 
 });

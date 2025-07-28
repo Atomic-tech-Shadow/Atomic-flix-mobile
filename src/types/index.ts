@@ -14,7 +14,14 @@ export interface SearchResult {
     fullName: string;
     flag: string;
     priority: number;
+    vf?: boolean;
+    vostfr?: boolean;
+    vjstfr?: boolean;
   };
+  // Champs spécifiques au planning
+  releaseTime?: string;
+  isVFCrunchyroll?: boolean;
+  planningType?: string;
 }
 
 export interface Episode {
