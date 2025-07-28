@@ -513,20 +513,6 @@ const HomeScreen: React.FC = () => {
           </View>
         )}
 
-        {/* Badge type de contenu */}
-        <View style={[
-          styles.trendingContentBadge,
-          anime.contentType === 'manga' ? styles.mangaBadge :
-          anime.contentType === 'film' || anime.contentType === 'movie' ? styles.movieBadge :
-          styles.animeBadge
-        ]}>
-          <Text style={styles.trendingBadgeText}>
-            {anime.contentType === 'manga' ? 'MANGA' :
-             anime.contentType === 'film' || anime.contentType === 'movie' ? 'FILM' :
-             'ANIME'}
-          </Text>
-        </View>
-
         <LinearGradient
           colors={['transparent', 'rgba(0,0,0,0.8)']}
           style={styles.horizontalCardGradient}

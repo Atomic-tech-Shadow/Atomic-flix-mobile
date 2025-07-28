@@ -8,6 +8,12 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.9.5 - Correction superposition badges section trending - July 28, 2025**
+- ✅ Problème superposition badges "NOUVEAU" et "ANIME" corrigé
+- ✅ Suppression badge type contenu redondant dans section "Nouveaux épisodes ajoutés"
+- ✅ Conservation badge "NOUVEAU" seul pour meilleure lisibilité
+- ✅ Interface plus épurée dans cartes horizontales trending
+
 **Version 2.9.4 - Correction problème scroll vers le haut - July 28, 2025**
 - ✅ Problème "sceller vers le haut" (scroll up) identifié et corrigé
 - ✅ Configuration ScrollView HomeScreen simplifiée pour éliminer conflits
