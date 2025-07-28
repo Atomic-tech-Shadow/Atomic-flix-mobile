@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.9.9 - Navigation intelligente finalisée avec langue par défaut VOSTFR - July 28, 2025**
+- ✅ Navigation directe "Nouveaux épisodes" : charge épisode exact selon API (S8E10 VF)
+- ✅ Navigation AnimeDetail → saison : charge premier épisode avec langue par défaut 
+- ✅ Langue par défaut changée VF → VOSTFR (plus fréquent dans les animes)
+- ✅ Logique différenciée avec paramètres initialEpisode/initialLanguage optionnels
+- ✅ AnimePlayerScreen gère automatiquement les deux cas de navigation
+- ✅ Comportement optimal : trending = épisode spécifique, detail = premier épisode
+
 **Version 2.9.8 - Correction complète navigation trending avec ID propre - July 28, 2025**
 - ✅ Problème navigation "Erreur temporaire du serveur" résolu
 - ✅ Utilisation anime.animeId (ID propre) au lieu de anime.id (avec saison)

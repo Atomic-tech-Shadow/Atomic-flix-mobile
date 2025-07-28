@@ -41,7 +41,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   // États pour les données
   const [animeData, setAnimeData] = useState<AnimeData | null>(null);
   const [selectedSeason, setSelectedSeason] = useState<Season | null>(seasonData || null);
-  const [selectedLanguage, setSelectedLanguage] = useState<'VF' | 'VOSTFR'>(initialLanguage || 'VF');
+  const [selectedLanguage, setSelectedLanguage] = useState<'VF' | 'VOSTFR'>(initialLanguage || 'VOSTFR');
   const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
   const [selectedPlayer, setSelectedPlayer] = useState<number>(0);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
