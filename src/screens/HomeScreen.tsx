@@ -487,7 +487,7 @@ const HomeScreen: React.FC = () => {
     );
   }, []);
 
-  // Composant Carte Anime Horizontale pour la section Tendance
+  // Composant Carte Anime Horizontale pour la section Nouveaux épisodes
   const renderTrendingAnimeCard = React.useCallback((anime: SearchResult, index: number) => {
     // Utiliser la langue directement depuis l'objet language de l'API
     const detectedLanguage = getLanguageFromAPI(anime);
@@ -505,6 +505,13 @@ const HomeScreen: React.FC = () => {
           resizeMode="cover"
           onError={(e) => {}}
         />
+
+        {/* Badge épisode NOUVEAU sur l'image */}
+        {anime.episodeInfo && (
+          <View style={styles.newEpisodeBadge}>
+            <Text style={styles.newEpisodeBadgeText}>NOUVEAU</Text>
+          </View>
+        )}
 
         {/* Badge type de contenu */}
         <View style={[
@@ -528,13 +535,23 @@ const HomeScreen: React.FC = () => {
             <Text style={styles.horizontalCardTitle} numberOfLines={2}>
               {anime.title}
             </Text>
-            {detectedLanguage && (
-              <View style={styles.horizontalCardBadge}>
-                <Text style={styles.horizontalCardBadgeText}>
-                  {detectedLanguage}
-                </Text>
-              </View>
-            )}
+            {/* Badge info épisode + langue */}
+            <View style={styles.horizontalCardMeta}>
+              {anime.episodeInfo && (
+                <View style={styles.episodeInfoBadge}>
+                  <Text style={styles.episodeInfoText}>
+                    {anime.episodeInfo}
+                  </Text>
+                </View>
+              )}
+              {detectedLanguage && (
+                <View style={styles.horizontalCardBadge}>
+                  <Text style={styles.horizontalCardBadgeText}>
+                    {detectedLanguage}
+                  </Text>
+                </View>
+              )}
+            </View>
           </View>
         </LinearGradient>
       </TouchableOpacity>
@@ -699,7 +716,7 @@ const HomeScreen: React.FC = () => {
               <View style={styles.horizontalSection}>
                 <View style={styles.sectionHeader}>
                   <Text style={styles.sectionTitle}>
-                    🔥 Tendances du moment
+                    📺 Nouveaux épisodes ajoutés
                   </Text>
                 </View>
                 <ScrollView 
@@ -1293,6 +1310,45 @@ const styles = StyleSheet.create({
     width: 120,
     height: 180,
     marginRight: 12,
+    borderRadius: 8,
+    overflow: 'hidden',
+    backgroundColor: '#1a1a2e',
+  },
+  // Badge NOUVEAU pour les nouveaux épisodes
+  newEpisodeBadge: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    backgroundColor: 'rgba(255, 107, 53, 0.95)',
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 6,
+    zIndex: 2,
+  },
+  newEpisodeBadgeText: {
+    color: '#ffffff',
+    fontSize: 9,
+    fontWeight: 'bold',
+  },
+  // Meta info pour les cartes horizontales
+  horizontalCardMeta: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 4,
+    marginTop: 4,
+  },
+  episodeInfoBadge: {
+    backgroundColor: 'rgba(0, 188, 212, 0.2)',
+    borderWidth: 1,
+    borderColor: '#00bcd4',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
+  },
+  episodeInfoText: {
+    color: '#00bcd4',
+    fontSize: 9,
+    fontWeight: '600',
     borderRadius: 12,
     overflow: 'hidden',
     backgroundColor: '#1a1a2e',

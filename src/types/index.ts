@@ -22,6 +22,11 @@ export interface SearchResult {
   releaseTime?: string;
   isVFCrunchyroll?: boolean;
   planningType?: string;
+  // Champs spécifiques à l'API trending pour les nouveaux épisodes
+  episodeInfo?: string;
+  currentEpisode?: number;
+  currentSeason?: number;
+  isFinale?: boolean;
 }
 
 export interface Episode {
