@@ -30,6 +30,56 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   const [showGlobalSearchModal, setShowGlobalSearchModal] = useState(false);
   const [slideAnim] = useState(new Animated.Value(-300));
 
+  // 🧪 BOUTON TEST TEMPORAIRE pour les notifications push
+  const sendTestNotification = async () => {
+    try {
+      // Importer le service de notifications push
+      const PushNotificationService = require('../services/pushNotifications.js').default;
+      
+      // Obtenir le token push
+      const pushToken = await PushNotificationService.getExpoPushToken();
+      
+      if (!pushToken) {
+        Alert.alert('Test Notification', 'Impossible d\'obtenir le token push. Vérifiez les permissions.');
+        return;
+      }
+
+      // Envoyer une notification de test via l'API Expo
+      const message = {
+        to: pushToken,
+        sound: 'default',
+        title: '🧪 Test ATOMIC FLIX',
+        body: 'Notification de test réussie ! Les notifications push fonctionnent correctement.',
+        data: { 
+          screen: 'test',
+          timestamp: Date.now()
+        },
+      };
+
+      const response = await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Accept-encoding': 'gzip, deflate',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+      });
+
+      const result = await response.json();
+      
+      if (result.data && result.data[0] && result.data[0].status === 'ok') {
+        Alert.alert('Test réussi !', 'Notification push envoyée avec succès. Vous devriez la recevoir dans quelques secondes.');
+      } else {
+        Alert.alert('Erreur test', `Échec envoi: ${JSON.stringify(result)}`);
+      }
+      
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
+      Alert.alert('Erreur test', `Erreur: ${errorMessage}`);
+    }
+  };
+
   const notificationService = NotificationService.getInstance();
 
   const handleSearchPress = () => {
@@ -227,7 +277,13 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             </View>
           </TouchableOpacity>
 
-
+          {/* 🧪 BOUTON TEST TEMPORAIRE */}
+          <TouchableOpacity 
+            style={[styles.headerIconButton, { backgroundColor: '#ff6b35' }]}
+            onPress={sendTestNotification}
+          >
+            <Ionicons name="flask" size={18} color="#ffffff" />
+          </TouchableOpacity>
 
           <TouchableOpacity 
             style={styles.headerIconButton}
