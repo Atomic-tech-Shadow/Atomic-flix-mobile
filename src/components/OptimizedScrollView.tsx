@@ -19,11 +19,11 @@ const OptimizedScrollView: React.FC<OptimizedScrollViewProps> = ({
   ...props
 }) => {
   const optimizedProps = {
-    // 🔥 Propriétés de base pour performances optimales
+    // 🔥 Propriétés de base pour performances ultra-optimales
     removeClippedSubviews: true,
-    scrollEventThrottle: 16,
+    scrollEventThrottle: 4,
     keyboardShouldPersistTaps: 'handled' as const,
-    decelerationRate: 'fast' as const,
+    decelerationRate: 0.985,
     bounces: true,
     bouncesZoom: false,
     showsVerticalScrollIndicator: false,

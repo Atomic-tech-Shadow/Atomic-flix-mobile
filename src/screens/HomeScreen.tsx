@@ -587,11 +587,20 @@ const HomeScreen: React.FC = () => {
           />
         }
         showsVerticalScrollIndicator={false}
-        scrollEventThrottle={16}
+        scrollEventThrottle={4}
         keyboardShouldPersistTaps="handled"
         bounces={true}
         scrollsToTop={true}
         nestedScrollEnabled={true}
+        decelerationRate={0.985}
+        removeClippedSubviews={true}
+        overScrollMode="always"
+        scrollIndicatorInsets={{ right: 1 }}
+        maximumZoomScale={1}
+        minimumZoomScale={1}
+        automaticallyAdjustContentInsets={false}
+        contentInsetAdjustmentBehavior="never"
+        alwaysBounceVertical={false}
       >
 
         {/* Barre de recherche locale (identique au site web) */}
@@ -710,16 +719,16 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
-                  decelerationRate="fast"
-                  snapToInterval={140}
+                  decelerationRate={0.985}
+                  snapToInterval={128}
                   snapToAlignment="start"
                   directionalLockEnabled={true}
-                  scrollEventThrottle={16}
+                  scrollEventThrottle={4}
                   removeClippedSubviews={true}
                   bounces={true}
                   bouncesZoom={false}
                   overScrollMode="auto"
-                  disableIntervalMomentum={false}
+                  disableIntervalMomentum={true}
                 >
                   {trendingAnimes.map((anime, index) => renderTrendingAnimeCard(anime, index))}
                 </ScrollView>
@@ -737,16 +746,16 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
-                  decelerationRate="fast"
-                  snapToInterval={140}
+                  decelerationRate={0.985}
+                  snapToInterval={128}
                   snapToAlignment="start"
                   directionalLockEnabled={true}
-                  scrollEventThrottle={16}
+                  scrollEventThrottle={4}
                   removeClippedSubviews={true}
                   bounces={true}
                   bouncesZoom={false}
                   overScrollMode="auto"
-                  disableIntervalMomentum={false}
+                  disableIntervalMomentum={true}
                 >
                   {planningAnimes.map((anime, index) => (
                     <TouchableOpacity
@@ -807,16 +816,16 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
-                  decelerationRate="fast"
-                  snapToInterval={140}
+                  decelerationRate={0.985}
+                  snapToInterval={128}
                   snapToAlignment="start"
                   directionalLockEnabled={true}
-                  scrollEventThrottle={16}
+                  scrollEventThrottle={4}
                   removeClippedSubviews={true}
                   bounces={true}
                   bouncesZoom={false}
                   overScrollMode="auto"
-                  disableIntervalMomentum={false}
+                  disableIntervalMomentum={true}
                 >
                   {classiquesAnimes.map((anime, index) => (
                     <TouchableOpacity
@@ -868,16 +877,16 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
-                  decelerationRate="fast"
-                  snapToInterval={140}
+                  decelerationRate={0.985}
+                  snapToInterval={128}
                   snapToAlignment="start"
                   directionalLockEnabled={true}
-                  scrollEventThrottle={16}
+                  scrollEventThrottle={4}
                   removeClippedSubviews={true}
                   bounces={true}
                   bouncesZoom={false}
                   overScrollMode="auto"
-                  disableIntervalMomentum={false}
+                  disableIntervalMomentum={true}
                 >
                   {pepitesAnimes.map((anime, index) => (
                     <TouchableOpacity
