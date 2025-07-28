@@ -8,6 +8,13 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.9.4 - Correction problème scroll vers le haut - July 28, 2025**
+- ✅ Problème "sceller vers le haut" (scroll up) identifié et corrigé
+- ✅ Configuration ScrollView HomeScreen simplifiée pour éliminer conflits
+- ✅ Suppression propriétés problématiques : directionalLockEnabled, maintainVisibleContentPosition, contentInsetAdjustmentBehavior
+- ✅ Maintien des propriétés essentielles : scrollsToTop, bounces, nestedScrollEnabled
+- ✅ Scroll vertical fluide restauré sur écran d'accueil
+
 **Version 2.9.3 - Configuration version finale et menu optimisé - July 28, 2025**
 - ✅ Version augmentée : 2.7.9 → 2.9.3 dans app.json et versionCode Android : 279 → 293
 - ✅ Menu utilise maintenant la version d'app.json via Constants.expoConfig au lieu de package.json

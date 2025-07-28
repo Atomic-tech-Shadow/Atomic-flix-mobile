@@ -581,31 +581,11 @@ const HomeScreen: React.FC = () => {
           />
         }
         showsVerticalScrollIndicator={false}
-        removeClippedSubviews={true}
         scrollEventThrottle={16}
         keyboardShouldPersistTaps="handled"
-        decelerationRate="fast"
         bounces={true}
-        bouncesZoom={false}
-        alwaysBounceVertical={false}
-        nestedScrollEnabled={true}
-        // 🔥 Optimisations pour scroll ultra-fluide
-        maximumZoomScale={1}
-        minimumZoomScale={1}
         scrollsToTop={true}
-        automaticallyAdjustContentInsets={false}
-        contentInsetAdjustmentBehavior="never"
-        overScrollMode="auto"
-        fadingEdgeLength={0}
-        directionalLockEnabled={true}
-        // Performance améliorée pour grandes listes
-        disableIntervalMomentum={false}
-        snapToInterval={0}
-        snapToAlignment="start"
-        maintainVisibleContentPosition={{
-          minIndexForVisible: 0,
-          autoscrollToTopThreshold: 100
-        }}
+        nestedScrollEnabled={true}
       >
 
         {/* Barre de recherche locale (identique au site web) */}
