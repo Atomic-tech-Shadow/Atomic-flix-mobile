@@ -8,6 +8,18 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 2.9.0 - Refonte complète sections avec Planning et badges spécialisés - July 28, 2025**
+- ✅ Nouveau endpoint /api/planning intégré avec succès (80 animes prévus)
+- ✅ Section Planning ajoutée avec cartes et badges horaires dorés
+- ✅ Réorganisation logique des sections : Tendances → Planning → Légendaires → Pépites
+- ✅ Noms de sections améliorés : "🕐 Sorties cette semaine" et "💎 Pépites cachées"
+- ✅ Badges spécialisés sur les cartes : SORTIE (jaune), ★ CLASSIQUE (doré), 💎 RARE (violet)
+- ✅ Bordures colorées distinctives : Planning (jaune), Légendaires (doré), Pépites (violet)
+- ✅ Interface SearchResult étendue avec champs planning (releaseTime, isVFCrunchyroll)
+- ✅ Fonction loadPlanningAnimes et état planningLoading ajoutés
+- ✅ onRefresh mis à jour pour inclure rechargement du planning
+- ✅ Styles CSS complets pour cartes spécialisées et badges thématiques
+
 **Version 2.8.2 - Correction affichage section Découvertes - July 28, 2025**
 - ✅ Section Découvertes (Pépites) maintenant visible après correction faute de frappe
 - ✅ API utilise "pepites" sans accent, code cherchait "pépites" avec accent

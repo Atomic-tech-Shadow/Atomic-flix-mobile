@@ -654,105 +654,11 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-            {/* Section Classiques */}
-            {classiquesAnimes.length > 0 && (
-              <View style={styles.horizontalSection}>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>👑 Légendaires</Text>
-                </View>
-                <ScrollView 
-                  horizontal 
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.horizontalScrollContainer}
-                  style={styles.horizontalScroll}
-                >
-                  {classiquesAnimes.map((anime, index) => (
-                    <TouchableOpacity
-                      key={`classique-${anime.id || index}`}
-                      style={styles.horizontalCard}
-                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
-                      activeOpacity={0.8}
-                    >
-                      <Image
-                        source={{ uri: anime.image }}
-                        style={styles.horizontalCardImage}
-                        resizeMode="cover"
-                      />
-                      <LinearGradient
-                        colors={['transparent', 'rgba(0,0,0,0.8)']}
-                        style={styles.horizontalCardGradient}
-                      >
-                        <View style={styles.horizontalCardContent}>
-                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
-                            {anime.title}
-                          </Text>
-                          {anime.language && (
-                            <View style={styles.horizontalCardBadge}>
-                              <Text style={styles.horizontalCardBadgeText}>
-                                {getLanguageBadge(anime.language)}
-                              </Text>
-                            </View>
-                          )}
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
-              </View>
-            )}
-
-            {/* Section Pépites */}
-            {pepitesAnimes.length > 0 && (
-              <View style={styles.horizontalSection}>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>🔍 Découvertes</Text>
-                </View>
-                <ScrollView 
-                  horizontal 
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.horizontalScrollContainer}
-                  style={styles.horizontalScroll}
-                >
-                  {pepitesAnimes.map((anime, index) => (
-                    <TouchableOpacity
-                      key={`pepite-${anime.id || index}`}
-                      style={styles.horizontalCard}
-                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
-                      activeOpacity={0.8}
-                    >
-                      <Image
-                        source={{ uri: anime.image }}
-                        style={styles.horizontalCardImage}
-                        resizeMode="cover"
-                      />
-                      <LinearGradient
-                        colors={['transparent', 'rgba(0,0,0,0.8)']}
-                        style={styles.horizontalCardGradient}
-                      >
-                        <View style={styles.horizontalCardContent}>
-                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
-                            {anime.title}
-                          </Text>
-                          {anime.language && (
-                            <View style={styles.horizontalCardBadge}>
-                              <Text style={styles.horizontalCardBadgeText}>
-                                {getLanguageBadge(anime.language)}
-                              </Text>
-                            </View>
-                          )}
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
-              </View>
-            )}
-
-            {/* Section Planning */}
+            {/* Section Planning - 2ème position pour urgence temporelle */}
             {planningAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
                 <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>📅 Planning de la semaine</Text>
+                  <Text style={styles.sectionTitle}>🕐 Sorties cette semaine</Text>
                 </View>
                 <ScrollView 
                   horizontal 
@@ -772,6 +678,10 @@ const HomeScreen: React.FC = () => {
                         style={styles.horizontalCardImage}
                         resizeMode="cover"
                       />
+                      {/* Badge SORTIE sur l'image */}
+                      <View style={styles.releaseBadge}>
+                        <Text style={styles.releaseBadgeText}>SORTIE</Text>
+                      </View>
                       <LinearGradient
                         colors={['transparent', 'rgba(0,0,0,0.9)']}
                         style={styles.horizontalCardGradient}
@@ -784,7 +694,7 @@ const HomeScreen: React.FC = () => {
                             {anime.releaseTime && (
                               <View style={styles.planningTimeBadge}>
                                 <Text style={styles.planningTimeText}>
-                                  {anime.releaseTime}
+                                  ⏰ {anime.releaseTime}
                                 </Text>
                               </View>
                             )}
@@ -796,6 +706,108 @@ const HomeScreen: React.FC = () => {
                               </View>
                             )}
                           </View>
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
+
+            {/* Section Classiques - 3ème position valeurs sûres */}
+            {classiquesAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>👑 Légendaires</Text>
+                </View>
+                <ScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                >
+                  {classiquesAnimes.map((anime, index) => (
+                    <TouchableOpacity
+                      key={`classique-${anime.id || index}`}
+                      style={styles.legendaryCard}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
+                      activeOpacity={0.8}
+                    >
+                      <Image
+                        source={{ uri: anime.image }}
+                        style={styles.horizontalCardImage}
+                        resizeMode="cover"
+                      />
+                      {/* Badge CLASSIQUE sur l'image */}
+                      <View style={styles.classicBadge}>
+                        <Text style={styles.classicBadgeText}>★ CLASSIQUE</Text>
+                      </View>
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        style={styles.horizontalCardGradient}
+                      >
+                        <View style={styles.horizontalCardContent}>
+                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
+                            {anime.title}
+                          </Text>
+                          {anime.language && (
+                            <View style={styles.horizontalCardBadge}>
+                              <Text style={styles.horizontalCardBadgeText}>
+                                {getLanguageBadge(anime.language)}
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
+
+            {/* Section Pépites - 4ème position exploration */}
+            {pepitesAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>💎 Pépites cachées</Text>
+                </View>
+                <ScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                >
+                  {pepitesAnimes.map((anime, index) => (
+                    <TouchableOpacity
+                      key={`pepite-${anime.id || index}`}
+                      style={styles.gemCard}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
+                      activeOpacity={0.8}
+                    >
+                      <Image
+                        source={{ uri: anime.image }}
+                        style={styles.horizontalCardImage}
+                        resizeMode="cover"
+                      />
+                      {/* Badge RARE sur l'image */}
+                      <View style={styles.rareBadge}>
+                        <Text style={styles.rareBadgeText}>💎 RARE</Text>
+                      </View>
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        style={styles.horizontalCardGradient}
+                      >
+                        <View style={styles.horizontalCardContent}>
+                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
+                            {anime.title}
+                          </Text>
+                          {anime.language && (
+                            <View style={styles.horizontalCardBadge}>
+                              <Text style={styles.horizontalCardBadgeText}>
+                                {getLanguageBadge(anime.language)}
+                              </Text>
+                            </View>
+                          )}
                         </View>
                       </LinearGradient>
                     </TouchableOpacity>
@@ -1289,6 +1301,85 @@ const styles = StyleSheet.create({
     color: '#ffc107',
     fontSize: 8,
     fontWeight: '600',
+  },
+
+  // Styles pour les cartes spécialisées
+  legendaryCard: {
+    width: 120,
+    height: 180,
+    marginRight: 12,
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: '#1a1a2e',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.4)', // Bordure dorée pour légendaires
+  },
+  gemCard: {
+    width: 120,
+    height: 180,
+    marginRight: 12,
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: '#1a1a2e',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    borderWidth: 1,
+    borderColor: 'rgba(139, 92, 246, 0.4)', // Bordure violette pour pépites rares
+  },
+
+  // Badges spécialisés sur les images
+  releaseBadge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    backgroundColor: 'rgba(255, 193, 7, 0.95)',
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 8,
+    zIndex: 1,
+  },
+  releaseBadgeText: {
+    color: '#000000',
+    fontSize: 8,
+    fontWeight: 'bold',
+  },
+  classicBadge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    backgroundColor: 'rgba(255, 215, 0, 0.95)',
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 8,
+    zIndex: 1,
+  },
+  classicBadgeText: {
+    color: '#000000',
+    fontSize: 8,
+    fontWeight: 'bold',
+  },
+  rareBadge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    backgroundColor: 'rgba(139, 92, 246, 0.95)',
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 8,
+    zIndex: 1,
+  },
+  rareBadgeText: {
+    color: '#ffffff',
+    fontSize: 8,
+    fontWeight: 'bold',
   },
 
 });
