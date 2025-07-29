@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  ActivityIndicator,
   StyleSheet,
   Dimensions,
   RefreshControl,
@@ -1089,23 +1088,32 @@ const HomeScreen: React.FC = () => {
             {/* Message de chargement */}
             {popularLoading && (
               <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#00bcd4" />
-                <Text style={styles.loadingText}>Chargement du contenu populaire...</Text>
+                <LoadingSpinner 
+                  message="Chargement du contenu populaire..." 
+                  size="large"
+                  color="#00bcd4"
+                />
               </View>
             )}
 
             {/* Indicateur de chargement du planning */}
             {planningLoading && (
               <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#00bcd4" />
-                <Text style={styles.loadingText}>Chargement du planning...</Text>
+                <LoadingSpinner 
+                  message="Chargement du planning..." 
+                  size="large"
+                  color="#00bcd4"
+                />
               </View>
             )}
 
             {loading && (
               <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#00bcd4" />
-                <Text style={styles.loadingText}>Chargement...</Text>
+                <LoadingSpinner 
+                  message="Chargement..." 
+                  size="large"
+                  color="#00bcd4"
+                />
               </View>
             )}
 
