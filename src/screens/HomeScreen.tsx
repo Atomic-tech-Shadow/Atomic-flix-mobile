@@ -1447,7 +1447,10 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: '#00bcd4', // Couleur cyan principale de l'app au lieu du blanc basique
+    textShadowColor: 'rgba(0, 188, 212, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
   horizontalScroll: {
     paddingLeft: 16,
