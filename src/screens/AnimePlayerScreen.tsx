@@ -383,86 +383,117 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             allowsInlineMediaPlayback={true}
             mediaPlaybackRequiresUserAction={false}
             onShouldStartLoadWithRequest={(request) => {
-              // Bloquer les redirections vers des apps externes ou sites de pub
+              // PROTECTION RENFORCÉE - Garder toute navigation dans l'app
               const url = request.url;
-              const mainUrl = new URL(currentSource.url);
-              const requestUrl = new URL(url);
               
-              // Listes des domaines publicitaires couramment bloqués
-              const adDomains = [
-                'googleads.g.doubleclick.net',
-                'googlesyndication.com',
-                'googletagmanager.com',
-                'google-analytics.com',
-                'facebook.com',
-                'adsystem.com',
-                'ads.yahoo.com',
-                'amazon-adsystem.com',
-                'adsense.google.com',
-                'pubmatic.com',
-                'rubiconproject.com',
-                'openx.net',
-                'adsystem.com',
-                'popads.net',
-                'popcash.net',
-                'propellerads.com',
-                'revcontent.com',
-                'outbrain.com',
-                'taboola.com',
-                'bidgear.com',
-                'exoclick.com',
-                'clickadu.com',
-                'adnxs.com',
-                'adskeeper.co.uk',
-                'mgid.com'
-              ];
-              
-              // Bloquer les domaines publicitaires
-              if (adDomains.some(domain => requestUrl.hostname.includes(domain))) {
-                console.log('🚫 Publicité bloquée:', url);
+              try {
+                const mainUrl = new URL(currentSource.url);
+                const requestUrl = new URL(url);
+                
+                // 🛑 BLOQUER IMMÉDIATEMENT tous les protocoles externes
+                if (url.startsWith('intent://') || 
+                    url.startsWith('market://') || 
+                    url.startsWith('mailto:') ||
+                    url.startsWith('tel:') ||
+                    url.startsWith('sms:') ||
+                    url.startsWith('whatsapp:') ||
+                    url.startsWith('tg:') ||
+                    url.startsWith('viber:') ||
+                    url.includes('play.google.com') ||
+                    url.includes('itunes.apple.com') ||
+                    url.includes('apps.apple.com')) {
+                  console.log('🚫 PROTOCOLE EXTERNE BLOQUÉ:', url);
+                  return false;
+                }
+                
+                // 🛑 BLOQUER tous les domaines publicitaires/malveillants
+                const bannedKeywords = [
+                  'ads', 'ad.', 'popup', 'pop-up', 'redirect', 'click',
+                  'googleads', 'googlesyndication', 'doubleclick', 'adsense',
+                  'facebook.com', 'google-analytics', 'googletagmanager',
+                  'amazon-adsystem', 'pubmatic', 'rubiconproject', 'openx',
+                  'popads', 'popcash', 'propellerads', 'revcontent',
+                  'outbrain', 'taboola', 'bidgear', 'exoclick', 'clickadu',
+                  'adnxs', 'adskeeper', 'mgid', 'pusher', 'notification'
+                ];
+                
+                for (const keyword of bannedKeywords) {
+                  if (requestUrl.hostname.includes(keyword) || url.includes(keyword)) {
+                    console.log('🚫 PUBLICITÉ/MALWARE BLOQUÉ:', url);
+                    return false;
+                  }
+                }
+                
+                // ✅ AUTORISER SEULEMENT domaines streaming légitimes + même domaine
+                const trustedDomains = [
+                  mainUrl.hostname,  // Toujours autoriser le domaine principal
+                  'vudeo.net', 'uqload.com', 'sibnet.ru', 'sendvid.com',
+                  'streamtape.com', 'doodstream.com', 'filemoon.sx', 
+                  'upstream.to', 'ok.ru', 'vk.com', 'dailymotion.com',
+                  'fembed.com', 'evoload.io', 'gounlimited.to'
+                ];
+                
+                const isDomainTrusted = trustedDomains.some(domain => 
+                  requestUrl.hostname === domain || 
+                  requestUrl.hostname.endsWith('.' + domain)
+                );
+                
+                if (!isDomainTrusted) {
+                  console.log('🚫 DOMAINE NON FIABLE BLOQUÉ:', requestUrl.hostname);
+                  return false;
+                }
+                
+                // ✅ Si c'est le premier chargement ou même domaine, autoriser
+                if (url === currentSource.url || requestUrl.hostname === mainUrl.hostname) {
+                  return true;
+                }
+                
+                console.log('✅ Navigation autorisée:', url);
+                return true;
+                
+              } catch (error) {
+                // En cas d'erreur URL, bloquer par sécurité
+                console.log('🚫 URL INVALIDE BLOQUÉE:', url);
                 return false;
               }
-              
-              // Bloquer les redirections vers des apps ou protocoles externes
-              if (url.startsWith('intent://') || 
-                  url.startsWith('market://') || 
-                  url.startsWith('play.google.com') ||
-                  url.startsWith('itunes.apple.com') ||
-                  url.startsWith('apps.apple.com') ||
-                  url.includes('redirect') ||
-                  url.includes('click') ||
-                  url.includes('ad.') ||
-                  url.includes('ads.') ||
-                  url.includes('popup')) {
-                console.log('🚫 Redirection bloquée:', url);
-                return false;
-              }
-              
-              // Autoriser seulement les domaines de streaming légitimes
-              const allowedDomains = [
-                mainUrl.hostname,
-                'vudeo.net',
-                'uqload.com',
-                'sibnet.ru',
-                'sendvid.com',
-                'streamtape.com',
-                'doodstream.com',
-                'filemoon.sx',
-                'upstream.to'
-              ];
-              
-              if (!allowedDomains.some(domain => requestUrl.hostname.includes(domain))) {
-                console.log('🚫 Domaine non autorisé:', requestUrl.hostname);
-                return false;
-              }
-              
-              return true;
             }}
             onNavigationStateChange={(navState) => {
-              // Empêcher la navigation vers des pages externes
-              if (navState.url !== currentSource.url && 
-                  !navState.url.includes(new URL(currentSource.url).hostname)) {
-                console.log('🚫 Navigation externe bloquée:', navState.url);
+              // PROTECTION RENFORCÉE - Empêcher navigation Chrome
+              try {
+                const mainUrl = new URL(currentSource.url);
+                const navUrl = new URL(navState.url);
+                
+                // Si ce n'est pas le domaine principal ou sous-domaine, bloquer
+                if (navUrl.hostname !== mainUrl.hostname && 
+                    !navUrl.hostname.endsWith('.' + mainUrl.hostname)) {
+                  
+                  // Vérifier si c'est un domaine streaming légitime
+                  const trustedStreamingDomains = [
+                    'vudeo.net', 'uqload.com', 'sibnet.ru', 'sendvid.com',
+                    'streamtape.com', 'doodstream.com', 'filemoon.sx', 
+                    'upstream.to', 'ok.ru', 'vk.com', 'dailymotion.com'
+                  ];
+                  
+                  const isTrustedStreaming = trustedStreamingDomains.some(domain => 
+                    navUrl.hostname === domain || navUrl.hostname.endsWith('.' + domain)
+                  );
+                  
+                  if (!isTrustedStreaming) {
+                    console.log('🚫 NAVIGATION EXTERNE FORCÉE BLOQUÉE:', navState.url);
+                    // Forcer le retour à la page précédente
+                    if (webViewRef.current && navState.canGoBack) {
+                      webViewRef.current.goBack();
+                    } else {
+                      // Si impossible de revenir en arrière, recharger la source originale
+                      webViewRef.current?.reload();
+                    }
+                    return;
+                  }
+                }
+                
+                console.log('✅ Navigation WebView autorisée:', navState.url);
+              } catch (error) {
+                console.log('🚫 ERREUR URL - Navigation bloquée:', navState.url);
                 webViewRef.current?.goBack();
               }
             }}

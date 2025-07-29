@@ -8,6 +8,15 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 3.0.3 - Protection WebView renforcée contre redirection Chrome - July 29, 2025**
+- ✅ Problème résolu : clics dans WebView ouvraient Chrome au lieu de rester dans l'app
+- ✅ Protection double : onShouldStartLoadWithRequest + onNavigationStateChange
+- ✅ Bloque protocoles externes (intent://, market://, mailto:, tel:, etc.)
+- ✅ Blacklist étendue mots-clés malveillants (ads, popup, redirect, click)
+- ✅ Whitelist stricte domaines streaming légitimes uniquement
+- ✅ Force retour automatique si navigation externe détectée
+- ✅ Logs console pour traçabilité des blocages publicitaires
+
 **Version 3.0.2 - Titre ATOMIC FLIX stylisé avec couleurs d'app - July 29, 2025**
 - ✅ Titre "ATOMIC FLIX 🇹🇬" maintenant avec dégradé cyan-bleu (#00bcd4 → #4ca9ff)
 - ✅ Style cohérent avec palette couleurs application au lieu du blanc basique
