@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, Modal, Animated, Dimensions, Platform } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Ionicons } from '@expo/vector-icons';
@@ -201,7 +202,14 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             style={styles.logoImage}
             resizeMode="contain"
           />
-          <Text style={styles.logoText}>ATOMIC FLIX 🇹🇬</Text>
+          <LinearGradient
+            colors={['#00bcd4', '#4ca9ff', '#00bcd4']}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            style={styles.logoTextGradient}
+          >
+            <Text style={styles.logoText}>ATOMIC FLIX 🇹🇬</Text>
+          </LinearGradient>
         </View>
         <View style={styles.headerIcons}>
           <TouchableOpacity 
@@ -271,7 +279,14 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 style={styles.drawerLogo}
                 resizeMode="contain"
               />
-              <Text style={styles.drawerTitle}>ATOMIC FLIX 🇹🇬</Text>
+              <LinearGradient
+                colors={['#00bcd4', '#4ca9ff', '#00bcd4']}
+                start={{x: 0, y: 0}}
+                end={{x: 1, y: 0}}
+                style={styles.drawerTitleGradient}
+              >
+                <Text style={styles.drawerTitle}>ATOMIC FLIX 🇹🇬</Text>
+              </LinearGradient>
               <TouchableOpacity 
                 style={styles.closeButton}
                 onPress={closeMenuDrawer}
@@ -357,11 +372,20 @@ const styles = StyleSheet.create({
     borderRadius: 60, // Pour rendre le logo rond
     marginRight: 8,
   },
+  logoTextGradient: {
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
   logoText: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#ffffff',
     letterSpacing: 0.5,
+    textAlign: 'center',
+    textShadowColor: 'rgba(0, 188, 212, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
   headerIcons: {
     flexDirection: 'row',
@@ -422,11 +446,20 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginRight: 10,
   },
-  drawerTitle: {
+  drawerTitleGradient: {
     flex: 1,
+    borderRadius: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+  },
+  drawerTitle: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#ffffff',
+    textAlign: 'center',
+    textShadowColor: 'rgba(0, 188, 212, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
   closeButton: {
     padding: 8,
