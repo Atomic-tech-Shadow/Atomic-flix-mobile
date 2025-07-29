@@ -8,6 +8,14 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
+**Version 3.0.2 - Titre ATOMIC FLIX stylisé avec couleurs d'app - July 29, 2025**
+- ✅ Titre "ATOMIC FLIX 🇹🇬" maintenant avec dégradé cyan-bleu (#00bcd4 → #4ca9ff)
+- ✅ Style cohérent avec palette couleurs application au lieu du blanc basique
+- ✅ Dégradé horizontal appliqué dans header principal ET menu drawer
+- ✅ Ombre cyan subtile ajoutée pour effet lumineux professionnel
+- ✅ Position logo et titre préservées exactement comme avant
+- ✅ Drapeau Togo 🇹🇬 maintenu comme demandé par l'utilisateur
+
 **Version 3.0.1 - Correction navigation One Piece Saga 11 - July 28, 2025**
 - ✅ Bug navigation One Piece Saga 11 → Saison 1 corrigé
 - ✅ Problème identifié : API trending currentSeason=null pour One Piece
