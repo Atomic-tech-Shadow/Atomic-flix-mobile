@@ -48,7 +48,8 @@ const HomeScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [trendingAnimes, setTrendingAnimes] = useState<SearchResult[]>([]);
   const [classiquesAnimes, setClassiquesAnimes] = useState<SearchResult[]>([]);
@@ -59,8 +60,6 @@ const HomeScreen: React.FC = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [showTelegramModal, setShowTelegramModal] = useState(false);
-  const [popularLoading, setPopularLoading] = useState(true);
-  const [planningLoading, setPlanningLoading] = useState(true);
 
 
   // Configuration API identique au site web
@@ -80,17 +79,32 @@ const HomeScreen: React.FC = () => {
     return 'VO';
   };
 
-  // Charger les animes trending au démarrage et initialiser les notifications
+  // Charger tout le contenu au démarrage
   useEffect(() => {
-    loadTrendingAnimes();
-    loadPopularAnimes();
-    loadPlanningAnimes();
+    loadAllInitialContent();
     initializeNotifications();
     checkTelegramVerification();
 
     // Nettoyer les anciennes notifications au démarrage
     notificationService.cleanOldNotifications();
   }, []);
+
+  // Fonction centralisée pour charger tout le contenu initial
+  const loadAllInitialContent = async () => {
+    setInitialLoading(true);
+    try {
+      // Charger tout en parallèle
+      await Promise.all([
+        loadTrendingAnimes(),
+        loadPopularAnimes(),
+        loadPlanningAnimes()
+      ]);
+    } catch (error) {
+      console.error('Erreur chargement initial:', error);
+    } finally {
+      setInitialLoading(false);
+    }
+  };
 
   // Vérifier si l'utilisateur a déjà validé Telegram
   const checkTelegramVerification = async () => {
@@ -206,7 +220,6 @@ const HomeScreen: React.FC = () => {
   // Charger le contenu populaire (classiques et pépites) depuis l'API
   const loadPopularAnimes = async () => {
     try {
-      setPopularLoading(true);
       const response = await apiRequest('/api/popular');
 
       if (response && response.success && response.categories) {
@@ -223,15 +236,12 @@ const HomeScreen: React.FC = () => {
     } catch (error) {
       setClassiquesAnimes([]);
       setPepitesAnimes([]);
-    } finally {
-      setPopularLoading(false);
     }
   };
 
   // Charger le planning des animes prévus depuis l'API
   const loadPlanningAnimes = async () => {
     try {
-      setPlanningLoading(true);
       const response = await animeAPI.getPlanning();
 
       if (response && response.success && response.data) {
@@ -264,8 +274,6 @@ const HomeScreen: React.FC = () => {
     } catch (error) {
       console.error('Erreur chargement planning:', error);
       setPlanningAnimes([]);
-    } finally {
-      setPlanningLoading(false);
     }
   };
 
@@ -276,7 +284,7 @@ const HomeScreen: React.FC = () => {
       return;
     }
 
-    setLoading(true);
+    setSearchLoading(true);
     setError(null);
 
     try {
@@ -305,7 +313,7 @@ const HomeScreen: React.FC = () => {
       }
       setSearchResults([]);
     } finally {
-      setLoading(false);
+      setSearchLoading(false);
     }
   };
 
@@ -531,7 +539,7 @@ const HomeScreen: React.FC = () => {
   // Refresh control
   const onRefresh = async () => {
     setRefreshing(true);
-    await Promise.all([loadTrendingAnimes(), loadPopularAnimes(), loadPlanningAnimes()]);
+    await loadAllInitialContent();
     
     // Reprogrammer les notifications planning après refresh si activées
     if (notificationsEnabled && planningAnimes.length > 0) {
@@ -788,7 +796,7 @@ const HomeScreen: React.FC = () => {
         )}
 
         {/* Résultats de recherche (identique au site web) */}
-        {loading && searchQuery && (
+        {searchLoading && searchQuery && (
           <View style={styles.loadingContainer}>
             <LoadingSpinner 
               message="Recherche en cours..." 
@@ -798,7 +806,7 @@ const HomeScreen: React.FC = () => {
           </View>
         )}
 
-        {searchResults.length > 0 && !loading && (
+        {searchResults.length > 0 && !searchLoading && (
           <View style={styles.searchResultsGrid}>
             {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
           </View>
@@ -821,7 +829,7 @@ const HomeScreen: React.FC = () => {
         )}
 
         {/* Message si aucun résultat */}
-        {searchQuery && !loading && searchResults.length === 0 && !error && (
+        {searchQuery && !searchLoading && searchResults.length === 0 && !error && (
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>Aucun résultat trouvé pour "{searchQuery}"</Text>
           </View>
@@ -1085,32 +1093,11 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-            {/* Message de chargement */}
-            {popularLoading && (
+            {/* Chargement initial unique */}
+            {initialLoading && (
               <View style={styles.loadingContainer}>
                 <LoadingSpinner 
-                  message="Chargement du contenu populaire..." 
-                  size="large"
-                  color="#00bcd4"
-                />
-              </View>
-            )}
-
-            {/* Indicateur de chargement du planning */}
-            {planningLoading && (
-              <View style={styles.loadingContainer}>
-                <LoadingSpinner 
-                  message="Chargement du planning..." 
-                  size="large"
-                  color="#00bcd4"
-                />
-              </View>
-            )}
-
-            {loading && (
-              <View style={styles.loadingContainer}>
-                <LoadingSpinner 
-                  message="Chargement..." 
+                  message="Chargement de l'univers des animes..." 
                   size="large"
                   color="#00bcd4"
                 />
@@ -1134,7 +1121,7 @@ const HomeScreen: React.FC = () => {
             )}
 
             {/* Message vide si pas de contenu trending et pas de chargement */}
-            {!loading && !error && trendingAnimes.length === 0 && (
+            {!initialLoading && !error && trendingAnimes.length === 0 && (
               <View style={styles.emptyContainer}>
                 <Text style={styles.emptyText}>Aucun contenu trending trouvé</Text>
                 <TouchableOpacity 
