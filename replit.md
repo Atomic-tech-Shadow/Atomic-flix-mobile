@@ -8,14 +8,19 @@ Il s'agit d'une application mobile React Native construite avec Expo pour le str
 
 ## Recent Changes
 
-**Version 3.0.3 - Protection WebView renforcée contre redirection Chrome - July 29, 2025**
-- ✅ Problème résolu : clics dans WebView ouvraient Chrome au lieu de rester dans l'app
-- ✅ Protection double : onShouldStartLoadWithRequest + onNavigationStateChange
-- ✅ Bloque protocoles externes (intent://, market://, mailto:, tel:, etc.)
-- ✅ Blacklist étendue mots-clés malveillants (ads, popup, redirect, click)
-- ✅ Whitelist stricte domaines streaming légitimes uniquement
-- ✅ Force retour automatique si navigation externe détectée
-- ✅ Logs console pour traçabilité des blocages publicitaires
+**Version 3.0.4 - Migration Replit Agent vers Replit et suppression protection WebView - July 30, 2025**
+- ✅ Migration complète du projet depuis Replit Agent vers environnement Replit standard
+- ✅ Toutes les dépendances npm installées avec succès (812 packages)
+- ✅ Serveur de développement Metro Bundler opérationnel sur port 5000
+- ✅ Suppression complète du système de blocage publicitaire dans AnimePlayerScreen
+- ✅ WebView maintenant libre pour toutes navigations sans restrictions
+- ✅ Health check complet : 3/3 vérifications réussies (Expo Doctor, TypeScript, Tests de base)
+- ✅ QR code Expo disponible pour test sur mobile via Expo Go
+- ✅ Projet prêt pour développement et builds Android
+
+**Version 3.0.3 - Protection WebView renforcée contre redirection Chrome - July 29, 2025** (SUPPRIMÉE)
+- ❌ Suppression complète du système de blocage publicitaire sur demande utilisateur
+- ❌ WebView maintenant libre sans restrictions de navigation
 
 **Version 3.0.2 - Titre ATOMIC FLIX stylisé avec couleurs d'app - July 29, 2025**
 - ✅ Titre "ATOMIC FLIX 🇹🇬" maintenant avec dégradé cyan-bleu (#00bcd4 → #4ca9ff)
