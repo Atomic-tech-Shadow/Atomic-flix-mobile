@@ -209,7 +209,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             end={{x: 1, y: 0}}
             style={styles.logoTextGradient}
           >
-            <Text style={styles.logoText}>ATOMIC FLIX 🇹🇬</Text>
+            <Text style={styles.logoText}>ATOMIC FLIX</Text>
           </LinearGradient>
         </View>
         <View style={styles.headerIcons}>
@@ -286,7 +286,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 end={{x: 1, y: 0}}
                 style={styles.drawerTitleGradient}
               >
-                <Text style={styles.drawerTitle}>ATOMIC FLIX 🇹🇬</Text>
+                <Text style={styles.drawerTitle}>ATOMIC FLIX</Text>
               </LinearGradient>
               <TouchableOpacity 
                 style={styles.closeButton}
