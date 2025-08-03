@@ -10,6 +10,7 @@ import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import NotificationService, { EpisodeNotification } from '../utils/notificationService';
 import NotificationModal from './NotificationModal';
+import { COLORS } from '../constants/newColors';
 import GlobalSearchModal from './GlobalSearchModal';
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
@@ -198,12 +199,12 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
       <View style={styles.headerRow}>
         <View style={styles.logoSection}>
           <Image 
-            source={require('../../assets/atomic-flix-logo.png')}
+            source={require('../../assets/atomic-flix-logo-new.png')}
             style={styles.logoImage}
             resizeMode="contain"
           />
           <LinearGradient
-            colors={['#00bcd4', '#4ca9ff', '#00bcd4']}
+            colors={[COLORS.secondary, COLORS.primary, COLORS.accent]}
             start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
             style={styles.logoTextGradient}
@@ -227,7 +228,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
               <Ionicons 
                 name={notificationsEnabled ? "notifications" : "notifications-off"} 
                 size={22} 
-                color={notificationsEnabled ? "#00bcd4" : "#ffffff"} 
+                color={notificationsEnabled ? COLORS.secondary : "#ffffff"} 
               />
               {notificationsEnabled && unreadCount > 0 && (
                 <View style={styles.notificationBadge}>
@@ -275,7 +276,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           >
             <View style={styles.drawerHeader}>
               <Image 
-                source={require('../../assets/atomic-flix-logo.png')}
+                source={require('../../assets/atomic-flix-logo-new.png')}
                 style={styles.drawerLogo}
                 resizeMode="contain"
               />

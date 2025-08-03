@@ -35,7 +35,7 @@ export default function AboutScreen({ navigation }: Props) {
         {/* Header */}
         <View style={styles.header}>
           <Image 
-            source={require('../../assets/atomic-flix-logo.png')}
+            source={require('../../assets/atomic-flix-logo-new.png')}
             style={styles.headerLogo}
             resizeMode="contain"
           />

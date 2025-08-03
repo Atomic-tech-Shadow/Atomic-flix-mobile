@@ -40,7 +40,7 @@ export default function NotFoundScreen({ navigation }: Props) {
         <View style={styles.logoSection}>
           <Text style={styles.errorCode}>404</Text>
           <Image 
-            source={require('../../assets/atomic-flix-logo.png')}
+            source={require('../../assets/atomic-flix-logo-new.png')}
             style={styles.logoImage}
             resizeMode="contain"
           />

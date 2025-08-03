@@ -22,6 +22,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SearchResult } from '../types/index';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
+import { COLORS } from '../constants/newColors';
 import LoadingSpinner from '../components/LoadingSpinner';
 import NotificationService from '../utils/notificationService';
 import TrendingNotificationService from '../services/TrendingNotificationService';
@@ -773,7 +774,7 @@ const HomeScreen: React.FC = () => {
         {showSearchBar && (
           <View style={styles.searchBarContainer}>
             <View style={styles.searchBar}>
-              <Ionicons name="search" size={20} color="#00bcd4" />
+              <Ionicons name="search" size={20} color={COLORS.secondary} />
               <TextInput
                 style={styles.searchInput}
                 value={searchQuery}
@@ -801,7 +802,7 @@ const HomeScreen: React.FC = () => {
             <LoadingSpinner 
               message="Recherche en cours..." 
               size="large"
-              color="#00bcd4"
+              color={COLORS.primary}
             />
           </View>
         )}
@@ -865,7 +866,7 @@ const HomeScreen: React.FC = () => {
                   Plongez dans l'univers infini{'\n'}des animes et mangas !
                 </Text>
                 <Image 
-                  source={require('../../assets/atomic-flix-logo.png')}
+                  source={require('../../assets/atomic-flix-logo-new.png')}
                   style={styles.heroLogo}
                   resizeMode="contain"
                 />
@@ -1310,13 +1311,13 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   mangaBadge: {
-    backgroundColor: '#f97316',
+    backgroundColor: COLORS.badges.manga,
   },
   movieBadge: {
-    backgroundColor: '#8b5cf6',
+    backgroundColor: COLORS.badges.film,
   },
   animeBadge: {
-    backgroundColor: '#00bcd4',
+    backgroundColor: COLORS.badges.anime,
   },
   badgeText: {
     color: '#ffffff',
@@ -1353,16 +1354,16 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   languageBadge: {
-    backgroundColor: 'rgba(0, 188, 212, 0.2)',
+    backgroundColor: 'rgba(0, 212, 255, 0.2)',
     borderWidth: 1,
-    borderColor: '#00bcd4',
+    borderColor: COLORS.secondary,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 8,
     alignSelf: 'flex-end',
   },
   languageText: {
-    color: '#00bcd4',
+    color: COLORS.secondary,
     fontSize: 9,
     fontWeight: '600',
   },
@@ -1387,7 +1388,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   retryButton: {
-    backgroundColor: '#00bcd4',
+    backgroundColor: COLORS.primary,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 8,
@@ -1447,8 +1448,8 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#00bcd4', // Couleur cyan principale de l'app au lieu du blanc basique
-    textShadowColor: 'rgba(0, 188, 212, 0.3)',
+    color: COLORS.secondary, // Couleur cyan du nouveau logo
+    textShadowColor: 'rgba(0, 212, 255, 0.3)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
@@ -1490,15 +1491,15 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   episodeInfoBadge: {
-    backgroundColor: 'rgba(0, 188, 212, 0.2)',
+    backgroundColor: 'rgba(0, 212, 255, 0.2)',
     borderWidth: 1,
-    borderColor: '#00bcd4',
+    borderColor: COLORS.secondary,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 6,
   },
   episodeInfoText: {
-    color: '#00bcd4',
+    color: COLORS.secondary,
     fontSize: 9,
     fontWeight: '600',
     borderRadius: 12,
@@ -1639,7 +1640,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.4)', // Bordure violette pour pépites rares
+    borderColor: COLORS.border.primary, // Bordure violette pour pépites rares
   },
 
   // Badges spécialisés sur les images
@@ -1677,7 +1678,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 6,
     right: 6,
-    backgroundColor: 'rgba(139, 92, 246, 0.95)',
+    backgroundColor: COLORS.primary,
     paddingHorizontal: 6,
     paddingVertical: 3,
     borderRadius: 8,

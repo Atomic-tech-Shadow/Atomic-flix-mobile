@@ -23,13 +23,13 @@ The application adopts a React Native/Expo mobile app architecture with a strong
 -   **Language**: Full TypeScript support with strict configuration for enhanced code quality and maintainability.
 -   **Build System**: Expo Application Services (EAS) is utilized for production builds, specifically targeting Android APK generation with custom keystore signing.
 -   **UI/UX Decisions**:
-    -   **Color Scheme**: Predominantly dark blue (`#0a0a1a`) with cyan accents (`#00bcd4`) and complementary colors like yellow (`#FFC107`) for planning and gold for legendary content.
+    -   **Color Scheme**: Nouvelle palette moderne basée sur le logo 3D avec violet principal (`#8B5DFF`), cyan éclatant (`#00D4FF`), et rose accent (`#FF6B9D`) sur fond sombre (`#0a0a1a`).
     -   **Design Patterns**: Consistent use of horizontal scroll sections for content categories (Trending, Planning, Legendary, Discoveries) and compact, information-rich cards.
-    -   **Interactive Elements**: Animated SVG logo, intelligent badging for content types (ANIME, MANGA, FILM) and languages (VF, VOSTFR), and visually distinct bordered cards for different sections.
+    -   **Interactive Elements**: Nouveau logo 3D F moderne, badges intelligents harmonisés (ANIME: violet, MANGA: rose, FILM: cyan) et badges de langue (VF, VOSTFR) avec couleurs cohérentes du logo.
     -   **Responsiveness**: Optimized layouts for various screen sizes, including careful management of image dimensions and text truncation.
     -   **Performance**: Implementation of `OptimizedScrollView` and `OptimizedFlatList` for ultra-smooth scrolling, native drivers, and removal of unnecessary animations in critical paths.
     -   **Splash Screen**: Custom splash screen with atomic-themed animated logo, slogan, and subtle animations, adhering to Expo's best practices for smooth transitions.
-    -   **Header**: Unified `SharedHeader` component across all screens, featuring the ATOMIC FLIX logo, search, notification, and menu icons.
+    -   **Header**: `SharedHeader` unifié avec nouveau logo 3D et gradient moderne (cyan→violet→rose) pour le texte ATOMIC FLIX.
     -   **Player Interface**: Integrated `WebView` for video streaming, with custom controls for episode navigation, server selection, and language toggling (VF/VOSTFR) using authentic national flags.
     -   **Notifications**: Comprehensive notification system with interactive bell icon, unread badges, and visual modals displaying anime/manga images and episode details.
     -   **Telegram Verification**: A dedicated modal for Telegram channel subscription verification, styled consistently with the app's theme and featuring clear instructions.
