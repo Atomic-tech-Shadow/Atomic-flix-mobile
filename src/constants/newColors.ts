@@ -17,12 +17,12 @@ export const COLORS = {
     end: '#8B5DFF'
   },
   
-  // Couleurs de fond (conservées sombres pour garder l'aspect anime)
+  // Couleurs de fond harmonisées avec le logo moderne
   background: {
-    primary: '#0a0a1a', // Noir principal
-    secondary: '#1a0a2e', // Violet très sombre
-    card: '#2a1a3e', // Violet sombre pour cartes
-    modal: 'rgba(20, 10, 30, 0.95)'
+    primary: '#0f0f23', // Bleu-violet très sombre moderne
+    secondary: '#1a1a35', // Violet sombre élégant
+    card: '#252547', // Violet-bleu pour cartes
+    modal: 'rgba(26, 26, 53, 0.95)'
   },
   
   // Couleurs de texte
