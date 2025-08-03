@@ -5,6 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { StatusBar } from 'expo-status-bar';
 import SharedHeader from '../components/SharedHeader';
+import { COLORS } from '../constants/newColors';
 
 type AboutScreenNavigationProp = StackNavigationProp<RootStackParamList, 'About'>;
 
@@ -23,7 +24,7 @@ export default function AboutScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-      <StatusBar style="light" backgroundColor="#0a0a1a" />
+      <StatusBar style="light" backgroundColor={COLORS.primary} />
       
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
@@ -179,16 +180,16 @@ export default function AboutScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary, // Violet du logo
   },
   headerContainer: {
     position: 'relative',
     zIndex: 10,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.secondary, // Cyan du logo
   },
   container: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary, // Violet du logo
   },
   contentContainer: {
     flexGrow: 1,
@@ -230,7 +231,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#00bcd4',
+    color: COLORS.secondary, // Cyan du logo
     marginBottom: 4,
   },
   cardDescription: {
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   highlightText: {
-    color: '#00bcd4',
+    color: COLORS.accent, // Rose du logo
     fontWeight: '600',
   },
   warningBox: {

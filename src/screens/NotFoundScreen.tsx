@@ -5,6 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { StatusBar } from 'expo-status-bar';
 import SharedHeader from '../components/SharedHeader';
+import { COLORS } from '../constants/newColors';
 
 type NotFoundScreenNavigationProp = StackNavigationProp<RootStackParamList, 'NotFound'>;
 
@@ -23,7 +24,7 @@ export default function NotFoundScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-      <StatusBar style="light" backgroundColor="#0a0a1a" />
+      <StatusBar style="light" backgroundColor={COLORS.primary} />
 
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
@@ -85,16 +86,16 @@ export default function NotFoundScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary, // Violet du logo
   },
   headerContainer: {
     position: 'relative',
     zIndex: 10,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.secondary, // Cyan du logo
   },
   container: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary, // Violet du logo
     position: 'relative',
   },
   overlay: {
@@ -119,9 +120,9 @@ const styles = StyleSheet.create({
   errorCode: {
     fontSize: 80,
     fontWeight: 'bold',
-    color: '#00bcd4',
+    color: COLORS.secondary, // Cyan du logo
     marginBottom: 16,
-    textShadowColor: 'rgba(0, 188, 212, 0.5)',
+    textShadowColor: 'rgba(0, 212, 255, 0.5)',
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 20,
   },
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
   },
   tagline: {
     fontSize: 18,
-    color: '#00bcd4',
+    color: COLORS.accent, // Rose du logo
   },
   messageContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',

@@ -427,10 +427,10 @@ const styles = StyleSheet.create({
   },
   drawerContainer: {
     width: 280,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary, // Violet du logo
     height: '100%',
     borderRightWidth: 1,
-    borderRightColor: '#1a1a2e',
+    borderRightColor: COLORS.secondary, // Cyan du logo
     paddingTop: 20,
   },
   drawerHeader: {
@@ -439,7 +439,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#1a1a2e',
+    borderBottomColor: COLORS.accent, // Rose du logo
   },
   drawerLogo: {
     width: 30,

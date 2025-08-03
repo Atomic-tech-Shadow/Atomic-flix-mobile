@@ -5,6 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { StatusBar } from 'expo-status-bar';
 import SharedHeader from '../components/SharedHeader';
+import { COLORS } from '../constants/newColors';
 
 type PrivacyPolicyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'PrivacyPolicy'>;
 
@@ -17,7 +18,7 @@ export default function PrivacyPolicyScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-      <StatusBar style="light" backgroundColor="#0a0a1a" />
+      <StatusBar style="light" backgroundColor={COLORS.primary} />
       
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
@@ -270,16 +271,16 @@ export default function PrivacyPolicyScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary, // Violet du logo
   },
   headerContainer: {
     position: 'relative',
     zIndex: 10,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.secondary, // Cyan du logo
   },
   container: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary, // Violet du logo
   },
   content: {
     flex: 1,
@@ -302,20 +303,20 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 18,
-    color: '#00bcd4',
+    color: COLORS.secondary, // Cyan du logo
     textAlign: 'center',
     marginBottom: 16,
   },
   badge: {
-    backgroundColor: 'rgba(0, 188, 212, 0.2)',
+    backgroundColor: 'rgba(255, 107, 157, 0.2)', // Rose du logo
     borderWidth: 1,
-    borderColor: '#00bcd4',
+    borderColor: COLORS.accent, // Rose du logo
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 8,
   },
   badgeText: {
-    color: '#00bcd4',
+    color: COLORS.accent, // Rose du logo
     fontSize: 14,
     fontWeight: '500',
   },
@@ -334,7 +335,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#00bcd4',
+    color: COLORS.secondary, // Cyan du logo
   },
   sectionSubtitle: {
     fontSize: 16,

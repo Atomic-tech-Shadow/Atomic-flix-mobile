@@ -11,7 +11,7 @@ interface LoadingSpinnerProps {
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ 
   message = 'Chargement...', 
   size = 'medium',
-  color = '#00bcd4',
+  color = '#00D4FF', // Cyan du logo par défaut
   showMessage = true 
 }) => {
   const spinValue = useRef(new Animated.Value(0)).current;

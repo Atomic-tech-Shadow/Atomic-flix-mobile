@@ -89,7 +89,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
 
         {notification.episodeInfo && (
           <View style={styles.episodeInfoContainer}>
-            <Ionicons name="play-circle" size={16} color="#00bcd4" />
+            <Ionicons name="play-circle" size={16} color="#00D4FF" />
             <Text style={styles.episodeInfo}>
               {notification.episodeInfo}
             </Text>

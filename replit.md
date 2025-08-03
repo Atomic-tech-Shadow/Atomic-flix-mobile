@@ -23,7 +23,7 @@ The application adopts a React Native/Expo mobile app architecture with a strong
 -   **Language**: Full TypeScript support with strict configuration for enhanced code quality and maintainability.
 -   **Build System**: Expo Application Services (EAS) is utilized for production builds, specifically targeting Android APK generation with custom keystore signing.
 -   **UI/UX Decisions**:
-    -   **Color Scheme**: Nouvelle palette moderne basée sur le logo 3D avec violet principal (`#8B5DFF`), cyan éclatant (`#00D4FF`), et rose accent (`#FF6B9D`) sur fond sombre (`#0a0a1a`).
+    -   **Color Scheme**: Application complètement transformée avec les couleurs exactes du logo 3D - violet principal (`#8B5DFF`) comme fond principal, cyan éclatant (`#00D4FF`) pour les headers et éléments secondaires, et rose accent (`#FF6B9D`) pour les accents et sections spéciales. Abandon total du noir sombre au profit d'une interface ultra-colorée et moderne.
     -   **Design Patterns**: Consistent use of horizontal scroll sections for content categories (Trending, Planning, Legendary, Discoveries) and compact, information-rich cards.
     -   **Interactive Elements**: Nouveau logo 3D F moderne, badges intelligents harmonisés (ANIME: violet, MANGA: rose, FILM: cyan) et badges de langue (VF, VOSTFR) avec couleurs cohérentes du logo.
     -   **Responsiveness**: Optimized layouts for various screen sizes, including careful management of image dimensions and text truncation.
