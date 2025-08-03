@@ -281,7 +281,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 resizeMode="contain"
               />
               <LinearGradient
-                colors={['#00bcd4', '#4ca9ff', '#00bcd4']}
+                colors={[COLORS.secondary, COLORS.primary, COLORS.secondary]}
                 start={{x: 0, y: 0}}
                 end={{x: 1, y: 0}}
                 style={styles.drawerTitleGradient}
@@ -300,7 +300,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 style={styles.menuItem}
                 onPress={() => navigateToScreen('Home')}
               >
-                <Ionicons name="home" size={20} color="#00bcd4" />
+                <Ionicons name="home" size={20} color={COLORS.secondary} />
                 <Text style={styles.menuItemText}>Accueil</Text>
               </TouchableOpacity>
 
@@ -308,7 +308,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 style={styles.menuItem}
                 onPress={() => navigateToScreen('About')}
               >
-                <Ionicons name="information-circle" size={20} color="#00bcd4" />
+                <Ionicons name="information-circle" size={20} color={COLORS.secondary} />
                 <Text style={styles.menuItemText}>À propos</Text>
               </TouchableOpacity>
 
@@ -316,7 +316,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 style={styles.menuItem}
                 onPress={() => navigateToScreen('PrivacyPolicy')}
               >
-                <Ionicons name="shield-checkmark" size={20} color="#00bcd4" />
+                <Ionicons name="shield-checkmark" size={20} color={COLORS.secondary} />
                 <Text style={styles.menuItemText}>Politique de confidentialité</Text>
               </TouchableOpacity>
 
@@ -324,7 +324,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
                 style={styles.menuItem}
                 onPress={() => navigateToScreen('TermsOfService')}
               >
-                <Ionicons name="document-text" size={20} color="#00bcd4" />
+                <Ionicons name="document-text" size={20} color={COLORS.secondary} />
                 <Text style={styles.menuItemText}>Conditions d'utilisation</Text>
               </TouchableOpacity>
             </View>
@@ -350,12 +350,12 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 const styles = StyleSheet.create({
   // Header mobile exact
   mobileHeader: {
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary,
     paddingHorizontal: 16,
     paddingTop: 20,
     paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#1a1a2e',
+    borderBottomColor: COLORS.border.card,
   },
   headerRow: {
     flexDirection: 'row',
@@ -475,7 +475,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#1a1a2e',
+    borderBottomColor: COLORS.border.card,
   },
   menuItemText: {
     fontSize: 16,
@@ -486,7 +486,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     borderTopWidth: 1,
-    borderTopColor: '#1a1a2e',
+    borderTopColor: COLORS.border.card,
   },
   footerText: {
     fontSize: 12,
