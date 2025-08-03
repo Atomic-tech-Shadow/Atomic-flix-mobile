@@ -142,6 +142,3 @@ const styles = StyleSheet.create({
 });
 
 export default TermsOfServiceScreen;
-        {/* Title Section */}
-        <View style={styles.titleSection}>
-          <Text style={styles.documentIcon}>📄</Text>
