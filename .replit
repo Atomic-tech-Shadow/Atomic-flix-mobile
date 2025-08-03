@@ -34,7 +34,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npx expo start --web --port 5000 --host lan"
+args = "node web-server.js"
 waitForPort = 5000
 
 [[ports]]
