@@ -1156,12 +1156,12 @@ const HomeScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a0a1a', // Dark blue exact comme le site
+    backgroundColor: COLORS.background.primary, // Fond principal du nouveau logo
   },
   headerContainer: {
     position: 'relative',
     zIndex: 10,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.background.primary,
   },
   scrollView: {
     flex: 1,
@@ -1202,7 +1202,7 @@ const styles = StyleSheet.create({
     height: 180,
     position: 'relative',
     marginBottom: 20,
-    backgroundColor: '#0A0A1A',
+    backgroundColor: COLORS.background.primary,
     borderRadius: 16,
     marginHorizontal: 8,
     overflow: 'hidden',
@@ -1286,7 +1286,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#1a1a2e',
+    backgroundColor: COLORS.background.secondary,
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -1300,7 +1300,7 @@ const styles = StyleSheet.create({
   cardImage: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#1a1a2e',
+    backgroundColor: COLORS.background.secondary,
   },
   contentBadge: {
     position: 'absolute',
@@ -1425,11 +1425,11 @@ const styles = StyleSheet.create({
   telegramModalContainer: {
     width: '90%',
     maxWidth: 400,
-    backgroundColor: 'rgba(10, 10, 26, 0.95)',
+    backgroundColor: COLORS.background.modal,
     borderRadius: 20,
     padding: 20,
     borderWidth: 1,
-    borderColor: 'rgba(0, 188, 212, 0.3)',
+    borderColor: COLORS.border.secondary,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.5,
@@ -1465,7 +1465,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 8,
     overflow: 'hidden',
-    backgroundColor: '#1a1a2e',
+    backgroundColor: COLORS.background.secondary,
   },
   // Badge NOUVEAU pour les nouveaux épisodes
   newEpisodeBadge: {
@@ -1514,7 +1514,7 @@ const styles = StyleSheet.create({
   horizontalCardImage: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#1a1a2e',
+    backgroundColor: COLORS.background.secondary,
   },
   horizontalCardGradient: {
     position: 'absolute',
@@ -1574,7 +1574,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#1a1a2e',
+    backgroundColor: COLORS.background.secondary,
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -1618,7 +1618,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#1a1a2e',
+    backgroundColor: COLORS.background.secondary,
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -1633,7 +1633,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#1a1a2e',
+    backgroundColor: COLORS.background.secondary,
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
