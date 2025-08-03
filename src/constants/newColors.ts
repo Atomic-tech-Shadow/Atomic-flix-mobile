@@ -17,12 +17,12 @@ export const COLORS = {
     end: '#8B5DFF'
   },
   
-  // Couleurs de fond harmonisées avec le logo moderne
+  // Couleurs de fond directement inspirées du logo
   background: {
-    primary: '#0f0f23', // Bleu-violet très sombre moderne
-    secondary: '#1a1a35', // Violet sombre élégant
-    card: '#252547', // Violet-bleu pour cartes
-    modal: 'rgba(26, 26, 53, 0.95)'
+    primary: 'linear-gradient(135deg, #8B5DFF 0%, #00D4FF 50%, #FF6B9D 100%)', // Gradient du logo
+    secondary: '#8B5DFF', // Violet principal du logo
+    card: '#00D4FF', // Cyan du logo
+    modal: 'rgba(139, 93, 255, 0.95)' // Violet transparent
   },
   
   // Couleurs de texte

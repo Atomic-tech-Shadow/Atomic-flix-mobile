@@ -1156,12 +1156,12 @@ const HomeScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background.primary, // Fond principal du nouveau logo
+    backgroundColor: COLORS.primary, // Violet principal du logo
   },
   headerContainer: {
     position: 'relative',
     zIndex: 10,
-    backgroundColor: COLORS.background.primary,
+    backgroundColor: COLORS.secondary, // Cyan du logo
   },
   scrollView: {
     flex: 1,
@@ -1202,7 +1202,7 @@ const styles = StyleSheet.create({
     height: 180,
     position: 'relative',
     marginBottom: 20,
-    backgroundColor: COLORS.background.primary,
+    backgroundColor: COLORS.accent, // Rose du logo
     borderRadius: 16,
     marginHorizontal: 8,
     overflow: 'hidden',
