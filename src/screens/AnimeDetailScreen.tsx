@@ -20,6 +20,7 @@ import type { RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 import type { RootStackParamList } from '../navigation/AppNavigator';
+import { COLORS } from '../constants/newColors';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { animeAPI } from '../utils/animeAPI';
@@ -388,7 +389,7 @@ const AnimeDetailScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a0a1a', // Dark blue exact comme le site
+    backgroundColor: COLORS.background.primary,
   },
   scrollView: {
     flex: 1,
@@ -396,12 +397,12 @@ const styles = StyleSheet.create({
   
   // Header mobile exact
   mobileHeader: {
-    backgroundColor: 'rgba(10,10,26,0.95)',
+    backgroundColor: `${COLORS.background.primary}f2`,
     paddingHorizontal: 16,
     paddingTop: 20,
     paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#1a1a2e',
+    borderBottomColor: COLORS.background.secondary,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -431,13 +432,13 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#00bcd4',
+    backgroundColor: COLORS.accent.primary,
     position: 'absolute',
   },
   atomicRingSmall: {
     position: 'absolute',
     borderWidth: 1,
-    borderColor: '#00bcd4',
+    borderColor: COLORS.accent.primary,
     borderRadius: 50,
   },
   ringSmall1: {
@@ -449,11 +450,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   atomicTextMobile: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontFamily: 'monospace',
   },
   flixTextMobile: {
-    color: '#00bcd4',
+    color: COLORS.accent.primary,
     fontFamily: 'monospace',
   },
   headerIcons: {
@@ -468,7 +469,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     position: 'relative',
     zIndex: 10,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.background.primary,
   },
   // Hero Section réduite pour laisser place au header
   heroContainer: {
@@ -503,7 +504,7 @@ const styles = StyleSheet.create({
   heroTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: COLORS.text.primary,
     marginBottom: 16,
     textShadowColor: 'rgba(0,0,0,0.8)',
     textShadowOffset: { width: 0, height: 2 },
@@ -518,15 +519,15 @@ const styles = StyleSheet.create({
   heroBadgeSmall: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: 'rgba(26,26,46,0.8)', // Plus opaque pour meilleure lisibilité
+    backgroundColor: `${COLORS.background.secondary}cc`,
     borderRadius: 10,
     paddingHorizontal: 6,
     paddingVertical: 4,
-    marginBottom: 3, // Espace réduit entre badges
+    marginBottom: 3,
     borderWidth: 1,
-    borderColor: 'rgba(0,188,212,0.4)',
-    alignSelf: 'flex-start', // Chaque badge s'ajuste à son contenu
-    maxWidth: '90%', // Plus large pour les genres longs
+    borderColor: `${COLORS.accent.primary}66`,
+    alignSelf: 'flex-start',
+    maxWidth: '90%',
     flexWrap: 'wrap',
   },
   yearBadge: {
@@ -537,7 +538,7 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#00bcd4',
+    backgroundColor: COLORS.accent.primary,
     marginRight: 4,
     flexShrink: 0,
   },
@@ -548,7 +549,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#8b5cf6', // Violet pour le genre
   },
   badgeTextSmall: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 10,
     fontWeight: '500',
     flexShrink: 1,
@@ -587,18 +588,18 @@ const styles = StyleSheet.create({
   mobileSectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: COLORS.text.primary,
     marginLeft: 8,
   },
   synopsisContainer: {
-    backgroundColor: 'rgba(26, 26, 46, 0.6)',
+    backgroundColor: `${COLORS.background.secondary}99`,
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
+    borderColor: `${COLORS.text.primary}1a`,
   },
   synopsisText: {
-    color: '#d1d5db',
+    color: COLORS.text.secondary,
     fontSize: 14,
     lineHeight: 22,
   },
@@ -625,20 +626,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
   },
   errorText: {
-    color: '#ef4444',
+    color: COLORS.error,
     marginTop: 16,
     marginBottom: 24,
     textAlign: 'center',
     fontSize: 16,
   },
   retryButton: {
-    backgroundColor: '#00bcd4',
+    backgroundColor: COLORS.accent.primary,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
   },
   retryText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -659,10 +660,10 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   seasonCardAnime: {
-    borderColor: '#00bcd4', // border-cyan-400
+    borderColor: COLORS.accent.primary,
   },
   seasonCardManga: {
-    borderColor: '#fb923c', // border-orange-400
+    borderColor: COLORS.badges.manga,
   },
   seasonCardBackground: {
     position: 'absolute',
@@ -692,7 +693,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   seasonCardTitle: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -702,12 +703,12 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   seasonCardBadgeAnime: {
-    color: '#00bcd4', // text-cyan-300
+    color: COLORS.accent.primary,
     fontSize: 10,
     fontWeight: '600',
   },
   seasonCardBadgeManga: {
-    color: '#fb923c', // text-orange-300
+    color: COLORS.badges.manga,
     fontSize: 10,
     fontWeight: '600',
   },

@@ -24,6 +24,7 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import { Episode, VideoSource, Season, AnimeData, EpisodeDetails } from '../types';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { COLORS } from '../constants/newColors';
 
 type AnimePlayerScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimePlayer'>;
 type AnimePlayerScreenRouteProp = RouteProp<RootStackParamList, 'AnimePlayer'>;
@@ -121,7 +122,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         });
 
         setEpisodes(formattedEpisodes);
-        
+
         // 🎯 Sélectionner l'épisode spécifique si fourni depuis navigation directe, sinon le premier
         const episodeToSelect = initialEpisode 
           ? formattedEpisodes.find(ep => ep.episodeNumber === initialEpisode) || formattedEpisodes[0]
@@ -263,7 +264,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     if (episodeDetails && episodeDetails.sources && episodeDetails.sources.length > 0) {
       // Activer le wake lock quand une vidéo est disponible
       activateKeepAwake();
-      
+
       // Permettre toutes les orientations pour une meilleure expérience vidéo
       ScreenOrientation.unlockAsync();
     } else {
@@ -1011,34 +1012,23 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   lastSelectionText: {
-    color: '#d1d5db',
+    color: COLORS.text.secondary,
     fontSize: 14,
   },
-  lastSelectionLabel: {
-    fontWeight: 'bold',
-  },
   lastSelectionValue: {
-    color: '#ffffff',
-  },
-  atomicMessageContainer: {
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
+    color: COLORS.text.primary,
   },
   atomicMessageText: {
-    color: '#d1d5db',
+    color: COLORS.text.secondary,
     fontSize: 14,
     textAlign: 'center',
   },
   atomicMessageSubtext: {
-    color: '#d1d5db',
+    color: COLORS.text.secondary,
     fontSize: 14,
     textAlign: 'center',
     marginTop: 4,
     fontStyle: 'italic',
-  },
-  atomicMessageBold: {
-    fontWeight: 'bold',
   },
 
   errorMessage: {
@@ -1047,12 +1037,12 @@ const styles = StyleSheet.create({
     padding: 16,
     margin: 16,
     borderRadius: 8,
-    backgroundColor: '#7f1d1d',
+    backgroundColor: `${COLORS.error}33`,
     gap: 12,
   },
   errorMessageText: {
     flex: 1,
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 14,
   },
 
@@ -1069,13 +1059,13 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 8,
-    backgroundColor: '#374151',
+    backgroundColor: COLORS.background.secondary,
     borderWidth: 2,
-    borderColor: '#00bcd4',
+    borderColor: COLORS.accent.primary,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4,
-    shadowColor: '#00bcd4',
+    shadowColor: COLORS.accent.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -1107,8 +1097,8 @@ const styles = StyleSheet.create({
     borderColor: '#374151',
   },
   navButtonDisabled: {
-    backgroundColor: '#374151',
-    borderColor: '#4b5563',
+    backgroundColor: COLORS.background.secondary,
+    borderColor: COLORS.text.muted,
     opacity: 0.5,
   },
   downloadContainer: {
@@ -1116,7 +1106,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   downloadButton: {
-    backgroundColor: '#00bcd4',
+    backgroundColor: COLORS.accent.primary,
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
@@ -1124,7 +1114,7 @@ const styles = StyleSheet.create({
     minWidth: 56,
     minHeight: 56,
     borderWidth: 1,
-    borderColor: '#00acc1',
+    borderColor: COLORS.accent.secondary,
   },
   downloadMenu: {
     position: 'absolute',
