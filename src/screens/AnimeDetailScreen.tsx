@@ -192,7 +192,7 @@ const AnimeDetailScreen: React.FC = () => {
   if (loading && !animeData) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style="light" backgroundColor="#0a0a1a" />
+        <StatusBar style="light" backgroundColor={COLORS.primary} />
         <SharedHeader 
           onSearchPress={() => navigation.navigate('Home')}
           onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
@@ -212,7 +212,7 @@ const AnimeDetailScreen: React.FC = () => {
   if (error && !animeData) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style="light" backgroundColor="#0a0a1a" />
+        <StatusBar style="light" backgroundColor={COLORS.primary} />
         <SharedHeader 
           onSearchPress={() => navigation.navigate('Home')}
           onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
@@ -232,7 +232,7 @@ const AnimeDetailScreen: React.FC = () => {
   if (!animeData) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style="light" backgroundColor="#0a0a1a" />
+        <StatusBar style="light" backgroundColor={COLORS.primary} />
         <SharedHeader 
           onSearchPress={() => navigation.navigate('Home')}
           onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
@@ -247,7 +247,7 @@ const AnimeDetailScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <StatusBar style="light" backgroundColor="#0a0a1a" />
+      <StatusBar style="light" backgroundColor={COLORS.primary} />
       
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
@@ -389,7 +389,7 @@ const AnimeDetailScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background.primary,
+    backgroundColor: COLORS.primary,
   },
   scrollView: {
     flex: 1,

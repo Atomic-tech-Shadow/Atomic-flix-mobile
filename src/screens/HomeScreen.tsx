@@ -749,7 +749,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <StatusBar style="light" backgroundColor="#0a0a1a" />
+      <StatusBar style="light" backgroundColor={COLORS.primary} />
 
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
@@ -1504,7 +1504,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#1a1a2e',
+    backgroundColor: COLORS.primary,
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
