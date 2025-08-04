@@ -847,7 +847,7 @@ const styles = StyleSheet.create({
     width: 48, // Bouton carré 48x48 comme spécifié
     height: 48,
     borderRadius: 8,
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
     borderWidth: 2,
     borderColor: '#00bcd4',
     justifyContent: 'center',
@@ -910,14 +910,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.background.secondary,
+    borderBottomColor: COLORS.primary,
   },
   navButton: {
     width: 44,
     height: 44,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
     borderRadius: 22,
   },
   episodeInfo: {
@@ -958,7 +958,7 @@ const styles = StyleSheet.create({
   dropdownContainer: {
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.background.secondary,
+    borderBottomColor: COLORS.primary,
   },
   dropdownLabel: {
     color: '#ffffff',
@@ -967,7 +967,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   pickerContainer: {
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
     borderRadius: 8,
     borderWidth: 2,
     borderColor: COLORS.secondary,
@@ -1077,7 +1077,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 8,
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
     borderWidth: 2,
     borderColor: COLORS.accent,
     justifyContent: 'center',
@@ -1104,7 +1104,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   customNavButton: {
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
@@ -1115,7 +1115,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.secondary,
   },
   navButtonDisabled: {
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
     borderColor: COLORS.text.muted,
     opacity: 0.5,
   },
@@ -1137,7 +1137,7 @@ const styles = StyleSheet.create({
   downloadMenu: {
     position: 'absolute',
     top: 55,
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
     borderRadius: 8,
     minWidth: 200,
     shadowColor: '#000',

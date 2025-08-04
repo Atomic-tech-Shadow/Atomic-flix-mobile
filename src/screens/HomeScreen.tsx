@@ -1286,7 +1286,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -1300,7 +1300,7 @@ const styles = StyleSheet.create({
   cardImage: {
     width: '100%',
     height: '100%',
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
   },
   contentBadge: {
     position: 'absolute',
@@ -1465,7 +1465,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 8,
     overflow: 'hidden',
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
   },
   // Badge NOUVEAU pour les nouveaux épisodes
   newEpisodeBadge: {
@@ -1514,7 +1514,7 @@ const styles = StyleSheet.create({
   horizontalCardImage: {
     width: '100%',
     height: '100%',
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
   },
   horizontalCardGradient: {
     position: 'absolute',
@@ -1574,7 +1574,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -1618,7 +1618,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -1633,7 +1633,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: COLORS.background.secondary,
+    backgroundColor: COLORS.primary,
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

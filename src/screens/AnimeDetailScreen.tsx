@@ -402,7 +402,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.background.secondary,
+    borderBottomColor: COLORS.primary,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -519,7 +519,7 @@ const styles = StyleSheet.create({
   heroBadgeSmall: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: `${COLORS.background.secondary}cc`,
+    backgroundColor: `${COLORS.primary}cc`,
     borderRadius: 10,
     paddingHorizontal: 6,
     paddingVertical: 4,
@@ -592,7 +592,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   synopsisContainer: {
-    backgroundColor: `${COLORS.background.secondary}99`,
+    backgroundColor: `${COLORS.primary}99`,
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
