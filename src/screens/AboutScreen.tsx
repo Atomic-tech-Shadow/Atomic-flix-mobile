@@ -69,7 +69,7 @@ const AboutScreen: React.FC<Props> = ({ navigation }) => {
         </View>
 
         <View style={styles.footer}>
-          <Text style={styles.footerText}>© 2024 Atomic Flix. Tous droits réservés.</Text>
+          <Text style={styles.footerText}>© 2025 Atomic Flix. Tous droits réservés.</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

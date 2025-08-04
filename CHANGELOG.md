@@ -1,5 +1,23 @@
 # Changelog - ATOMIC FLIX
 
+## [3.3.1] - 2025-08-04
+
+### Changed
+- Uniformisation complète du thème violet (#8B5DFF) sur tous les écrans
+- Correction des dates vers 2025 dans TermsOfServiceScreen et AboutScreen
+- Montée de version 3.3.0 → 3.3.1
+
+### Fixed
+- Correction de toutes les erreurs TypeScript dans AnimePlayerScreen
+- Suppression des propriétés dupliquées dans les styles
+- Ajout des styles manquants (lastSelectionLabel, atomicMessageContainer, atomicMessageBold)
+- Interface parfaitement cohérente sur tous les écrans
+
+### Technical
+- Compilation TypeScript sans erreurs
+- Tests de santé complets réussis
+- Code optimisé et prêt pour la production
+
 ## [2.6.2] - 2025-07-22
 
 ### Added

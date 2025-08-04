@@ -22,7 +22,7 @@ const TermsOfServiceScreen: React.FC<Props> = ({ navigation }) => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>Conditions d'utilisation</Text>
-          <Text style={styles.lastUpdated}>Dernière mise à jour : 28 janvier 2024</Text>
+          <Text style={styles.lastUpdated}>Dernière mise à jour : 4 août 2025</Text>
         </View>
 
         <View style={styles.section}>
