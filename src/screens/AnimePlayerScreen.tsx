@@ -606,7 +606,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   color: '#ffffff', 
                   fontSize: 16, 
                   fontWeight: 'bold',
-                  backgroundColor: '#374151'
+                  backgroundColor: COLORS.primary
                 }}
                 mode="dropdown"
               >
@@ -632,7 +632,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                     color: '#ffffff', 
                     fontSize: 16, 
                     fontWeight: 'bold',
-                    backgroundColor: '#374151'
+                    backgroundColor: COLORS.primary
                   }}
                   mode="dropdown"
                 >
@@ -654,7 +654,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                     color: '#ffffff', 
                     fontSize: 16, 
                     fontWeight: 'bold',
-                    backgroundColor: '#374151'
+                    backgroundColor: COLORS.primary
                   }}
                   mode="dropdown"
                 >
@@ -847,7 +847,7 @@ const styles = StyleSheet.create({
     width: 48, // Bouton carré 48x48 comme spécifié
     height: 48,
     borderRadius: 8,
-    backgroundColor: '#374151',
+    backgroundColor: COLORS.background.secondary,
     borderWidth: 2,
     borderColor: '#00bcd4',
     justifyContent: 'center',
@@ -910,14 +910,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#1e293b',
+    borderBottomColor: COLORS.background.secondary,
   },
   navButton: {
     width: 44,
     height: 44,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#1e293b',
+    backgroundColor: COLORS.background.secondary,
     borderRadius: 22,
   },
   episodeInfo: {
@@ -958,7 +958,7 @@ const styles = StyleSheet.create({
   dropdownContainer: {
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#1e293b',
+    borderBottomColor: COLORS.background.secondary,
   },
   dropdownLabel: {
     color: '#ffffff',
@@ -967,15 +967,15 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   pickerContainer: {
-    backgroundColor: '#374151',
+    backgroundColor: COLORS.background.secondary,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: '#00bcd4',
+    borderColor: COLORS.secondary,
     height: 56,
     justifyContent: 'center',
     overflow: 'hidden',
     elevation: 4,
-    shadowColor: '#00bcd4',
+    shadowColor: COLORS.secondary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -1002,7 +1002,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
     borderWidth: 2,
-    borderColor: '#374151',
+    borderColor: COLORS.secondary,
     marginHorizontal: 16,
     marginVertical: 8,
   },
@@ -1104,7 +1104,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   customNavButton: {
-    backgroundColor: '#1e293b',
+    backgroundColor: COLORS.background.secondary,
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
@@ -1112,7 +1112,7 @@ const styles = StyleSheet.create({
     minWidth: 56,
     minHeight: 56,
     borderWidth: 1,
-    borderColor: '#374151',
+    borderColor: COLORS.secondary,
   },
   navButtonDisabled: {
     backgroundColor: COLORS.background.secondary,
@@ -1137,7 +1137,7 @@ const styles = StyleSheet.create({
   downloadMenu: {
     position: 'absolute',
     top: 55,
-    backgroundColor: '#1e293b',
+    backgroundColor: COLORS.background.secondary,
     borderRadius: 8,
     minWidth: 200,
     shadowColor: '#000',
