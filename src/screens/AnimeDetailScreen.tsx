@@ -432,13 +432,13 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: COLORS.accent.primary,
+    backgroundColor: COLORS.accent,
     position: 'absolute',
   },
   atomicRingSmall: {
     position: 'absolute',
     borderWidth: 1,
-    borderColor: COLORS.accent.primary,
+    borderColor: COLORS.accent,
     borderRadius: 50,
   },
   ringSmall1: {
@@ -454,7 +454,7 @@ const styles = StyleSheet.create({
     fontFamily: 'monospace',
   },
   flixTextMobile: {
-    color: COLORS.accent.primary,
+    color: COLORS.accent,
     fontFamily: 'monospace',
   },
   headerIcons: {
@@ -525,7 +525,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     marginBottom: 3,
     borderWidth: 1,
-    borderColor: `${COLORS.accent.primary}66`,
+    borderColor: `${COLORS.accent}66`,
     alignSelf: 'flex-start',
     maxWidth: '90%',
     flexWrap: 'wrap',
@@ -538,7 +538,7 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: COLORS.accent.primary,
+    backgroundColor: COLORS.accent,
     marginRight: 4,
     flexShrink: 0,
   },
@@ -633,7 +633,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   retryButton: {
-    backgroundColor: COLORS.accent.primary,
+    backgroundColor: COLORS.accent,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
@@ -660,7 +660,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   seasonCardAnime: {
-    borderColor: COLORS.accent.primary,
+    borderColor: COLORS.accent,
   },
   seasonCardManga: {
     borderColor: COLORS.badges.manga,
@@ -703,7 +703,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   seasonCardBadgeAnime: {
-    color: COLORS.accent.primary,
+    color: COLORS.accent,
     fontSize: 10,
     fontWeight: '600',
   },

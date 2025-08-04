@@ -1061,11 +1061,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: COLORS.background.secondary,
     borderWidth: 2,
-    borderColor: COLORS.accent.primary,
+    borderColor: COLORS.accent,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4,
-    shadowColor: COLORS.accent.primary,
+    shadowColor: COLORS.accent,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -1106,7 +1106,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   downloadButton: {
-    backgroundColor: COLORS.accent.primary,
+    backgroundColor: COLORS.accent,
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
@@ -1114,7 +1114,7 @@ const styles = StyleSheet.create({
     minWidth: 56,
     minHeight: 56,
     borderWidth: 1,
-    borderColor: COLORS.accent.secondary,
+    borderColor: COLORS.secondary,
   },
   downloadMenu: {
     position: 'absolute',
@@ -1142,6 +1142,54 @@ const styles = StyleSheet.create({
   },
   downloadMenuContent: {
     paddingVertical: 8,
+  },
+  // Styles manquants pour les messages et sélections
+  lastSelectionContainer: {
+    marginHorizontal: 16,
+    marginVertical: 8,
+    padding: 12,
+    backgroundColor: 'rgba(139, 93, 255, 0.1)',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLORS.accent,
+  },
+  lastSelectionText: {
+    color: COLORS.text.primary,
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  lastSelectionLabel: {
+    color: COLORS.accent,
+    fontWeight: 'bold',
+  },
+  lastSelectionValue: {
+    color: COLORS.text.primary,
+  },
+  atomicMessageContainer: {
+    marginHorizontal: 16,
+    marginVertical: 8,
+    padding: 16,
+    backgroundColor: 'rgba(255, 107, 157, 0.1)',
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: COLORS.accent,
+    alignItems: 'center',
+  },
+  atomicMessageText: {
+    color: COLORS.accent,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  atomicMessageSubtext: {
+    color: COLORS.text.primary,
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  atomicMessageBold: {
+    fontWeight: 'bold',
+    color: COLORS.accent,
   },
   downloadMenuItem: {
     flexDirection: 'row',
