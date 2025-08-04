@@ -1,5 +1,18 @@
 # Changelog - ATOMIC FLIX
 
+## [3.3.2] - 2025-08-04
+
+### Fixed
+- Correction sémantique des références de couleurs dans tous les écrans
+- Standardisation : COLORS.background.secondary → COLORS.primary pour tous les fonds principaux
+- Amélioration de la cohérence et maintenabilité du code des couleurs
+- AnimePlayerScreen, HomeScreen, AnimeDetailScreen uniformisés avec COLORS.primary
+
+### Technical
+- Code plus maintenable avec références sémantiques correctes
+- 19 occurrences de couleurs corrigées à travers l'application
+- Compilation TypeScript toujours sans erreurs
+
 ## [3.3.1] - 2025-08-04
 
 ### Changed
