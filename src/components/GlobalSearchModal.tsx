@@ -18,6 +18,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import SearchService, { SearchResult } from '../services/SearchService';
 import { BlurView } from 'expo-blur';
+import { COLORS } from '../constants/newColors';
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -272,7 +273,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: '#0a0a1a', // Couleur exacte de l'APK
+    backgroundColor: COLORS.primary, // Couleur cohérente avec le thème
     marginTop: 50,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

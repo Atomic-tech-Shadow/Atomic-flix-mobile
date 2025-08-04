@@ -19,6 +19,7 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import { MangaChapter, MangaSeason, MangaData } from '../types';
 import { StatusBar } from 'expo-status-bar';
 import SharedHeader from '../components/SharedHeader';
+import { COLORS } from '../constants/newColors';
 
 type MangaReaderScreenNavigationProp = StackNavigationProp<RootStackParamList, 'MangaReader'>;
 type MangaReaderScreenRouteProp = RouteProp<RootStackParamList, 'MangaReader'>;
@@ -374,22 +375,22 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary,
   },
   headerContainer: {
     position: 'relative',
     zIndex: 10,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary,
   },
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: COLORS.primary,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000000',
+    backgroundColor: COLORS.primary,
   },
   loadingText: {
     color: '#ffffff',
@@ -400,7 +401,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000000',
+    backgroundColor: COLORS.primary,
     padding: 20,
   },
   errorText: {

@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import PushNotificationService from '../services/pushNotifications';
 import UserService from '../services/userService';
+import { COLORS } from '../constants/newColors';
 
 interface TelegramVerificationProps {
   onVerified: () => void;
@@ -374,7 +375,7 @@ const TelegramVerification: React.FC<TelegramVerificationProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,

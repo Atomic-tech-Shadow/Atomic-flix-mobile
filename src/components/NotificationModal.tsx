@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { EpisodeNotification } from '../utils/notificationService';
+import { COLORS } from '../constants/newColors';
 
 const { width } = Dimensions.get('window');
 
@@ -177,7 +178,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary,
   },
   header: {
     flexDirection: 'row',

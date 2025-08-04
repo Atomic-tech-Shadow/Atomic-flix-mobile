@@ -12,6 +12,7 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
 - **Builds**: Scripts automatisés prioritaires
 - **Plateforme**: Android en priorité
 - **Maintenance**: Préfère un projet propre sans fichiers inutiles
+- **Design**: Cohérence visuelle - tous les écrans doivent utiliser le même fond (COLORS.primary)
 
 ## System Architecture
 
@@ -23,7 +24,7 @@ The application adopts a React Native/Expo mobile app architecture with a strong
 -   **Language**: Full TypeScript support with strict configuration for enhanced code quality and maintainability.
 -   **Build System**: Expo Application Services (EAS) is utilized for production builds, specifically targeting Android APK generation with custom keystore signing.
 -   **UI/UX Decisions**:
-    -   **Color Scheme**: Application complètement transformée avec les couleurs exactes du logo 3D - violet principal (`#8B5DFF`) comme fond principal, cyan éclatant (`#00D4FF`) pour les headers et éléments secondaires, et rose accent (`#FF6B9D`) pour les accents et sections spéciales. Abandon total du noir sombre au profit d'une interface ultra-colorée et moderne.
+    -   **Color Scheme**: Application complètement transformée avec les couleurs exactes du logo 3D - violet principal (`#8B5DFF`) comme fond principal uniforme pour tous les écrans, cyan éclatant (`#00D4FF`) pour les headers et éléments secondaires, et rose accent (`#FF6B9D`) pour les accents et sections spéciales. Correction complète effectuée (4 août 2025) : remplacement de toutes les couleurs de fond codées en dur (`#0a0a1a`) par `COLORS.primary` pour assurer une cohérence visuelle parfaite.
     -   **Design Patterns**: Consistent use of horizontal scroll sections for content categories (Trending, Planning, Legendary, Discoveries) and compact, information-rich cards.
     -   **Interactive Elements**: Nouveau logo 3D F moderne, badges intelligents harmonisés (ANIME: violet, MANGA: rose, FILM: cyan) et badges de langue (VF, VOSTFR) avec couleurs cohérentes du logo.
     -   **Responsiveness**: Optimized layouts for various screen sizes, including careful management of image dimensions and text truncation.

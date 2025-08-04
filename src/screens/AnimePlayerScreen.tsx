@@ -420,7 +420,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   if (loading) {
     return (
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <StatusBar barStyle="light-content" backgroundColor="#0a0a1a" />
+        <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
 
         {/* Header fixe toujours visible */}
         <View style={styles.headerContainer}>
@@ -441,7 +441,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   if (error && !animeData) {
     return (
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <StatusBar barStyle="light-content" backgroundColor="#0a0a1a" />
+        <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
 
         {/* Header fixe toujours visible */}
         <View style={styles.headerContainer}>
@@ -462,7 +462,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   if (!animeData) {
     return (
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <StatusBar barStyle="light-content" backgroundColor="#0a0a1a" />
+        <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
 
         {/* Header fixe toujours visible */}
         <View style={styles.headerContainer}>
@@ -481,7 +481,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <StatusBar barStyle="light-content" backgroundColor="#0a0a1a" />
+      <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
 
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
@@ -754,12 +754,12 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary,
   },
   headerContainer: {
     position: 'relative',
     zIndex: 10,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary,
   },
   bannerContainer: {
     position: 'relative',

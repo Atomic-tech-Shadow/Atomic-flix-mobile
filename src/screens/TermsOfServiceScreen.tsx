@@ -81,7 +81,7 @@ const TermsOfServiceScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.primary,
   },
   content: {
     flex: 1,
