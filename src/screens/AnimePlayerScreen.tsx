@@ -1018,6 +1018,24 @@ const styles = StyleSheet.create({
   lastSelectionValue: {
     color: COLORS.text.primary,
   },
+  lastSelectionLabel: {
+    color: COLORS.accent,
+    fontWeight: 'bold',
+  },
+  atomicMessageContainer: {
+    marginHorizontal: 16,
+    marginVertical: 8,
+    padding: 16,
+    backgroundColor: 'rgba(255, 107, 157, 0.1)',
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: COLORS.accent,
+    alignItems: 'center',
+  },
+  atomicMessageBold: {
+    fontWeight: 'bold',
+    color: COLORS.accent,
+  },
   atomicMessageText: {
     color: COLORS.text.secondary,
     fontSize: 14,
@@ -1142,54 +1160,6 @@ const styles = StyleSheet.create({
   },
   downloadMenuContent: {
     paddingVertical: 8,
-  },
-  // Styles manquants pour les messages et sélections
-  lastSelectionContainer: {
-    marginHorizontal: 16,
-    marginVertical: 8,
-    padding: 12,
-    backgroundColor: 'rgba(139, 93, 255, 0.1)',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: COLORS.accent,
-  },
-  lastSelectionText: {
-    color: COLORS.text.primary,
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  lastSelectionLabel: {
-    color: COLORS.accent,
-    fontWeight: 'bold',
-  },
-  lastSelectionValue: {
-    color: COLORS.text.primary,
-  },
-  atomicMessageContainer: {
-    marginHorizontal: 16,
-    marginVertical: 8,
-    padding: 16,
-    backgroundColor: 'rgba(255, 107, 157, 0.1)',
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: COLORS.accent,
-    alignItems: 'center',
-  },
-  atomicMessageText: {
-    color: COLORS.accent,
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  atomicMessageSubtext: {
-    color: COLORS.text.primary,
-    fontSize: 14,
-    textAlign: 'center',
-  },
-  atomicMessageBold: {
-    fontWeight: 'bold',
-    color: COLORS.accent,
   },
   downloadMenuItem: {
     flexDirection: 'row',
