@@ -230,16 +230,13 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
   // Variable pour stocker l'épisode à recharger après changement de langue
   const [pendingEpisodeReload, setPendingEpisodeReload] = useState<number | null>(null);
-  const [languageChanging, setLanguageChanging] = useState(false);
 
   // Fonction pour changer de langue
   const changeLanguage = async (newLang: 'VF' | 'VOSTFR') => {
-    if (newLang === selectedLanguage || !selectedSeason || languageChanging) return;
+    if (newLang === selectedLanguage || !selectedSeason) return;
 
     // Sauvegarder l'épisode actuel pour le recharger après le changement de langue
     const currentEpisodeNumber = selectedEpisode?.episodeNumber;
-    
-    setLanguageChanging(true);
     
     if (currentEpisodeNumber) {
       setPendingEpisodeReload(currentEpisodeNumber);
@@ -257,8 +254,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       console.error('Erreur lors du changement de langue:', error);
       setError('Erreur lors du changement de langue');
       setPendingEpisodeReload(null);
-    } finally {
-      setLanguageChanging(false);
     }
   };
 
@@ -573,23 +568,15 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         {/* Sélecteur de langue - Style simplifié */}
         {selectedSeason && selectedSeason.languages.length > 1 && (
           <View style={styles.languageSelector}>
-            {languageChanging && (
-              <View style={styles.languageLoadingContainer}>
-                <ActivityIndicator size="small" color="#00bcd4" />
-                <Text style={styles.languageLoadingText}>Changement de langue...</Text>
-              </View>
-            )}
             {selectedSeason.languages.map((lang) => (
               <TouchableOpacity
                 key={lang}
                 style={[
                   styles.languageButton,
-                  selectedLanguage === lang && styles.languageButtonActive,
-                  languageChanging && styles.languageButtonDisabled
+                  selectedLanguage === lang && styles.languageButtonActive
                 ]}
                 onPress={() => changeLanguage(lang as 'VF' | 'VOSTFR')}
-                activeOpacity={languageChanging ? 1 : 0.7}
-                disabled={languageChanging}
+                activeOpacity={0.7}
               >
                 {/* Fond drapeau personnalisé */}
                 {(lang === 'VF' || lang === 'VF1' || lang === 'VF2') ? (
@@ -954,24 +941,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     overflow: 'hidden',
   },
-  languageLoadingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 8,
-    backgroundColor: 'rgba(0, 188, 212, 0.1)',
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  languageLoadingText: {
-    color: '#00bcd4',
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginLeft: 8,
-  },
-  languageButtonDisabled: {
-    opacity: 0.3,
-  },
+
   episodeControls: {
     flexDirection: 'row',
     alignItems: 'center',
