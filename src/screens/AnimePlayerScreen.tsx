@@ -228,17 +228,38 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     }
   };
 
+  // Variable pour stocker l'épisode à recharger après changement de langue
+  const [pendingEpisodeReload, setPendingEpisodeReload] = useState<number | null>(null);
+  const [languageChanging, setLanguageChanging] = useState(false);
+
   // Fonction pour changer de langue
   const changeLanguage = async (newLang: 'VF' | 'VOSTFR') => {
-    if (newLang === selectedLanguage || !selectedSeason) return;
+    if (newLang === selectedLanguage || !selectedSeason || languageChanging) return;
+
+    // Sauvegarder l'épisode actuel pour le recharger après le changement de langue
+    const currentEpisodeNumber = selectedEpisode?.episodeNumber;
+    
+    setLanguageChanging(true);
+    
+    if (currentEpisodeNumber) {
+      setPendingEpisodeReload(currentEpisodeNumber);
+    }
 
     setSelectedLanguage(newLang);
     setEpisodes([]);
     setSelectedEpisode(null);
     setEpisodeDetails(null);
 
-    // Recharger les épisodes avec la nouvelle langue
-    await loadSeasonEpisodes(selectedSeason, true);
+    try {
+      // Recharger les épisodes avec la nouvelle langue
+      await loadSeasonEpisodes(selectedSeason, false);
+    } catch (error) {
+      console.error('Erreur lors du changement de langue:', error);
+      setError('Erreur lors du changement de langue');
+      setPendingEpisodeReload(null);
+    } finally {
+      setLanguageChanging(false);
+    }
   };
 
   // Navigation entre épisodes
@@ -258,6 +279,18 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     setSelectedEpisode(newEpisode);
     loadEpisodeSources(newEpisode);
   };
+
+  // Effet pour recharger automatiquement l'épisode après changement de langue
+  useEffect(() => {
+    if (pendingEpisodeReload && episodes.length > 0) {
+      const equivalentEpisode = episodes.find(ep => ep.episodeNumber === pendingEpisodeReload);
+      if (equivalentEpisode) {
+        setSelectedEpisode(equivalentEpisode);
+        loadEpisodeSources(equivalentEpisode);
+      }
+      setPendingEpisodeReload(null);
+    }
+  }, [episodes, pendingEpisodeReload]);
 
   // Effet pour maintenir l'écran allumé pendant la lecture et permettre l'orientation libre
   useEffect(() => {
@@ -310,16 +343,24 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           const seasonToSelect = seasonData || animeInfo.seasons[0];
           setSelectedSeason(seasonToSelect);
 
-          // Sélectionner la langue par défaut
+          // Sélectionner la langue par défaut ou utiliser initialLanguage si fournie
           if (seasonToSelect && seasonToSelect.languages) {
-            const defaultLanguage = seasonToSelect.languages.includes('VOSTFR') ? 'VOSTFR' : 
-                                  seasonToSelect.languages.includes('VF') ? 'VF' : 'VOSTFR';
+            let defaultLanguage: 'VF' | 'VOSTFR';
+            
+            // Utiliser initialLanguage si fournie et disponible, sinon fallback
+            if (initialLanguage && seasonToSelect.languages.includes(initialLanguage)) {
+              defaultLanguage = initialLanguage;
+            } else {
+              // Fallback vers VOSTFR ou VF selon disponibilité
+              defaultLanguage = seasonToSelect.languages.includes('VOSTFR') ? 'VOSTFR' : 
+                               seasonToSelect.languages.includes('VF') ? 'VF' : 'VOSTFR';
+            }
 
-            setSelectedLanguage(defaultLanguage as 'VF' | 'VOSTFR');
+            setSelectedLanguage(defaultLanguage);
 
             // Charger les épisodes immédiatement après avoir défini animeData
             setTimeout(async () => {
-              await loadSeasonEpisodesWithData(animeInfo, seasonToSelect, defaultLanguage as 'VF' | 'VOSTFR', true);
+              await loadSeasonEpisodesWithData(animeInfo, seasonToSelect, defaultLanguage, true);
             }, 100);
           } else {
             setError('Aucune langue disponible pour cette saison');
@@ -532,15 +573,23 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         {/* Sélecteur de langue - Style simplifié */}
         {selectedSeason && selectedSeason.languages.length > 1 && (
           <View style={styles.languageSelector}>
+            {languageChanging && (
+              <View style={styles.languageLoadingContainer}>
+                <ActivityIndicator size="small" color="#00bcd4" />
+                <Text style={styles.languageLoadingText}>Changement de langue...</Text>
+              </View>
+            )}
             {selectedSeason.languages.map((lang) => (
               <TouchableOpacity
                 key={lang}
                 style={[
                   styles.languageButton,
-                  selectedLanguage === lang && styles.languageButtonActive
+                  selectedLanguage === lang && styles.languageButtonActive,
+                  languageChanging && styles.languageButtonDisabled
                 ]}
                 onPress={() => changeLanguage(lang as 'VF' | 'VOSTFR')}
-                activeOpacity={0.7}
+                activeOpacity={languageChanging ? 1 : 0.7}
+                disabled={languageChanging}
               >
                 {/* Fond drapeau personnalisé */}
                 {(lang === 'VF' || lang === 'VF1' || lang === 'VF2') ? (
@@ -904,6 +953,24 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     borderRadius: 4,
     overflow: 'hidden',
+  },
+  languageLoadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+    backgroundColor: 'rgba(0, 188, 212, 0.1)',
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  languageLoadingText: {
+    color: '#00bcd4',
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginLeft: 8,
+  },
+  languageButtonDisabled: {
+    opacity: 0.3,
   },
   episodeControls: {
     flexDirection: 'row',
