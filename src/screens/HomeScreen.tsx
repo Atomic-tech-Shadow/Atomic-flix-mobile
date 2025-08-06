@@ -1185,7 +1185,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
     marginLeft: 12,
   },
@@ -1193,7 +1193,7 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   clearSearchText: {
-    color: '#6b7280',
+    color: COLORS.text.muted,
     fontSize: 16,
   },
 
@@ -1245,7 +1245,7 @@ const styles = StyleSheet.create({
   },
   heroSubtitle: {
     fontSize: 16,
-    color: '#d1d5db',
+    color: COLORS.text.secondary,
     textAlign: 'center',
     lineHeight: 24,
     marginBottom: 8,
@@ -1263,7 +1263,7 @@ const styles = StyleSheet.create({
   trendingSectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: COLORS.text.primary,
     textAlign: 'center',
   },
   trendingGrid: {
@@ -1320,7 +1320,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.badges.anime,
   },
   badgeText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 10,
     fontWeight: 'bold',
   },
@@ -1342,7 +1342,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#ffffff',
+    color: COLORS.text.primary,
     marginBottom: 8,
     lineHeight: 18,
     minHeight: 54,

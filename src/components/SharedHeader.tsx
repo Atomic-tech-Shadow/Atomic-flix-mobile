@@ -381,7 +381,7 @@ const styles = StyleSheet.create({
   logoText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: COLORS.text.primary,
     letterSpacing: 0.5,
     textAlign: 'center',
     textShadowColor: 'rgba(0, 188, 212, 0.3)',
@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -2,
     right: -2,
-    backgroundColor: '#ff4444',
+    backgroundColor: COLORS.error,
     borderRadius: 6,
     width: 12,
     height: 12,
@@ -411,7 +411,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   badgeText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 10,
     fontWeight: 'bold',
     textAlign: 'center',

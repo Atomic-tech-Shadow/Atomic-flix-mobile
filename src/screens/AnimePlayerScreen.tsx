@@ -637,9 +637,9 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   }
                 }}
                 style={styles.picker}
-                dropdownIconColor="#00bcd4"
+                dropdownIconColor={COLORS.secondary}
                 itemStyle={{ 
-                  color: '#ffffff', 
+                  color: COLORS.text.primary, 
                   fontSize: 16, 
                   fontWeight: 'bold',
                   backgroundColor: COLORS.primary
@@ -663,9 +663,9 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   selectedValue={selectedPlayer.toString()}
                   onValueChange={(itemValue) => setSelectedPlayer(parseInt(itemValue as string))}
                   style={styles.picker}
-                  dropdownIconColor="#00bcd4"
+                  dropdownIconColor={COLORS.secondary}
                   itemStyle={{ 
-                    color: '#ffffff', 
+                    color: COLORS.text.primary, 
                     fontSize: 16, 
                     fontWeight: 'bold',
                     backgroundColor: COLORS.primary
@@ -685,9 +685,9 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   selectedValue=""
                   onValueChange={() => {}}
                   style={styles.picker}
-                  dropdownIconColor="#00bcd4"
+                  dropdownIconColor={COLORS.secondary}
                   itemStyle={{ 
-                    color: '#ffffff', 
+                    color: COLORS.text.primary, 
                     fontSize: 16, 
                     fontWeight: 'bold',
                     backgroundColor: COLORS.primary
@@ -828,12 +828,12 @@ const styles = StyleSheet.create({
   bannerTitle: {
     fontSize: 24, // Équivalent à text-2xl
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: COLORS.text.primary,
     marginBottom: 4,
   },
   bannerSeason: {
     fontSize: 18, // Équivalent à text-lg
-    color: '#d1d5db', // Équivalent à text-gray-300
+    color: COLORS.text.secondary,
     textTransform: 'uppercase',
   },
   scrollContainer: {
@@ -845,7 +845,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    color: '#94a3b8',
+    color: COLORS.text.muted,
     marginTop: 16,
     fontSize: 16,
   },
@@ -856,7 +856,7 @@ const styles = StyleSheet.create({
     padding: 32,
   },
   errorText: {
-    color: '#ef4444',
+    color: COLORS.text.error,
     fontSize: 18,
     textAlign: 'center',
     marginTop: 16,
@@ -869,7 +869,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   retryButtonText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
     fontWeight: 'bold',
   },

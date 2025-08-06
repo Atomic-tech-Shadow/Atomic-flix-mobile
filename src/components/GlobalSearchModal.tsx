@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
     marginLeft: 12,
   },
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
     marginTop: 16,
   },
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   errorText: {
-    color: '#ef4444',
+    color: COLORS.text.error,
     fontSize: 16,
     textAlign: 'center',
     marginTop: 16,
@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   emptyText: {
-    color: '#64748b',
+    color: COLORS.text.muted,
     fontSize: 16,
     textAlign: 'center',
     marginTop: 16,
@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 188, 212, 0.3)',
   },
   placeholderTitle: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',

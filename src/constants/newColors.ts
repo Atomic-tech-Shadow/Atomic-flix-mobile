@@ -25,12 +25,16 @@ export const COLORS = {
     modal: 'rgba(139, 93, 255, 0.95)' // Violet transparent
   },
   
-  // Couleurs de texte
+  // Couleurs de texte - Système unifié et hiérarchisé
   text: {
-    primary: '#FFFFFF',
-    secondary: '#B0B0B0',
-    accent: '#00D4FF',
-    muted: '#7A7A7A'
+    primary: '#FFFFFF',      // Titres principaux, texte important
+    secondary: '#B8B8B8',    // Descriptions, sous-titres
+    muted: '#808080',        // Informations secondaires, metadata
+    accent: '#00D4FF',       // Liens, actions, éléments interactifs
+    success: '#00FF94',      // Messages de succès
+    warning: '#FFB84D',      // Avertissements
+    error: '#FF5757',        // Messages d'erreur
+    disabled: '#505050'      // Éléments désactivés
   },
   
   // États et badges

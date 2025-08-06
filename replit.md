@@ -12,6 +12,12 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
 - **Date Updates**: Corrected all 2024 dates to 2025 across application
 - **Visual Consistency**: Complete uniformization of purple background theme (#8B5DFF) across all screens
 - **Color Semantics**: Standardized all background colors to use COLORS.primary instead of COLORS.background.secondary
+- **Text Color System**: Complete standardization of text colors (6 août 2025)
+  - Enhanced `COLORS.text` with semantic color system: primary, secondary, muted, accent, success, warning, error, disabled
+  - Replaced all hardcoded color values (#ffffff, #ef4444, #94a3b8, etc.) with COLORS constants
+  - Improved accessibility and design consistency across all components
+  - Better color hierarchy for titles, descriptions, and UI states
+- **Language Switching**: Fixed automatic video reload when changing language in anime player
 - **TypeScript**: All compilation errors resolved, production-ready codebase
 - **Code Quality**: Removed duplicate properties, added missing styles, optimized structure, improved maintainability
 
