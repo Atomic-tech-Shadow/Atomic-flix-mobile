@@ -218,7 +218,7 @@ const AnimeDetailScreen: React.FC = () => {
           onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
         />
         <View style={styles.errorContainer}>
-          <Ionicons name="alert-circle" size={48} color="#ef4444" />
+          <Ionicons name="alert-circle" size={48} color={COLORS.text.error} />
           <Text style={styles.errorText}>{error}</Text>
           <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
             <Text style={styles.retryText}>Réessayer</Text>
@@ -238,7 +238,7 @@ const AnimeDetailScreen: React.FC = () => {
           onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
         />
         <View style={styles.errorContainer}>
-          <Ionicons name="search" size={48} color="#6b7280" />
+          <Ionicons name="search" size={48} color={COLORS.text.muted} />
           <Text style={styles.errorText}>Anime non trouvé</Text>
         </View>
       </SafeAreaView>
@@ -570,7 +570,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,188,212,0.6)',
   },
   animeBadgeText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 14,
     fontWeight: 'bold',
   },
@@ -614,7 +614,7 @@ const styles = StyleSheet.create({
     paddingVertical: 64,
   },
   loadingText: {
-    color: '#888888',
+    color: COLORS.text.secondary,
     marginTop: 16,
     fontSize: 16,
   },

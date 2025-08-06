@@ -10,6 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS } from '../constants/newColors';
 
 interface AppUpdate {
   version: string;
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: COLORS.text.primary,
     textAlign: 'center',
     marginBottom: 4,
   },
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
   },
   releaseDate: {
     fontSize: 12,
-    color: '#94a3b8',
+    color: COLORS.text.secondary,
     textAlign: 'center',
   },
   changelogContainer: {
@@ -214,7 +215,7 @@ const styles = StyleSheet.create({
   },
   changelogText: {
     fontSize: 14,
-    color: '#d1d5db',
+    color: COLORS.text.secondary,
     lineHeight: 20,
   },
   buttonsContainer: {
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   updateButtonText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
     fontWeight: '700',
     textAlign: 'center',
@@ -274,7 +275,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   ignoreButtonText: {
-    color: '#6b7280',
+    color: COLORS.text.muted,
     fontSize: 14,
     fontWeight: '600',
   },
@@ -288,7 +289,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   requiredText: {
-    color: '#ef4444',
+    color: COLORS.text.error,
     fontSize: 12,
     textAlign: 'center',
     lineHeight: 16,

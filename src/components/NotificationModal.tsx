@@ -148,7 +148,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
               style={styles.closeButton}
               onPress={onClose}
             >
-              <Ionicons name="close" size={24} color="#ffffff" />
+              <Ionicons name="close" size={24} color={COLORS.text.primary} />
             </TouchableOpacity>
           </View>
         </View>

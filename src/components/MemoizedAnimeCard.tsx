@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getOptimizedImageProps } from '../utils/performanceUtils';
 import OptimizedTouchable from './OptimizedTouchable';
+import { COLORS } from '../constants/newColors';
 
 interface AnimeCardProps {
   anime: {
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   badgeText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 10,
     fontWeight: 'bold',
   },
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   languageBadgeText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 10,
     fontWeight: 'bold',
   },
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     right: 8,
   },
   cardTitle: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 12,
     fontWeight: '600',
     textShadowColor: 'rgba(0,0,0,0.8)',
