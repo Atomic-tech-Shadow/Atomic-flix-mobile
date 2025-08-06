@@ -217,7 +217,8 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           availableServers: response.sources.map((s: any) => s.server),
           url: episode.url
         });
-        setSelectedPlayer(0); // Reset au premier serveur
+        // Ne pas resetter selectedPlayer pour préserver le choix utilisateur
+        // setSelectedPlayer(0); // SUPPRIMÉ: causait le bug de retour serveur 1
       } else {
         setError('Aucune source de streaming trouvée pour cet épisode');
       }
@@ -661,7 +662,14 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               {episodeDetails && episodeDetails.sources.length > 0 ? (
                 <Picker
                   selectedValue={selectedPlayer.toString()}
-                  onValueChange={(itemValue) => setSelectedPlayer(parseInt(itemValue as string))}
+                  onValueChange={(itemValue) => {
+                    const newServerIndex = parseInt(itemValue as string);
+                    setSelectedPlayer(newServerIndex);
+                    // Forcer le rechargement de la WebView avec le nouveau serveur
+                    if (webViewRef.current) {
+                      webViewRef.current.reload();
+                    }
+                  }}
                   style={styles.picker}
                   dropdownIconColor={COLORS.secondary}
                   itemStyle={{ 
