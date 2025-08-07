@@ -229,32 +229,74 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     }
   };
 
-  // Variable pour stocker l'épisode à recharger après changement de langue
-  const [pendingEpisodeReload, setPendingEpisodeReload] = useState<number | null>(null);
+  // Variable supprimée : pendingEpisodeReload n'est plus nécessaire avec le nouveau système fluide
 
-  // Fonction pour changer de langue
+  // Fonction pour changer de langue (version optimisée pour changement fluide)
   const changeLanguage = async (newLang: 'VF' | 'VOSTFR') => {
-    if (newLang === selectedLanguage || !selectedSeason) return;
+    if (newLang === selectedLanguage || !selectedSeason || !animeData) return;
 
     // Sauvegarder l'épisode actuel pour le recharger après le changement de langue
     const currentEpisodeNumber = selectedEpisode?.episodeNumber;
     
-    if (currentEpisodeNumber) {
-      setPendingEpisodeReload(currentEpisodeNumber);
-    }
-
+    // 🚀 Changer immédiatement la langue pour un feedback visuel instantané
     setSelectedLanguage(newLang);
-    setEpisodes([]);
-    setSelectedEpisode(null);
-    setEpisodeDetails(null);
-
+    
+    // Montrer un indicateur de chargement pendant le changement
+    setEpisodeLoading(true);
+    
     try {
-      // Recharger les épisodes avec la nouvelle langue
-      await loadSeasonEpisodes(selectedSeason, false);
+      // Charger les nouveaux épisodes avec la nouvelle langue en arrière-plan
+      const languageCode = newLang.toLowerCase();
+      
+      const data = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeData.id}?season=${selectedSeason.value}&language=${languageCode}`);
+
+      if (data && data.success && data.episodes && Array.isArray(data.episodes) && data.episodes.length > 0) {
+        const formattedEpisodes: Episode[] = data.episodes.map((ep: any, index: number) => {
+          const episodeNumber = ep.number || (index + 1);
+          const episodeTitle = ep.title || `Épisode ${episodeNumber}`;
+          const episodeUrl = ep.url || `https://anime-sama.fr/catalogue/${animeData.id}/${selectedSeason.value}/${languageCode}/episode-${episodeNumber}`;
+
+          return {
+            id: `${animeData.id}-${selectedSeason.value}-ep${episodeNumber}-${languageCode}`,
+            title: episodeTitle,
+            episodeNumber: episodeNumber,
+            url: episodeUrl,
+            language: newLang,
+            available: ep.available !== false,
+            streamingSources: ep.streamingSources || []
+          };
+        });
+
+        // ✨ Mettre à jour les épisodes avec la nouvelle langue
+        setEpisodes(formattedEpisodes);
+        
+        // Chercher l'épisode équivalent dans la nouvelle langue
+        const equivalentEpisode = currentEpisodeNumber 
+          ? formattedEpisodes.find(ep => ep.episodeNumber === currentEpisodeNumber)
+          : formattedEpisodes[0];
+        
+        if (equivalentEpisode) {
+          setSelectedEpisode(equivalentEpisode);
+          // Charger immédiatement les sources pour l'épisode équivalent
+          await loadEpisodeSources(equivalentEpisode);
+        } else {
+          // Si l'épisode n'existe pas dans la nouvelle langue, prendre le premier
+          const firstEpisode = formattedEpisodes[0];
+          setSelectedEpisode(firstEpisode);
+          await loadEpisodeSources(firstEpisode);
+        }
+      } else {
+        setError(`Aucun épisode trouvé en ${newLang} pour cette saison`);
+        // Revenir à l'ancienne langue si pas d'épisodes trouvés
+        setSelectedLanguage(selectedLanguage);
+      }
     } catch (error) {
       console.error('Erreur lors du changement de langue:', error);
       setError('Erreur lors du changement de langue');
-      setPendingEpisodeReload(null);
+      // Revenir à l'ancienne langue en cas d'erreur
+      setSelectedLanguage(selectedLanguage);
+    } finally {
+      setEpisodeLoading(false);
     }
   };
 
@@ -276,17 +318,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     loadEpisodeSources(newEpisode);
   };
 
-  // Effet pour recharger automatiquement l'épisode après changement de langue
-  useEffect(() => {
-    if (pendingEpisodeReload && episodes.length > 0) {
-      const equivalentEpisode = episodes.find(ep => ep.episodeNumber === pendingEpisodeReload);
-      if (equivalentEpisode) {
-        setSelectedEpisode(equivalentEpisode);
-        loadEpisodeSources(equivalentEpisode);
-      }
-      setPendingEpisodeReload(null);
-    }
-  }, [episodes, pendingEpisodeReload]);
+  // ✨ Effet supprimé : le changement de langue est maintenant géré directement dans changeLanguage()
 
   // Effet pour maintenir l'écran allumé pendant la lecture et permettre l'orientation libre
   useEffect(() => {
