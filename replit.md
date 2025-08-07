@@ -21,7 +21,13 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
   - Replaced all hardcoded color values (#ffffff, #ef4444, #94a3b8, etc.) with COLORS constants
   - Improved accessibility and design consistency across all components
   - Better color hierarchy for titles, descriptions, and UI states
-- **Language Switching**: Fixed automatic video reload when changing language in anime player
+- **Language Switching**: Complete overhaul for fluid language switching (7 août 2025)
+  - Removed old pendingEpisodeReload system that required refresh
+  - Immediate visual feedback when clicking VF/VOSTFR buttons
+  - Episodes list instantly cleared and repopulated with selected language only
+  - Automatic episode loading for equivalent episode in new language
+  - Enhanced UI with language indicators in episode picker
+  - No page refresh required - completely fluid experience
 - **TypeScript**: All compilation errors resolved, production-ready codebase
 - **Code Quality**: Removed duplicate properties, added missing styles, optimized structure, improved maintainability
 

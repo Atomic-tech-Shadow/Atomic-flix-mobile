@@ -241,6 +241,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     // 🚀 Changer immédiatement la langue pour un feedback visuel instantané
     setSelectedLanguage(newLang);
     
+    // 🔥 Vider immédiatement la liste d'épisodes pour un changement visuel instantané
+    setEpisodes([]);
+    setSelectedEpisode(null);
+    setEpisodeDetails(null);
+    
     // Montrer un indicateur de chargement pendant le changement
     setEpisodeLoading(true);
     
@@ -287,14 +292,14 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         }
       } else {
         setError(`Aucun épisode trouvé en ${newLang} pour cette saison`);
-        // Revenir à l'ancienne langue si pas d'épisodes trouvés
-        setSelectedLanguage(selectedLanguage);
+        // Garder la langue sélectionnée même s'il n'y a pas d'épisodes
+        // L'utilisateur peut voir qu'il n'y a pas de contenu disponible
       }
     } catch (error) {
       console.error('Erreur lors du changement de langue:', error);
       setError('Erreur lors du changement de langue');
-      // Revenir à l'ancienne langue en cas d'erreur
-      setSelectedLanguage(selectedLanguage);
+      // En cas d'erreur, garder la nouvelle langue mais sans épisodes
+      // L'utilisateur peut réessayer ou changer manuellement
     } finally {
       setEpisodeLoading(false);
     }
@@ -679,13 +684,20 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 }}
                 mode="dropdown"
               >
-                {episodes.map((episode) => (
+                {episodes.length > 0 ? (
+                  episodes.map((episode) => (
+                    <Picker.Item
+                      key={episode.id}
+                      label={`ÉPISODE ${episode.episodeNumber} (${episode.language})`}
+                      value={episode.id}
+                    />
+                  ))
+                ) : (
                   <Picker.Item
-                    key={episode.id}
-                    label={`ÉPISODE ${episode.episodeNumber}`}
-                    value={episode.id}
+                    label={episodeLoading ? `Chargement épisodes ${selectedLanguage}...` : "Aucun épisode disponible"}
+                    value=""
                   />
-                ))}
+                )}
               </Picker>
             </View>
 
