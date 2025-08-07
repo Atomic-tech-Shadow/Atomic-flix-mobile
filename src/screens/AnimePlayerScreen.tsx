@@ -688,7 +688,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   episodes.map((episode) => (
                     <Picker.Item
                       key={episode.id}
-                      label={`ÉPISODE ${episode.episodeNumber} (${episode.language})`}
+                      label={`ÉPISODE ${episode.episodeNumber}`}
                       value={episode.id}
                     />
                   ))
