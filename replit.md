@@ -28,14 +28,7 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
   - Automatic episode loading for equivalent episode in new language
   - Enhanced UI with language indicators in episode picker
   - No page refresh required - completely fluid experience
-- **Connection Optimization**: Smart streaming adaptation for poor connections (7 août 2025)
-  - Automatic connection speed detection before video loading
-  - Intelligent server selection based on connection quality
-  - Visual connection indicator (excellent/correct/slow + quality adapted)
-  - Low connection: Auto-select 360p/480p servers for smooth playback
-  - Medium connection: Prefer 720p quality for balanced experience
-  - Good connection: Use best available quality (1080p/HD)
-  - Enhanced error detection for unavailable servers
+
 - **TypeScript**: All compilation errors resolved, production-ready codebase
 - **Code Quality**: Removed duplicate properties, added missing styles, optimized structure, improved maintainability
 
