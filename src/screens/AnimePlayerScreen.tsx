@@ -51,6 +51,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   const [episodeLoading, setEpisodeLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [serverError, setServerError] = useState<boolean>(false);
 
   const webViewRef = useRef<WebView>(null);
 
@@ -447,41 +448,85 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     return (
       <View style={styles.videoPlayerWrapper}>
         <View style={styles.videoContainer}>
-          <WebView
-            ref={webViewRef}
-            source={{ uri: currentSource.url }}
-            style={styles.webView}
-            javaScriptEnabled={true}
-            domStorageEnabled={true}
-            startInLoadingState={true}
-            allowsFullscreenVideo={true}
-            allowsInlineMediaPlayback={true}
-            mediaPlaybackRequiresUserAction={false}
-            onShouldStartLoadWithRequest={(request) => {
-              // Permettre toutes les navigations normales
-              return true;
-            }}
-            onNavigationStateChange={(navState) => {
-              // Navigation libre dans le WebView
-            }}
-            onError={(error) => {
-              // Gérer l'erreur WebView silencieusement
-              setError('Erreur du lecteur vidéo');
-            }}
-            onLoadStart={() => setEpisodeLoading(true)}
-            onLoadEnd={() => setEpisodeLoading(false)}
-            renderError={() => (
-              <View style={styles.errorContainer}>
-                <Ionicons name="warning-outline" size={48} color="#ef4444" />
-                <Text style={styles.errorText}>Erreur du lecteur</Text>
-                <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
-                  <Text style={styles.retryButtonText}>Réessayer</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          />
+          {serverError ? (
+            // 🚨 Message d'erreur de serveur personnalisé
+            <View style={styles.errorContainer}>
+              <Ionicons name="warning-outline" size={48} color="#ef4444" />
+              <Text style={styles.errorText}>Serveur temporairement indisponible</Text>
+              <Text style={styles.errorMessageText}>Choisissez un autre serveur pour continuer</Text>
+              <TouchableOpacity 
+                style={styles.retryButton} 
+                onPress={() => {
+                  setServerError(false);
+                  if (webViewRef.current) {
+                    webViewRef.current.reload();
+                  }
+                }}
+              >
+                <Text style={styles.retryButtonText}>Réessayer ce serveur</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <WebView
+              ref={webViewRef}
+              source={{ uri: currentSource.url }}
+              style={styles.webView}
+              javaScriptEnabled={true}
+              domStorageEnabled={true}
+              startInLoadingState={true}
+              allowsFullscreenVideo={true}
+              allowsInlineMediaPlayback={true}
+              mediaPlaybackRequiresUserAction={false}
+              onShouldStartLoadWithRequest={(request) => {
+                return true;
+              }}
+              onNavigationStateChange={(navState) => {
+                // Détecter les erreurs de chargement
+                if (navState.title?.includes('404') || navState.title?.includes('Error') || navState.title?.includes('Erreur')) {
+                  setServerError(true);
+                }
+              }}
+              onError={(syntheticEvent) => {
+                console.log('WebView error detected');
+                setServerError(true);
+              }}
+              onHttpError={(syntheticEvent) => {
+                const { nativeEvent } = syntheticEvent;
+                console.log('WebView HTTP error: ', nativeEvent.statusCode);
+                // Les erreurs HTTP indiquent souvent un serveur down
+                if (nativeEvent.statusCode >= 400) {
+                  setServerError(true);
+                }
+              }}
+              onLoadStart={() => {
+                setEpisodeLoading(true);
+                setServerError(false); // Reset l'erreur au début du chargement
+              }}
+              onLoadEnd={() => {
+                setEpisodeLoading(false);
+              }}
+              renderError={() => (
+                <View style={styles.errorContainer}>
+                  <Ionicons name="warning-outline" size={48} color="#ef4444" />
+                  <Text style={styles.errorText}>Serveur temporairement indisponible</Text>
+                  <Text style={styles.errorMessageText}>Choisissez un autre serveur pour continuer</Text>
+                  <TouchableOpacity 
+                    style={styles.retryButton} 
+                    onPress={() => {
+                      setServerError(false);
+                      if (webViewRef.current) {
+                        webViewRef.current.reload();
+                      }
+                    }}
+                  >
+                    <Text style={styles.retryButtonText}>Réessayer ce serveur</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+          )}
 
-          {episodeLoading && (
+          {episodeLoading && !serverError && (
             <View style={styles.loadingOverlay}>
               <ActivityIndicator size="large" color="#00bcd4" />
             </View>
@@ -709,6 +754,8 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   onValueChange={(itemValue) => {
                     const newServerIndex = parseInt(itemValue as string);
                     setSelectedPlayer(newServerIndex);
+                    // 🔄 Réinitialiser l'erreur de serveur lors du changement
+                    setServerError(false);
                     // Forcer le rechargement de la WebView avec le nouveau serveur
                     if (webViewRef.current) {
                       webViewRef.current.reload();
