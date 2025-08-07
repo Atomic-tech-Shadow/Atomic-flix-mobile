@@ -52,8 +52,68 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [serverError, setServerError] = useState<boolean>(false);
+  const [connectionSpeed, setConnectionSpeed] = useState<'good' | 'medium' | 'slow' | 'unknown'>('unknown');
+  const [buffering, setBuffering] = useState<boolean>(false);
 
   const webViewRef = useRef<WebView>(null);
+
+  // 🌐 Fonction pour tester la vitesse de connexion
+  const testConnectionSpeed = async () => {
+    try {
+      const startTime = Date.now();
+      
+      // Tester avec une requête simple vers un endpoint existant
+      await fetch('https://anime-sama-scraper.vercel.app/api/trending', { 
+        method: 'HEAD',
+        cache: 'no-cache'
+      });
+      
+      const endTime = Date.now();
+      const responseTime = endTime - startTime;
+      
+      // Déterminer la qualité de connexion basée sur le temps de réponse
+      if (responseTime < 500) {
+        setConnectionSpeed('good');
+      } else if (responseTime < 1500) {
+        setConnectionSpeed('medium');
+      } else {
+        setConnectionSpeed('slow');
+      }
+      
+      return responseTime;
+    } catch (error) {
+      setConnectionSpeed('slow');
+      return 5000; // Connexion très lente/problématique
+    }
+  };
+
+  // 🎯 Fonction pour sélectionner automatiquement le meilleur serveur selon la connexion
+  const selectOptimalServer = (sources: any[]) => {
+    if (!sources || sources.length === 0) return 0;
+    
+    // Si connexion lente, privilégier les serveurs avec qualité plus basse
+    if (connectionSpeed === 'slow') {
+      // Chercher des serveurs avec qualité "360p" ou "480p"
+      const lowQualityIndex = sources.findIndex(source => 
+        source.quality?.includes('360') || source.quality?.includes('480')
+      );
+      return lowQualityIndex >= 0 ? lowQualityIndex : 0;
+    }
+    
+    // Si connexion moyenne, privilégier 720p
+    if (connectionSpeed === 'medium') {
+      const mediumQualityIndex = sources.findIndex(source => 
+        source.quality?.includes('720')
+      );
+      return mediumQualityIndex >= 0 ? mediumQualityIndex : 0;
+    }
+    
+    // Connexion bonne : utiliser la meilleure qualité disponible
+    const highQualityIndex = sources.findIndex(source => 
+      source.quality?.includes('1080') || source.quality?.includes('HD')
+    );
+    return highQualityIndex >= 0 ? highQualityIndex : 0;
+  };
 
   // Fonction pour les requêtes API externes
   const apiRequest = async (endpoint: string, timeoutMs = 20000) => {
@@ -201,14 +261,25 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     }
   };
 
-  // Fonction pour charger les sources d'un épisode
+  // Fonction pour charger les sources d'un épisode avec optimisation connexion
   const loadEpisodeSources = async (episode: Episode) => {
     try {
       setEpisodeLoading(true);
+      
+      // 🌐 Tester la vitesse de connexion avant de charger (optionnel)
+      try {
+        await testConnectionSpeed();
+      } catch (error) {
+        console.log('Test de connexion ignoré:', error);
+        setConnectionSpeed('unknown');
+      }
 
       const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/embed?url=${encodeURIComponent(episode.url)}`);
 
       if (response && response.success && response.sources && response.sources.length > 0) {
+        // 🎯 Sélectionner automatiquement le serveur optimal selon la connexion
+        const optimalServerIndex = selectOptimalServer(response.sources);
+        
         setEpisodeDetails({
           id: episode.id,
           title: episode.title,
@@ -218,8 +289,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           availableServers: response.sources.map((s: any) => s.server),
           url: episode.url
         });
-        // Ne pas resetter selectedPlayer pour préserver le choix utilisateur
-        // setSelectedPlayer(0); // SUPPRIMÉ: causait le bug de retour serveur 1
+        
+        // Utiliser le serveur optimal uniquement si aucun serveur n'est déjà sélectionné
+        if (selectedPlayer === 0 && optimalServerIndex !== 0) {
+          setSelectedPlayer(optimalServerIndex);
+        }
       } else {
         setError('Aucune source de streaming trouvée pour cet épisode');
       }
@@ -800,6 +874,30 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 </Picker>
               )}
             </View>
+          </View>
+        )}
+
+        {/* Indicateur de qualité de connexion */}
+        {connectionSpeed !== 'unknown' && (
+          <View style={styles.connectionIndicator}>
+            <Ionicons 
+              name={
+                connectionSpeed === 'good' ? 'wifi' : 
+                connectionSpeed === 'medium' ? 'wifi-outline' : 'cellular-outline'
+              } 
+              size={16} 
+              color={
+                connectionSpeed === 'good' ? '#10b981' : 
+                connectionSpeed === 'medium' ? '#f59e0b' : '#ef4444'
+              } 
+            />
+            <Text style={[styles.connectionText, {
+              color: connectionSpeed === 'good' ? '#10b981' : 
+                     connectionSpeed === 'medium' ? '#f59e0b' : '#ef4444'
+            }]}>
+              {connectionSpeed === 'good' ? 'Connexion excellente' : 
+               connectionSpeed === 'medium' ? 'Connexion correcte' : 'Connexion lente - Qualité adaptée'}
+            </Text>
           </View>
         )}
 
@@ -1438,6 +1536,26 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#FFFFFF',
     borderStyle: 'dotted',
+  },
+  // 🌐 Styles pour l'indicateur de connexion
+  connectionIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    marginHorizontal: 20,
+    marginVertical: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  connectionText: {
+    marginLeft: 8,
+    fontSize: 12,
+    fontWeight: '600',
+    textAlign: 'center',
   },
 });
 
