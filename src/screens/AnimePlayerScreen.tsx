@@ -694,7 +694,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   ))
                 ) : (
                   <Picker.Item
-                    label={episodeLoading ? `Chargement épisodes ${selectedLanguage}...` : "Aucun épisode disponible"}
+                    label="Aucun épisode disponible"
                     value=""
                   />
                 )}
