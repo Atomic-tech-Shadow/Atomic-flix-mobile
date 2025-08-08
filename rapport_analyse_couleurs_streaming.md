@@ -115,15 +115,19 @@ Background:       #8B5DFF (violet)
    - Adapté mobile ET desktop
    - Excellent pour le branding
 
-### ⚠️ **POINTS D'ATTENTION**
+### ⚠️ **POURQUOI 9.5/10 ET PAS 10/10**
 
-1. **Éviter la surcharge violette**
-   - Utiliser plus les accents cyan/rose
-   - Hiérarchiser avec l'intensité
+**Les 0.5 points en moins sont dus à :**
 
-2. **Visibilité des CTA**
-   - Rose (#FF6B9D) pour boutons importants
-   - Cyan (#00D4FF) pour interactions
+1. **OPTIMISATION POSSIBLE DES CONTRASTES**
+   - Certains textes pourraient être plus lisibles sur fond violet
+   - Hiérarchie visuelle perfectible avec les nuances
+
+2. **POTENTIEL NON EXPLOITÉ DES ACCENTS**
+   - Le rose (#FF6B9D) et cyan (#00D4FF) pourraient être utilisés plus stratégiquement
+   - Opportunity de créer plus de variation pour guider l'utilisateur
+
+**Note :** Ce ne sont pas des défauts mais des opportunités d'optimisation mineure. La base est exceptionnelle.
 
 ---
 
@@ -131,7 +135,7 @@ Background:       #8B5DFF (violet)
 
 ### 🚀 **VERDICT: GARDER LA PALETTE ACTUELLE**
 
-**Score global: 10/10** ⭐
+**Score global: 9.5/10**
 
 ### **OPTIMISATIONS SUGGÉRÉES**
 
