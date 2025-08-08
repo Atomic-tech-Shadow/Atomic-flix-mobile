@@ -178,10 +178,7 @@ const HomeScreen: React.FC = () => {
         return await response.json();
       } catch (error) {
         attempt++;
-
-
         if (attempt >= maxRetries) {
-
           throw error;
         }
 

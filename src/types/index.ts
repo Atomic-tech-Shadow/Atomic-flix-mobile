@@ -44,9 +44,9 @@ export interface VideoSource {
   url: string;
   server: string;
   quality: string;
-  language: string;
   type: string;
-  serverIndex: number;
+  episode?: number;
+  serverNumber?: number;
 }
 
 export interface Season {

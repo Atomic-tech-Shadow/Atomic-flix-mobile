@@ -34,8 +34,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   const [showGlobalSearchModal, setShowGlobalSearchModal] = useState(false);
   const [slideAnim] = useState(new Animated.Value(-300));
 
-
-
   const notificationService = NotificationService.getInstance();
 
   const handleSearchPress = () => {
@@ -119,8 +117,9 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
     notificationService.markAsRead(notification.id);
     setShowNotificationModal(false);
 
-    // TODO: Naviguer vers l'anime/manga spécifique
+    // Navigation simple vers l'écran d'accueil - amélioration future possible
     console.log('Navigation vers:', notification.animeTitle);
+    navigation.navigate('Home');
   };
 
   const handleMenuPress = () => {

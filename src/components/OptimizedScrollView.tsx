@@ -35,7 +35,7 @@ const OptimizedScrollView: React.FC<OptimizedScrollViewProps> = ({
     minimumZoomScale: 1,
     scrollsToTop: !horizontal,
     automaticallyAdjustContentInsets: false,
-    contentInsetAdjustmentBehavior: 'automatic' as const, // Changé pour meilleure compatibilité
+    contentInsetAdjustmentBehavior: 'never' as const,
     overScrollMode: 'auto' as const,
     fadingEdgeLength: 0,
     directionalLockEnabled: horizontal ? true : false, // Activé seulement pour horizontal
