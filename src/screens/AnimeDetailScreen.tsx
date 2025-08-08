@@ -20,7 +20,7 @@ import type { RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 import type { RootStackParamList } from '../navigation/AppNavigator';
-import { COLORS } from '../constants/newColors';
+import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { animeAPI } from '../utils/animeAPI';
@@ -504,11 +504,8 @@ const styles = StyleSheet.create({
   heroTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: COLORS.text.primary,
+    ...textStyles.heroTitle,
     marginBottom: 16,
-    textShadowColor: 'rgba(0,0,0,0.8)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
   },
   heroBadgesCompact: {
     alignItems: 'flex-start', // Alignés à gauche
@@ -549,7 +546,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#8b5cf6', // Violet pour le genre
   },
   badgeTextSmall: {
-    color: COLORS.text.primary,
+    ...textStyles.cardTitle,
     fontSize: 10,
     fontWeight: '500',
     flexShrink: 1,
@@ -693,13 +690,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   seasonCardTitle: {
-    color: COLORS.text.primary,
+    ...textStyles.cardTitle,
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
-    textShadowColor: 'rgba(0,0,0,0.8)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
     marginBottom: 4,
   },
   seasonCardBadgeAnime: {

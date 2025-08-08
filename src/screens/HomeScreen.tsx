@@ -22,7 +22,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SearchResult } from '../types/index';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
-import { COLORS } from '../constants/newColors';
+import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import LoadingSpinner from '../components/LoadingSpinner';
 import NotificationService from '../utils/notificationService';
 import TrendingNotificationService from '../services/TrendingNotificationService';
@@ -1260,7 +1260,7 @@ const styles = StyleSheet.create({
   trendingSectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: COLORS.text.primary,
+    ...textStyles.heroTitle,
     textAlign: 'center',
   },
   trendingGrid: {
@@ -1339,7 +1339,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: COLORS.text.primary,
+    ...textStyles.cardTitle,
     marginBottom: 8,
     lineHeight: 18,
     minHeight: 54,
@@ -1496,7 +1496,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   episodeInfoText: {
-    color: COLORS.secondary,
+    color: COLORS.states.active, // Cyan éclatant pour meilleur contraste
     fontSize: 9,
     fontWeight: '600',
     borderRadius: 12,
@@ -1544,7 +1544,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   horizontalCardBadgeText: {
-    color: '#00bcd4',
+    color: COLORS.badges.trending, // Cyan éclatant stratégique
     fontSize: 8,
     fontWeight: '600',
   },
@@ -1559,7 +1559,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   trendingBadgeText: {
-    color: '#ffffff',
+    ...textStyles.cardTitle,
     fontSize: 8,
     fontWeight: 'bold',
   },

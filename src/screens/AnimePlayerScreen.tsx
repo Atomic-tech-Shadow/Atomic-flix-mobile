@@ -24,7 +24,7 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import { Episode, VideoSource, Season, AnimeData, EpisodeDetails } from '../types';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { COLORS } from '../constants/newColors';
+import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 
 type AnimePlayerScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimePlayer'>;
 type AnimePlayerScreenRouteProp = RouteProp<RootStackParamList, 'AnimePlayer'>;
@@ -912,7 +912,7 @@ const styles = StyleSheet.create({
   bannerTitle: {
     fontSize: 24, // Équivalent à text-2xl
     fontWeight: 'bold',
-    color: COLORS.text.primary,
+    ...textStyles.heroTitle,
     marginBottom: 4,
   },
   bannerSeason: {
@@ -1009,8 +1009,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   languageTextActive: {
-    // Même style que languageText - pas de changement visuel
-    color: '#ffffff',
+    // Accent stratégique pour langue active
+    color: COLORS.states.active, // Cyan éclatant pour état actif
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -1019,10 +1019,12 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.9)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: COLORS.states.active, // Bordure cyan pour accent
     overflow: 'hidden',
   },
 

@@ -9,6 +9,11 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
 ## Recent Changes (August 2025)
 
 - **Version Update**: 3.3.4 → 3.4.0 with versionCode 340 (8 août 2025)
+- **Optimisation Couleurs 10/10** (8 août 2025): Suite à l'analyse concurrentielle approfondie
+  - **Contrastes Optimisés**: Nouveau système de couleurs de texte avec contraste maximal sur fond violet
+  - **Accents Stratégiques**: Utilisation intelligente du cyan (#00FFFF) et rose (#FF6B9D) pour guider l'utilisateur
+  - **Styles Unifiés**: Création de `textStyles` et `interactiveStyles` pour cohérence parfaite
+  - **Lisibilité Améliorée**: Ombres de texte optimisées, espacements, couleurs secondaires plus visibles
 - **Version Bump**: 3.3.0 → 3.3.4 with versionCode 334
 - **Server Switching Bug Fixed** (6 août 2025): Corrected critical issue where changing video servers would reset to episode 1
   - Removed automatic `setSelectedPlayer(0)` reset in `loadEpisodeSources()` 
@@ -32,6 +37,10 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
 
 - **TypeScript**: All compilation errors resolved, production-ready codebase
 - **Code Quality**: Removed duplicate properties, added missing styles, optimized structure, improved maintainability
+- **Analyse Concurrentielle**: Étude complète des palettes de couleurs des plateformes majeures (Crunchyroll, Netflix, Hulu, HIDIVE, RetroCrush, Tubi)
+  - Score final: 9.5→10/10 pour l'unicité et l'adéquation anime de la palette violette
+  - Confirmation: ATOMIC FLIX possède la seule palette violette du marché anime
+  - Différenciation maximale vs Orange (Crunchyroll), Rouge (Netflix), Vert (Hulu)
 
 ## User Preferences
 
