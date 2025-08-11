@@ -32,14 +32,18 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "notification": {
+      "icon": "./assets/icon.png",
+      "color": "#ffffff"
+    },
     "plugins": [
       "./android-manifest-config.js", 
       "./android-resources-config.js",
       [
         "expo-notifications",
         {
-          "icon": "./assets/atomic-flix-logo-new.png",
-          "color": "#8B5DFF",
+          "icon": "./assets/icon.png",
+          "color": "#ffffff",
           "defaultChannel": "atomic-flix-trending",
           "sounds": [],
           "enableBackgroundRemoteNotifications": true
