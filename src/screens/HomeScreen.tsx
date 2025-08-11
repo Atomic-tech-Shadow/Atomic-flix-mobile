@@ -37,6 +37,25 @@ type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 const { width, height } = Dimensions.get('window');
 
+// Fonction pour obtenir le titre basé sur le jour
+const getDaySpecificTitle = (): string => {
+  const today = new Date();
+  const dayOfWeek = today.getDay(); // 0 = Dimanche, 1 = Lundi, etc.
+  
+  const dayNames = [
+    'dimanche',
+    'lundi', 
+    'mardi',
+    'mercredi',
+    'jeudi',
+    'vendredi',
+    'samedi'
+  ];
+  
+  const currentDay = dayNames[dayOfWeek];
+  return `🕐 Sorties du ${currentDay}`;
+};
+
 // Interface pour les réponses API (identique au site web)
 interface ApiResponse<T> {
   success: boolean;
@@ -903,7 +922,7 @@ const HomeScreen: React.FC = () => {
             {planningAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
                 <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>🕐 Sorties cette semaine</Text>
+                  <Text style={styles.sectionTitle}>{getDaySpecificTitle()}</Text>
                 </View>
                 <OptimizedScrollView 
                   horizontal 
