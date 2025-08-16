@@ -24,6 +24,7 @@ import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { animeAPI } from '../utils/animeAPI';
+import ViewingHistoryService from '../services/ViewingHistoryService';
 
 type AnimeDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimeDetail'>;
 type AnimeDetailScreenRouteProp = RouteProp<RootStackParamList, 'AnimeDetail'>;
@@ -142,8 +143,21 @@ const AnimeDetailScreen: React.FC = () => {
   };
 
   // Navigation vers la page de lecteur appropriée (identique au site web)
-  const goToPlayer = (season: Season) => {
-    if (!animeUrl) return;
+  const goToPlayer = async (season: Season) => {
+    if (!animeUrl || !animeData) return;
+    
+    // Ajouter à l'historique avant de naviguer
+    const historyService = ViewingHistoryService.getInstance();
+    const animeId = animeUrl.split('/').pop() || animeUrl;
+    
+    await historyService.addToHistory({
+      animeId,
+      animeTitle,
+      animeImage: animeData.image || '',
+      season: season.name,
+      contentType: season.name.toLowerCase().includes('scan') || 
+                   season.name.toLowerCase().includes('manga') ? 'MANGA' : 'ANIME'
+    });
     
     // Vérifier si c'est un manga/scan basé sur le nom de la saison
     const isManga = season.name.toLowerCase().includes('scan') || 

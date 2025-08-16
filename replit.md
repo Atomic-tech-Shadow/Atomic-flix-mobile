@@ -10,6 +10,12 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
 
 - **Version Update**: 3.5.0 → 3.6.0 with versionCode 360 (16 août 2025)
   - **Nouvelle Section Historique**: Ajout d'une 5ème section "🏛️ Historique" après "Pépites cachées"
+  - **Système d'Historique de Visionnage**: Nouvel `ViewingHistoryService` qui enregistre automatiquement:
+    - Chaque anime regardé avec détails (titre, image, épisode, saison)
+    - Historique local persistant dans AsyncStorage (jusqu'à 100 éléments)
+    - Intégration dans AnimeDetailScreen et AnimePlayerScreen pour tracking automatique
+    - Section Historique du HomeScreen alimentée par les vraies données de visionnage utilisateur
+    - Statistiques de visionnage (total animes, épisodes, type de contenu favori)
   - Badge VINTAGE marron authentique pour différencier les animes classiques
   - Progression logique: Trending → Planning → Légendaires → Pépites → **Historique**
   - Intégration API automatique depuis `/api/popular` avec support historique/retro/vintage

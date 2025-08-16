@@ -29,6 +29,7 @@ import TrendingNotificationService from '../services/TrendingNotificationService
 import PlanningNotificationService from '../services/PlanningNotificationService';
 import TelegramVerification from '../components/TelegramVerification';
 import { animeAPI } from '../utils/animeAPI';
+import ViewingHistoryService from '../services/ViewingHistoryService';
 
 import { BlurView } from 'expo-blur';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -235,29 +236,83 @@ const HomeScreen: React.FC = () => {
     }
   };
 
-  // Charger le contenu populaire (classiques et pépites) depuis l'API
+  // Charger le contenu populaire (classiques et pépites) depuis l'API + historique local
   const loadPopularAnimes = async () => {
     try {
       const response = await apiRequest('/api/popular');
+      const historyService = ViewingHistoryService.getInstance();
 
       if (response && response.success && response.categories) {
-        // Extraire les classiques, pépites et historique de la nouvelle structure API
+        // Extraire les classiques et pépites de l'API
         const classiques = response.categories.classiques?.anime || [];
         const pepites = response.categories.pepites?.anime || [];
-        const historique = response.categories.historique?.anime || response.categories.retro?.anime || response.categories.vintage?.anime || [];
+        
+        // Charger l'historique local de visionnage de l'utilisateur
+        const localHistory = await historyService.getRecentHistory(20);
+        
+        // Convertir l'historique local au format SearchResult pour compatibilité
+        const historiqueFormatted = localHistory.map(item => ({
+          id: item.animeId,
+          title: item.animeTitle,
+          image: item.animeImage,
+          url: `https://anime-sama.fr/catalogue/${item.animeId}`,
+          contentType: item.contentType || 'ANIME',
+          language: { vostfr: true }, // Par défaut
+          lastWatched: item.lastWatchedDate,
+          episode: item.episode,
+          season: item.season
+        }));
 
         setClassiquesAnimes(classiques);
         setPepitesAnimes(pepites);
-        setHistoriqueAnimes(historique);
+        setHistoriqueAnimes(historiqueFormatted);
       } else {
+        // Si l'API échoue, charger au moins l'historique local
+        const historyService = ViewingHistoryService.getInstance();
+        const localHistory = await historyService.getRecentHistory(20);
+        
+        const historiqueFormatted = localHistory.map(item => ({
+          id: item.animeId,
+          title: item.animeTitle,
+          image: item.animeImage,
+          url: `https://anime-sama.fr/catalogue/${item.animeId}`,
+          contentType: item.contentType || 'ANIME',
+          language: { vostfr: true },
+          lastWatched: item.lastWatchedDate,
+          episode: item.episode,
+          season: item.season
+        }));
+
+        setClassiquesAnimes([]);
+        setPepitesAnimes([]);
+        setHistoriqueAnimes(historiqueFormatted);
+      }
+    } catch (error) {
+      // En cas d'erreur, essayer au moins de charger l'historique local
+      try {
+        const historyService = ViewingHistoryService.getInstance();
+        const localHistory = await historyService.getRecentHistory(20);
+        
+        const historiqueFormatted = localHistory.map(item => ({
+          id: item.animeId,
+          title: item.animeTitle,
+          image: item.animeImage,
+          url: `https://anime-sama.fr/catalogue/${item.animeId}`,
+          contentType: item.contentType || 'ANIME',
+          language: { vostfr: true },
+          lastWatched: item.lastWatchedDate,
+          episode: item.episode,
+          season: item.season
+        }));
+
+        setClassiquesAnimes([]);
+        setPepitesAnimes([]);
+        setHistoriqueAnimes(historiqueFormatted);
+      } catch (historyError) {
         setClassiquesAnimes([]);
         setPepitesAnimes([]);
         setHistoriqueAnimes([]);
       }
-    } catch (error) {
-      setClassiquesAnimes([]);
-      setPepitesAnimes([]);
-      setHistoriqueAnimes([]);
     }
   };
 

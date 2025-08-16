@@ -25,6 +25,7 @@ import { Episode, VideoSource, Season, AnimeData, EpisodeDetails } from '../type
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
+import ViewingHistoryService from '../services/ViewingHistoryService';
 
 type AnimePlayerScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimePlayer'>;
 type AnimePlayerScreenRouteProp = RouteProp<RootStackParamList, 'AnimePlayer'>;
@@ -218,6 +219,21 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           availableServers: response.sources.map((s: any) => s.server),
           url: episode.url
         });
+
+        // 📈 Ajouter à l'historique quand l'épisode est chargé avec succès
+        const historyService = ViewingHistoryService.getInstance();
+        const animeId = animeUrl.split('/').pop() || animeUrl;
+        
+        await historyService.addToHistory({
+          animeId,
+          animeTitle,
+          animeImage: animeData?.image || '',
+          season: selectedSeason?.name || '',
+          episode: `Épisode ${episode.episodeNumber}`,
+          episodeTitle: episode.title,
+          contentType: 'ANIME'
+        });
+
         // Ne pas resetter selectedPlayer pour préserver le choix utilisateur
         // setSelectedPlayer(0); // SUPPRIMÉ: causait le bug de retour serveur 1
       } else {
@@ -321,7 +337,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
     const newEpisode = episodes[newIndex];
     setSelectedEpisode(newEpisode);
-    loadEpisodeSources(newEpisode);
+    loadEpisodeSources(newEpisode); // L'historique sera automatiquement mis à jour dans loadEpisodeSources
   };
 
   // ✨ Effet supprimé : le changement de langue est maintenant géré directement dans changeLanguage()
