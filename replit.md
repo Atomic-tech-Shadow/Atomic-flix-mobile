@@ -4,10 +4,20 @@
 
 ATOMIC FLIX is a React Native mobile application built with Expo, designed for streaming anime and reading manga. Developed entirely with Replit Agent, its primary purpose is to provide a seamless and feature-rich experience for anime and manga enthusiasts. The project aims to offer intuitive navigation, robust media playback capabilities, and a consistent user interface across mobile platforms, primarily Android. It integrates advanced features like real-time trending content, personalized planning for new releases, and intelligent notification systems. The vision is to create a go-to platform for otakus, offering a comprehensive and engaging content consumption experience.
 
-**Current Version**: 3.6.0 (Updated: 16 août 2025)
+**Current Version**: 3.7.0 (Updated: 16 août 2025)
 
 ## Recent Changes (August 2025)
 
+- **Version Update**: 3.6.0 → 3.7.0 with versionCode 370 (16 août 2025)
+  - **Système de Recommandations Intelligentes**: Nouvelle section "🎯 Recommandations" 
+    - Nouvel `RecommendationService` avec algorithme d'analyse des préférences utilisateur
+    - Recommandations basées sur l'historique de visionnage (animes similaires, genres favoris)
+    - Filtrage intelligent des tendances selon les goûts personnels
+    - Découvertes personnalisées : contenu populaire non encore vu par l'utilisateur
+    - Score de recommandation (0-100%) affiché sur chaque suggestion
+    - Badges "POUR VOUS" rose et raisons explicites ("Similaire à...", "Tendance populaire")
+    - Cache intelligent (2h) avec invalidation automatique lors de nouveaux visionnages
+    - Progression logique: Trending → Planning → Légendaires → Pépites → **Recommandations** → Historique
 - **Version Update**: 3.5.0 → 3.6.0 with versionCode 360 (16 août 2025)
   - **Nouvelle Section Historique**: Ajout d'une 5ème section "🏛️ Historique" après "Pépites cachées"
   - **Système d'Historique de Visionnage**: Nouvel `ViewingHistoryService` qui enregistre automatiquement:
@@ -17,7 +27,6 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
     - Section Historique du HomeScreen alimentée par les vraies données de visionnage utilisateur
     - Statistiques de visionnage (total animes, épisodes, type de contenu favori)
   - Badge VINTAGE marron authentique pour différencier les animes classiques
-  - Progression logique: Trending → Planning → Légendaires → Pépites → **Historique**
   - Intégration API automatique depuis `/api/popular` avec support historique/retro/vintage
 - **Version Update**: 3.4.0 → 3.5.0 with versionCode 350 (11 août 2025)
   - **Fonctionnalité Sorties Dynamiques**: Section "Sorties cette semaine" maintenant dynamique selon le jour

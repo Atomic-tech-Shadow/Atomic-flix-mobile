@@ -30,6 +30,7 @@ import PlanningNotificationService from '../services/PlanningNotificationService
 import TelegramVerification from '../components/TelegramVerification';
 import { animeAPI } from '../utils/animeAPI';
 import ViewingHistoryService from '../services/ViewingHistoryService';
+import RecommendationService from '../services/RecommendationService';
 
 import { BlurView } from 'expo-blur';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -77,6 +78,7 @@ const HomeScreen: React.FC = () => {
   const [pepitesAnimes, setPepitesAnimes] = useState<SearchResult[]>([]);
   const [planningAnimes, setPlanningAnimes] = useState<SearchResult[]>([]);
   const [historiqueAnimes, setHistoriqueAnimes] = useState<SearchResult[]>([]);
+  const [recommendationsAnimes, setRecommendationsAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -121,10 +123,30 @@ const HomeScreen: React.FC = () => {
         loadPopularAnimes(),
         loadPlanningAnimes()
       ]);
+      
+      // Charger les recommandations après avoir chargé les autres données
+      await loadRecommendations();
     } catch (error) {
       console.error('Erreur chargement initial:', error);
     } finally {
       setInitialLoading(false);
+    }
+  };
+
+  // Charger les recommandations intelligentes
+  const loadRecommendations = async () => {
+    try {
+      const recommendationService = RecommendationService.getInstance();
+      const recommendations = await recommendationService.generateRecommendations(
+        trendingAnimes,
+        [...classiquesAnimes, ...pepitesAnimes],
+        planningAnimes
+      );
+      
+      setRecommendationsAnimes(recommendations);
+    } catch (error) {
+      console.error('Erreur chargement recommandations:', error);
+      setRecommendationsAnimes([]);
     }
   };
 
@@ -256,8 +278,15 @@ const HomeScreen: React.FC = () => {
           title: item.animeTitle,
           image: item.animeImage,
           url: `https://anime-sama.fr/catalogue/${item.animeId}`,
-          contentType: item.contentType || 'ANIME',
-          language: { vostfr: true }, // Par défaut
+          contentType: item.contentType || 'ANIME' as const,
+          language: {
+            code: 'fr',
+            name: 'Français',
+            fullName: 'Français (VOSTFR)',
+            flag: '🇫🇷',
+            priority: 1,
+            vostfr: true
+          },
           lastWatched: item.lastWatchedDate,
           episode: item.episode,
           season: item.season
@@ -276,8 +305,15 @@ const HomeScreen: React.FC = () => {
           title: item.animeTitle,
           image: item.animeImage,
           url: `https://anime-sama.fr/catalogue/${item.animeId}`,
-          contentType: item.contentType || 'ANIME',
-          language: { vostfr: true },
+          contentType: item.contentType || 'ANIME' as const,
+          language: {
+            code: 'fr',
+            name: 'Français',
+            fullName: 'Français (VOSTFR)',
+            flag: '🇫🇷',
+            priority: 1,
+            vostfr: true
+          },
           lastWatched: item.lastWatchedDate,
           episode: item.episode,
           season: item.season
@@ -298,8 +334,15 @@ const HomeScreen: React.FC = () => {
           title: item.animeTitle,
           image: item.animeImage,
           url: `https://anime-sama.fr/catalogue/${item.animeId}`,
-          contentType: item.contentType || 'ANIME',
-          language: { vostfr: true },
+          contentType: item.contentType || 'ANIME' as const,
+          language: {
+            code: 'fr',
+            name: 'Français',
+            fullName: 'Français (VOSTFR)',
+            flag: '🇫🇷',
+            priority: 1,
+            vostfr: true
+          },
           lastWatched: item.lastWatchedDate,
           episode: item.episode,
           season: item.season
@@ -1170,7 +1213,95 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-            {/* Section Historique - 5ème position pour les classiques vintage */}
+            {/* Section Recommandations - basée sur l'historique utilisateur */}
+            {recommendationsAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>🎯 Recommandations</Text>
+                  <Text style={styles.sectionSubtitle}>Basées sur vos goûts</Text>
+                </View>
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                  decelerationRate={0.985}
+                  snapToInterval={128}
+                  snapToAlignment="start"
+                  directionalLockEnabled={true}
+                  scrollEventThrottle={4}
+                  removeClippedSubviews={true}
+                  bounces={true}
+                  bouncesZoom={false}
+                  overScrollMode="auto"
+                  disableIntervalMomentum={true}
+                >
+                  {recommendationsAnimes.map((anime, index) => (
+                    <TouchableOpacity
+                      key={`recommendation-${anime.id || index}`}
+                      style={styles.recommendationCard}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
+                      activeOpacity={0.8}
+                    >
+                      <Image
+                        source={{ uri: anime.image }}
+                        style={styles.horizontalCardImage}
+                        resizeMode="cover"
+                      />
+                      {/* Badge RECOMMANDÉ sur l'image */}
+                      <View style={styles.recommendationBadge}>
+                        <Text style={styles.recommendationBadgeText}>POUR VOUS</Text>
+                      </View>
+                      
+                      {/* Score de recommandation (si disponible) */}
+                      {(anime as any).recommendationScore && (
+                        <View style={styles.scoreBadge}>
+                          <Text style={styles.scoreText}>
+                            {Math.round((anime as any).recommendationScore)}%
+                          </Text>
+                        </View>
+                      )}
+                      
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.9)']}
+                        style={styles.horizontalCardGradient}
+                      >
+                        <View style={styles.recommendationCardContent}>
+                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
+                            {anime.title}
+                          </Text>
+                          
+                          {/* Raison de la recommandation */}
+                          {(anime as any).recommendationReason && (
+                            <Text style={styles.recommendationReason} numberOfLines={1}>
+                              {(anime as any).recommendationReason}
+                            </Text>
+                          )}
+                          
+                          {/* Basé sur */}
+                          {(anime as any).basedOn && (
+                            <Text style={styles.basedOnText} numberOfLines={1}>
+                              💡 {(anime as any).basedOn}
+                            </Text>
+                          )}
+                          
+                          {/* Badge de langue */}
+                          {anime.language && (
+                            <View style={styles.horizontalCardBadge}>
+                              <Text style={styles.horizontalCardBadgeText}>
+                                {getLanguageBadge(anime.language)}
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
+
+            {/* Section Historique - 6ème position pour les classiques vintage */}
             {historiqueAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
                 <View style={styles.sectionHeader}>
@@ -1855,6 +1986,74 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 8,
     fontWeight: 'bold',
+  },
+
+  // Styles pour les recommandations
+  recommendationCard: {
+    width: 120,
+    height: 180,
+    marginRight: 12,
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: COLORS.primary,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 107, 157, 0.4)', // Bordure rose pour recommandations
+  },
+  recommendationCardContent: {
+    padding: 8,
+    paddingTop: 4,
+  },
+  recommendationBadge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    backgroundColor: 'rgba(255, 107, 157, 0.95)', // Rose accent du logo
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 8,
+    zIndex: 1,
+  },
+  recommendationBadgeText: {
+    color: '#ffffff',
+    fontSize: 8,
+    fontWeight: 'bold',
+  },
+  scoreBadge: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    backgroundColor: 'rgba(0, 212, 255, 0.95)', // Cyan du logo
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 8,
+    zIndex: 1,
+  },
+  scoreText: {
+    color: '#ffffff',
+    fontSize: 8,
+    fontWeight: 'bold',
+  },
+  recommendationReason: {
+    fontSize: 10,
+    color: COLORS.text.secondary,
+    marginTop: 2,
+    fontStyle: 'italic',
+  },
+  basedOnText: {
+    fontSize: 9,
+    color: COLORS.text.muted,
+    marginTop: 1,
+  },
+  sectionSubtitle: {
+    fontSize: 12,
+    color: COLORS.text.secondary,
+    fontStyle: 'italic',
+    marginTop: 2,
   },
 
 });

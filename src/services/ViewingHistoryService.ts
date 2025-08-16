@@ -46,6 +46,16 @@ class ViewingHistoryService {
       
       await AsyncStorage.setItem(this.HISTORY_KEY, JSON.stringify(trimmedHistory));
       
+      // Vider le cache des recommandations pour forcer une mise à jour
+      try {
+        const RecommendationService = await import('./RecommendationService');
+        const recommendationService = RecommendationService.default.getInstance();
+        await recommendationService.clearCache();
+        console.log('🎯 Cache recommandations vidé après nouvel ajout historique');
+      } catch (error) {
+        console.error('Erreur vidage cache recommandations:', error);
+      }
+      
       console.log('✅ Anime ajouté à l\'historique:', item.animeTitle);
     } catch (error) {
       console.error('Erreur ajout historique:', error);
