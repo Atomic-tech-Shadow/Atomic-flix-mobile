@@ -75,6 +75,7 @@ const HomeScreen: React.FC = () => {
   const [classiquesAnimes, setClassiquesAnimes] = useState<SearchResult[]>([]);
   const [pepitesAnimes, setPepitesAnimes] = useState<SearchResult[]>([]);
   const [planningAnimes, setPlanningAnimes] = useState<SearchResult[]>([]);
+  const [historiqueAnimes, setHistoriqueAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -240,19 +241,23 @@ const HomeScreen: React.FC = () => {
       const response = await apiRequest('/api/popular');
 
       if (response && response.success && response.categories) {
-        // Extraire les classiques et les pépites de la nouvelle structure API
+        // Extraire les classiques, pépites et historique de la nouvelle structure API
         const classiques = response.categories.classiques?.anime || [];
         const pepites = response.categories.pepites?.anime || [];
+        const historique = response.categories.historique?.anime || response.categories.retro?.anime || response.categories.vintage?.anime || [];
 
         setClassiquesAnimes(classiques);
         setPepitesAnimes(pepites);
+        setHistoriqueAnimes(historique);
       } else {
         setClassiquesAnimes([]);
         setPepitesAnimes([]);
+        setHistoriqueAnimes([]);
       }
     } catch (error) {
       setClassiquesAnimes([]);
       setPepitesAnimes([]);
+      setHistoriqueAnimes([]);
     }
   };
 
@@ -1110,6 +1115,67 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
+            {/* Section Historique - 5ème position pour les classiques vintage */}
+            {historiqueAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>🏛️ Historique</Text>
+                </View>
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                  decelerationRate={0.985}
+                  snapToInterval={128}
+                  snapToAlignment="start"
+                  directionalLockEnabled={true}
+                  scrollEventThrottle={4}
+                  removeClippedSubviews={true}
+                  bounces={true}
+                  bouncesZoom={false}
+                  overScrollMode="auto"
+                  disableIntervalMomentum={true}
+                >
+                  {historiqueAnimes.map((anime, index) => (
+                    <TouchableOpacity
+                      key={`historique-${anime.id || index}`}
+                      style={styles.vintageCard}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
+                      activeOpacity={0.8}
+                    >
+                      <Image
+                        source={{ uri: anime.image }}
+                        style={styles.horizontalCardImage}
+                        resizeMode="cover"
+                      />
+                      {/* Badge VINTAGE sur l'image */}
+                      <View style={styles.vintageBadge}>
+                        <Text style={styles.vintageBadgeText}>🏛️ VINTAGE</Text>
+                      </View>
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        style={styles.horizontalCardGradient}
+                      >
+                        <View style={styles.horizontalCardContent}>
+                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
+                            {anime.title}
+                          </Text>
+                          {anime.language && (
+                            <View style={styles.horizontalCardBadge}>
+                              <Text style={styles.horizontalCardBadgeText}>
+                                {getLanguageBadge(anime.language)}
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
+
             {/* Chargement initial unique */}
             {initialLoading && (
               <View style={styles.loadingContainer}>
@@ -1701,6 +1767,36 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   rareBadgeText: {
+    color: '#ffffff',
+    fontSize: 8,
+    fontWeight: 'bold',
+  },
+  vintageCard: {
+    width: 120,
+    height: 180,
+    marginRight: 12,
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: COLORS.primary,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    borderWidth: 1,
+    borderColor: 'rgba(139, 69, 19, 0.4)', // Bordure marron vintage pour historique
+  },
+  vintageBadge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    backgroundColor: 'rgba(139, 69, 19, 0.95)', // Marron vintage
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 8,
+    zIndex: 1,
+  },
+  vintageBadgeText: {
     color: '#ffffff',
     fontSize: 8,
     fontWeight: 'bold',
