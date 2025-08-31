@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, Modal, Animated, Dimensions, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Modal, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import * as Notifications from 'expo-notifications';
-import * as Device from 'expo-device';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
-import NotificationService, { EpisodeNotification } from '../utils/notificationService';
-import NotificationModal from './NotificationModal';
 import { COLORS } from '../constants/newColors';
 import GlobalSearchModal from './GlobalSearchModal';
 
@@ -17,24 +13,15 @@ type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 interface SharedHeaderProps {
   onSearchPress?: () => void;
-  onNotificationPress?: () => void;
 }
 
 const SharedHeader: React.FC<SharedHeaderProps> = ({ 
-  onSearchPress,
-  onNotificationPress 
+  onSearchPress
 }) => {
   const navigation = useNavigation<NavigationProp>();
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-  const [hasNewNotifications, setHasNewNotifications] = useState(true);
-  const [showNotificationModal, setShowNotificationModal] = useState(false);
-  const [notifications, setNotifications] = useState<EpisodeNotification[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
   const [showMenuDrawer, setShowMenuDrawer] = useState(false);
   const [showGlobalSearchModal, setShowGlobalSearchModal] = useState(false);
   const [slideAnim] = useState(new Animated.Value(-300));
-
-  const notificationService = NotificationService.getInstance();
 
   const handleSearchPress = () => {
     // Si un onSearchPress spécifique est fourni (comme dans HomeScreen), l'utiliser
@@ -44,82 +31,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
       // Sinon, ouvrir le modal de recherche globale
       setShowGlobalSearchModal(true);
     }
-  };
-
-  const handleNotificationPress = async () => {
-    if (notificationsEnabled && (unreadCount > 0 || hasNewNotifications)) {
-      // Si les notifications sont activées et qu'il y a des notifications non lues, ouvrir le modal
-      const currentNotifications = await notificationService.getNotifications();
-      setNotifications(currentNotifications);
-      setShowNotificationModal(true);
-    } else {
-      // Sinon, activer/désactiver les notifications
-      const newState = !notificationsEnabled;
-      
-      if (newState) {
-        // En mode web, activer directement (notifications simulées)
-        if (Platform.OS === 'web') {
-          console.log('Mode web - notifications simulées activées');
-        } else {
-          // Sur mobile, vérifier d'abord si les permissions sont déjà accordées
-          const isAllowed = await notificationService.allowsNotificationsAsync();
-          if (isAllowed) {
-            // Permissions déjà accordées, juste obtenir/créer le token
-            await notificationService.initializePushNotifications();
-          } else {
-            // Demander les permissions
-            const token = await notificationService.initializePushNotifications();
-            if (!token) {
-              // Si les permissions sont refusées, informer l'utilisateur
-              Alert.alert(
-                'Permissions requises',
-                'Pour recevoir les notifications de nouvelles sorties, activez les permissions dans Paramètres > Applications > ATOMIC FLIX > Notifications.',
-                [{ text: 'OK' }]
-              );
-              return;
-            }
-          }
-        }
-      }
-      
-      setNotificationsEnabled(newState);
-
-      // Sauvegarder l'état dans les paramètres
-      await notificationService.saveSettings({
-        enabled: newState,
-        newEpisodes: newState,
-        newMangas: newState,
-      });
-
-      // Marquer les notifications comme lues quand on les active
-      if (newState) {
-        setHasNewNotifications(false);
-      }
-
-      // Afficher une confirmation à l'utilisateur
-      Alert.alert(
-        'Notifications',
-        newState 
-          ? '✅ Notifications activées ! Vous recevrez les alertes pour les nouveaux épisodes et mangas.' 
-          : '🔕 Notifications désactivées. Vous ne recevrez plus d\'alertes.',
-        [{ text: 'OK' }]
-      );
-
-      // Appeler la fonction callback si fournie
-      if (onNotificationPress) {
-        onNotificationPress();
-      }
-    }
-  };
-
-  const handleNotificationItemPress = (notification: EpisodeNotification) => {
-    // Marquer comme lu et fermer le modal
-    notificationService.markAsRead(notification.id);
-    setShowNotificationModal(false);
-
-    // Navigation simple vers l'écran d'accueil - amélioration future possible
-    console.log('Navigation vers:', notification.animeTitle);
-    navigation.navigate('Home');
   };
 
   const handleMenuPress = () => {
@@ -159,39 +70,8 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
     }
   };
 
-  const handleMarkAllRead = async () => {
-    await notificationService.markAllAsRead();
-    const updatedNotifications = await notificationService.getNotifications();
-    setNotifications(updatedNotifications);
-    setUnreadCount(0);
-    setHasNewNotifications(false);
-  };
-
-  // Écouter les changements de notifications et mettre à jour le compteur
-  useEffect(() => {
-    const loadNotifications = async () => {
-      const settings = await notificationService.getSettings();
-      setNotificationsEnabled(settings.enabled);
-
-      const count = await notificationService.getUnreadCount();
-      setUnreadCount(count);
-      setHasNewNotifications(count > 0);
-    };
-
-    loadNotifications();
-
-    // Écouter les nouvelles notifications
-    const unsubscribe = notificationService.addListener(async (newNotifications) => {
-      const count = await notificationService.getUnreadCount();
-      setUnreadCount(count);
-      setHasNewNotifications(count > 0);
-    });
-
-    return unsubscribe;
-  }, []);
-
   // Utiliser la version d'app.json via Constants Expo
-  const appVersion = Constants.expoConfig?.version || '2.9.3';
+  const appVersion = Constants.expoConfig?.version || '3.7.0';
 
   return (
     <View style={styles.mobileHeader}>
@@ -221,41 +101,13 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
           <TouchableOpacity 
             style={styles.headerIconButton}
-            onPress={handleNotificationPress}
-          >
-            <View style={styles.notificationContainer}>
-              <Ionicons 
-                name={notificationsEnabled ? "notifications" : "notifications-off"} 
-                size={22} 
-                color={notificationsEnabled ? COLORS.secondary : "#ffffff"} 
-              />
-              {notificationsEnabled && unreadCount > 0 && (
-                <View style={styles.notificationBadge}>
-                  <Text style={styles.badgeText}>
-                    {unreadCount > 99 ? '99+' : unreadCount}
-                  </Text>
-                </View>
-              )}
-            </View>
-          </TouchableOpacity>
-
-
-
-          <TouchableOpacity 
-            style={styles.headerIconButton}
             onPress={handleMenuPress}
           >
             <Ionicons name="menu" size={22} color="#ffffff" />
           </TouchableOpacity>
         </View>
       </View>
-      <NotificationModal
-        visible={showNotificationModal}
-        notifications={notifications}
-        onClose={() => setShowNotificationModal(false)}
-        onNotificationPress={handleNotificationItemPress}
-        onMarkAllRead={handleMarkAllRead}
-      />
+
       <Modal
         visible={showMenuDrawer}
         transparent={true}
@@ -365,7 +217,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-
   logoImage: {
     width: 35,
     height: 35,
@@ -394,26 +245,6 @@ const styles = StyleSheet.create({
   headerIconButton: {
     padding: 8,
     marginLeft: 8,
-  },
-  notificationContainer: {
-    position: 'relative',
-  },
-  notificationBadge: {
-    position: 'absolute',
-    top: -2,
-    right: -2,
-    backgroundColor: COLORS.error,
-    borderRadius: 6,
-    width: 12,
-    height: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  badgeText: {
-    color: COLORS.text.primary,
-    fontSize: 10,
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
   // Styles pour le menu drawer
   drawerOverlay: {

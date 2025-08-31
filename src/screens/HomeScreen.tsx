@@ -24,11 +24,7 @@ import type { RootStackParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import LoadingSpinner from '../components/LoadingSpinner';
-import NotificationService from '../utils/notificationService';
-import TelegramVerification from '../components/TelegramVerification';
 
-import { BlurView } from 'expo-blur';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -54,16 +50,11 @@ const HomeScreen: React.FC = () => {
   const [pepitesAnimes, setPepitesAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-  const [unreadNotifications, setUnreadNotifications] = useState(0);
-  const [showTelegramModal, setShowTelegramModal] = useState(false);
 
 
   // Configuration API identique au site web
   const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';
 
-  // Service de notifications
-  const notificationService = NotificationService.getInstance();
 
   // Fonction utilitaire pour obtenir le badge de langue
   const getLanguageBadge = (language: any): string => {
@@ -77,11 +68,6 @@ const HomeScreen: React.FC = () => {
   // Charger tout le contenu au démarrage
   useEffect(() => {
     loadAllInitialContent();
-    initializeNotifications();
-    checkTelegramVerification();
-
-    // Nettoyer les anciennes notifications au démarrage
-    notificationService.cleanOldNotifications();
   }, []);
 
   // Fonction centralisée pour charger tout le contenu initial
@@ -98,48 +84,7 @@ const HomeScreen: React.FC = () => {
   };
 
 
-  // Vérifier si l'utilisateur a déjà validé Telegram
-  const checkTelegramVerification = async () => {
-    try {
-      const verified = await AsyncStorage.getItem('telegram_verified');
-      if (verified !== 'true') {
-        setShowTelegramModal(true);
-      }
-    } catch (error) {
-      console.log('Erreur lors de la vérification Telegram:', error);
-      setShowTelegramModal(true);
-    }
-  };
 
-  // Gestionnaire de fermeture du modal Telegram
-  const handleTelegramVerified = () => {
-    setShowTelegramModal(false);
-  };
-
-  // Initialiser les paramètres de notification
-  const initializeNotifications = async () => {
-    try {
-      // Initialiser les notifications push
-      await notificationService.initializePushNotifications();
-      
-      const settings = await notificationService.getSettings();
-      setNotificationsEnabled(settings.enabled);
-
-      const unreadCount = await notificationService.getUnreadCount();
-      setUnreadNotifications(unreadCount);
-
-      // Écouter les changements de notifications
-      const unsubscribe = notificationService.addListener((notifications) => {
-        const unread = notifications.filter(n => !n.read).length;
-        setUnreadNotifications(unread);
-      });
-
-      return unsubscribe;
-    } catch (error) {
-      console.error('Erreur initialisation notifications:', error);
-      return undefined;
-    }
-  };
 
   // Fonction pour les requêtes API avec retry (identique au site web)
   const apiRequest = async (endpoint: string, options = {}) => {
@@ -467,27 +412,6 @@ const HomeScreen: React.FC = () => {
     setError(null);
   };
 
-  // Gérer l'activation/désactivation des notifications
-  const handleNotificationPress = async () => {
-    try {
-      const currentSettings = await notificationService.getSettings();
-      const newSettings = {
-        ...currentSettings,
-        enabled: !currentSettings.enabled
-      };
-
-      await notificationService.saveSettings(newSettings);
-      setNotificationsEnabled(newSettings.enabled);
-
-      if (newSettings.enabled) {
-        // Marquer toutes les notifications comme lues quand on active
-        await notificationService.markAllAsRead();
-        setUnreadNotifications(0);
-      }
-    } catch (error) {
-      console.error('Erreur gestion notifications:', error);
-    }
-  };
 
 
   // Fonction pour extraire la langue depuis l'objet language de l'API
@@ -628,7 +552,6 @@ const HomeScreen: React.FC = () => {
       <View style={styles.headerContainer}>
         <SharedHeader 
           onSearchPress={handleSearchPress}
-          onNotificationPress={handleNotificationPress}
         />
       </View>
 
@@ -913,16 +836,6 @@ const HomeScreen: React.FC = () => {
         )}
       </OptimizedScrollView>
 
-      {/* Modal de vérification Telegram avec effet blur */}
-      {showTelegramModal && (
-        <View style={styles.telegramModalOverlay}>
-          <BlurView intensity={50} style={styles.blurView}>
-            <View style={styles.telegramModalContainer}>
-              <TelegramVerification onVerified={handleTelegramVerified} />
-            </View>
-          </BlurView>
-        </View>
-      )}
 
 
     </SafeAreaView>
