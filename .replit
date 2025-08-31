@@ -32,9 +32,12 @@ args = "node complete-health-check.js"
 name = "dev-server"
 author = "agent"
 
+[workflows.workflow.metadata]
+outputType = "webview"
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "node web-server.js"
+args = "npx expo start --web --port 5000"
 waitForPort = 5000
 
 [[ports]]

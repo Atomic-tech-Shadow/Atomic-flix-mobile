@@ -25,12 +25,7 @@ import SharedHeader from '../components/SharedHeader';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import LoadingSpinner from '../components/LoadingSpinner';
 import NotificationService from '../utils/notificationService';
-import TrendingNotificationService from '../services/TrendingNotificationService';
-import PlanningNotificationService from '../services/PlanningNotificationService';
 import TelegramVerification from '../components/TelegramVerification';
-import { animeAPI } from '../utils/animeAPI';
-import ViewingHistoryService from '../services/ViewingHistoryService';
-import RecommendationService from '../services/RecommendationService';
 
 import { BlurView } from 'expo-blur';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -39,24 +34,6 @@ type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 const { width, height } = Dimensions.get('window');
 
-// Fonction pour obtenir le titre basé sur le jour
-const getDaySpecificTitle = (): string => {
-  const today = new Date();
-  const dayOfWeek = today.getDay(); // 0 = Dimanche, 1 = Lundi, etc.
-  
-  const dayNames = [
-    'dimanche',
-    'lundi', 
-    'mardi',
-    'mercredi',
-    'jeudi',
-    'vendredi',
-    'samedi'
-  ];
-  
-  const currentDay = dayNames[dayOfWeek];
-  return `🕐 Sorties du ${currentDay}`;
-};
 
 // Interface pour les réponses API (identique au site web)
 interface ApiResponse<T> {
@@ -73,12 +50,8 @@ const HomeScreen: React.FC = () => {
   const [searchLoading, setSearchLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [trendingAnimes, setTrendingAnimes] = useState<SearchResult[]>([]);
   const [classiquesAnimes, setClassiquesAnimes] = useState<SearchResult[]>([]);
   const [pepitesAnimes, setPepitesAnimes] = useState<SearchResult[]>([]);
-  const [planningAnimes, setPlanningAnimes] = useState<SearchResult[]>([]);
-  const [historiqueAnimes, setHistoriqueAnimes] = useState<SearchResult[]>([]);
-  const [recommendationsAnimes, setRecommendationsAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -89,10 +62,8 @@ const HomeScreen: React.FC = () => {
   // Configuration API identique au site web
   const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';
 
-  // Services de notifications
+  // Service de notifications
   const notificationService = NotificationService.getInstance();
-  const trendingNotificationService = TrendingNotificationService.getInstance();
-  const planningNotificationService = PlanningNotificationService.getInstance();
 
   // Fonction utilitaire pour obtenir le badge de langue
   const getLanguageBadge = (language: any): string => {
@@ -117,15 +88,8 @@ const HomeScreen: React.FC = () => {
   const loadAllInitialContent = async () => {
     setInitialLoading(true);
     try {
-      // Charger tout en parallèle
-      await Promise.all([
-        loadTrendingAnimes(),
-        loadPopularAnimes(),
-        loadPlanningAnimes()
-      ]);
-      
-      // Charger les recommandations après avoir chargé les autres données
-      await loadRecommendations();
+      // Charger seulement le contenu populaire (Légendaires et Pépites)
+      await loadPopularAnimes();
     } catch (error) {
       console.error('Erreur chargement initial:', error);
     } finally {
@@ -133,22 +97,6 @@ const HomeScreen: React.FC = () => {
     }
   };
 
-  // Charger les recommandations intelligentes
-  const loadRecommendations = async () => {
-    try {
-      const recommendationService = RecommendationService.getInstance();
-      const recommendations = await recommendationService.generateRecommendations(
-        trendingAnimes,
-        [...classiquesAnimes, ...pepitesAnimes],
-        planningAnimes
-      );
-      
-      setRecommendationsAnimes(recommendations);
-    } catch (error) {
-      console.error('Erreur chargement recommandations:', error);
-      setRecommendationsAnimes([]);
-    }
-  };
 
   // Vérifier si l'utilisateur a déjà validé Telegram
   const checkTelegramVerification = async () => {
@@ -173,15 +121,6 @@ const HomeScreen: React.FC = () => {
     try {
       // Initialiser les notifications push
       await notificationService.initializePushNotifications();
-      
-      // Initialiser le service de notifications trending
-      await trendingNotificationService.initialize();
-      
-      // Initialiser le service de notifications planning
-      await planningNotificationService.initialize();
-      
-      // Configurer les listeners de navigation
-      trendingNotificationService.setupNotificationListeners(navigation);
       
       const settings = await notificationService.getSettings();
       setNotificationsEnabled(settings.enabled);
@@ -230,172 +169,29 @@ const HomeScreen: React.FC = () => {
     }
   };
 
-  // Charger tout le contenu trending depuis l'API et détecter les nouveaux épisodes
-  const loadTrendingAnimes = async () => {
-    try {
-      const response = await apiRequest('/api/trending');
 
-      if (response && response.success && response.results) {
-        const newContent = response.results.slice(0, 24);
-
-        // Détecter les nouveaux épisodes avant de mettre à jour l'état
-        await notificationService.detectNewEpisodes(newContent);
-        
-        // Vérifier nouvelles tendances et envoyer notifications si besoin
-        await trendingNotificationService.checkForNewTrending(newContent);
-
-        // Afficher tous les types de contenu de l'API : animes, mangas, films
-        setTrendingAnimes(newContent);
-
-        // Mettre à jour le compteur de notifications non lues
-        const unreadCount = await notificationService.getUnreadCount();
-        setUnreadNotifications(unreadCount);
-      } else {
-        setTrendingAnimes([]);
-      }
-    } catch (error) {
-      setTrendingAnimes([]);
-    }
-  };
-
-  // Charger le contenu populaire (classiques et pépites) depuis l'API + historique local
+  // Charger le contenu populaire (classiques et pépites) depuis l'API
   const loadPopularAnimes = async () => {
     try {
       const response = await apiRequest('/api/popular');
-      const historyService = ViewingHistoryService.getInstance();
 
       if (response && response.success && response.categories) {
         // Extraire les classiques et pépites de l'API
         const classiques = response.categories.classiques?.anime || [];
         const pepites = response.categories.pepites?.anime || [];
         
-        // Charger l'historique local de visionnage de l'utilisateur
-        const localHistory = await historyService.getRecentHistory(20);
-        
-        // Convertir l'historique local au format SearchResult pour compatibilité
-        const historiqueFormatted = localHistory.map(item => ({
-          id: item.animeId,
-          title: item.animeTitle,
-          image: item.animeImage,
-          url: `https://anime-sama.fr/catalogue/${item.animeId}`,
-          contentType: item.contentType || 'ANIME' as const,
-          language: {
-            code: 'fr',
-            name: 'Français',
-            fullName: 'Français (VOSTFR)',
-            flag: '🇫🇷',
-            priority: 1,
-            vostfr: true
-          },
-          lastWatched: item.lastWatchedDate,
-          episode: item.episode,
-          season: item.season
-        }));
-
         setClassiquesAnimes(classiques);
         setPepitesAnimes(pepites);
-        setHistoriqueAnimes(historiqueFormatted);
       } else {
-        // Si l'API échoue, charger au moins l'historique local
-        const historyService = ViewingHistoryService.getInstance();
-        const localHistory = await historyService.getRecentHistory(20);
-        
-        const historiqueFormatted = localHistory.map(item => ({
-          id: item.animeId,
-          title: item.animeTitle,
-          image: item.animeImage,
-          url: `https://anime-sama.fr/catalogue/${item.animeId}`,
-          contentType: item.contentType || 'ANIME' as const,
-          language: {
-            code: 'fr',
-            name: 'Français',
-            fullName: 'Français (VOSTFR)',
-            flag: '🇫🇷',
-            priority: 1,
-            vostfr: true
-          },
-          lastWatched: item.lastWatchedDate,
-          episode: item.episode,
-          season: item.season
-        }));
-
         setClassiquesAnimes([]);
         setPepitesAnimes([]);
-        setHistoriqueAnimes(historiqueFormatted);
       }
     } catch (error) {
-      // En cas d'erreur, essayer au moins de charger l'historique local
-      try {
-        const historyService = ViewingHistoryService.getInstance();
-        const localHistory = await historyService.getRecentHistory(20);
-        
-        const historiqueFormatted = localHistory.map(item => ({
-          id: item.animeId,
-          title: item.animeTitle,
-          image: item.animeImage,
-          url: `https://anime-sama.fr/catalogue/${item.animeId}`,
-          contentType: item.contentType || 'ANIME' as const,
-          language: {
-            code: 'fr',
-            name: 'Français',
-            fullName: 'Français (VOSTFR)',
-            flag: '🇫🇷',
-            priority: 1,
-            vostfr: true
-          },
-          lastWatched: item.lastWatchedDate,
-          episode: item.episode,
-          season: item.season
-        }));
-
-        setClassiquesAnimes([]);
-        setPepitesAnimes([]);
-        setHistoriqueAnimes(historiqueFormatted);
-      } catch (historyError) {
-        setClassiquesAnimes([]);
-        setPepitesAnimes([]);
-        setHistoriqueAnimes([]);
-      }
+      setClassiquesAnimes([]);
+      setPepitesAnimes([]);
     }
   };
 
-  // Charger le planning des animes prévus depuis l'API
-  const loadPlanningAnimes = async () => {
-    try {
-      const response = await animeAPI.getPlanning();
-
-      if (response && response.success && response.data) {
-        // Adapter les données du planning au format SearchResult
-        const planningData = response.data.map((anime: any) => ({
-          id: anime.animeId,
-          url: anime.animeId,
-          title: anime.title,
-          image: anime.image,
-          contentType: 'anime',
-          language: { 
-            vf: anime.language === 'VF',
-            vostfr: anime.language === 'VOSTFR',
-            vjstfr: anime.language === 'VJSTFR'
-          },
-          releaseTime: anime.releaseTime,
-          isVFCrunchyroll: anime.isVFCrunchyroll,
-          planningType: anime.type
-        }));
-
-        setPlanningAnimes(planningData.slice(0, 20)); // Limiter à 20 animes
-        
-        // Programmer les notifications planning si les notifications sont activées
-        if (notificationsEnabled) {
-          await planningNotificationService.schedulePlanningNotifications(planningData.slice(0, 15));
-        }
-      } else {
-        setPlanningAnimes([]);
-      }
-    } catch (error) {
-      console.error('Erreur chargement planning:', error);
-      setPlanningAnimes([]);
-    }
-  };
 
   // Recherche d'animes (identique au site web)
   const searchAnimes = async (query: string) => {
@@ -660,21 +456,6 @@ const HomeScreen: React.FC = () => {
   const onRefresh = async () => {
     setRefreshing(true);
     await loadAllInitialContent();
-    
-    // Reprogrammer les notifications planning après refresh si activées
-    if (notificationsEnabled && planningAnimes.length > 0) {
-      const planningData = planningAnimes.map(anime => ({
-        id: anime.id,
-        title: anime.title,
-        releaseTime: anime.releaseTime || '',
-        language: getLanguageBadge(anime.language),
-        image: anime.image,
-        animeId: anime.id,
-        url: anime.url
-      }));
-      await planningNotificationService.schedulePlanningNotifications(planningData.slice(0, 15));
-    }
-    
     setRefreshing(false);
   };
 
@@ -702,39 +483,12 @@ const HomeScreen: React.FC = () => {
         // Marquer toutes les notifications comme lues quand on active
         await notificationService.markAllAsRead();
         setUnreadNotifications(0);
-        
-        // Reprogrammer les notifications planning
-        if (planningAnimes.length > 0) {
-          const planningData = planningAnimes.map(anime => ({
-            id: anime.id,
-            title: anime.title,
-            releaseTime: anime.releaseTime || '',
-            language: getLanguageBadge(anime.language),
-            image: anime.image,
-            animeId: anime.id,
-            url: anime.url
-          }));
-          await planningNotificationService.schedulePlanningNotifications(planningData.slice(0, 15));
-        }
-      } else {
-        // Annuler toutes les notifications planning si désactivées
-        await planningNotificationService.cancelAllPlanningNotifications();
       }
     } catch (error) {
       console.error('Erreur gestion notifications:', error);
     }
   };
 
-  // Vérifier périodiquement les nouveaux épisodes (toutes les 5 minutes)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (notificationsEnabled) {
-        loadTrendingAnimes();
-      }
-    }, 5 * 60 * 1000); // 5 minutes
-
-    return () => clearInterval(interval);
-  }, [notificationsEnabled]);
 
   // Fonction pour extraire la langue depuis l'objet language de l'API
   const getLanguageFromAPI = (anime: SearchResult) => {
@@ -961,7 +715,7 @@ const HomeScreen: React.FC = () => {
             <View style={styles.heroSection}>
               {/* Images d'animes en mosaïque visible en haut */}
               <View style={styles.heroMosaicContainer}>
-                {(classiquesAnimes.length > 0 ? classiquesAnimes : trendingAnimes).slice(0, 8).map((anime, index) => (
+                {classiquesAnimes.slice(0, 8).map((anime, index) => (
                   <View
                     key={`hero-mosaic-${index}`}
                     style={styles.heroMosaicImage}
@@ -991,105 +745,6 @@ const HomeScreen: React.FC = () => {
                 />
               </LinearGradient>
             </View>
-
-            {/* Section Animes Trending avec scroll horizontal */}
-            {trendingAnimes.length > 0 && (
-              <View style={styles.horizontalSection}>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>
-                    📺 Nouveaux épisodes
-                  </Text>
-                </View>
-                <OptimizedScrollView 
-                  horizontal 
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.horizontalScrollContainer}
-                  style={styles.horizontalScroll}
-                  decelerationRate={0.985}
-                  snapToInterval={128}
-                  snapToAlignment="start"
-                  directionalLockEnabled={true}
-                  scrollEventThrottle={4}
-                  removeClippedSubviews={true}
-                  bounces={true}
-                  bouncesZoom={false}
-                  overScrollMode="auto"
-                  disableIntervalMomentum={true}
-                >
-                  {trendingAnimes.map((anime, index) => renderTrendingAnimeCard(anime, index))}
-                </OptimizedScrollView>
-              </View>
-            )}
-
-            {/* Section Planning - 2ème position pour urgence temporelle */}
-            {planningAnimes.length > 0 && (
-              <View style={styles.horizontalSection}>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>{getDaySpecificTitle()}</Text>
-                </View>
-                <OptimizedScrollView 
-                  horizontal 
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.horizontalScrollContainer}
-                  style={styles.horizontalScroll}
-                  decelerationRate={0.985}
-                  snapToInterval={128}
-                  snapToAlignment="start"
-                  directionalLockEnabled={true}
-                  scrollEventThrottle={4}
-                  removeClippedSubviews={true}
-                  bounces={true}
-                  bouncesZoom={false}
-                  overScrollMode="auto"
-                  disableIntervalMomentum={true}
-                >
-                  {planningAnimes.map((anime, index) => (
-                    <TouchableOpacity
-                      key={`planning-${anime.id || anime.title.replace(/\s+/g, '-')}-${index}`}
-                      style={styles.planningCard}
-                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
-                      activeOpacity={0.8}
-                    >
-                      <Image
-                        source={{ uri: anime.image }}
-                        style={styles.horizontalCardImage}
-                        resizeMode="cover"
-                      />
-                      {/* Badge SORTIE sur l'image */}
-                      <View style={styles.releaseBadge}>
-                        <Text style={styles.releaseBadgeText}>SORTIE</Text>
-                      </View>
-                      <LinearGradient
-                        colors={['transparent', 'rgba(0,0,0,0.9)']}
-                        style={styles.horizontalCardGradient}
-                      >
-                        <View style={styles.planningCardContent}>
-                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
-                            {anime.title}
-                          </Text>
-                          <View style={styles.planningInfoRow}>
-                            {anime.releaseTime && (
-                              <View style={styles.planningTimeBadge}>
-                                <Text style={styles.planningTimeText}>
-                                  ⏰ {anime.releaseTime}
-                                </Text>
-                              </View>
-                            )}
-                            {anime.language && (
-                              <View style={styles.horizontalCardBadge}>
-                                <Text style={styles.horizontalCardBadgeText}>
-                                  {getLanguageBadge(anime.language)}
-                                </Text>
-                              </View>
-                            )}
-                          </View>
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  ))}
-                </OptimizedScrollView>
-              </View>
-            )}
 
             {/* Section Classiques - 3ème position valeurs sûres */}
             {classiquesAnimes.length > 0 && (
@@ -1213,154 +868,7 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-            {/* Section Recommandations - basée sur l'historique utilisateur */}
-            {recommendationsAnimes.length > 0 && (
-              <View style={styles.horizontalSection}>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>🎯 Recommandations</Text>
-                  <Text style={styles.sectionSubtitle}>Basées sur vos goûts</Text>
-                </View>
-                <OptimizedScrollView 
-                  horizontal 
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.horizontalScrollContainer}
-                  style={styles.horizontalScroll}
-                  decelerationRate={0.985}
-                  snapToInterval={128}
-                  snapToAlignment="start"
-                  directionalLockEnabled={true}
-                  scrollEventThrottle={4}
-                  removeClippedSubviews={true}
-                  bounces={true}
-                  bouncesZoom={false}
-                  overScrollMode="auto"
-                  disableIntervalMomentum={true}
-                >
-                  {recommendationsAnimes.map((anime, index) => (
-                    <TouchableOpacity
-                      key={`recommendation-${anime.id || index}`}
-                      style={styles.recommendationCard}
-                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
-                      activeOpacity={0.8}
-                    >
-                      <Image
-                        source={{ uri: anime.image }}
-                        style={styles.horizontalCardImage}
-                        resizeMode="cover"
-                      />
-                      {/* Badge RECOMMANDÉ sur l'image */}
-                      <View style={styles.recommendationBadge}>
-                        <Text style={styles.recommendationBadgeText}>POUR VOUS</Text>
-                      </View>
-                      
-                      {/* Score de recommandation (si disponible) */}
-                      {(anime as any).recommendationScore && (
-                        <View style={styles.scoreBadge}>
-                          <Text style={styles.scoreText}>
-                            {Math.round((anime as any).recommendationScore)}%
-                          </Text>
-                        </View>
-                      )}
-                      
-                      <LinearGradient
-                        colors={['transparent', 'rgba(0,0,0,0.9)']}
-                        style={styles.horizontalCardGradient}
-                      >
-                        <View style={styles.recommendationCardContent}>
-                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
-                            {anime.title}
-                          </Text>
-                          
-                          {/* Raison de la recommandation */}
-                          {(anime as any).recommendationReason && (
-                            <Text style={styles.recommendationReason} numberOfLines={1}>
-                              {(anime as any).recommendationReason}
-                            </Text>
-                          )}
-                          
-                          {/* Basé sur */}
-                          {(anime as any).basedOn && (
-                            <Text style={styles.basedOnText} numberOfLines={1}>
-                              💡 {(anime as any).basedOn}
-                            </Text>
-                          )}
-                          
-                          {/* Badge de langue */}
-                          {anime.language && (
-                            <View style={styles.horizontalCardBadge}>
-                              <Text style={styles.horizontalCardBadgeText}>
-                                {getLanguageBadge(anime.language)}
-                              </Text>
-                            </View>
-                          )}
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  ))}
-                </OptimizedScrollView>
-              </View>
-            )}
 
-            {/* Section Historique - 6ème position pour les classiques vintage */}
-            {historiqueAnimes.length > 0 && (
-              <View style={styles.horizontalSection}>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>🏛️ Historique</Text>
-                </View>
-                <OptimizedScrollView 
-                  horizontal 
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.horizontalScrollContainer}
-                  style={styles.horizontalScroll}
-                  decelerationRate={0.985}
-                  snapToInterval={128}
-                  snapToAlignment="start"
-                  directionalLockEnabled={true}
-                  scrollEventThrottle={4}
-                  removeClippedSubviews={true}
-                  bounces={true}
-                  bouncesZoom={false}
-                  overScrollMode="auto"
-                  disableIntervalMomentum={true}
-                >
-                  {historiqueAnimes.map((anime, index) => (
-                    <TouchableOpacity
-                      key={`historique-${anime.id || index}`}
-                      style={styles.vintageCard}
-                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
-                      activeOpacity={0.8}
-                    >
-                      <Image
-                        source={{ uri: anime.image }}
-                        style={styles.horizontalCardImage}
-                        resizeMode="cover"
-                      />
-                      {/* Badge VINTAGE sur l'image */}
-                      <View style={styles.vintageBadge}>
-                        <Text style={styles.vintageBadgeText}>🏛️ VINTAGE</Text>
-                      </View>
-                      <LinearGradient
-                        colors={['transparent', 'rgba(0,0,0,0.8)']}
-                        style={styles.horizontalCardGradient}
-                      >
-                        <View style={styles.horizontalCardContent}>
-                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
-                            {anime.title}
-                          </Text>
-                          {anime.language && (
-                            <View style={styles.horizontalCardBadge}>
-                              <Text style={styles.horizontalCardBadgeText}>
-                                {getLanguageBadge(anime.language)}
-                              </Text>
-                            </View>
-                          )}
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  ))}
-                </OptimizedScrollView>
-              </View>
-            )}
 
             {/* Chargement initial unique */}
             {initialLoading && (
@@ -1380,7 +888,7 @@ const HomeScreen: React.FC = () => {
                 <TouchableOpacity 
                   onPress={() => {
                     setError(null);
-                    loadTrendingAnimes();
+                    loadPopularAnimes();
                   }}
                   style={styles.retryButton}
                 >
@@ -1389,15 +897,15 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-            {/* Message vide si pas de contenu trending et pas de chargement */}
-            {!initialLoading && !error && trendingAnimes.length === 0 && (
+            {/* Message vide si pas de contenu et pas de chargement */}
+            {!initialLoading && !error && classiquesAnimes.length === 0 && pepitesAnimes.length === 0 && (
               <View style={styles.emptyContainer}>
-                <Text style={styles.emptyText}>Aucun contenu trending trouvé</Text>
+                <Text style={styles.emptyText}>Aucun contenu trouvé</Text>
                 <TouchableOpacity 
-                  onPress={() => loadTrendingAnimes()}
+                  onPress={() => loadPopularAnimes()}
                   style={styles.retryButton}
                 >
-                  <Text style={styles.retryText}>Charger le contenu trending</Text>
+                  <Text style={styles.retryText}>Charger le contenu</Text>
                 </TouchableOpacity>
               </View>
             )}
