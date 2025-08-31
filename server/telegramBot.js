@@ -216,7 +216,7 @@ bot.onText(/\/stats/, async (msg) => {
                         `👥 Utilisateurs vérifiés: ${totalUsers}\n` +
                         `📈 Nouveaux (7 jours): ${recentUsers?.length || 0}\n` +
                         `🤖 Bot version: 2.0\n` +
-                        `📱 App version: 2.6.2`;
+                        `📱 App version: 3.7.0`;
     
     await bot.sendMessage(chatId, statsMessage);
     

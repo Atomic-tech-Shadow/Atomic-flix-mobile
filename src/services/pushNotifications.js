@@ -61,7 +61,7 @@ class PushNotificationService {
       const deviceInfo = {
         platform: Device.osName,
         device: Device.modelName,
-        appVersion: Constants.expoConfig?.version || '1.0.0',
+        appVersion: Constants.expoConfig?.version || '3.7.0',
         registeredAt: new Date().toISOString()
       };
 

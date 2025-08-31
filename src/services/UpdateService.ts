@@ -23,7 +23,7 @@ class UpdateService {
   private telegramBotUrl: string;
 
   constructor() {
-    this.currentVersion = Constants.expoConfig?.version || '2.6.2';
+    this.currentVersion = Constants.expoConfig?.version || '3.7.0';
     this.telegramBotUrl = 'https://atomic-flix-verifier-bot.vercel.app';
   }
 

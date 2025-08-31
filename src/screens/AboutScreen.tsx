@@ -31,7 +31,7 @@ const AboutScreen: React.FC<Props> = ({ navigation }) => {
             resizeMode="contain"
           />
           <Text style={styles.appName}>Atomic Flix</Text>
-          <Text style={styles.version}>Version 2.6.2</Text>
+          <Text style={styles.version}>Version 3.7.0</Text>
         </View>
 
         <View style={styles.section}>
