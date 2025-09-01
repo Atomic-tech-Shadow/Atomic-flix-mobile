@@ -91,15 +91,11 @@ export const createGradient = (colors: string[], opacity = 1) => {
 export const textStyles = {
   heroTitle: {
     color: COLORS.text.primaryBold,
-    textShadowColor: 'rgba(0, 0, 0, 0.9)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
+    textShadow: '0px 2px 4px rgba(0, 0, 0, 0.9)',
   },
   cardTitle: {
     color: COLORS.text.primary,
-    textShadowColor: 'rgba(0, 0, 0, 0.7)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
+    textShadow: '0px 1px 2px rgba(0, 0, 0, 0.7)',
   },
   description: {
     color: COLORS.text.secondary,
@@ -107,9 +103,7 @@ export const textStyles = {
   },
   accent: {
     color: COLORS.text.accent,
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 1,
+    textShadow: '0px 1px 1px rgba(0, 0, 0, 0.5)',
   }
 };
 

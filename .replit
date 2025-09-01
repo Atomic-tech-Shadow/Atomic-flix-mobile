@@ -14,19 +14,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "health-check"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
 args = "dev-server"
-
-[[workflows.workflow]]
-name = "health-check"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "node complete-health-check.js"
 
 [[workflows.workflow]]
 name = "dev-server"
