@@ -21,7 +21,7 @@
 
 ---
 
-### 📺 *Streaming d'animes* • 📚 *Lecture de mangas* • 🎯 *Recommandations intelligentes*
+### 📺 *Streaming d'animes* • 📚 *Lecture de mangas* • 🎮 *Expérience optimisée*
 
 </div>
 
@@ -46,11 +46,11 @@
 <tr>
 <td width="50%">
 
-### 🎯 **IA & Personnalisation**
-- 🧠 **Recommandations intelligentes** basées sur vos goûts
-- 📊 **Analyse des préférences** de visionnage
-- 🎪 **Découvertes personnalisées** de contenu inédit
-- 📈 **Scores de recommandation** précis (0-100%)
+### 🎯 **Navigation & Découverte**
+- 🧠 **Interface intuitive** adaptée à tous les utilisateurs
+- 📊 **Catalogue organisé** par catégories
+- 🎪 **Découvertes faciles** de nouveau contenu
+- 📈 **Sections populaires** et tendances
 
 </td>
 <td width="50%">
@@ -98,10 +98,9 @@ graph TB
     B --> D[📘 TypeScript 5.8.3]
     
     A --> E[🧠 Services Intelligents]
-    E --> F[🎯 RecommendationService]
-    E --> G[📚 ViewingHistoryService]
-    E --> H[🔔 NotificationService]
-    E --> I[🔍 SearchService]
+    E --> F[📚 ViewingHistoryService]
+    E --> G[🔔 NotificationService]
+    E --> H[🔍 SearchService]
     
     A --> J[🎨 Components UI]
     J --> K[🎪 OptimizedScrollView]
@@ -137,7 +136,6 @@ graph TB
 │   │   ├── 📖 MangaReaderScreen.tsx
 │   │   └── ℹ️ AboutScreen.tsx
 │   ├── 🧠 services/            # Services métier
-│   │   ├── 🎯 RecommendationService.ts
 │   │   ├── 📚 ViewingHistoryService.ts
 │   │   ├── 🔔 NotificationService.ts
 │   │   └── 🔍 SearchService.ts
@@ -150,31 +148,6 @@ graph TB
 │   └── 🎨 atomic-flix-logo-new.png
 ├── ⚙️ app.json                 # Configuration Expo
 └── 📋 package.json             # Dépendances
-```
-
----
-
-## 🎯 **SYSTEM DE RECOMMANDATIONS IA**
-
-<div align="center">
-
-### 🧠 **L'Intelligence Artificielle au Service de Vos Goûts**
-
-</div>
-
-```typescript
-🎯 Algorithme de Recommandation Intelligent
-├── 📊 Analyse des Préférences Utilisateur
-│   ├── 🎭 Genres favoris détectés automatiquement
-│   ├── 📺 Types de contenu préférés (Anime/Manga/Film)
-│   └── ⏰ Habitudes de visionnage analysées
-├── 🔍 Découvertes Personnalisées
-│   ├── 🌟 Contenu similaire aux animes regardés
-│   ├── 🔥 Tendances filtrées selon vos goûts
-│   └── 💎 Pépites cachées non découvertes
-└── 📈 Score de Recommandation (0-100%)
-    ├── 🎪 Badges "POUR VOUS" personnalisés
-    └── 💬 Raisons explicites ("Similaire à...", "Tendance populaire")
 ```
 
 ---
@@ -316,9 +289,9 @@ npm run build:android  # 📦 Build APK production
 
 *Screenshots à venir - Application en cours de finalisation*
 
-| 🏠 **Accueil** | 🎬 **Player** | 📖 **Manga** | 🎯 **Recommandations** |
+| 🏠 **Accueil** | 🎬 **Player** | 📖 **Manga** | 🏛️ **Historique** |
 |---|---|---|---|
-| *Trending & Planning* | *Streaming fluide* | *Lecture optimisée* | *IA personnalisée* |
+| *Trending & Planning* | *Streaming fluide* | *Lecture optimisée* | *Historique personnel* |
 
 </div>
 
