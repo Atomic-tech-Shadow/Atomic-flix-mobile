@@ -308,23 +308,12 @@ const HomeScreen: React.FC = () => {
           matchingSeason = seasons[0];
         }
         
-        if (matchingSeason && __DEV__) {
-          console.log('Navigation vers AnimePlayer:', {
-            animeUrl: cleanId, 
-            animeTitle: anime.title,
-            seasonData: matchingSeason,
-            currentEpisode: anime.currentEpisode,
-            language: anime.language?.name,
-            episodeInfo: anime.episodeInfo
-          });
-        }
-
+        if (matchingSeason) {
           // Naviguer avec les vraies données de saison de l'API
           navigation.navigate('AnimePlayer', { 
             animeUrl: cleanId, 
             animeTitle: anime.title,
             seasonData: matchingSeason,
-            // 🔥 Paramètres additionnels pour navigation précise
             initialEpisode: anime.currentEpisode,
             initialLanguage: anime.language?.code?.toUpperCase() as 'VF' | 'VOSTFR' || 'VOSTFR'
           });
@@ -332,9 +321,10 @@ const HomeScreen: React.FC = () => {
         }
       }
     } catch (apiError) {
+      console.error('Erreur chargement anime details:', apiError);
     }
 
-    // 🔄 Fallback : utiliser les données de base si l'API échoue
+    // Fallback : utiliser les données de base si l'API échoue
     const fallbackSeasonData = {
       number: anime.currentSeason || 1,
       name: `Saison ${anime.currentSeason || 1}`,
@@ -344,13 +334,6 @@ const HomeScreen: React.FC = () => {
       url: cleanId,
       available: true
     };
-
-      animeUrl: cleanId, 
-      animeTitle: anime.title,
-      seasonData: fallbackSeasonData,
-      currentEpisode: anime.currentEpisode,
-      language: anime.language?.name
-    });
 
     // Naviguer avec les données de fallback
     navigation.navigate('AnimePlayer', { 
