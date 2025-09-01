@@ -40,6 +40,15 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   return (
     <View style={styles.mobileHeader}>
       <View style={styles.headerRow}>
+        {/* Menu hamburger - position standard à gauche */}
+        <TouchableOpacity 
+          style={styles.menuButton}
+          onPress={onMenuPress}
+        >
+          <Ionicons name="menu" size={24} color="#ffffff" />
+        </TouchableOpacity>
+
+        {/* Logo centré */}
         <View style={styles.logoSection}>
           <Image 
             source={require('../../assets/atomic-flix-logo-new.png')}
@@ -55,14 +64,9 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             <Text style={styles.logoText}>ATOMIC FLIX</Text>
           </LinearGradient>
         </View>
+
+        {/* Actions à droite */}
         <View style={styles.headerIcons}>
-          {/* Bouton menu hamburger */}
-          <TouchableOpacity 
-            style={styles.headerIconButton}
-            onPress={onMenuPress}
-          >
-            <Ionicons name="menu" size={24} color="#ffffff" />
-          </TouchableOpacity>
           <TouchableOpacity 
             style={styles.headerIconButton}
             onPress={handleSearchPress}
@@ -84,7 +88,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
               </View>
             )}
           </TouchableOpacity>
-
         </View>
       </View>
 
@@ -108,9 +111,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  menuButton: {
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
   logoSection: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 16,
   },
   logoImage: {
     width: 35,
