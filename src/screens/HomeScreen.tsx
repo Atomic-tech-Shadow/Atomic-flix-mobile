@@ -17,10 +17,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
+import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import { useDrawerStatus } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 
 import { SearchResult } from '../types/index';
-import type { RootStackParamList } from '../navigation/AppNavigator';
+import type { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -29,7 +31,7 @@ import { useNotifications } from '../hooks/useNotifications';
 import { PushNotification } from '../types/notifications';
 
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'> & DrawerNavigationProp<DrawerParamList>;
 
 const { width, height } = Dimensions.get('window');
 
@@ -548,6 +550,11 @@ const HomeScreen: React.FC = () => {
     setShowNotifications(true);
   };
 
+  // Gestionnaire pour ouvrir le menu drawer
+  const handleMenuPress = () => {
+    navigation.openDrawer();
+  };
+
   // Gestionnaire pour les actions des notifications
   const handleNotificationItemPress = (notification: PushNotification) => {
     // Marquer comme lue
@@ -705,6 +712,7 @@ const HomeScreen: React.FC = () => {
         <SharedHeader 
           onSearchPress={handleSearchPress}
           onNotificationPress={handleNotificationPress}
+          onMenuPress={handleMenuPress}
         />
       </View>
 

@@ -1,8 +1,11 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StatusBar } from 'expo-status-bar';
 import { Season } from '../types';
+import DrawerContent from '../components/DrawerContent';
+import { COLORS } from '../constants/newColors';
 
 // Import screens - exact reproductions of web pages
 import HomeScreen from '../screens/HomeScreen';
@@ -31,117 +34,111 @@ export type RootStackParamList = {
   TermsOfService: undefined;
 };
 
+export type DrawerParamList = {
+  HomeStack: undefined;
+  About: undefined;
+  PrivacyPolicy: undefined;
+  TermsOfService: undefined;
+};
+
 const Stack = createStackNavigator<RootStackParamList>();
+const Drawer = createDrawerNavigator<DrawerParamList>();
+
+// Stack Navigator pour les écrans principaux
+const HomeStackNavigator: React.FC = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerShown: false,
+        // Optimisations pour des transitions rapides et fluides
+        ...TransitionPresets.SlideFromRightIOS,
+        animationEnabled: true,
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+        transitionSpec: {
+          open: {
+            animation: 'timing',
+            config: { duration: 300 }
+          },
+          close: {
+            animation: 'timing', 
+            config: { duration: 250 }
+          }
+        },
+        cardStyleInterpolator: ({ current, layouts }) => {
+          return {
+            cardStyle: {
+              transform: [
+                {
+                  translateX: current.progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [layouts.screen.width, 0],
+                  }),
+                },
+              ],
+            },
+          };
+        },
+      }}
+    >
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="AnimeDetail" component={AnimeDetailScreen} />
+      <Stack.Screen name="AnimePlayer" component={AnimePlayerScreen} />
+      <Stack.Screen name="MangaReader" component={MangaReaderScreen} />
+      <Stack.Screen name="NotFound" component={NotFoundScreen} />
+    </Stack.Navigator>
+  );
+};
 
 const AppNavigator: React.FC = () => {
   return (
     <NavigationContainer>
-      <StatusBar style="light" backgroundColor="#0f172a" />
-      <Stack.Navigator
-        initialRouteName="Home"
+      <StatusBar style="light" backgroundColor="#8B5DFF" />
+      <Drawer.Navigator
+        initialRouteName="HomeStack"
+        drawerContent={(props) => <DrawerContent {...props} />}
         screenOptions={{
-          headerStyle: {
-            backgroundColor: '#0f172a',
-            borderBottomWidth: 1,
-            borderBottomColor: '#1e293b',
+          headerShown: false,
+          drawerType: 'slide',
+          drawerStyle: {
+            width: 280,
           },
-          headerTintColor: '#f8fafc',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontSize: 18,
-          },
-          cardStyle: {
-            backgroundColor: '#0f172a',
-          },
-          // Optimisations pour des transitions rapides et fluides
-          ...TransitionPresets.SlideFromRightIOS,
-          animationEnabled: true,
-          gestureEnabled: true,
-          gestureDirection: 'horizontal',
-          transitionSpec: {
-            open: {
-              animation: 'timing',
-              config: { duration: 300 }
-            },
-            close: {
-              animation: 'timing', 
-              config: { duration: 250 }
-            }
-          },
-          cardStyleInterpolator: ({ current, layouts }) => {
-            return {
-              cardStyle: {
-                transform: [
-                  {
-                    translateX: current.progress.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [layouts.screen.width, 0],
-                    }),
-                  },
-                ],
-              },
-            };
+          swipeEnabled: true,
+          gestureHandlerProps: {
+            activeOffsetX: 10,
           },
         }}
       >
-        <Stack.Screen 
-          name="Home" 
-          component={HomeScreen}
+        <Drawer.Screen 
+          name="HomeStack" 
+          component={HomeStackNavigator}
           options={{
-            headerShown: false,
+            drawerLabel: 'Accueil',
           }}
         />
-        <Stack.Screen 
-          name="AnimeDetail" 
-          component={AnimeDetailScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-
-        <Stack.Screen 
-          name="AnimePlayer" 
-          component={AnimePlayerScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen 
-          name="MangaReader" 
-          component={MangaReaderScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen 
+        <Drawer.Screen 
           name="About" 
           component={AboutScreen}
           options={{
-            headerShown: false,
+            drawerLabel: 'À propos',
           }}
         />
-        <Stack.Screen 
-          name="NotFound" 
-          component={NotFoundScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen 
+        <Drawer.Screen 
           name="PrivacyPolicy" 
           component={PrivacyPolicyScreen}
           options={{
-            headerShown: false,
+            drawerLabel: 'Confidentialité',
           }}
         />
-        <Stack.Screen 
+        <Drawer.Screen 
           name="TermsOfService" 
           component={TermsOfServiceScreen}
           options={{
-            headerShown: false,
+            drawerLabel: 'Conditions',
           }}
         />
-      </Stack.Navigator>
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 };

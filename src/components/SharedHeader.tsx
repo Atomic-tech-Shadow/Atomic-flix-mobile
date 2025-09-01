@@ -15,11 +15,13 @@ type NavigationProp = StackNavigationProp<RootStackParamList>;
 interface SharedHeaderProps {
   onSearchPress?: () => void;
   onNotificationPress?: () => void;
+  onMenuPress?: () => void;
 }
 
 const SharedHeader: React.FC<SharedHeaderProps> = ({ 
   onSearchPress,
-  onNotificationPress
+  onNotificationPress,
+  onMenuPress
 }) => {
   const navigation = useNavigation<NavigationProp>();
   const { unreadCount } = useNotifications();
@@ -54,6 +56,13 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           </LinearGradient>
         </View>
         <View style={styles.headerIcons}>
+          {/* Bouton menu hamburger */}
+          <TouchableOpacity 
+            style={styles.headerIconButton}
+            onPress={onMenuPress}
+          >
+            <Ionicons name="menu" size={24} color="#ffffff" />
+          </TouchableOpacity>
           <TouchableOpacity 
             style={styles.headerIconButton}
             onPress={handleSearchPress}
