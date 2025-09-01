@@ -39,6 +39,29 @@ interface ApiResponse<T> {
   meta?: ApiResponse<any>;
 }
 
+// Interface pour les nouveaux épisodes de l'API /recent
+interface RecentEpisode {
+  animeId: string;
+  animeTitle: string;
+  season: number;
+  episode: number;
+  language: string;
+  isFinale: boolean;
+  isVFCrunchyroll: boolean;
+  url: string;
+  image: string;
+  badgeInfo: string;
+  addedAt: string;
+  type: string;
+}
+
+// Interface pour la réponse de l'API /recent
+interface RecentEpisodesResponse {
+  success: boolean;
+  count: number;
+  recentEpisodes: RecentEpisode[];
+}
+
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const [searchQuery, setSearchQuery] = useState('');
@@ -48,6 +71,7 @@ const HomeScreen: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [classiquesAnimes, setClassiquesAnimes] = useState<SearchResult[]>([]);
   const [pepitesAnimes, setPepitesAnimes] = useState<SearchResult[]>([]);
+  const [nouveauxEpisodes, setNouveauxEpisodes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
 
@@ -74,8 +98,11 @@ const HomeScreen: React.FC = () => {
   const loadAllInitialContent = async () => {
     setInitialLoading(true);
     try {
-      // Charger seulement le contenu populaire (Légendaires et Pépites)
-      await loadPopularAnimes();
+      // Charger le contenu populaire (Légendaires et Pépites) et les nouveaux épisodes
+      await Promise.all([
+        loadPopularAnimes(),
+        loadRecentEpisodes()
+      ]);
     } catch (error) {
     } finally {
       setInitialLoading(false);
@@ -133,6 +160,41 @@ const HomeScreen: React.FC = () => {
     } catch (error) {
       setClassiquesAnimes([]);
       setPepitesAnimes([]);
+    }
+  };
+
+  // Charger les nouveaux épisodes depuis l'API /recent
+  const loadRecentEpisodes = async () => {
+    try {
+      const response: RecentEpisodesResponse = await apiRequest('/api/recent');
+
+      if (response && response.success && response.recentEpisodes) {
+        // Convertir les données de l'API en format SearchResult
+        const recentEpisodes: SearchResult[] = response.recentEpisodes.slice(0, 15).map((episode: RecentEpisode) => ({
+          id: episode.animeId,
+          animeId: episode.animeId,
+          title: episode.animeTitle,
+          image: episode.image,
+          url: episode.url,
+          contentType: 'anime',
+          type: episode.type,
+          currentSeason: episode.season,
+          currentEpisode: episode.episode,
+          episodeInfo: episode.badgeInfo,
+          language: {
+            name: episode.language,
+            code: episode.language.toLowerCase()
+          },
+          addedAt: episode.addedAt
+        }));
+        
+        setNouveauxEpisodes(recentEpisodes);
+      } else {
+        setNouveauxEpisodes([]);
+      }
+    } catch (error) {
+      console.error('Erreur chargement nouveaux épisodes:', error);
+      setNouveauxEpisodes([]);
     }
   };
 
@@ -630,7 +692,24 @@ const HomeScreen: React.FC = () => {
               </LinearGradient>
             </View>
 
-            {/* Section Classiques - 3ème position valeurs sûres */}
+            {/* Section Nouveaux épisodes - 1ère position */}
+            {nouveauxEpisodes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>🔥 Nouveaux épisodes</Text>
+                </View>
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.horizontalScroll}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                >
+                  {nouveauxEpisodes.map((anime, index) => renderTrendingAnimeCard(anime, index))}
+                </OptimizedScrollView>
+              </View>
+            )}
+
+            {/* Section Classiques - 2ème position valeurs sûres */}
             {classiquesAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
                 <View style={styles.sectionHeader}>
