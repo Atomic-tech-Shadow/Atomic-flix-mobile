@@ -73,6 +73,7 @@ const HomeScreen: React.FC = () => {
   const [pepitesAnimes, setPepitesAnimes] = useState<SearchResult[]>([]);
   const [nouveauxEpisodes, setNouveauxEpisodes] = useState<SearchResult[]>([]);
   const [recommendationsAnimes, setRecommendationsAnimes] = useState<SearchResult[]>([]);
+  const [planningAnimes, setPlanningAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
 
@@ -99,11 +100,12 @@ const HomeScreen: React.FC = () => {
   const loadAllInitialContent = async () => {
     setInitialLoading(true);
     try {
-      // Charger le contenu populaire (Légendaires et Pépites), les nouveaux épisodes et les recommandations
+      // Charger le contenu populaire (Légendaires et Pépites), les nouveaux épisodes, les recommandations et le planning
       await Promise.all([
         loadPopularAnimes(),
         loadRecentEpisodes(),
-        loadRecommendations()
+        loadRecommendations(),
+        loadPlanning()
       ]);
     } catch (error) {
     } finally {
@@ -445,6 +447,44 @@ const HomeScreen: React.FC = () => {
     } catch (error) {
       console.error('Erreur chargement recommandations:', error);
       setRecommendationsAnimes([]);
+    }
+  };
+
+  // Charger le planning du jour depuis l'API
+  const loadPlanning = async () => {
+    try {
+      const response = await apiRequest('/api/planning');
+
+      if (response && response.success && response.items) {
+        // Convertir les données de l'API en format SearchResult
+        const planning: SearchResult[] = response.items.slice(0, 15).map((item: any) => ({
+          id: `${item.animeId}-${item.language}`,
+          animeId: item.animeId,
+          title: item.title,
+          image: item.image,
+          url: item.url,
+          contentType: item.type || 'anime',
+          type: item.type || 'anime',
+          language: {
+            name: item.language,
+            code: item.language.toLowerCase(),
+            fullName: item.language,
+            flag: item.language === 'VF' ? '🇫🇷' : '🇯🇵',
+            priority: 1
+          },
+          releaseTime: item.releaseTime,
+          day: item.day,
+          status: item.status,
+          category: 'planning'
+        }));
+        
+        setPlanningAnimes(planning);
+      } else {
+        setPlanningAnimes([]);
+      }
+    } catch (error) {
+      console.error('Erreur chargement planning:', error);
+      setPlanningAnimes([]);
     }
   };
 
