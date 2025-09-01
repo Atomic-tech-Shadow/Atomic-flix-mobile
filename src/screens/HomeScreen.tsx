@@ -77,7 +77,6 @@ const HomeScreen: React.FC = () => {
       // Charger seulement le contenu populaire (Légendaires et Pépites)
       await loadPopularAnimes();
     } catch (error) {
-      console.error('Erreur chargement initial:', error);
     } finally {
       setInitialLoading(false);
     }
@@ -180,11 +179,9 @@ const HomeScreen: React.FC = () => {
 
   // Naviguer vers la page dédiée (anime ou manga) (identique au site web)
   const loadAnimeDetails = async (animeId: string, contentType?: string) => {
-    console.log('🎯 loadAnimeDetails called with:', { animeId, contentType });
     
     // Vérifier que l'ID n'est pas vide
     if (!animeId || animeId === 'undefined') {
-      console.error('❌ ID anime invalide:', animeId);
       setError('Erreur: ID anime introuvable');
       return;
     }
@@ -200,7 +197,6 @@ const HomeScreen: React.FC = () => {
       }
     }
     
-    console.log('🔄 ID nettoyé:', cleanId);
     
     // Détecter si c'est un manga pour rediriger vers le lecteur approprié
     if (contentType === 'manga') {
@@ -212,11 +208,9 @@ const HomeScreen: React.FC = () => {
 
   // 🚀 Nouvelle fonction pour naviguer directement vers l'épisode depuis les "Nouveaux épisodes"
   const loadEpisodeDirectly = async (anime: SearchResult) => {
-    console.log('🎬 loadEpisodeDirectly called with:', anime);
     
     let cleanId = anime.animeId || anime.id || anime.url;
     if (!cleanId || cleanId === 'undefined') {
-      console.error('❌ ID anime invalide:', cleanId);
       setError('Erreur: ID anime introuvable');
       return;
     }
@@ -245,7 +239,6 @@ const HomeScreen: React.FC = () => {
           const seasonMatch = anime.id.match(/saison(\d+)/i);
           if (seasonMatch) {
             targetSeasonNumber = parseInt(seasonMatch[1], 10);
-            console.log('🎯 Saison extraite depuis ID:', { 
               animeId: anime.id, 
               extractedSeason: targetSeasonNumber 
             });
@@ -256,7 +249,6 @@ const HomeScreen: React.FC = () => {
         if (!targetSeasonNumber) {
           targetSeasonNumber = 1;
         }
-        console.log('🔍 Recherche saison/saga:', { 
           targetSeasonNumber, 
           animeTitle: anime.title,
           availableSeasons: seasons.map((s: any) => ({ number: s.number, value: s.value, name: s.name })) 
@@ -310,17 +302,14 @@ const HomeScreen: React.FC = () => {
         
         // Log détaillé du matching
         if (matchingSeason) {
-          console.log('✅ Saison/saga trouvée:', { 
             number: matchingSeason.number, 
             value: matchingSeason.value, 
             name: matchingSeason.name,
             targetWas: targetSeasonNumber
           });
         } else {
-          console.log('❌ Aucune saison/saga correspondante trouvée pour:', targetSeasonNumber);
           // Log toutes les saisons disponibles pour debug
           seasons.forEach((s: any, index: number) => {
-            console.log(`Option ${index + 1}:`, { number: s.number, value: s.value, name: s.name });
           });
         }
         
@@ -330,7 +319,6 @@ const HomeScreen: React.FC = () => {
         }
         
         if (matchingSeason) {
-          console.log('🎬 Navigation avec vraie saison API:', { 
             animeUrl: cleanId, 
             animeTitle: anime.title,
             seasonData: matchingSeason,
@@ -352,7 +340,6 @@ const HomeScreen: React.FC = () => {
         }
       }
     } catch (apiError) {
-      console.log('⚠️ Erreur API, utilisation fallback seasonData:', apiError);
     }
 
     // 🔄 Fallback : utiliser les données de base si l'API échoue
@@ -366,7 +353,6 @@ const HomeScreen: React.FC = () => {
       available: true
     };
 
-    console.log('🎬 Navigation fallback avec données construites:', { 
       animeUrl: cleanId, 
       animeTitle: anime.title,
       seasonData: fallbackSeasonData,

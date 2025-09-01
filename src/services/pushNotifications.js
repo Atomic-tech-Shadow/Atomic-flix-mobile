@@ -17,7 +17,6 @@ class PushNotificationService {
   static async getExpoPushToken() {
     try {
       if (!Device.isDevice) {
-        console.warn('Push notifications only work on physical devices');
         return null;
       }
 
@@ -31,7 +30,6 @@ class PushNotificationService {
       }
       
       if (finalStatus !== 'granted') {
-        console.warn('Permission for push notifications denied');
         return null;
       }
 
@@ -43,7 +41,6 @@ class PushNotificationService {
       return token.data;
       
     } catch (error) {
-      console.error('Error getting push token:', error);
       return null;
     }
   }
@@ -54,7 +51,6 @@ class PushNotificationService {
       const pushToken = await this.getExpoPushToken();
       
       if (!pushToken) {
-        console.warn('No push token available');
         return false;
       }
 
@@ -82,15 +78,12 @@ class PushNotificationService {
       const result = await response.json();
       
       if (result.success) {
-        console.log('✅ Push token registered successfully');
         return true;
       } else {
-        console.error('❌ Failed to register push token:', result.error);
         return false;
       }
       
     } catch (error) {
-      console.error('Error registering push token:', error);
       return false;
     }
   }
@@ -109,7 +102,6 @@ class PushNotificationService {
         })
       });
     } catch (error) {
-      console.error('Error updating activity:', error);
     }
   }
 
@@ -131,7 +123,6 @@ class PushNotificationService {
       return result.success;
       
     } catch (error) {
-      console.error('Error unregistering push token:', error);
       return false;
     }
   }
@@ -140,12 +131,10 @@ class PushNotificationService {
   static setupNotificationListeners(navigation) {
     // Notification reçue quand l'app est ouverte
     Notifications.addNotificationReceivedListener(notification => {
-      console.log('📱 Notification received:', notification);
     });
 
     // Notification tapée par l'utilisateur
     Notifications.addNotificationResponseReceivedListener(response => {
-      console.log('👆 Notification tapped:', response);
       
       // Gérer la navigation selon le contenu
       const data = response.notification.request.content.data;

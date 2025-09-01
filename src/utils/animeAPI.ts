@@ -56,7 +56,7 @@ export const animeAPI = {
       const response = await apiRequest(`/api/anime/${id}`);
       return response;
     } catch (error) {
-      console.error('Erreur animeAPI.getDetails:', error);
+      // Erreur API silencieuse
       throw error; // Laisser l'erreur remonter comme dans le code web
     }
   },
@@ -67,7 +67,7 @@ export const animeAPI = {
       const response = await apiRequest(`/api/anime/${animeId}/season/${seasonValue}/episodes`);
       return response;
     } catch (error) {
-      console.error('Erreur getSeasonEpisodes:', error);
+      // Erreur API silencieuse
       return {
         success: false,
         data: null,
@@ -83,7 +83,7 @@ export const animeAPI = {
       const response = await apiRequest(`/api/anime/${animeId}/episode/${episodeId}/sources`);
       return response;
     } catch (error) {
-      console.error('Erreur getEpisodeSources:', error);
+      // Erreur API silencieuse
       return {
         success: false,
         data: null,

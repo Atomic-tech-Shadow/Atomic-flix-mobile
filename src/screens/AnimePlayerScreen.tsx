@@ -313,7 +313,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         // L'utilisateur peut voir qu'il n'y a pas de contenu disponible
       }
     } catch (error) {
-      console.error('Erreur lors du changement de langue:', error);
       setError('Erreur lors du changement de langue');
       // En cas d'erreur, garder la nouvelle langue mais sans épisodes
       // L'utilisateur peut réessayer ou changer manuellement
@@ -501,12 +500,10 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 }
               }}
               onError={(syntheticEvent) => {
-                console.log('WebView error detected');
                 setServerError(true);
               }}
               onHttpError={(syntheticEvent) => {
                 const { nativeEvent } = syntheticEvent;
-                console.log('WebView HTTP error: ', nativeEvent.statusCode);
                 // Les erreurs HTTP indiquent souvent un serveur down
                 if (nativeEvent.statusCode >= 400) {
                   setServerError(true);

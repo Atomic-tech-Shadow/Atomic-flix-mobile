@@ -59,7 +59,6 @@ class SearchService {
       
       return [];
     } catch (error) {
-      console.error('Erreur de recherche:', error);
       return [];
     }
   }

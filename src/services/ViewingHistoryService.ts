@@ -51,14 +51,10 @@ class ViewingHistoryService {
         const RecommendationService = await import('./RecommendationService');
         const recommendationService = RecommendationService.default.getInstance();
         await recommendationService.clearCache();
-        console.log('🎯 Cache recommandations vidé après nouvel ajout historique');
       } catch (error) {
-        console.error('Erreur vidage cache recommandations:', error);
       }
       
-      console.log('✅ Anime ajouté à l\'historique:', item.animeTitle);
     } catch (error) {
-      console.error('Erreur ajout historique:', error);
     }
   }
 
@@ -75,7 +71,6 @@ class ViewingHistoryService {
         new Date(b.lastWatchedDate).getTime() - new Date(a.lastWatchedDate).getTime()
       );
     } catch (error) {
-      console.error('Erreur récupération historique:', error);
       return [];
     }
   }
@@ -92,9 +87,7 @@ class ViewingHistoryService {
       const history = await this.getHistory();
       const filteredHistory = history.filter(item => item.animeId !== animeId);
       await AsyncStorage.setItem(this.HISTORY_KEY, JSON.stringify(filteredHistory));
-      console.log('✅ Anime supprimé de l\'historique:', animeId);
     } catch (error) {
-      console.error('Erreur suppression historique:', error);
     }
   }
 
@@ -102,9 +95,7 @@ class ViewingHistoryService {
   async clearHistory(): Promise<void> {
     try {
       await AsyncStorage.removeItem(this.HISTORY_KEY);
-      console.log('✅ Historique vidé complètement');
     } catch (error) {
-      console.error('Erreur vidage historique:', error);
     }
   }
 
@@ -130,7 +121,6 @@ class ViewingHistoryService {
         await AsyncStorage.setItem(this.HISTORY_KEY, JSON.stringify(history));
       }
     } catch (error) {
-      console.error('Erreur mise à jour progrès:', error);
     }
   }
 
@@ -159,7 +149,6 @@ class ViewingHistoryService {
       
       return stats;
     } catch (error) {
-      console.error('Erreur stats historique:', error);
       return {
         totalAnimes: 0,
         totalEpisodes: 0,

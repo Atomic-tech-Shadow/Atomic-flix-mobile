@@ -74,7 +74,6 @@ class RecommendationService {
       return sortedRecommendations;
 
     } catch (error) {
-      console.error('Erreur génération recommandations:', error);
       return this.getNewUserRecommendations(trendingData, popularData);
     }
   }
@@ -305,7 +304,6 @@ class RecommendationService {
       };
       await AsyncStorage.setItem(this.CACHE_KEY, JSON.stringify(cacheData));
     } catch (error) {
-      console.error('Erreur cache recommandations:', error);
     }
   }
 
@@ -314,7 +312,6 @@ class RecommendationService {
     try {
       await AsyncStorage.removeItem(this.CACHE_KEY);
     } catch (error) {
-      console.error('Erreur vidage cache recommandations:', error);
     }
   }
 

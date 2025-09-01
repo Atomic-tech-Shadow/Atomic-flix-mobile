@@ -60,7 +60,6 @@ class TrendingNotificationService {
 
       // Vérifier si c'est un appareil physique
       if (!Device.isDevice) {
-        console.log('Notifications push nécessitent un appareil physique');
         return false;
       }
 
@@ -83,7 +82,6 @@ class TrendingNotificationService {
       }
       
       if (finalStatus !== 'granted') {
-        console.log('Permissions de notification refusées');
         return false;
       }
 
@@ -93,7 +91,6 @@ class TrendingNotificationService {
         Constants?.easConfig?.projectId;
       
       if (!projectId) {
-        console.error('Project ID non trouvé pour les notifications');
         return false;
       }
 
@@ -105,7 +102,6 @@ class TrendingNotificationService {
         this.expoPushToken = pushTokenData.data;
         await AsyncStorage.setItem('expo_push_token', this.expoPushToken);
         
-        console.log('Service notifications tendances initialisé');
         this.isInitialized = true;
         
         // Charger données précédentes
@@ -113,11 +109,9 @@ class TrendingNotificationService {
         
         return true;
       } catch (error) {
-        console.error('Erreur obtention token push:', error);
         return false;
       }
     } catch (error) {
-      console.error('Erreur initialisation notifications:', error);
       return false;
     }
   }
@@ -132,7 +126,6 @@ class TrendingNotificationService {
         this.lastTrendingCheck = data.timestamp || 0;
       }
     } catch (error) {
-      console.error('Erreur chargement données précédentes:', error);
     }
   }
 
@@ -147,7 +140,6 @@ class TrendingNotificationService {
       this.previousTrending = trending;
       this.lastTrendingCheck = data.timestamp;
     } catch (error) {
-      console.error('Erreur sauvegarde données trending:', error);
     }
   }
 
@@ -175,7 +167,6 @@ class TrendingNotificationService {
       await this.saveTrendingData(currentTrending);
 
     } catch (error) {
-      console.error('Erreur vérification nouvelles tendances:', error);
     }
   }
 
@@ -239,7 +230,6 @@ class TrendingNotificationService {
         await new Promise(resolve => setTimeout(resolve, 1000));
 
       } catch (error) {
-        console.error('Erreur envoi notification trending:', error);
       }
     }
   }
@@ -278,10 +268,8 @@ class TrendingNotificationService {
       }
 
       const result = await response.json();
-      console.log('Notification push envoyée:', result);
 
     } catch (error) {
-      console.error('Erreur envoi push notification:', error);
     }
   }
 
@@ -289,7 +277,6 @@ class TrendingNotificationService {
   setupNotificationListeners(navigation?: any): void {
     // Notification reçue quand app ouverte
     Notifications.addNotificationReceivedListener(notification => {
-      console.log('📱 Notification reçue:', notification.request.content.title);
     });
 
     // Notification tapée par utilisateur
@@ -347,7 +334,6 @@ class TrendingNotificationService {
         this.lastTrendingCheck = 0;
       }
     } catch (error) {
-      console.error('Erreur nettoyage données:', error);
     }
   }
 }
