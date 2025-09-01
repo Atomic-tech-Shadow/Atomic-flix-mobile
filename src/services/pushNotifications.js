@@ -155,7 +155,7 @@ class PushNotificationService {
       
       // Si c'est une notification de mise à jour, ouvrir l'URL
       if (data?.downloadUrl) {
-        // UpdateModal sera affiché automatiquement par UpdateService
+        // Les mises à jour sont gérées par les APIs externes
       }
     });
   }
