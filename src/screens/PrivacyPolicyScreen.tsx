@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function PrivacyPolicyScreen({ navigation }: Props) {
-  const lastUpdated = "22 juillet 2025";
+  const lastUpdated = "1 septembre 2025";
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
@@ -42,9 +42,9 @@ export default function PrivacyPolicyScreen({ navigation }: Props) {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionIcon}>👁️</Text>
-            <Text style={styles.sectionTitle}>Aucune Collecte de Données</Text>
+            <Text style={styles.sectionTitle}>Stockage Local Uniquement</Text>
           </View>
-          <Text style={styles.sectionSubtitle}>Nous respectons totalement votre vie privée</Text>
+          <Text style={styles.sectionSubtitle}>Toutes vos données restent sur votre appareil</Text>
           
           <View style={styles.highlightBox}>
             <Text style={styles.highlightTitle}>Engagement Principal</Text>

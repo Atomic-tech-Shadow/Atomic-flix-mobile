@@ -239,9 +239,6 @@ const HomeScreen: React.FC = () => {
           const seasonMatch = anime.id.match(/saison(\d+)/i);
           if (seasonMatch) {
             targetSeasonNumber = parseInt(seasonMatch[1], 10);
-              animeId: anime.id, 
-              extractedSeason: targetSeasonNumber 
-            });
           }
         }
         
@@ -249,10 +246,6 @@ const HomeScreen: React.FC = () => {
         if (!targetSeasonNumber) {
           targetSeasonNumber = 1;
         }
-          targetSeasonNumber, 
-          animeTitle: anime.title,
-          availableSeasons: seasons.map((s: any) => ({ number: s.number, value: s.value, name: s.name })) 
-        });
         
         let matchingSeason = null;
         
