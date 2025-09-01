@@ -24,7 +24,6 @@ import type { RootStackParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import LoadingSpinner from '../components/LoadingSpinner';
-import NotificationService from '../utils/notificationService';
 
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -76,7 +75,6 @@ const HomeScreen: React.FC = () => {
   const [recommendationsAnimes, setRecommendationsAnimes] = useState<SearchResult[]>([]);
   const [planningAnimes, setPlanningAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
-  const [notificationCleanup, setNotificationCleanup] = useState<(() => void) | null>(null);
   const [showSearchBar, setShowSearchBar] = useState(false);
 
 
@@ -93,29 +91,14 @@ const HomeScreen: React.FC = () => {
     return 'VO';
   };
 
-  // Charger tout le contenu au démarrage et initialiser notifications
+  // Charger tout le contenu au démarrage
   useEffect(() => {
     const initializeApp = async () => {
-      // Initialiser le système de notifications modernisé
-      const notificationService = NotificationService.getInstance();
-      const { token, cleanup } = await notificationService.initializeService();
-      
-      if (cleanup) {
-        setNotificationCleanup(() => cleanup);
-      }
-      
       // Charger le contenu initial
       await loadAllInitialContent();
     };
     
     initializeApp();
-    
-    // Cleanup lors du démontage
-    return () => {
-      if (notificationCleanup) {
-        notificationCleanup();
-      }
-    };
   }, []);
 
   // Fonction centralisée pour charger tout le contenu initial

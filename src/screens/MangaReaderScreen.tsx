@@ -7,8 +7,6 @@ import {
   Image, 
   StyleSheet, 
   ActivityIndicator,
-  Alert,
-  Modal,
   FlatList,
   Dimensions
 } from 'react-native';
@@ -45,7 +43,6 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
   const [loadingChapters, setLoadingChapters] = useState(false);
   const [loadingPages, setLoadingPages] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showChapterList, setShowChapterList] = useState(false);
   const [zoom, setZoom] = useState(1);
 
   // Fonction pour les requêtes API
@@ -209,7 +206,6 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
   // Navigation entre les chapitres
   const goToChapter = async (chapter: MangaChapter) => {
     setSelectedChapter(chapter);
-    setShowChapterList(false);
     await loadChapterPages(chapter);
   };
 
@@ -272,7 +268,7 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
             style={[styles.mangaPage, { transform: [{ scale: zoom }] }]}
             resizeMode="contain"
             onError={() => {
-              Alert.alert('Erreur', 'Impossible de charger cette page');
+              setError('Impossible de charger cette page');
             }}
           />
         </ScrollView>
@@ -322,41 +318,6 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
         </View>
       </View>
 
-      {/* Modal liste des chapitres */}
-      <Modal
-        visible={showChapterList}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={() => setShowChapterList(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Chapitres</Text>
-              <TouchableOpacity onPress={() => setShowChapterList(false)}>
-                <Text style={styles.modalCloseButton}>✕</Text>
-              </TouchableOpacity>
-            </View>
-            
-            <FlatList
-              data={chapters}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={[
-                    styles.chapterItem,
-                    selectedChapter?.id === item.id && styles.chapterItemSelected
-                  ]}
-                  onPress={() => goToChapter(item)}
-                >
-                  <Text style={styles.chapterTitle}>{item.title}</Text>
-                  <Text style={styles.chapterNumber}>Ch. {item.number}</Text>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </View>
-      </Modal>
 
       {/* Indicateur de chargement */}
       {(loadingChapters || loadingPages) && (
@@ -530,58 +491,6 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 14,
     marginHorizontal: 16,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    backgroundColor: '#1a1a1a',
-    borderRadius: 16,
-    padding: 20,
-    width: width * 0.9,
-    maxHeight: height * 0.8,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  modalTitle: {
-    color: '#ffffff',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  modalCloseButton: {
-    color: '#00bcd4',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  chapterItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    marginVertical: 2,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-  },
-  chapterItemSelected: {
-    backgroundColor: 'rgba(0, 188, 212, 0.2)',
-  },
-  chapterTitle: {
-    color: '#ffffff',
-    fontSize: 16,
-    flex: 1,
-  },
-  chapterNumber: {
-    color: '#00bcd4',
-    fontSize: 14,
-    fontWeight: '600',
   },
   loadingOverlay: {
     position: 'absolute',
