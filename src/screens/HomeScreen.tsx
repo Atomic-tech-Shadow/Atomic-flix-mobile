@@ -29,7 +29,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { NotificationPanel } from '../components/NotificationPanel';
 import { useNotifications } from '../hooks/useNotifications';
 import { PushNotification } from '../types/notifications';
-import { ViewingHistoryService, ViewingHistoryItem } from '../services/ViewingHistoryService';
+import SmartHistoryService, { SmartHistoryItem } from '../services/SmartHistoryService';
 
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'> & DrawerNavigationProp<DrawerParamList>;
@@ -80,7 +80,8 @@ const HomeScreen: React.FC = () => {
   const [nouveauxEpisodes, setNouveauxEpisodes] = useState<SearchResult[]>([]);
   const [recommendationsAnimes, setRecommendationsAnimes] = useState<SearchResult[]>([]);
   const [planningAnimes, setPlanningAnimes] = useState<SearchResult[]>([]);
-  const [historyAnimes, setHistoryAnimes] = useState<ViewingHistoryItem[]>([]);
+  const [smartHistory, setSmartHistory] = useState<SmartHistoryItem[]>([]);
+  const [currentlyWatching, setCurrentlyWatching] = useState<SmartHistoryItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -130,7 +131,7 @@ const HomeScreen: React.FC = () => {
         loadRecentEpisodes(),
         loadRecommendations(),
         loadPlanning(),
-        loadViewingHistory()
+        loadSmartHistory(),
       ]);
     } catch (error) {
     } finally {
@@ -520,15 +521,24 @@ const HomeScreen: React.FC = () => {
     }
   };
 
-  // Charger l'historique de visionnage
-  const loadViewingHistory = async () => {
+  // Charger l'historique intelligent
+  const loadSmartHistory = async () => {
     try {
-      const history = await ViewingHistoryService.getInstance().getHistory();
-      setHistoryAnimes(history.slice(0, 10)); // Afficher les 10 derniers
+      const historyService = SmartHistoryService.getInstance();
+      const [recentHistory, currentlyWatchingList] = await Promise.all([
+        historyService.getRecentHistory(10),
+        historyService.getCurrentlyWatching()
+      ]);
+      
+      setSmartHistory(recentHistory);
+      setCurrentlyWatching(currentlyWatchingList);
     } catch (error) {
-      console.log('Erreur chargement historique:', error);
+      console.log('Erreur chargement historique intelligent:', error);
+      setSmartHistory([]);
+      setCurrentlyWatching([]);
     }
   };
+
 
   // Gérer la recherche en temps réel (identique au site web)
   useEffect(() => {
@@ -1045,8 +1055,73 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-            {/* Section Historique - 5ème position personnel */}
-            {historyAnimes.length > 0 && (
+
+            {/* Section En cours de visionnage */}
+            {currentlyWatching.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>📺 En cours</Text>
+                </View>
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                  decelerationRate={0.985}
+                  snapToInterval={128}
+                  snapToAlignment="start"
+                  directionalLockEnabled={true}
+                  scrollEventThrottle={4}
+                  removeClippedSubviews={true}
+                  bounces={true}
+                  bouncesZoom={false}
+                  overScrollMode="auto"
+                  disableIntervalMomentum={true}
+                >
+                  {currentlyWatching.map((item, index) => (
+                    <TouchableOpacity
+                      key={`watching-${item.animeId}-${index}`}
+                      style={styles.smartCard}
+                      onPress={() => loadAnimeDetails(item.animeUrl, item.animeTitle)}
+                      activeOpacity={0.8}
+                    >
+                      <Image
+                        source={{ uri: item.animeImage }}
+                        style={styles.horizontalCardImage}
+                        resizeMode="cover"
+                      />
+                      {/* Badge WATCHING avec progression */}
+                      <View style={styles.watchingBadge}>
+                        <Text style={styles.watchingBadgeText}>📺 {item.watchCount}ep</Text>
+                      </View>
+                      {item.lastPlayerPosition && item.lastPlayerPosition > 0 && (
+                        <View style={styles.progressBar}>
+                          <View style={[styles.progressFill, { width: `${Math.min(100, (item.lastPlayerPosition / 100) * 100)}%` }]} />
+                        </View>
+                      )}
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        style={styles.horizontalCardGradient}
+                      >
+                        <View style={styles.horizontalCardContent}>
+                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
+                            {item.animeTitle}
+                          </Text>
+                          <View style={styles.horizontalCardBadge}>
+                            <Text style={styles.horizontalCardBadgeText}>
+                              {item.seasons[0]?.lastEpisodeWatched || 'Épisode 1'}
+                            </Text>
+                          </View>
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
+
+            {/* Section Historique intelligent */}
+            {smartHistory.length > 0 && (
               <View style={styles.horizontalSection}>
                 <View style={styles.sectionHeader}>
                   <Text style={styles.sectionTitle}>🏛️ Historique</Text>
@@ -1067,37 +1142,50 @@ const HomeScreen: React.FC = () => {
                   overScrollMode="auto"
                   disableIntervalMomentum={true}
                 >
-                  {historyAnimes.map((historyItem, index) => (
+                  {smartHistory.map((item, index) => (
                     <TouchableOpacity
-                      key={`history-${historyItem.animeId}-${index}`}
-                      style={styles.vintageCard}
-                      onPress={() => loadAnimeDetails(historyItem.animeId, historyItem.contentType)}
+                      key={`history-${item.animeId}-${index}`}
+                      style={styles.smartCard}
+                      onPress={() => loadAnimeDetails(item.animeUrl, item.animeTitle)}
                       activeOpacity={0.8}
                     >
                       <Image
-                        source={{ uri: historyItem.animeImage }}
+                        source={{ uri: item.animeImage }}
                         style={styles.horizontalCardImage}
                         resizeMode="cover"
                       />
-                      {/* Badge VINTAGE marron sur l'image */}
-                      <View style={styles.vintageBadge}>
-                        <Text style={styles.vintageBadgeText}>🏛️ VU</Text>
+                      {/* Badge VINTAGE intelligent */}
+                      <View style={[styles.vintageBadge, item.isFavorite && styles.favoriteBadge]}>
+                        <Text style={styles.vintageBadgeText}>
+                          {item.isFavorite ? '❤️ FAV' : '🏛️ VU'}
+                        </Text>
                       </View>
+                      {/* Indicateur de statut */}
+                      {item.watchStatus === 'COMPLETED' && (
+                        <View style={styles.completedIndicator}>
+                          <Text style={styles.completedIndicatorText}>✓</Text>
+                        </View>
+                      )}
                       <LinearGradient
                         colors={['transparent', 'rgba(0,0,0,0.8)']}
                         style={styles.horizontalCardGradient}
                       >
                         <View style={styles.horizontalCardContent}>
                           <Text style={styles.horizontalCardTitle} numberOfLines={2}>
-                            {historyItem.animeTitle}
+                            {item.animeTitle}
                           </Text>
-                          <View style={styles.horizontalCardBadge}>
+                          <View style={styles.horizontalCardInfo}>
                             <Text style={styles.horizontalCardBadgeText}>
-                              {new Date(historyItem.lastWatchedDate).toLocaleDateString('fr-FR', { 
+                              {new Date(item.lastWatchDate).toLocaleDateString('fr-FR', { 
                                 day: 'numeric', 
                                 month: 'short' 
                               })}
                             </Text>
+                            {item.totalWatchTime > 0 && (
+                              <Text style={styles.watchTimeText}>
+                                {Math.round(item.totalWatchTime / 60)}h
+                              </Text>
+                            )}
                           </View>
                         </View>
                       </LinearGradient>
@@ -1735,6 +1823,87 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 8,
     fontWeight: 'bold',
+  },
+
+  // Styles pour l'historique intelligent
+  smartCard: {
+    width: 120,
+    marginRight: 15,
+    borderRadius: 8,
+    overflow: 'hidden',
+    backgroundColor: COLORS.surface,
+    elevation: 3,
+    shadowColor: COLORS.text.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+
+  watchingBadge: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    backgroundColor: 'rgba(0, 212, 255, 0.9)', // Cyan
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.secondary,
+  },
+  watchingBadgeText: {
+    ...textStyles.caption,
+    color: COLORS.background,
+    fontSize: 10,
+    fontWeight: '600',
+  },
+
+  favoriteBadge: {
+    backgroundColor: 'rgba(255, 107, 157, 0.9)', // Rose pour favoris
+    borderColor: COLORS.accent,
+  },
+
+  completedIndicator: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    backgroundColor: 'rgba(34, 197, 94, 0.9)', // Vert pour complété
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  completedIndicatorText: {
+    color: COLORS.background,
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+
+  progressBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: COLORS.secondary,
+  },
+
+  horizontalCardInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+
+  watchTimeText: {
+    ...textStyles.caption,
+    color: COLORS.text.muted,
+    fontSize: 10,
+    fontStyle: 'italic',
   },
 
   // Styles pour les cartes de recommandations
