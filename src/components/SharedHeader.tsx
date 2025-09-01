@@ -7,17 +7,22 @@ import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import { COLORS } from '../constants/newColors';
+import { NotificationBadge } from './NotificationBadge';
+import { useNotifications } from '../hooks/useNotifications';
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 interface SharedHeaderProps {
   onSearchPress?: () => void;
+  onNotificationPress?: () => void;
 }
 
 const SharedHeader: React.FC<SharedHeaderProps> = ({ 
-  onSearchPress
+  onSearchPress,
+  onNotificationPress
 }) => {
   const navigation = useNavigation<NavigationProp>();
+  const { unreadCount } = useNotifications();
 
   const handleSearchPress = () => {
     // Si un onSearchPress spécifique est fourni (comme dans HomeScreen), l'utiliser
@@ -54,6 +59,21 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             onPress={handleSearchPress}
           >
             <Ionicons name="search" size={22} color="#ffffff" />
+          </TouchableOpacity>
+
+          {/* Bouton notifications avec badge */}
+          <TouchableOpacity 
+            style={styles.headerIconButton}
+            onPress={onNotificationPress}
+          >
+            <Ionicons name="notifications-outline" size={22} color="#ffffff" />
+            {unreadCount > 0 && (
+              <View style={styles.notificationBadge}>
+                <Text style={styles.badgeText}>
+                  {unreadCount > 99 ? '99+' : unreadCount.toString()}
+                </Text>
+              </View>
+            )}
           </TouchableOpacity>
 
         </View>
@@ -111,6 +131,26 @@ const styles = StyleSheet.create({
   headerIconButton: {
     padding: 8,
     marginLeft: 8,
+    position: 'relative',
+  },
+  notificationBadge: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    backgroundColor: '#ff4444',
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: COLORS.primary,
+  },
+  badgeText: {
+    color: '#ffffff',
+    fontSize: 10,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

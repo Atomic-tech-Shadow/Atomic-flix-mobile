@@ -24,6 +24,10 @@ import type { RootStackParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { NotificationPanel } from '../components/NotificationPanel';
+import { NotificationSettings } from '../components/NotificationSettings';
+import { useNotifications } from '../hooks/useNotifications';
+import { PushNotification } from '../types/notifications';
 
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -76,6 +80,22 @@ const HomeScreen: React.FC = () => {
   const [planningAnimes, setPlanningAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showNotificationSettings, setShowNotificationSettings] = useState(false);
+  
+  // Hook pour les notifications
+  const {
+    notifications,
+    unreadCount,
+    settings: notificationSettings,
+    isInitialized: notificationsInitialized,
+    detectNewContent,
+    markAsRead,
+    markAllAsRead,
+    refreshNotifications,
+    updateSettings,
+    sendTestNotification
+  } = useNotifications();
 
 
   // Configuration API identique au site web
@@ -117,6 +137,13 @@ const HomeScreen: React.FC = () => {
       setInitialLoading(false);
     }
   };
+
+  // Détecter les nouveaux contenus pour les notifications quand le contenu est chargé
+  useEffect(() => {
+    if (notificationsInitialized && nouveauxEpisodes.length > 0) {
+      detectNewContent(nouveauxEpisodes);
+    }
+  }, [notificationsInitialized, nouveauxEpisodes, detectNewContent]);
 
 
 
@@ -521,7 +548,42 @@ const HomeScreen: React.FC = () => {
     setError(null);
   };
 
+  // Gestionnaire pour ouvrir le panneau de notifications
+  const handleNotificationPress = () => {
+    setShowNotifications(true);
+  };
 
+  // Gestionnaire pour les actions des notifications
+  const handleNotificationItemPress = (notification: PushNotification) => {
+    // Marquer comme lue
+    markAsRead(notification.id);
+    
+    // Navigation selon le type de contenu
+    if (notification.data?.screen && notification.data?.params) {
+      setShowNotifications(false);
+      
+      if (notification.data.screen === 'AnimeDetail') {
+        navigation.navigate('AnimeDetail', notification.data.params);
+      } else if (notification.data.screen === 'MangaReader') {
+        navigation.navigate('MangaReader', notification.data.params);
+      }
+    }
+  };
+
+  // Gestionnaire pour ouvrir les paramètres de notifications
+  const handleNotificationSettingsPress = () => {
+    setShowNotificationSettings(true);
+  };
+
+  // Gestionnaire pour les changements de paramètres
+  const handleSettingsChange = async (newSettings: any) => {
+    await updateSettings(newSettings);
+  };
+
+  // Gestionnaire pour le test de notification
+  const handleTestNotification = async () => {
+    await sendTestNotification();
+  };
 
   // Fonction pour extraire la langue depuis l'objet language de l'API
   const getLanguageFromAPI = (anime: SearchResult) => {
@@ -661,6 +723,7 @@ const HomeScreen: React.FC = () => {
       <View style={styles.headerContainer}>
         <SharedHeader 
           onSearchPress={handleSearchPress}
+          onNotificationPress={handleNotificationPress}
         />
       </View>
 
@@ -1084,7 +1147,66 @@ const HomeScreen: React.FC = () => {
         )}
       </OptimizedScrollView>
 
+      {/* Modal des notifications */}
+      <Modal
+        visible={showNotifications}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setShowNotifications(false)}
+      >
+        <SafeAreaView style={styles.notificationModalContainer}>
+          {/* Header de la modal */}
+          <View style={styles.notificationModalHeader}>
+            <Text style={styles.notificationModalTitle}>Notifications</Text>
+            <TouchableOpacity
+              onPress={() => setShowNotifications(false)}
+              style={styles.closeButton}
+            >
+              <Ionicons name="close" size={24} color={COLORS.text.primary} />
+            </TouchableOpacity>
+          </View>
+          
+          {/* Panneau de notifications */}
+          <NotificationPanel
+            notifications={notifications}
+            onNotificationPress={handleNotificationItemPress}
+            onMarkAllRead={markAllAsRead}
+            onRefresh={refreshNotifications}
+            isRefreshing={false}
+            onSettingsPress={handleNotificationSettingsPress}
+          />
+        </SafeAreaView>
+      </Modal>
 
+      {/* Modal des paramètres de notifications */}
+      <Modal
+        visible={showNotificationSettings}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setShowNotificationSettings(false)}
+      >
+        <SafeAreaView style={styles.notificationModalContainer}>
+          {/* Header de la modal des paramètres */}
+          <View style={styles.notificationModalHeader}>
+            <Text style={styles.notificationModalTitle}>Paramètres</Text>
+            <TouchableOpacity
+              onPress={() => setShowNotificationSettings(false)}
+              style={styles.closeButton}
+            >
+              <Ionicons name="close" size={24} color={COLORS.text.primary} />
+            </TouchableOpacity>
+          </View>
+          
+          {/* Paramètres de notifications */}
+          {notificationSettings && (
+            <NotificationSettings
+              settings={notificationSettings}
+              onSettingsChange={handleSettingsChange}
+              onTestNotification={handleTestNotification}
+            />
+          )}
+        </SafeAreaView>
+      </Modal>
 
     </SafeAreaView>
   );
@@ -1643,6 +1765,32 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontSize: 8,
     fontWeight: 'bold',
+  },
+
+  // Styles pour la modal de notifications
+  notificationModalContainer: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  notificationModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: COLORS.primary,
+  },
+  notificationModalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.text.primary,
+  },
+  closeButton: {
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
 
 });
