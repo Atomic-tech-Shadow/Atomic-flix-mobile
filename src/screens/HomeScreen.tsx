@@ -293,16 +293,13 @@ const HomeScreen: React.FC = () => {
           });
         }
         
-        // Log détaillé du matching
-        if (matchingSeason) {
+        // Log détaillé du matching si en mode debug
+        if (matchingSeason && __DEV__) {
+          console.log('Saison trouvée:', {
             number: matchingSeason.number, 
             value: matchingSeason.value, 
             name: matchingSeason.name,
             targetWas: targetSeasonNumber
-          });
-        } else {
-          // Log toutes les saisons disponibles pour debug
-          seasons.forEach((s: any, index: number) => {
           });
         }
         
@@ -311,7 +308,8 @@ const HomeScreen: React.FC = () => {
           matchingSeason = seasons[0];
         }
         
-        if (matchingSeason) {
+        if (matchingSeason && __DEV__) {
+          console.log('Navigation vers AnimePlayer:', {
             animeUrl: cleanId, 
             animeTitle: anime.title,
             seasonData: matchingSeason,
@@ -319,6 +317,7 @@ const HomeScreen: React.FC = () => {
             language: anime.language?.name,
             episodeInfo: anime.episodeInfo
           });
+        }
 
           // Naviguer avec les vraies données de saison de l'API
           navigation.navigate('AnimePlayer', { 
