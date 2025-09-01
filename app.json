@@ -42,11 +42,14 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/icon.png",
-          "color": "#ffffff",
-          "defaultChannel": "atomic-flix-trending",
+          "icon": "./assets/atomic-flix-logo-new.png",
+          "color": "#8B5DFF",
+          "defaultChannel": "atomic-flix-main",
           "sounds": [],
-          "enableBackgroundRemoteNotifications": true
+          "enableBackgroundRemoteNotifications": true,
+          "iosDisplayInCarPlay": true,
+          "androidMode": "default",
+          "androidCollapsedTitle": "%(notification_count) nouvelles notifications"
         }
       ],
       [

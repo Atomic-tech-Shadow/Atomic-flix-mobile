@@ -24,6 +24,7 @@ import type { RootStackParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import LoadingSpinner from '../components/LoadingSpinner';
+import NotificationService from '../utils/notificationService';
 
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -75,6 +76,7 @@ const HomeScreen: React.FC = () => {
   const [recommendationsAnimes, setRecommendationsAnimes] = useState<SearchResult[]>([]);
   const [planningAnimes, setPlanningAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [notificationCleanup, setNotificationCleanup] = useState<(() => void) | null>(null);
   const [showSearchBar, setShowSearchBar] = useState(false);
 
 
@@ -91,9 +93,29 @@ const HomeScreen: React.FC = () => {
     return 'VO';
   };
 
-  // Charger tout le contenu au démarrage
+  // Charger tout le contenu au démarrage et initialiser notifications
   useEffect(() => {
-    loadAllInitialContent();
+    const initializeApp = async () => {
+      // Initialiser le système de notifications modernisé
+      const notificationService = NotificationService.getInstance();
+      const { token, cleanup } = await notificationService.initializeService();
+      
+      if (cleanup) {
+        setNotificationCleanup(() => cleanup);
+      }
+      
+      // Charger le contenu initial
+      await loadAllInitialContent();
+    };
+    
+    initializeApp();
+    
+    // Cleanup lors du démontage
+    return () => {
+      if (notificationCleanup) {
+        notificationCleanup();
+      }
+    };
   }, []);
 
   // Fonction centralisée pour charger tout le contenu initial
@@ -598,7 +620,7 @@ const HomeScreen: React.FC = () => {
     
     return (
       <TouchableOpacity
-        key={`trending-${anime.id || index}`}
+        key={`trending-${anime.id || anime.url || anime.title.replace(/\s+/g, '-')}-${index}`}
         style={styles.horizontalCard}
         onPress={() => loadEpisodeDirectly(anime)}
         activeOpacity={0.8}
@@ -949,6 +971,69 @@ const HomeScreen: React.FC = () => {
                       {/* Badge RECOMMANDÉ sur l'image */}
                       <View style={styles.recommendationBadge}>
                         <Text style={styles.recommendationBadgeText}>🎯 RECOMMANDÉ</Text>
+                      </View>
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        style={styles.horizontalCardGradient}
+                      >
+                        <View style={styles.horizontalCardContent}>
+                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
+                            {anime.title}
+                          </Text>
+                          {anime.language && (
+                            <View style={styles.horizontalCardBadge}>
+                              <Text style={styles.horizontalCardBadgeText}>
+                                {anime.language.name}
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
+
+            {/* Section Planning du jour - Position avant Recommandations */}
+            {planningAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>⏰ Sorties aujourd'hui</Text>
+                </View>
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                  decelerationRate={0.985}
+                  snapToInterval={128}
+                  snapToAlignment="start"
+                  directionalLockEnabled={true}
+                  scrollEventThrottle={4}
+                  removeClippedSubviews={true}
+                  bounces={true}
+                  bouncesZoom={false}
+                  overScrollMode="auto"
+                  disableIntervalMomentum={true}
+                >
+                  {planningAnimes.map((anime, index) => (
+                    <TouchableOpacity
+                      key={`planning-${anime.id || anime.url || anime.title.replace(/\s+/g, '-')}-${index}`}
+                      style={styles.planningCard}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
+                      activeOpacity={0.8}
+                    >
+                      <Image
+                        source={{ uri: anime.image }}
+                        style={styles.horizontalCardImage}
+                        resizeMode="cover"
+                      />
+                      {/* Badge PLANNING avec heure sur l'image */}
+                      <View style={styles.planningBadge}>
+                        <Text style={styles.planningBadgeText}>
+                          {anime.releaseTime && anime.releaseTime !== '?' ? anime.releaseTime : 'PLANNING'}
+                        </Text>
                       </View>
                       <LinearGradient
                         colors={['transparent', 'rgba(0,0,0,0.8)']}
@@ -1540,6 +1625,38 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   recommendationBadgeText: {
+    color: '#000000',
+    fontSize: 8,
+    fontWeight: 'bold',
+  },
+
+  // Styles pour les cartes de planning
+  planningCard: {
+    width: 120,
+    height: 180,
+    marginRight: 12,
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: COLORS.primary,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 193, 7, 0.4)', // Bordure dorée pour planning
+  },
+  planningBadge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    backgroundColor: 'rgba(255, 193, 7, 0.95)', // Couleur dorée/orange pour planning
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 8,
+    zIndex: 1,
+  },
+  planningBadgeText: {
     color: '#000000',
     fontSize: 8,
     fontWeight: 'bold',

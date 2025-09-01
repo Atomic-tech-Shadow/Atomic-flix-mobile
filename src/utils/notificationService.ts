@@ -23,15 +23,20 @@ export interface EpisodeNotification {
   animeTitle: string; // Titre complet de l'anime/manga
 }
 
-// Configuration des notifications push
+// Configuration moderne des notifications (2025) avec gestion intelligente
 Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
+  handleNotification: async (notification) => {
+    // Gestion intelligente selon l'état de l'app et le type de notification
+    const isAppActive = notification.request.content.data?.priority === 'silent';
+    
+    return {
+      shouldShowAlert: !isAppActive,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    };
+  },
 });
 
 class NotificationService {
@@ -59,24 +64,51 @@ class NotificationService {
         return null;
       }
 
-      // CRITIQUE: Configurer le canal Android AVANT de demander les permissions
-      // Requis pour Android 13+ selon la documentation Expo 2024
+      // Configuration moderne des canaux Android selon les pratiques 2025
       if (Platform.OS === 'android') {
-        await Notifications.setNotificationChannelAsync('atomic-flix-updates', {
-          name: 'ATOMIC FLIX Updates',
-          importance: Notifications.AndroidImportance.MAX,
+        // Canal principal pour les nouvelles sorties
+        await Notifications.setNotificationChannelAsync('atomic-flix-main', {
+          name: 'Nouveaux épisodes et chapitres',
+          importance: Notifications.AndroidImportance.HIGH,
           vibrationPattern: [0, 250, 250, 250],
-          lightColor: '#00bcd4',
-          description: 'Notifications pour les nouvelles mises à jour ATOMIC FLIX',
+          lightColor: '#8B5DFF', // Couleur principale ATOMIC FLIX
+          description: 'Notifications pour les nouveaux animes et mangas disponibles',
+          enableLights: true,
+          enableVibration: true,
+          lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
+        });
+        
+        // Canal séparé pour les mises à jour importantes
+        await Notifications.setNotificationChannelAsync('atomic-flix-updates', {
+          name: 'Mises à jour importantes',
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 500, 250, 500],
+          lightColor: '#00D4FF', // Couleur cyan pour updates
+          description: 'Notifications critiques et mises à jour système',
+          enableLights: true,
+          enableVibration: true,
+          lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
+        });
+        
+        // Canal pour le planning (notifications silencieuses)
+        await Notifications.setNotificationChannelAsync('atomic-flix-planning', {
+          name: 'Planning et rappels',
+          importance: Notifications.AndroidImportance.DEFAULT,
+          vibrationPattern: [0, 150, 150],
+          lightColor: '#FF6B9D', // Couleur rose pour planning
+          description: 'Rappels pour les animes programmés',
+          enableLights: true,
+          enableVibration: false, // Moins intrusif
+          lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
         });
       }
 
-      // Demander les permissions
+      // Gestion moderne des permissions avec retry et fallback
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
       
       if (existingStatus !== 'granted') {
-        // Demander avec paramètres iOS spécifiques si nécessaire
+        // Demander avec paramètres optimaux pour iOS et Android
         const { status } = await Notifications.requestPermissionsAsync({
           ios: {
             allowAlert: true,
@@ -84,7 +116,10 @@ class NotificationService {
             allowSound: true,
             allowDisplayInCarPlay: true,
             allowCriticalAlerts: false,
+            provideAppNotificationSettings: true,
+            allowProvisional: true,
           },
+          android: {},
         });
         finalStatus = status;
       }
@@ -97,24 +132,47 @@ class NotificationService {
         return null;
       }
 
-      // Obtenir le token push
+      // Obtenir le token push avec retry logic amélioré
       const projectId = Constants.expoConfig?.extra?.eas?.projectId ?? Constants.easConfig?.projectId;
       if (!projectId) {
-        console.log('Pas de projet ID trouvé');
+        if (__DEV__) {
+          console.log('Pas de projet ID trouvé - vérifiez app.json');
+        }
         return null;
       }
 
-      const pushTokenData = await Notifications.getExpoPushTokenAsync({
-        projectId,
-      });
+      // Retry logic pour les tokens avec backoff exponentiel
+      let retryCount = 0;
+      const maxRetries = 3;
       
-      this.expoPushToken = pushTokenData.data;
-      // Supprimer le log de production pour la sécurité
-      if (__DEV__) {
-        console.log('Token push obtenu:', this.expoPushToken);
+      while (retryCount < maxRetries) {
+        try {
+          const pushTokenData = await Notifications.getExpoPushTokenAsync({
+            projectId,
+          });
+          
+          this.expoPushToken = pushTokenData.data;
+          
+          // Sécurité: Ne jamais logger les tokens en production
+          if (__DEV__) {
+            console.log('✅ Token push obtenu avec succès');
+          }
+          
+          // Enregistrer le token sur le serveur (consolidé)
+          await this.registerTokenWithServer(this.expoPushToken);
+          
+          return this.expoPushToken;
+        } catch (tokenError) {
+          retryCount++;
+          if (retryCount >= maxRetries) {
+            throw tokenError;
+          }
+          // Attendre avant retry (backoff exponentiel)
+          await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, retryCount)));
+        }
       }
       
-      return this.expoPushToken;
+      return null;
     } catch (error) {
       // Gestion d'erreur améliorée pour éviter confusion avec Firebase
       if (__DEV__) {
@@ -122,6 +180,46 @@ class NotificationService {
       }
       // Retourner silencieusement null en production pour éviter popups d'erreur
       return null;
+    }
+  }
+
+  // Enregistrer le token sur le serveur (méthode consolidée)
+  private async registerTokenWithServer(pushToken: string): Promise<boolean> {
+    try {
+      const deviceInfo = {
+        platform: Device.osName,
+        device: Device.modelName,
+        appVersion: Constants.expoConfig?.version || '3.7.0',
+        registeredAt: new Date().toISOString(),
+        osVersion: Device.osVersion,
+        brand: Device.brand,
+      };
+
+      const response = await fetch('https://atomic-flix-verifier-bot.vercel.app/api/register-push-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'register',
+          userId: 'atomic-flix-user', // ID utilisateur générique pour cette version
+          pushToken: pushToken,
+          deviceInfo: deviceInfo
+        })
+      });
+
+      const result = await response.json();
+      
+      if (__DEV__) {
+        console.log('🚀 Token enregistré sur serveur:', result.success);
+      }
+      
+      return result.success || false;
+    } catch (error) {
+      if (__DEV__) {
+        console.error('❌ Erreur enregistrement token:', error);
+      }
+      return false;
     }
   }
 
@@ -360,34 +458,59 @@ class NotificationService {
     );
   }
 
-  // Envoyer une notification push locale
+  // Envoyer une notification locale moderne avec channels spécialisés
   private async sendLocalNotification(notification: EpisodeNotification): Promise<void> {
     try {
+      // Déterminer le canal selon le type de notification
+      const channelId = this.getNotificationChannel(notification.type);
+      const typeEmoji = notification.type === 'anime' ? '📺' : 
+                       notification.type === 'manga' ? '📖' : '🎬';
+      
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: `Atomic Flix • ${notification.type === 'anime' ? 'Nouvel épisode' : 'Nouveau chapitre'}`,
+          title: `${typeEmoji} ATOMIC FLIX`,
+          subtitle: notification.type === 'anime' ? 'Nouvel épisode disponible' : 
+                   notification.type === 'manga' ? 'Nouveau chapitre disponible' : 
+                   'Nouveau film disponible',
           body: notification.message,
           data: { 
             animeId: notification.id,
             animeTitle: notification.animeTitle,
             type: notification.type,
-            image: notification.image
+            image: notification.image,
+            timestamp: notification.timestamp,
+            screen: 'AnimeDetail', // Navigation automatique
+            params: { animeId: notification.id }
           },
-          sound: true,
+          sound: 'default',
           priority: Notifications.AndroidNotificationPriority.HIGH,
-          color: '#00bcd4',
+          color: '#8B5DFF', // Couleur principale ATOMIC FLIX
+          categoryIdentifier: 'anime-update', // Pour actions iOS
         },
         trigger: null, // Envoyer immédiatement
+        channelId: Platform.OS === 'android' ? channelId : undefined,
       });
 
-      // En production, ne pas afficher d'Alert automatique pour éviter d'interrompre l'utilisateur
-      // Les notifications push système suffisent
+      if (__DEV__) {
+        console.log(`✅ Notification locale envoyée: ${notification.animeTitle}`);
+      }
     } catch (error) {
       if (__DEV__) {
-        console.error('Erreur envoi notification:', error);
+        console.error('❌ Erreur envoi notification locale:', error);
       }
-      // Fallback silencieux en production - les notifications en app suffisent
-      // Pas d'Alert en production pour éviter de déranger l'utilisateur
+      // Pas d'Alert en production pour éviter d'interrompre l'utilisateur
+    }
+  }
+
+  // Déterminer le canal de notification selon le type
+  private getNotificationChannel(type: string): string {
+    switch (type) {
+      case 'anime':
+      case 'manga':
+      case 'film':
+        return 'atomic-flix-main';
+      default:
+        return 'atomic-flix-updates';
     }
   }
 
@@ -425,6 +548,130 @@ class NotificationService {
     if (recentNotifications.length !== notifications.length) {
       await this.saveNotifications(recentNotifications);
     }
+  }
+
+  // Configurer les listeners de notifications modernes (2025)
+  async setupNotificationListeners(): Promise<() => void> {
+    try {
+      // Configurer les catégories iOS avec actions
+      if (Platform.OS === 'ios') {
+        await Notifications.setNotificationCategoryAsync('anime-update', [
+          {
+            identifier: 'watch-now',
+            buttonTitle: 'Regarder',
+            options: {
+              isDestructive: false,
+              isAuthenticationRequired: false,
+            },
+          },
+          {
+            identifier: 'remind-later',
+            buttonTitle: 'Plus tard',
+            options: {
+              isDestructive: false,
+              isAuthenticationRequired: false,
+            },
+          },
+        ]);
+      }
+
+      // Listener pour notifications reçues (app en premier plan)
+      const receivedListener = Notifications.addNotificationReceivedListener(
+        notification => {
+          if (__DEV__) {
+            console.log('🔔 Notification reçue:', notification.request.content.title);
+          }
+          // La notification sera affichée automatiquement par le système
+        }
+      );
+
+      // Listener pour réponses aux notifications (tap utilisateur)
+      const responseListener = Notifications.addNotificationResponseReceivedListener(
+        response => {
+          const { notification, actionIdentifier } = response;
+          const data = notification.request.content.data;
+          
+          if (__DEV__) {
+            console.log('👆 Notification tapée:', actionIdentifier, data);
+          }
+          
+          // Marquer comme lue automatiquement
+          if (data?.animeId) {
+            this.markAsRead(data.animeId);
+          }
+          
+          // Gérer les actions spécifiques
+          if (actionIdentifier === 'watch-now' && data?.screen) {
+            // TODO: Navigation intégrée (nécessite référence navigation)
+            console.log('Navigation vers:', data.screen, data.params);
+          } else if (actionIdentifier === 'remind-later') {
+            // Programmer un rappel dans 1 heure
+            this.scheduleReminder(notification.request.content);
+          }
+        }
+      );
+
+      // Listener pour changements de tokens (sécurité)
+      const tokenListener = Notifications.addPushTokenListener(token => {
+        if (__DEV__) {
+          console.log('🔄 Token push mis à jour');
+        }
+        this.expoPushToken = token.data;
+        // Re-enregistrer le nouveau token
+        this.registerTokenWithServer(token.data);
+      });
+
+      // Retourner la fonction de nettoyage
+      return () => {
+        receivedListener.remove();
+        responseListener.remove();
+        tokenListener.remove();
+      };
+    } catch (error) {
+      if (__DEV__) {
+        console.error('❌ Erreur configuration listeners:', error);
+      }
+      return () => {}; // Fonction vide si échec
+    }
+  }
+
+  // Programmer un rappel pour plus tard
+  private async scheduleReminder(content: any): Promise<void> {
+    try {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: '⏰ Rappel ATOMIC FLIX',
+          body: `N'oubliez pas: ${content.body}`,
+          data: content.data,
+          sound: 'default',
+          priority: Notifications.AndroidNotificationPriority.DEFAULT,
+          color: '#FF6B9D', // Couleur rose pour rappels
+        },
+        trigger: {
+          seconds: 3600, // Dans 1 heure
+        },
+        channelId: Platform.OS === 'android' ? 'atomic-flix-planning' : undefined,
+      });
+      
+      if (__DEV__) {
+        console.log('⏰ Rappel programmé dans 1 heure');
+      }
+    } catch (error) {
+      if (__DEV__) {
+        console.error('❌ Erreur programmation rappel:', error);
+      }
+    }
+  }
+
+  // Méthode publique pour initialiser complètement le service
+  async initializeService(): Promise<{ token: string | null; cleanup: () => void }> {
+    const token = await this.initializePushNotifications();
+    const cleanup = await this.setupNotificationListeners();
+    
+    // Nettoyage automatique des anciennes notifications
+    await this.cleanOldNotifications();
+    
+    return { token, cleanup };
   }
 
 
