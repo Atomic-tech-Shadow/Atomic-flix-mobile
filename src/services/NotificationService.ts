@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import Constants from 'expo-constants';
-import { NotificationSettings, PushNotification, NotificationChannel } from '../types/notifications';
+import { PushNotification, NotificationChannel } from '../types/notifications';
 import { SearchResult } from '../types/index';
 
 // Configuration moderne des notifications (2025) optimisée
@@ -112,8 +112,8 @@ export class NotificationService {
         name: channel.name,
         description: channel.description,
         importance: this.getAndroidImportance(channel.importance),
-        sound: channel.sound ? 'default' : false,
-        enableVibration: channel.vibration,
+        sound: channel.sound ? 'default' : null,
+        enableVibrate: channel.vibration,
         enableLights: channel.lights,
         lightColor: channel.color,
         vibrationPattern: channel.vibration ? [0, 250, 250, 250] : [0],
@@ -313,9 +313,6 @@ export class NotificationService {
 
   // Détecter nouveaux contenus et notifier
   async detectNewContent(currentContent: SearchResult[]): Promise<void> {
-    const settings = await this.getSettings();
-    if (!settings.enabled) return;
-
     try {
       const previousContent = await this.getPreviousContent();
       const newNotifications: PushNotification[] = [];
@@ -324,7 +321,7 @@ export class NotificationService {
         const previousItem = previousContent.find(p => p.id === item.id);
         
         if (!previousItem || this.hasContentChanged(previousItem, item)) {
-          if (this.shouldNotify(item, settings)) {
+          if (this.shouldNotify(item)) {
             const notification = this.createNotificationFromContent(item);
             newNotifications.push(notification);
             
@@ -363,15 +360,9 @@ export class NotificationService {
     );
   }
 
-  // Déterminer si une notification doit être envoyée
-  private shouldNotify(item: SearchResult, settings: NotificationSettings): boolean {
-    switch (item.type) {
-      case 'anime': return settings.newEpisodes;
-      case 'manga': return settings.newMangas;
-      case 'film': 
-      case 'movie': return settings.newFilms;
-      default: return false;
-    }
+  // Toutes les notifications sont envoyées - gestion via paramètres système
+  private shouldNotify(item: SearchResult): boolean {
+    return true; // Laissons l'utilisateur gérer via les paramètres système
   }
 
   // Créer une notification depuis un SearchResult
@@ -456,39 +447,6 @@ export class NotificationService {
     return channel?.color || '#8B5DFF';
   }
 
-  // Gestion des paramètres
-  async getSettings(): Promise<NotificationSettings> {
-    try {
-      const settings = await AsyncStorage.getItem('notification_settings_v2');
-      return settings ? JSON.parse(settings) : {
-        enabled: true,
-        newEpisodes: true,
-        newMangas: true,
-        newFilms: true,
-        planning: true,
-        sound: true,
-        vibration: true
-      };
-    } catch (error) {
-      return {
-        enabled: true,
-        newEpisodes: true,
-        newMangas: true,
-        newFilms: true,
-        planning: true,
-        sound: true,
-        vibration: true
-      };
-    }
-  }
-
-  async saveSettings(settings: NotificationSettings): Promise<void> {
-    try {
-      await AsyncStorage.setItem('notification_settings_v2', JSON.stringify(settings));
-    } catch (error) {
-      console.error('Erreur sauvegarde paramètres:', error);
-    }
-  }
 
   // Gestion des notifications stockées
   async getNotifications(): Promise<PushNotification[]> {
@@ -588,13 +546,4 @@ export class NotificationService {
     return this.expoPushToken;
   }
 
-  // Tester les notifications
-  async sendTestNotification(): Promise<void> {
-    await this.sendLocalNotification(
-      'Test ATOMIC FLIX',
-      'Votre système de notifications fonctionne parfaitement !',
-      'episode',
-      { test: true }
-    );
-  }
 }

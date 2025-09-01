@@ -17,7 +17,6 @@ interface NotificationPanelProps {
   onMarkAllRead: () => void;
   onRefresh: () => void;
   isRefreshing?: boolean;
-  onSettingsPress?: () => void;
 }
 
 export const NotificationPanel: React.FC<NotificationPanelProps> = ({
@@ -26,7 +25,6 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
   onMarkAllRead,
   onRefresh,
   isRefreshing = false,
-  onSettingsPress
 }) => {
   const unreadCount = notifications.filter(n => !n.read).length;
 
@@ -71,11 +69,6 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
           🔔 Notifications {unreadCount > 0 && `(${unreadCount})`}
         </Text>
         <View style={styles.headerActions}>
-          {onSettingsPress && (
-            <TouchableOpacity onPress={onSettingsPress} style={styles.settingsButton}>
-              <Text style={styles.settingsText}>⚙️</Text>
-            </TouchableOpacity>
-          )}
           {unreadCount > 0 && (
             <TouchableOpacity onPress={onMarkAllRead} style={styles.markAllButton}>
               <Text style={styles.markAllText}>Tout marquer lu</Text>
@@ -187,16 +180,6 @@ const styles = StyleSheet.create({
   headerActions: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  settingsButton: {
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    marginRight: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 15,
-  },
-  settingsText: {
-    fontSize: 16,
   },
   markAllButton: {
     paddingHorizontal: 12,

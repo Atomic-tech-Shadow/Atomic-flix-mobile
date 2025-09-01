@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { NotificationService } from '../services/NotificationService';
-import { PushNotification, NotificationSettings } from '../types/notifications';
+import { PushNotification } from '../types/notifications';
 
 export function useNotifications() {
   const [notifications, setNotifications] = useState<PushNotification[]>([]);
   const [unreadCount, setUnreadCount] = useState<number>(0);
-  const [settings, setSettings] = useState<NotificationSettings | null>(null);
   const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
@@ -30,7 +29,6 @@ export function useNotifications() {
         
         // Charger les données initiales
         await loadNotifications();
-        await loadSettings();
         await loadUnreadCount();
         
         if (__DEV__) {
@@ -54,15 +52,6 @@ export function useNotifications() {
     }
   }, []);
 
-  // Charger les paramètres
-  const loadSettings = useCallback(async () => {
-    try {
-      const notificationSettings = await service.getSettings();
-      setSettings(notificationSettings);
-    } catch (error) {
-      console.error('Erreur chargement paramètres:', error);
-    }
-  }, []);
 
   // Charger le nombre non lu
   const loadUnreadCount = useCallback(async () => {
@@ -100,22 +89,6 @@ export function useNotifications() {
     setUnreadCount(0);
   }, []);
 
-  const updateSettings = useCallback(async (newSettings: NotificationSettings) => {
-    try {
-      await service.saveSettings(newSettings);
-      setSettings(newSettings);
-    } catch (error) {
-      console.error('Erreur mise à jour paramètres:', error);
-    }
-  }, []);
-
-  const sendTestNotification = useCallback(async () => {
-    try {
-      await service.sendTestNotification();
-    } catch (error) {
-      console.error('Erreur test notification:', error);
-    }
-  }, []);
 
   const detectNewContent = useCallback(async (content: any[]) => {
     try {
@@ -136,7 +109,6 @@ export function useNotifications() {
     // État
     notifications,
     unreadCount,
-    settings,
     expoPushToken,
     isLoading,
     isInitialized,
@@ -144,8 +116,6 @@ export function useNotifications() {
     // Actions
     markAsRead,
     markAllAsRead,
-    updateSettings,
-    sendTestNotification,
     detectNewContent,
     refreshNotifications
   };

@@ -1,14 +1,4 @@
 // Types pour le système de notifications moderne ATOMIC FLIX 2025
-export interface NotificationSettings {
-  enabled: boolean;
-  newEpisodes: boolean;
-  newMangas: boolean;
-  newFilms: boolean;
-  planning: boolean;
-  sound: boolean;
-  vibration: boolean;
-}
-
 export interface PushNotification {
   id: string;
   title: string;

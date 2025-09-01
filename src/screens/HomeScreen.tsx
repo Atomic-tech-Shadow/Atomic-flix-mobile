@@ -25,7 +25,6 @@ import SharedHeader from '../components/SharedHeader';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { NotificationPanel } from '../components/NotificationPanel';
-import { NotificationSettings } from '../components/NotificationSettings';
 import { useNotifications } from '../hooks/useNotifications';
 import { PushNotification } from '../types/notifications';
 
@@ -81,20 +80,16 @@ const HomeScreen: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [showNotificationSettings, setShowNotificationSettings] = useState(false);
   
   // Hook pour les notifications
   const {
     notifications,
     unreadCount,
-    settings: notificationSettings,
     isInitialized: notificationsInitialized,
     detectNewContent,
     markAsRead,
     markAllAsRead,
     refreshNotifications,
-    updateSettings,
-    sendTestNotification
   } = useNotifications();
 
 
@@ -570,20 +565,6 @@ const HomeScreen: React.FC = () => {
     }
   };
 
-  // Gestionnaire pour ouvrir les paramètres de notifications
-  const handleNotificationSettingsPress = () => {
-    setShowNotificationSettings(true);
-  };
-
-  // Gestionnaire pour les changements de paramètres
-  const handleSettingsChange = async (newSettings: any) => {
-    await updateSettings(newSettings);
-  };
-
-  // Gestionnaire pour le test de notification
-  const handleTestNotification = async () => {
-    await sendTestNotification();
-  };
 
   // Fonction pour extraire la langue depuis l'objet language de l'API
   const getLanguageFromAPI = (anime: SearchResult) => {
@@ -1173,40 +1154,10 @@ const HomeScreen: React.FC = () => {
             onMarkAllRead={markAllAsRead}
             onRefresh={refreshNotifications}
             isRefreshing={false}
-            onSettingsPress={handleNotificationSettingsPress}
           />
         </SafeAreaView>
       </Modal>
 
-      {/* Modal des paramètres de notifications */}
-      <Modal
-        visible={showNotificationSettings}
-        animationType="slide"
-        presentationStyle="pageSheet"
-        onRequestClose={() => setShowNotificationSettings(false)}
-      >
-        <SafeAreaView style={styles.notificationModalContainer}>
-          {/* Header de la modal des paramètres */}
-          <View style={styles.notificationModalHeader}>
-            <Text style={styles.notificationModalTitle}>Paramètres</Text>
-            <TouchableOpacity
-              onPress={() => setShowNotificationSettings(false)}
-              style={styles.closeButton}
-            >
-              <Ionicons name="close" size={24} color={COLORS.text.primary} />
-            </TouchableOpacity>
-          </View>
-          
-          {/* Paramètres de notifications */}
-          {notificationSettings && (
-            <NotificationSettings
-              settings={notificationSettings}
-              onSettingsChange={handleSettingsChange}
-              onTestNotification={handleTestNotification}
-            />
-          )}
-        </SafeAreaView>
-      </Modal>
 
     </SafeAreaView>
   );
