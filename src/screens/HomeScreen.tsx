@@ -29,6 +29,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { NotificationPanel } from '../components/NotificationPanel';
 import { useNotifications } from '../hooks/useNotifications';
 import { PushNotification } from '../types/notifications';
+import { ViewingHistoryService, ViewingHistoryItem } from '../services/ViewingHistoryService';
 
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'> & DrawerNavigationProp<DrawerParamList>;
@@ -79,6 +80,7 @@ const HomeScreen: React.FC = () => {
   const [nouveauxEpisodes, setNouveauxEpisodes] = useState<SearchResult[]>([]);
   const [recommendationsAnimes, setRecommendationsAnimes] = useState<SearchResult[]>([]);
   const [planningAnimes, setPlanningAnimes] = useState<SearchResult[]>([]);
+  const [historyAnimes, setHistoryAnimes] = useState<ViewingHistoryItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -127,7 +129,8 @@ const HomeScreen: React.FC = () => {
         loadPopularAnimes(),
         loadRecentEpisodes(),
         loadRecommendations(),
-        loadPlanning()
+        loadPlanning(),
+        loadViewingHistory()
       ]);
     } catch (error) {
     } finally {
@@ -517,6 +520,16 @@ const HomeScreen: React.FC = () => {
     }
   };
 
+  // Charger l'historique de visionnage
+  const loadViewingHistory = async () => {
+    try {
+      const history = await ViewingHistoryService.getInstance().getHistory();
+      setHistoryAnimes(history.slice(0, 10)); // Afficher les 10 derniers
+    } catch (error) {
+      console.log('Erreur chargement historique:', error);
+    }
+  };
+
   // Gérer la recherche en temps réel (identique au site web)
   useEffect(() => {
     if (searchQuery) {
@@ -847,7 +860,70 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-            {/* Section Classiques - 2ème position valeurs sûres */}
+            {/* Section Sorties aujourd'hui - 2ème position planning immédiat */}
+            {planningAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>⏰ Sorties aujourd'hui</Text>
+                </View>
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                  decelerationRate={0.985}
+                  snapToInterval={128}
+                  snapToAlignment="start"
+                  directionalLockEnabled={true}
+                  scrollEventThrottle={4}
+                  removeClippedSubviews={true}
+                  bounces={true}
+                  bouncesZoom={false}
+                  overScrollMode="auto"
+                  disableIntervalMomentum={true}
+                >
+                  {planningAnimes.map((anime, index) => (
+                    <TouchableOpacity
+                      key={`planning-${anime.id || anime.url || anime.title.replace(/\s+/g, '-')}-${index}`}
+                      style={styles.planningCard}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
+                      activeOpacity={0.8}
+                    >
+                      <Image
+                        source={{ uri: anime.image }}
+                        style={styles.horizontalCardImage}
+                        resizeMode="cover"
+                      />
+                      {/* Badge PLANNING avec heure sur l'image */}
+                      <View style={styles.planningBadge}>
+                        <Text style={styles.planningBadgeText}>
+                          {anime.releaseTime && anime.releaseTime !== '?' ? anime.releaseTime : 'PLANNING'}
+                        </Text>
+                      </View>
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        style={styles.horizontalCardGradient}
+                      >
+                        <View style={styles.horizontalCardContent}>
+                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
+                            {anime.title}
+                          </Text>
+                          {anime.language && (
+                            <View style={styles.horizontalCardBadge}>
+                              <Text style={styles.horizontalCardBadgeText}>
+                                {anime.language.name}
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
+
+            {/* Section Classiques - 3ème position valeurs sûres */}
             {classiquesAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
                 <View style={styles.sectionHeader}>
@@ -969,7 +1045,69 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-            {/* Section Recommandations - Position après Pépites cachées */}
+            {/* Section Historique - 5ème position personnel */}
+            {historyAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>🏛️ Historique</Text>
+                </View>
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                  decelerationRate={0.985}
+                  snapToInterval={128}
+                  snapToAlignment="start"
+                  directionalLockEnabled={true}
+                  scrollEventThrottle={4}
+                  removeClippedSubviews={true}
+                  bounces={true}
+                  bouncesZoom={false}
+                  overScrollMode="auto"
+                  disableIntervalMomentum={true}
+                >
+                  {historyAnimes.map((historyItem, index) => (
+                    <TouchableOpacity
+                      key={`history-${historyItem.animeId}-${index}`}
+                      style={styles.vintageCard}
+                      onPress={() => loadAnimeDetails(historyItem.animeId, historyItem.contentType)}
+                      activeOpacity={0.8}
+                    >
+                      <Image
+                        source={{ uri: historyItem.animeImage }}
+                        style={styles.horizontalCardImage}
+                        resizeMode="cover"
+                      />
+                      {/* Badge VINTAGE marron sur l'image */}
+                      <View style={styles.vintageBadge}>
+                        <Text style={styles.vintageBadgeText}>🏛️ VU</Text>
+                      </View>
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        style={styles.horizontalCardGradient}
+                      >
+                        <View style={styles.horizontalCardContent}>
+                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
+                            {historyItem.animeTitle}
+                          </Text>
+                          <View style={styles.horizontalCardBadge}>
+                            <Text style={styles.horizontalCardBadgeText}>
+                              {new Date(historyItem.lastWatchedDate).toLocaleDateString('fr-FR', { 
+                                day: 'numeric', 
+                                month: 'short' 
+                              })}
+                            </Text>
+                          </View>
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
+
+            {/* Section Recommandations - Position après Historique */}
             {recommendationsAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
                 <View style={styles.sectionHeader}>
@@ -1006,69 +1144,6 @@ const HomeScreen: React.FC = () => {
                       {/* Badge RECOMMANDÉ sur l'image */}
                       <View style={styles.recommendationBadge}>
                         <Text style={styles.recommendationBadgeText}>🎯 RECOMMANDÉ</Text>
-                      </View>
-                      <LinearGradient
-                        colors={['transparent', 'rgba(0,0,0,0.8)']}
-                        style={styles.horizontalCardGradient}
-                      >
-                        <View style={styles.horizontalCardContent}>
-                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
-                            {anime.title}
-                          </Text>
-                          {anime.language && (
-                            <View style={styles.horizontalCardBadge}>
-                              <Text style={styles.horizontalCardBadgeText}>
-                                {anime.language.name}
-                              </Text>
-                            </View>
-                          )}
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  ))}
-                </OptimizedScrollView>
-              </View>
-            )}
-
-            {/* Section Planning du jour - Position avant Recommandations */}
-            {planningAnimes.length > 0 && (
-              <View style={styles.horizontalSection}>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>⏰ Sorties aujourd'hui</Text>
-                </View>
-                <OptimizedScrollView 
-                  horizontal 
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.horizontalScrollContainer}
-                  style={styles.horizontalScroll}
-                  decelerationRate={0.985}
-                  snapToInterval={128}
-                  snapToAlignment="start"
-                  directionalLockEnabled={true}
-                  scrollEventThrottle={4}
-                  removeClippedSubviews={true}
-                  bounces={true}
-                  bouncesZoom={false}
-                  overScrollMode="auto"
-                  disableIntervalMomentum={true}
-                >
-                  {planningAnimes.map((anime, index) => (
-                    <TouchableOpacity
-                      key={`planning-${anime.id || anime.url || anime.title.replace(/\s+/g, '-')}-${index}`}
-                      style={styles.planningCard}
-                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
-                      activeOpacity={0.8}
-                    >
-                      <Image
-                        source={{ uri: anime.image }}
-                        style={styles.horizontalCardImage}
-                        resizeMode="cover"
-                      />
-                      {/* Badge PLANNING avec heure sur l'image */}
-                      <View style={styles.planningBadge}>
-                        <Text style={styles.planningBadgeText}>
-                          {anime.releaseTime && anime.releaseTime !== '?' ? anime.releaseTime : 'PLANNING'}
-                        </Text>
                       </View>
                       <LinearGradient
                         colors={['transparent', 'rgba(0,0,0,0.8)']}
