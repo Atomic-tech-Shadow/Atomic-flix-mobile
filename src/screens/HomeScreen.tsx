@@ -902,25 +902,6 @@ const styles = StyleSheet.create({
   },
 
 
-  // Section Trending
-  trendingSection: {
-    paddingHorizontal: 16,
-    marginBottom: 30,
-  },
-  trendingSectionHeader: {
-    marginBottom: 16,
-  },
-  trendingSectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    ...textStyles.heroTitle,
-    textAlign: 'center',
-  },
-  trendingGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
   searchResultsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -1202,64 +1183,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  // Styles pour les badges de contenu des cartes trending
-  trendingContentBadge: {
-    position: 'absolute',
-    top: 6,
-    left: 6,
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderRadius: 8,
-  },
-  trendingBadgeText: {
-    ...textStyles.cardTitle,
-    fontSize: 8,
-    fontWeight: 'bold',
-  },
 
-  // Styles pour la section Planning
-  planningCard: {
-    width: 120,
-    height: 180,
-    marginRight: 12,
-    borderRadius: 12,
-    overflow: 'hidden',
-    backgroundColor: COLORS.primary,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 193, 7, 0.3)', // Bordure dorée pour différencier du planning
-  },
-  planningCardContent: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 8,
-  },
-  planningInfoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 4,
-  },
-  planningTimeBadge: {
-    backgroundColor: 'rgba(255, 193, 7, 0.2)',
-    borderWidth: 1,
-    borderColor: '#ffc107',
-    paddingHorizontal: 4,
-    paddingVertical: 2,
-    borderRadius: 6,
-    marginRight: 4,
-  },
-  planningTimeText: {
-    color: '#ffc107',
-    fontSize: 8,
-    fontWeight: '600',
-  },
 
   // Styles pour les cartes spécialisées
   legendaryCard: {

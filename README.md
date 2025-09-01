@@ -50,7 +50,7 @@
 - 🧠 **Interface intuitive** adaptée à tous les utilisateurs
 - 📊 **Catalogue organisé** par catégories
 - 🎪 **Découvertes faciles** de nouveau contenu
-- 📈 **Sections populaires** et tendances
+- 📈 **Sections populaires** organisées
 
 </td>
 <td width="50%">

@@ -79,7 +79,7 @@ The application adopts a React Native/Expo mobile app architecture with a strong
 -   **Build System**: Expo Application Services (EAS) is utilized for production builds, specifically targeting Android APK generation with custom keystore signing.
 -   **UI/UX Decisions**:
     -   **Color Scheme**: Application complètement transformée avec les couleurs exactes du logo 3D - violet principal (`#8B5DFF`) comme fond principal uniforme pour tous les écrans, cyan éclatant (`#00D4FF`) pour les headers et éléments secondaires, et rose accent (`#FF6B9D`) pour les accents et sections spéciales. Correction complète effectuée (4 août 2025) : remplacement de toutes les couleurs de fond codées en dur (`#0a0a1a`) par `COLORS.primary` pour assurer une cohérence visuelle parfaite.
-    -   **Design Patterns**: Consistent use of horizontal scroll sections for content categories (Trending, Planning, Legendary, Discoveries) and compact, information-rich cards.
+    -   **Design Patterns**: Consistent use of horizontal scroll sections for content categories (Legendary, Discoveries) and compact, information-rich cards.
     -   **Interactive Elements**: Nouveau logo 3D F moderne, badges intelligents harmonisés (ANIME: violet, MANGA: rose, FILM: cyan) et badges de langue (VF, VOSTFR) avec couleurs cohérentes du logo.
     -   **Responsiveness**: Optimized layouts for various screen sizes, including careful management of image dimensions and text truncation.
     -   **Performance**: Implementation of `OptimizedScrollView` and `OptimizedFlatList` for ultra-smooth scrolling, native drivers, and removal of unnecessary animations in critical paths.
@@ -90,8 +90,8 @@ The application adopts a React Native/Expo mobile app architecture with a strong
     -   **Telegram Verification**: A dedicated modal for Telegram channel subscription verification, styled consistently with the app's theme and featuring clear instructions.
 -   **System Design Choices**:
     -   **Modular Components**: Breakdown of UI and logic into reusable components (e.g., `SharedHeader`, `AnimeCard`, `NotificationModal`).
-    -   **API Integration**: Strict adherence to specific API endpoints (`/api/trending`, `/api/planning`, `/api/popular`, `/api/details`, `/api/anime/`) with robust error handling and intelligent data parsing.
-    -   **Background Processing**: Services for managing notifications and trending content updates, leveraging AsyncStorage for data persistence.
+    -   **API Integration**: Strict adherence to specific API endpoints (`/api/popular`, `/api/details`, `/api/anime/`) with robust error handling and intelligent data parsing.
+    -   **Background Processing**: Services for managing notifications and content updates, leveraging AsyncStorage for data persistence.
     -   **User Interaction**: Implementation of `expo-keep-awake` for video playback, `expo-screen-orientation` for dynamic screen orientation, and `SafeAreaView` for consistent UI across Android devices.
     -   **Search Functionality**: Global search modal with intelligent caching, debouncing, and automatic navigation based on content type.
 
