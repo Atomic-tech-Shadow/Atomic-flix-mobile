@@ -9,15 +9,7 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
 ## Recent Changes (August 2025)
 
 - **Version Update**: 3.6.0 → 3.7.0 with versionCode 370 (16 août 2025)
-  - **Système de Recommandations Intelligentes**: Nouvelle section "🎯 Recommandations" 
-    - Nouvel `RecommendationService` avec algorithme d'analyse des préférences utilisateur
-    - Recommandations basées sur l'historique de visionnage (animes similaires, genres favoris)
-    - Filtrage intelligent des tendances selon les goûts personnels
-    - Découvertes personnalisées : contenu populaire non encore vu par l'utilisateur
-    - Score de recommandation (0-100%) affiché sur chaque suggestion
-    - Badges "POUR VOUS" rose et raisons explicites ("Similaire à...", "Tendance populaire")
-    - Cache intelligent (2h) avec invalidation automatique lors de nouveaux visionnages
-    - Progression logique: Trending → Planning → Légendaires → Pépites → **Recommandations** → Historique
+  - **Suppression du Système de Recommandations**: Retrait complet du système de recommandations intelligentes pour simplifier l'application
 - **Version Update**: 3.5.0 → 3.6.0 with versionCode 360 (16 août 2025)
   - **Nouvelle Section Historique**: Ajout d'une 5ème section "🏛️ Historique" après "Pépites cachées"
   - **Système d'Historique de Visionnage**: Nouvel `ViewingHistoryService` qui enregistre automatiquement:
