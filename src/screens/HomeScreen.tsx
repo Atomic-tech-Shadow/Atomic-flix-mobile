@@ -72,6 +72,7 @@ const HomeScreen: React.FC = () => {
   const [classiquesAnimes, setClassiquesAnimes] = useState<SearchResult[]>([]);
   const [pepitesAnimes, setPepitesAnimes] = useState<SearchResult[]>([]);
   const [nouveauxEpisodes, setNouveauxEpisodes] = useState<SearchResult[]>([]);
+  const [recommendationsAnimes, setRecommendationsAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
 
@@ -98,10 +99,11 @@ const HomeScreen: React.FC = () => {
   const loadAllInitialContent = async () => {
     setInitialLoading(true);
     try {
-      // Charger le contenu populaire (Légendaires et Pépites) et les nouveaux épisodes
+      // Charger le contenu populaire (Légendaires et Pépites), les nouveaux épisodes et les recommandations
       await Promise.all([
         loadPopularAnimes(),
-        loadRecentEpisodes()
+        loadRecentEpisodes(),
+        loadRecommendations()
       ]);
     } catch (error) {
     } finally {
@@ -183,7 +185,10 @@ const HomeScreen: React.FC = () => {
           episodeInfo: episode.badgeInfo,
           language: {
             name: episode.language,
-            code: episode.language.toLowerCase()
+            code: episode.language.toLowerCase(),
+            fullName: episode.language,
+            flag: episode.language === 'VF' ? '🇫🇷' : '🇯🇵',
+            priority: 1
           },
           addedAt: episode.addedAt
         }));
@@ -405,6 +410,42 @@ const HomeScreen: React.FC = () => {
       initialEpisode: anime.currentEpisode,
       initialLanguage: anime.language?.code?.toUpperCase() as 'VF' | 'VOSTFR' || 'VOSTFR'
     });
+  };
+
+  // Charger les recommandations depuis l'API
+  const loadRecommendations = async () => {
+    try {
+      const response = await apiRequest('/api/recommendations');
+
+      if (response && response.success && response.data) {
+        // Convertir les données de l'API en format SearchResult
+        const recommendations: SearchResult[] = response.data.slice(0, 20).map((anime: any) => ({
+          id: anime.id,
+          animeId: anime.id,
+          title: anime.title,
+          image: anime.image,
+          url: anime.url,
+          contentType: anime.contentType || 'anime',
+          type: anime.contentType || 'anime',
+          genres: anime.genres || [],
+          language: {
+            name: anime.languages && anime.languages[0] ? anime.languages[0] : 'VOSTFR',
+            code: anime.languages && anime.languages[0] ? anime.languages[0].toLowerCase() : 'vostfr',
+            fullName: anime.languages && anime.languages[0] ? anime.languages[0] : 'VOSTFR',
+            flag: anime.languages && anime.languages[0] === 'VF' ? '🇫🇷' : '🇯🇵',
+            priority: 1
+          },
+          category: 'recommendation'
+        }));
+        
+        setRecommendationsAnimes(recommendations);
+      } else {
+        setRecommendationsAnimes([]);
+      }
+    } catch (error) {
+      console.error('Erreur chargement recommandations:', error);
+      setRecommendationsAnimes([]);
+    }
   };
 
   // Gérer la recherche en temps réel (identique au site web)
@@ -831,7 +872,66 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-
+            {/* Section Recommandations - Position après Pépites cachées */}
+            {recommendationsAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>🎯 Recommandations</Text>
+                </View>
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                  decelerationRate={0.985}
+                  snapToInterval={128}
+                  snapToAlignment="start"
+                  directionalLockEnabled={true}
+                  scrollEventThrottle={4}
+                  removeClippedSubviews={true}
+                  bounces={true}
+                  bouncesZoom={false}
+                  overScrollMode="auto"
+                  disableIntervalMomentum={true}
+                >
+                  {recommendationsAnimes.map((anime, index) => (
+                    <TouchableOpacity
+                      key={`recommendation-${anime.id || index}`}
+                      style={styles.recommendationCard}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
+                      activeOpacity={0.8}
+                    >
+                      <Image
+                        source={{ uri: anime.image }}
+                        style={styles.horizontalCardImage}
+                        resizeMode="cover"
+                      />
+                      {/* Badge RECOMMANDÉ sur l'image */}
+                      <View style={styles.recommendationBadge}>
+                        <Text style={styles.recommendationBadgeText}>🎯 RECOMMANDÉ</Text>
+                      </View>
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        style={styles.horizontalCardGradient}
+                      >
+                        <View style={styles.horizontalCardContent}>
+                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
+                            {anime.title}
+                          </Text>
+                          {anime.language && (
+                            <View style={styles.horizontalCardBadge}>
+                              <Text style={styles.horizontalCardBadgeText}>
+                                {anime.language.name}
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
 
             {/* Chargement initial unique */}
             {initialLoading && (
@@ -1373,6 +1473,37 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
+  // Styles pour les cartes de recommandations
+  recommendationCard: {
+    width: 120,
+    height: 180,
+    marginRight: 12,
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: COLORS.primary,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 255, 255, 0.4)', // Bordure cyan pour recommandations
+  },
+  recommendationBadge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    backgroundColor: 'rgba(0, 255, 255, 0.95)', // Cyan éclatant du logo
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 8,
+    zIndex: 1,
+  },
+  recommendationBadgeText: {
+    color: '#000000',
+    fontSize: 8,
+    fontWeight: 'bold',
+  },
 
 });
 
