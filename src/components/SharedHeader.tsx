@@ -90,8 +90,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           </TouchableOpacity>
         </View>
       </View>
-
-
     </View>
   );
 };

@@ -538,9 +538,9 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       if (searchQuery.trim().length >= 2) {
         setSearchLoading(true);
         try {
-          const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/search?q=${encodeURIComponent(searchQuery)}`);
-          if (response && response.results) {
-            setSearchResults(response.results);
+          const response = await apiRequest(`/api/search?query=${encodeURIComponent(searchQuery)}`);
+          if (response && (response.animes || response.results)) {
+            setSearchResults(response.animes || response.results);
           } else {
             setSearchResults([]);
           }

@@ -267,7 +267,7 @@ const HomeScreen: React.FC = () => {
       const response = await apiRequest(`/api/search?query=${encodeURIComponent(query)}`);
 
       if (response && response.success) {
-        const results = response.results || [];
+        const results = response.animes || response.results || [];
         if (Array.isArray(results)) {
           // Afficher tout le contenu de l'API : animes, mangas, films, etc.
           setSearchResults(results);
