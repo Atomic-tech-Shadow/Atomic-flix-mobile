@@ -1,4 +1,4 @@
-modules = ["nodejs-20", "web", "python-3.11", "python3"]
+modules = ["nodejs-20", "web", "python-3.11", "python3", "postgresql-16"]
 
 [nix]
 channel = "stable-25_05"
@@ -46,3 +46,4 @@ externalPort = 3000
 
 [agent]
 expertMode = true
+integrations = ["javascript_database==1.0.0"]

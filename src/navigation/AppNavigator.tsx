@@ -22,7 +22,7 @@ export type RootStackParamList = {
   AnimeDetail: { animeUrl: string; animeTitle: string };
   AnimePlayer: { 
     animeUrl: string; 
-    seasonData: Season; 
+    seasonData?: Season | null; 
     animeTitle: string;
     initialEpisode?: number;
     initialLanguage?: 'VF' | 'VOSTFR';

@@ -29,6 +29,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { NotificationPanel } from '../components/NotificationPanel';
 import { useNotifications } from '../hooks/useNotifications';
 import { PushNotification } from '../types/notifications';
+import { historyService, WatchHistoryItem } from '../services/HistoryService';
 
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'> & DrawerNavigationProp<DrawerParamList>;
@@ -82,6 +83,7 @@ const HomeScreen: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [currentlyWatching, setCurrentlyWatching] = useState<WatchHistoryItem[]>([]);
   
   // Hook pour les notifications
   const {
@@ -108,11 +110,25 @@ const HomeScreen: React.FC = () => {
     return 'VO';
   };
 
+  // Charger l'historique de visionnage
+  const loadWatchHistory = async () => {
+    try {
+      const history = await historyService.getCurrentlyWatching();
+      setCurrentlyWatching(history);
+    } catch (error) {
+      console.error('Erreur chargement historique:', error);
+      setCurrentlyWatching([]);
+    }
+  };
+
   // Charger tout le contenu au démarrage
   useEffect(() => {
     const initializeApp = async () => {
-      // Charger le contenu initial
-      await loadAllInitialContent();
+      // Charger le contenu initial et l'historique
+      await Promise.all([
+        loadAllInitialContent(),
+        loadWatchHistory(),
+      ]);
     };
     
     initializeApp();
@@ -128,6 +144,7 @@ const HomeScreen: React.FC = () => {
         loadRecentEpisodes(),
         loadRecommendations(),
         loadPlanning(),
+        loadWatchHistory(),
       ]);
     } catch (error) {
     } finally {
@@ -532,6 +549,25 @@ const HomeScreen: React.FC = () => {
     }
   }, [searchQuery]);
 
+  // Navigation vers un épisode depuis l'historique
+  const resumeWatching = (historyItem: WatchHistoryItem) => {
+    // Naviguer vers le lecteur vidéo avec les paramètres de l'historique
+    navigation.navigate('AnimePlayer', {
+      animeUrl: `https://anime-sama.fr/catalogue/${historyItem.animeId}`,
+      seasonData: null, // Sera déterminé automatiquement
+      animeTitle: historyItem.animeTitle,
+      initialEpisode: historyItem.episodeNumber,
+      initialLanguage: historyItem.language,
+    });
+  };
+
+  // Supprimer un élément de l'historique
+  const removeFromHistory = async (historyItem: WatchHistoryItem) => {
+    await historyService.removeFromHistory(historyItem.id);
+    // Recharger l'historique
+    await loadWatchHistory();
+  };
+
   // Refresh control
   const onRefresh = async () => {
     setRefreshing(true);
@@ -831,6 +867,74 @@ const HomeScreen: React.FC = () => {
                 />
               </LinearGradient>
             </View>
+
+            {/* Section Historique - REPRENEZ VOTRE VISIONNAGE */}
+            {currentlyWatching.length > 0 && (
+              <View style={styles.historySection}>
+                <View style={styles.historyHeader}>
+                  <Ionicons name="time-outline" size={24} color={COLORS.text.primary} />
+                  <Text style={styles.historyTitle}>REPRENEZ VOTRE VISIONNAGE</Text>
+                </View>
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.historyScrollContainer}
+                >
+                  {currentlyWatching.map((historyItem, index) => (
+                    <TouchableOpacity
+                      key={historyItem.id}
+                      style={styles.historyCard}
+                      onPress={() => resumeWatching(historyItem)}
+                      activeOpacity={0.8}
+                    >
+                      <View style={styles.historyImageContainer}>
+                        <Image 
+                          source={{ uri: historyItem.animeImage || 'https://via.placeholder.com/200x280' }}
+                          style={styles.historyImage}
+                          resizeMode="cover"
+                        />
+                        {/* Bouton de suppression */}
+                        <TouchableOpacity 
+                          style={styles.historyRemoveButton}
+                          onPress={() => removeFromHistory(historyItem)}
+                        >
+                          <Ionicons name="close" size={16} color={COLORS.text.primary} />
+                        </TouchableOpacity>
+                        
+                        {/* Barre de progression */}
+                        <View style={styles.progressBarContainer}>
+                          <View 
+                            style={[
+                              styles.progressBar, 
+                              { 
+                                width: `${historyService.calculateProgress(historyItem.watchDuration, historyItem.totalDuration)}%` 
+                              }
+                            ]} 
+                          />
+                        </View>
+                      </View>
+                      
+                      <View style={styles.historyContent}>
+                        <Text style={styles.historyAnimeTitle} numberOfLines={2}>
+                          {historyItem.animeTitle}
+                        </Text>
+                        <Text style={styles.historyEpisodeInfo}>
+                          Saison 1
+                        </Text>
+                        <View style={styles.historyBadgeContainer}>
+                          <View style={[styles.historyLanguageBadge, { backgroundColor: historyItem.language === 'VF' ? '#0055A4' : '#BC002D' }]}>
+                            <Text style={styles.historyLanguageText}>{historyItem.language}</Text>
+                          </View>
+                          <View style={[styles.historyEpisodeBadge, { backgroundColor: COLORS.secondary }]}>
+                            <Text style={styles.historyEpisodeText}>Épisode {historyItem.episodeNumber}</Text>
+                          </View>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
 
             {/* Section Nouveaux épisodes - 1ère position */}
             {nouveauxEpisodes.length > 0 && (
@@ -1770,6 +1874,118 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 20,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+
+  // Styles pour la section historique
+  historySection: {
+    marginBottom: 24,
+    paddingHorizontal: 16,
+  },
+  historyHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    gap: 8,
+  },
+  historyTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: COLORS.text.primary,
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+  },
+  historyScrollContainer: {
+    paddingRight: 16,
+  },
+  historyCard: {
+    width: 160,
+    backgroundColor: COLORS.primary,
+    borderRadius: 12,
+    marginRight: 12,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  historyImageContainer: {
+    position: 'relative',
+    height: 120,
+  },
+  historyImage: {
+    width: '100%',
+    height: '100%',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
+  historyRemoveButton: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 2,
+  },
+  progressBarContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: COLORS.secondary,
+  },
+  historyContent: {
+    padding: 12,
+    gap: 8,
+  },
+  historyAnimeTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: COLORS.text.primary,
+    lineHeight: 18,
+  },
+  historyEpisodeInfo: {
+    fontSize: 12,
+    color: COLORS.text.secondary,
+  },
+  historyBadgeContainer: {
+    flexDirection: 'row',
+    gap: 6,
+  },
+  historyLanguageBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    flex: 1,
+  },
+  historyLanguageText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: COLORS.text.primary,
+    textAlign: 'center',
+  },
+  historyEpisodeBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    flex: 2,
+  },
+  historyEpisodeText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: COLORS.text.primary,
+    textAlign: 'center',
   },
 
 });

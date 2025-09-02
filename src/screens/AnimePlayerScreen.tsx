@@ -27,6 +27,7 @@ import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import { useNotifications } from '../hooks/useNotifications';
+import { historyService } from '../services/HistoryService';
 
 type AnimePlayerScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimePlayer'> & DrawerNavigationProp<DrawerParamList>;
 type AnimePlayerScreenRouteProp = RouteProp<RootStackParamList, 'AnimePlayer'>;
@@ -64,6 +65,12 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     markAllAsRead,
     refreshNotifications,
   } = useNotifications();
+
+  // États pour le tracking de visionnage
+  const [watchStartTime, setWatchStartTime] = useState<Date | null>(null);
+  const [totalWatchTime, setTotalWatchTime] = useState(0);
+  const [episodeDuration, setEpisodeDuration] = useState(0);
+  const [lastSavedPosition, setLastSavedPosition] = useState(0);
 
   const webViewRef = useRef<WebView>(null);
 
@@ -213,9 +220,60 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     }
   };
 
+  // Fonction pour sauvegarder l'historique de visionnage
+  const saveWatchHistory = async (episode: Episode, watchDuration: number = 0, totalDuration: number = 0, lastPosition: number = 0) => {
+    if (!animeData || !episode) return;
+
+    try {
+      await historyService.saveWatchHistory({
+        animeId: animeData.id,
+        animeTitle: animeTitle,
+        animeImage: animeData.image,
+        episodeNumber: episode.episodeNumber,
+        episodeTitle: episode.title,
+        language: selectedLanguage,
+        watchDuration,
+        totalDuration,
+        isCompleted: watchDuration > 0 && totalDuration > 0 && (watchDuration / totalDuration) >= 0.8,
+        lastPosition,
+      });
+    } catch (error) {
+      console.error('Erreur sauvegarde historique:', error);
+    }
+  };
+
+  // Fonction pour démarrer le tracking de visionnage
+  const startWatchTracking = () => {
+    setWatchStartTime(new Date());
+    setTotalWatchTime(0);
+  };
+
+  // Fonction pour arrêter le tracking et sauvegarder
+  const stopWatchTracking = async () => {
+    if (watchStartTime && selectedEpisode) {
+      const watchDuration = Math.floor((new Date().getTime() - watchStartTime.getTime()) / 1000);
+      const newTotalWatchTime = totalWatchTime + watchDuration;
+      
+      await saveWatchHistory(
+        selectedEpisode,
+        newTotalWatchTime,
+        episodeDuration,
+        newTotalWatchTime
+      );
+      
+      setWatchStartTime(null);
+      setTotalWatchTime(newTotalWatchTime);
+    }
+  };
+
   // Fonction pour charger les sources d'un épisode
   const loadEpisodeSources = async (episode: Episode) => {
     try {
+      // Arrêter le tracking précédent si il y en a un
+      if (watchStartTime) {
+        await stopWatchTracking();
+      }
+
       setEpisodeLoading(true);
 
       const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/embed?url=${encodeURIComponent(episode.url)}`);
@@ -231,7 +289,8 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           url: episode.url
         });
 
-
+        // Sauvegarder dans l'historique que l'épisode a été ouvert
+        await saveWatchHistory(episode, 0, 0, 0);
 
         // Ne pas resetter selectedPlayer pour préserver le choix utilisateur
         // setSelectedPlayer(0); // SUPPRIMÉ: causait le bug de retour serveur 1
@@ -360,9 +419,31 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     };
   }, [episodeDetails]);
 
+  // Effet pour sauvegarder l'historique périodiquement
+  useEffect(() => {
+    if (!watchStartTime || !selectedEpisode) return;
+
+    const interval = setInterval(async () => {
+      const currentWatchDuration = Math.floor((new Date().getTime() - watchStartTime.getTime()) / 1000);
+      const newTotalWatchTime = totalWatchTime + currentWatchDuration;
+      
+      // Sauvegarder toutes les 30 secondes
+      await saveWatchHistory(
+        selectedEpisode,
+        newTotalWatchTime,
+        episodeDuration,
+        lastSavedPosition
+      );
+    }, 30000); // Sauvegarder toutes les 30 secondes
+
+    return () => clearInterval(interval);
+  }, [watchStartTime, selectedEpisode, totalWatchTime, episodeDuration, lastSavedPosition]);
+
   // Effet pour désactiver le wake lock et rétablir l'orientation quand on quitte l'écran
   useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', () => {
+    const unsubscribe = navigation.addListener('beforeRemove', async () => {
+      // Sauvegarder l'historique une dernière fois avant de quitter
+      await stopWatchTracking();
       deactivateKeepAwake();
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     });
@@ -511,9 +592,23 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               onLoadStart={() => {
                 setEpisodeLoading(true);
                 setServerError(false); // Reset l'erreur au début du chargement
+                // Démarrer le tracking quand la vidéo commence à charger
+                startWatchTracking();
               }}
               onLoadEnd={() => {
                 setEpisodeLoading(false);
+              }}
+              onMessage={(event) => {
+                // Écouter les messages du WebView pour tracker la progression
+                try {
+                  const message = JSON.parse(event.nativeEvent.data);
+                  if (message.type === 'videoProgress') {
+                    setEpisodeDuration(message.duration || 0);
+                    setLastSavedPosition(message.currentTime || 0);
+                  }
+                } catch (error) {
+                  // Ignorer les messages non-JSON
+                }
               }}
               renderError={() => (
                 <View style={styles.errorContainer}>
