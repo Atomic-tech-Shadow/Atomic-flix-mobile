@@ -1891,11 +1891,11 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   historyTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: COLORS.text.primary,
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: { width: 1, height: 1 },
+    color: COLORS.secondary, // Couleur cyan du nouveau logo
+    textShadowColor: 'rgba(0, 212, 255, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
   historyScrollContainer: {
