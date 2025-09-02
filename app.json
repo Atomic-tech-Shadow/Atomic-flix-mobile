@@ -33,7 +33,7 @@
       "favicon": "./assets/favicon.png"
     },
     "notification": {
-      "icon": "./assets/icon.png",
+      "icon": "./assets/notification-icon-96x96.png",
       "color": "#ffffff"
     },
     "plugins": [
@@ -42,7 +42,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/atomic-flix-logo-new.png",
+          "icon": "./assets/notification-icon-96x96.png",
           "color": "#8B5DFF",
           "defaultChannel": "atomic-flix-main",
           "sounds": [],
