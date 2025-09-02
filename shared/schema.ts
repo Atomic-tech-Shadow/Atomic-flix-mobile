@@ -5,8 +5,6 @@ import {
   pgTable,
   timestamp,
   varchar,
-  text,
-  integer,
 } from "drizzle-orm/pg-core";
 
 // Session storage table.
@@ -33,26 +31,5 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Watch history table for tracking anime viewing progress
-export const watchHistory = pgTable("watch_history", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: varchar("user_id").references(() => users.id, { onDelete: "cascade" }),
-  animeId: varchar("anime_id").notNull(),
-  animeTitle: varchar("anime_title").notNull(),
-  animeImage: varchar("anime_image"),
-  episodeNumber: integer("episode_number").notNull(),
-  episodeTitle: varchar("episode_title"),
-  language: varchar("language").notNull(), // "VF" or "VOSTFR"
-  watchedAt: timestamp("watched_at").defaultNow(),
-  watchDuration: integer("watch_duration").default(0), // in seconds
-  totalDuration: integer("total_duration").default(0), // in seconds
-  isCompleted: text("is_completed").default("false"), // "true" or "false"
-  lastPosition: integer("last_position").default(0), // last watched position in seconds
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
-export type WatchHistory = typeof watchHistory.$inferSelect;
-export type InsertWatchHistory = typeof watchHistory.$inferInsert;
