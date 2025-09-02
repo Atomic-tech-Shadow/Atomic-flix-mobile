@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import OptimizedTouchable from './OptimizedTouchable';
 import { COLORS } from '../constants/newColors';
+import { getLanguageBadgeText } from '../utils/languageUtils';
 
 interface AnimeCardProps {
   anime: {
@@ -32,13 +33,6 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
   badgeText,
   badgeStyle
 }) => {
-  const getLanguageBadge = (language: any): string => {
-    if (!language) return 'VO';
-    if (language.vf) return 'VF';
-    if (language.vostfr) return 'VOSTFR';
-    if (language.vjstfr) return 'VJSTFR';
-    return 'VO';
-  };
 
   return (
     <OptimizedTouchable
@@ -63,7 +57,7 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
       ) : anime.language && (
         <View style={styles.languageBadge}>
           <Text style={styles.languageBadgeText}>
-            {getLanguageBadge(anime.language)}
+            {getLanguageBadgeText(anime.language)}
           </Text>
         </View>
       )}

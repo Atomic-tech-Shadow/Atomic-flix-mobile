@@ -8,7 +8,7 @@ export interface WatchHistoryItem {
   animeImage?: string;
   episodeNumber: number;
   episodeTitle?: string;
-  language: 'VF' | 'VOSTFR';
+  language: string;
   watchedAt: Date;
   watchDuration: number; // secondes regardées
   totalDuration: number; // durée totale de l'épisode

@@ -235,7 +235,8 @@ const HomeScreen: React.FC = () => {
             name: episode.language,
             code: episode.language.toLowerCase(),
             fullName: episode.language,
-            flag: episode.language === 'VF' ? '🇫🇷' : '🇯🇵',
+            flag: episode.language.includes('VF') ? '🇫🇷' : 
+                  episode.language === 'VA' ? '🇺🇸' : '🇯🇵',
             priority: 1
           },
           addedAt: episode.addedAt
@@ -456,7 +457,7 @@ const HomeScreen: React.FC = () => {
       animeTitle: anime.title,
       seasonData: fallbackSeasonData,
       initialEpisode: anime.currentEpisode,
-      initialLanguage: anime.language?.code?.toUpperCase() as 'VF' | 'VOSTFR' || 'VOSTFR'
+      initialLanguage: anime.language?.name || anime.language?.code?.toUpperCase() || 'VOSTFR'
     });
   };
 
@@ -480,7 +481,8 @@ const HomeScreen: React.FC = () => {
             name: anime.languages && anime.languages[0] ? anime.languages[0] : 'VOSTFR',
             code: anime.languages && anime.languages[0] ? anime.languages[0].toLowerCase() : 'vostfr',
             fullName: anime.languages && anime.languages[0] ? anime.languages[0] : 'VOSTFR',
-            flag: anime.languages && anime.languages[0] === 'VF' ? '🇫🇷' : '🇯🇵',
+            flag: anime.languages && anime.languages[0] && anime.languages[0].includes('VF') ? '🇫🇷' : 
+                  anime.languages && anime.languages[0] === 'VA' ? '🇺🇸' : '🇯🇵',
             priority: 1
           },
           category: 'recommendation'
@@ -515,7 +517,8 @@ const HomeScreen: React.FC = () => {
             name: item.language,
             code: item.language.toLowerCase(),
             fullName: item.language,
-            flag: item.language === 'VF' ? '🇫🇷' : '🇯🇵',
+            flag: item.language.includes('VF') ? '🇫🇷' : 
+                  item.language === 'VA' ? '🇺🇸' : '🇯🇵',
             priority: 1
           },
           releaseTime: item.releaseTime,

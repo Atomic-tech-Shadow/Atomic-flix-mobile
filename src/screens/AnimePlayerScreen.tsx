@@ -31,6 +31,7 @@ import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import { useNotifications } from '../hooks/useNotifications';
 import { historyService } from '../services/HistoryService';
 import { LinearGradient } from 'expo-linear-gradient';
+import { normalizeLanguageForAPI, extractLanguageInfo } from '../utils/languageUtils';
 
 type AnimePlayerScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimePlayer'> & DrawerNavigationProp<DrawerParamList>;
 type AnimePlayerScreenRouteProp = RouteProp<RootStackParamList, 'AnimePlayer'>;
@@ -48,7 +49,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   // États pour les données
   const [animeData, setAnimeData] = useState<AnimeData | null>(null);
   const [selectedSeason, setSelectedSeason] = useState<Season | null>(seasonData || null);
-  const [selectedLanguage, setSelectedLanguage] = useState<'VF' | 'VOSTFR'>(initialLanguage || 'VOSTFR');
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(initialLanguage || 'VOSTFR');
   const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
   const [selectedPlayer, setSelectedPlayer] = useState<number>(0);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
@@ -126,10 +127,10 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   };
 
   // Fonction séparée pour charger les épisodes avec les données anime
-  const loadSeasonEpisodesWithData = async (animeInfo: AnimeData, season: Season, language: 'VF' | 'VOSTFR', autoLoadEpisode = false) => {
+  const loadSeasonEpisodesWithData = async (animeInfo: AnimeData, season: Season, language: string, autoLoadEpisode = false) => {
     try {
       setEpisodeLoading(true);
-      const languageCode = language.toLowerCase();
+      const languageCode = normalizeLanguageForAPI(language);
 
       const data = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeInfo.id}?season=${season.value}&language=${languageCode}`);
 
@@ -181,7 +182,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
     try {
       setEpisodeLoading(true);
-      const languageCode = selectedLanguage.toLowerCase();
+      const languageCode = normalizeLanguageForAPI(selectedLanguage);
 
       const data = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeData.id}?season=${season.value}&language=${languageCode}`);
 
@@ -316,7 +317,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   // Variable supprimée : pendingEpisodeReload n'est plus nécessaire avec le nouveau système fluide
 
   // Fonction pour changer de langue (version optimisée pour changement fluide)
-  const changeLanguage = async (newLang: 'VF' | 'VOSTFR') => {
+  const changeLanguage = async (newLang: string) => {
     if (newLang === selectedLanguage || !selectedSeason || !animeData) return;
 
     // Sauvegarder l'épisode actuel pour le recharger après le changement de langue
@@ -335,7 +336,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     
     try {
       // Charger les nouveaux épisodes avec la nouvelle langue en arrière-plan
-      const languageCode = newLang.toLowerCase();
+      const languageCode = normalizeLanguageForAPI(newLang);
       
       const data = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeData.id}?season=${selectedSeason.value}&language=${languageCode}`);
 
@@ -583,7 +584,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       <TouchableOpacity
         key={anime.id || index}
         style={styles.animeCard}
-        onPress={() => loadAnimeDetails(anime.id || 'unknown', anime.contentType || anime.type)}
+        onPress={() => loadAnimeDetails(anime.id || anime.url || 'unknown', anime.contentType || anime.type || 'anime')}
         activeOpacity={0.8}
       >
         <View style={styles.cardImageContainer}>
@@ -920,7 +921,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   styles.languageButton,
                   selectedLanguage === lang && styles.languageButtonActive
                 ]}
-                onPress={() => changeLanguage(lang as 'VF' | 'VOSTFR')}
+                onPress={() => changeLanguage(lang)}
                 activeOpacity={0.7}
               >
                 {/* Fond drapeau personnalisé */}
