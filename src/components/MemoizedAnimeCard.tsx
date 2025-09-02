@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { getOptimizedImageProps } from '../utils/performanceUtils';
 import OptimizedTouchable from './OptimizedTouchable';
 import { COLORS } from '../constants/newColors';
 
@@ -52,7 +51,8 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
       <Image
         source={{ uri: anime.image }}
         style={styles.cardImage}
-        {...getOptimizedImageProps()}
+        resizeMode="cover"
+        fadeDuration={200}
       />
       
       {/* Badge personnalisé ou badge langue */}

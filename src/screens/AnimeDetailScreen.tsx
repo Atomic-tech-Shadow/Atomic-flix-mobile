@@ -9,6 +9,8 @@ import {
   Dimensions,
   Alert,
   RefreshControl,
+  TextInput,
+  Modal,
 } from 'react-native';
 import OptimizedScrollView from '../components/OptimizedScrollView';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,11 +22,13 @@ import type { DrawerNavigationProp } from '@react-navigation/drawer';
 import type { RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
+import { SearchResult } from '../types/index';
 import type { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { animeAPI } from '../utils/animeAPI';
+import { apiRequest } from '../utils/api';
 import { useNotifications } from '../hooks/useNotifications';
 
 type AnimeDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimeDetail'> & DrawerNavigationProp<DrawerParamList>;
@@ -103,6 +107,10 @@ const AnimeDetailScreen: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
   
   // Hook pour les notifications
   const {
@@ -199,6 +207,142 @@ const AnimeDetailScreen: React.FC = () => {
     loadAnimeData();
   };
 
+  // Recherche d'animes (copié depuis HomeScreen)
+  const searchAnimes = async (query: string) => {
+    if (query.trim().length < 2) {
+      setSearchResults([]);
+      return;
+    }
+
+    setSearchLoading(true);
+
+    try {
+      const response = await apiRequest(`/api/search?query=${encodeURIComponent(query)}`);
+
+      if (response && response.success) {
+        const results = response.results || [];
+        if (Array.isArray(results)) {
+          setSearchResults(results);
+        } else {
+          setSearchResults([]);
+        }
+      } else {
+        throw new Error('Réponse API invalide');
+      }
+    } catch (err) {
+      console.error('Erreur recherche:', err);
+      setSearchResults([]);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  // Navigation vers un anime depuis les résultats de recherche
+  const loadAnimeDetails = async (animeId: string, contentType?: string) => {
+    if (!animeId || animeId === 'undefined') {
+      return;
+    }
+    
+    let cleanId = animeId;
+    if (animeId.includes('anime-sama.fr')) {
+      const urlParts = animeId.split('/');
+      const catalogueIndex = urlParts.findIndex(part => part === 'catalogue');
+      if (catalogueIndex !== -1 && urlParts[catalogueIndex + 1]) {
+        cleanId = urlParts[catalogueIndex + 1];
+      }
+    }
+    
+    if (contentType === 'manga') {
+      navigation.navigate('MangaReader', { mangaUrl: cleanId, mangaTitle: 'Manga' });
+    } else {
+      navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: 'Anime' });
+    }
+  };
+
+  // Gestionnaire pour l'icône de recherche
+  const handleSearchPress = () => {
+    setShowSearchBar(true);
+    setSearchQuery('');
+    setSearchResults([]);
+  };
+
+  // Effet pour la recherche en temps réel
+  useEffect(() => {
+    if (searchQuery) {
+      const timeoutId = setTimeout(() => {
+        searchAnimes(searchQuery);
+      }, 300);
+      return () => clearTimeout(timeoutId);
+    } else {
+      setSearchResults([]);
+      return undefined;
+    }
+  }, [searchQuery]);
+
+  // Fonction pour extraire la langue depuis l'objet language de l'API
+  const getLanguageFromAPI = (anime: SearchResult) => {
+    if (anime.language && anime.language.name) {
+      return anime.language.name;
+    }
+    return null;
+  };
+
+  // Composant Carte Anime pour les résultats de recherche
+  const renderAnimeCard = React.useCallback((anime: SearchResult, index: number) => {
+    const detectedLanguage = getLanguageFromAPI(anime);
+    const realTitle = anime.title;
+    
+    return (
+      <TouchableOpacity
+        key={anime.id || index}
+        style={styles.animeCard}
+        onPress={() => loadAnimeDetails(anime.id, anime.contentType || anime.type)}
+        activeOpacity={0.8}
+      >
+        <View style={styles.cardImageContainer}>
+          <Image
+            source={{ uri: anime.image }}
+            style={styles.cardImage}
+            resizeMode="cover"
+            fadeDuration={200}
+            onError={(e) => {}}
+          />
+
+          <View style={[
+            styles.contentBadge,
+            anime.contentType === 'manga' ? styles.mangaBadge :
+            anime.contentType === 'film' || anime.contentType === 'movie' ? styles.movieBadge :
+            styles.animeBadgeDetail
+          ]}>
+            <Text style={styles.badgeText}>
+              {anime.contentType === 'manga' ? 'MANGA' :
+               anime.contentType === 'film' || anime.contentType === 'movie' ? 'FILM' :
+               'ANIME'}
+            </Text>
+          </View>
+
+          <LinearGradient
+            colors={['transparent', 'rgba(0,0,0,0.95)']}
+            style={styles.cardGradient}
+          />
+        </View>
+
+        <View style={styles.cardContent}>
+          <Text style={styles.cardTitle} numberOfLines={3}>
+            {realTitle}
+          </Text>
+          <View style={styles.cardMeta}>
+            {detectedLanguage && (
+              <View style={styles.languageBadge}>
+                <Text style={styles.languageText}>{detectedLanguage}</Text>
+              </View>
+            )}
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }, []);
+
 
 
   // État de chargement
@@ -207,7 +351,7 @@ const AnimeDetailScreen: React.FC = () => {
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" backgroundColor={COLORS.primary} />
         <SharedHeader 
-          onSearchPress={() => navigation.navigate('Home')}
+          onSearchPress={handleSearchPress}
           onNotificationPress={() => setShowNotifications(true)}
           onMenuPress={() => navigation.openDrawer()}
         />
@@ -228,7 +372,7 @@ const AnimeDetailScreen: React.FC = () => {
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" backgroundColor={COLORS.primary} />
         <SharedHeader 
-          onSearchPress={() => navigation.navigate('Home')}
+          onSearchPress={handleSearchPress}
           onNotificationPress={() => setShowNotifications(true)}
           onMenuPress={() => navigation.openDrawer()}
         />
@@ -249,7 +393,7 @@ const AnimeDetailScreen: React.FC = () => {
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" backgroundColor={COLORS.primary} />
         <SharedHeader 
-          onSearchPress={() => navigation.navigate('Home')}
+          onSearchPress={handleSearchPress}
           onNotificationPress={() => setShowNotifications(true)}
           onMenuPress={() => navigation.openDrawer()}
         />
@@ -268,7 +412,7 @@ const AnimeDetailScreen: React.FC = () => {
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
         <SharedHeader 
-          onSearchPress={() => navigation.navigate('Home')}
+          onSearchPress={handleSearchPress}
           onNotificationPress={() => setShowNotifications(true)}
           onMenuPress={() => navigation.openDrawer()}
         />
@@ -285,6 +429,54 @@ const AnimeDetailScreen: React.FC = () => {
           />
         }
       >
+        {/* Barre de recherche locale */}
+        {showSearchBar && (
+          <View style={styles.searchBarContainer}>
+            <View style={styles.searchBar}>
+              <Ionicons name="search" size={20} color={COLORS.secondary} />
+              <TextInput
+                style={styles.searchInput}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholder="Rechercher des animes..."
+                placeholderTextColor="#6b7280"
+                autoFocus
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setSearchQuery('');
+                  setShowSearchBar(false);
+                }}
+                style={styles.clearSearchButton}
+              >
+                <Text style={styles.clearSearchText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+
+        {/* Résultats de recherche */}
+        {searchLoading && searchQuery && (
+          <View style={styles.loadingSearchContainer}>
+            <LoadingSpinner 
+              message="Recherche en cours..." 
+              size="large"
+              color={COLORS.primary}
+            />
+          </View>
+        )}
+
+        {searchResults.length > 0 && !searchLoading && (
+          <View style={styles.searchResultsGrid}>
+            {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
+          </View>
+        )}
+
+        {searchQuery && !searchLoading && searchResults.length === 0 && (
+          <View style={styles.emptySearchContainer}>
+            <Text style={styles.emptySearchText}>Aucun résultat trouvé pour "{searchQuery}"</Text>
+          </View>
+        )}
         {/* Image hero ajustée */}
         <View style={styles.heroContainer}>
           {/* Image de fond avec hauteur réduite */}
@@ -572,7 +764,7 @@ const styles = StyleSheet.create({
   animeBadgeContainer: {
     alignSelf: 'flex-start',
   },
-  animeBadge: {
+  animeBadgeDetail: {
     backgroundColor: '#00bcd4', // Cyan cohérent
     borderRadius: 20,
     paddingHorizontal: 16,
@@ -724,6 +916,125 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
+  // Styles pour la recherche
+  searchBarContainer: {
+    padding: 16,
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  searchInput: {
+    flex: 1,
+    color: COLORS.text.primary,
+    fontSize: 16,
+    marginLeft: 12,
+  },
+  clearSearchButton: {
+    padding: 4,
+  },
+  clearSearchText: {
+    color: COLORS.text.secondary,
+    fontSize: 18,
+  },
+  loadingSearchContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 64,
+  },
+  searchResultsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+  },
+  emptySearchContainer: {
+    padding: 32,
+    alignItems: 'center',
+  },
+  emptySearchText: {
+    color: COLORS.text.secondary,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  animeCard: {
+    width: (width - 48) / 2,
+    minHeight: 200,
+    height: 'auto',
+    marginBottom: 16,
+    borderRadius: 12,
+    backgroundColor: `${COLORS.primary}cc`,
+    overflow: 'hidden',
+  },
+  cardImageContainer: {
+    position: 'relative',
+    height: 160,
+  },
+  cardImage: {
+    width: '100%',
+    height: '100%',
+  },
+  cardGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 40,
+  },
+  cardContent: {
+    padding: 12,
+    flex: 1,
+  },
+  cardTitle: {
+    ...textStyles.cardTitle,
+    fontSize: 14,
+    marginBottom: 8,
+  },
+  cardMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  languageBadge: {
+    backgroundColor: COLORS.secondary,
+    borderRadius: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    marginRight: 4,
+  },
+  languageText: {
+    color: COLORS.text.primary,
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  contentBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    zIndex: 1,
+  },
+  mangaBadge: {
+    backgroundColor: COLORS.badges.manga,
+  },
+  movieBadge: {
+    backgroundColor: COLORS.badges.film,
+  },
+  animeBadge: {
+    backgroundColor: COLORS.badges.anime,
+  },
+  badgeText: {
+    color: COLORS.text.primary,
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
 });
 
 export default AnimeDetailScreen;
