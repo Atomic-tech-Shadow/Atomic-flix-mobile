@@ -1369,9 +1369,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 16,
     right: 16, // Positionné dans l'angle inférieur droit
-    backgroundColor: 'rgba(255, 255, 255, 0.1)', // Fond léger pour le contraste
-    borderWidth: 2,
-    borderColor: 'rgba(0, 188, 212, 0.3)', // Bordure cyan subtile
   },
   heroSubtitle: {
     fontSize: 16,
