@@ -7,9 +7,9 @@
 ### 🎌 *L'univers de l'anime et du manga dans votre poche* 📱
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-3.7.0-8B5DFF?style=for-the-badge&logo=android&logoColor=white" alt="Version">
+  <img src="https://img.shields.io/badge/Version-3.8.5-8B5DFF?style=for-the-badge&logo=android&logoColor=white" alt="Version">
   <img src="https://img.shields.io/badge/React_Native-0.79.5-00D4FF?style=for-the-badge&logo=react&logoColor=white" alt="React Native">
-  <img src="https://img.shields.io/badge/Expo-53.0.20-FF6B9D?style=for-the-badge&logo=expo&logoColor=white" alt="Expo">
+  <img src="https://img.shields.io/badge/Expo-53.0.22-FF6B9D?style=for-the-badge&logo=expo&logoColor=white" alt="Expo">
   <img src="https://img.shields.io/badge/TypeScript-5.8.3-8B5DFF?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
 </p>
 
@@ -70,7 +70,7 @@
 - ⚡ **Performance ultra-optimisée** 
 - 🎨 **Interface moderne** avec animations fluides
 - 🔔 **Notifications intelligentes** pour nouveautés
-- 📡 **Mode hors-ligne** avec cache local
+- 📡 **Cache intelligent** avec stockage local
 
 </td>
 <td width="50%">
@@ -98,7 +98,6 @@ graph TB
     B --> D[📘 TypeScript 5.8.3]
     
     A --> E[🧠 Services Intelligents]
-    E --> F[📚 ViewingHistoryService]
     E --> G[🔔 NotificationService]
     E --> H[🔍 SearchService]
     
@@ -136,7 +135,6 @@ graph TB
 │   │   ├── 📖 MangaReaderScreen.tsx
 │   │   └── ℹ️ AboutScreen.tsx
 │   ├── 🧠 services/            # Services métier
-│   │   ├── 📚 ViewingHistoryService.ts
 │   │   ├── 🔔 NotificationService.ts
 │   │   └── 🔍 SearchService.ts
 │   ├── 🎨 constants/           # Couleurs et thème
@@ -305,8 +303,8 @@ npm run build:android  # 📦 Build APK production
 
 </div>
 
-- [ ] 🤖 **IA Avancée** - GPT intégré pour recommandations
-- [ ] 🌐 **Mode Hors-ligne** - Download et synchronisation
+- [ ] 🤖 **IA Avancée** - GPT intégré pour découverte de contenu
+- [ ] 🌐 **Cache Avancé** - Stockage intelligent et synchronisation
 - [ ] 👥 **Social Features** - Partage et communauté
 - [ ] 🎮 **Gamification** - Badges et achievements
 - [ ] 🌍 **Multi-plateforme** - iOS et version desktop
@@ -367,7 +365,7 @@ npm run build:android  # 📦 Build APK production
 
 🤖 **Replit Agent** - Développement IA révolutionnaire  
 🎨 **Design System** - Palette unique et moderne  
-🧠 **Algorithmes IA** - Recommandations intelligentes  
+🧠 **Algorithmes IA** - Découverte de contenu intelligente  
 ⚡ **Optimisations** - Performance 60 FPS garantie  
 
 </div>

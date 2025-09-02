@@ -32,7 +32,7 @@ import { PushNotification } from '../types/notifications';
 import { historyService, WatchHistoryItem } from '../services/HistoryService';
 
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'> & DrawerNavigationProp<DrawerParamList>;
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 const { width, height } = Dimensions.get('window');
 

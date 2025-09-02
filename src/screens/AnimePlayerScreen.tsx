@@ -407,6 +407,77 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     loadEpisodeSources(newEpisode); // L'historique sera automatiquement mis à jour dans loadEpisodeSources
   };
 
+  // Fonction pour rechercher des animes (identique aux autres écrans)
+  const searchAnimes = async (query: string) => {
+    if (query.trim().length < 2) {
+      setSearchResults([]);
+      return;
+    }
+
+    setSearchLoading(true);
+
+    try {
+      const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/search?query=${encodeURIComponent(query)}`);
+
+      if (response && response.success) {
+        const results = response.animes || response.results || [];
+        if (Array.isArray(results)) {
+          setSearchResults(results);
+        } else {
+          setSearchResults([]);
+        }
+      } else {
+        throw new Error('Réponse API invalide');
+      }
+    } catch (err) {
+      console.error('Erreur recherche:', err);
+      setSearchResults([]);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  // Navigation vers un anime depuis les résultats de recherche
+  const loadAnimeDetails = async (animeId: string, contentType?: string) => {
+    if (!animeId || animeId === 'undefined') {
+      return;
+    }
+    
+    let cleanId = animeId;
+    if (animeId.includes('anime-sama.fr')) {
+      const urlParts = animeId.split('/');
+      const catalogueIndex = urlParts.findIndex(part => part === 'catalogue');
+      if (catalogueIndex !== -1 && urlParts[catalogueIndex + 1]) {
+        cleanId = urlParts[catalogueIndex + 1];
+      }
+    }
+    
+    if (contentType === 'manga') {
+      navigation.navigate('MangaReader', { mangaUrl: cleanId, mangaTitle: 'Manga' });
+    } else {
+      navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: 'Anime' });
+    }
+  };
+
+  const handleSearchPress = () => {
+    setShowSearchBar(true);
+    setSearchQuery('');
+    setSearchResults([]);
+  };
+
+  // Effet pour la recherche en temps réel avec debouncing
+  useEffect(() => {
+    if (searchQuery) {
+      const timeoutId = setTimeout(() => {
+        searchAnimes(searchQuery);
+      }, 300);
+      return () => clearTimeout(timeoutId);
+    } else {
+      setSearchResults([]);
+      return undefined;
+    }
+  }, [searchQuery]);
+
   // ✨ Effet supprimé : le changement de langue est maintenant géré directement dans changeLanguage()
 
   // Effet pour maintenir l'écran allumé pendant la lecture et permettre l'orientation libre
@@ -563,14 +634,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
 
-  // Navigation vers les détails d'un anime depuis la recherche
-  const loadAnimeDetails = (animeId: string, contentType: string) => {
-    if (contentType === 'manga') {
-      navigation.navigate('MangaReader', { mangaUrl: `manga/${animeId}`, mangaTitle: 'Manga' });
-    } else {
-      navigation.navigate('AnimeDetail', { animeUrl: `anime/${animeId}`, animeTitle: 'Anime' });
-    }
-  };
 
   // Fonction pour extraire la langue depuis l'objet language de l'API
   const getLanguageFromAPI = (anime: SearchResult) => {
