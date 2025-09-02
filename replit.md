@@ -4,22 +4,21 @@
 
 ATOMIC FLIX is a React Native mobile application built with Expo, designed for streaming anime and reading manga. Developed entirely with Replit Agent, its primary purpose is to provide a seamless and feature-rich experience for anime and manga enthusiasts. The project aims to offer intuitive navigation, robust media playback capabilities, and a consistent user interface across mobile platforms, primarily Android. It integrates advanced features like real-time trending content, personalized planning for new releases, and intelligent notification systems. The vision is to create a go-to platform for otakus, offering a comprehensive and engaging content consumption experience.
 
-**Current Version**: 3.7.0 (Updated: 16 août 2025)
+**Current Version**: 3.8.0 (Updated: 2 septembre 2025)
 
-## Recent Changes (August 2025)
+## Recent Changes (September 2025)
 
+- **Version Update**: 3.7.0 → 3.8.0 with versionCode 380 (2 septembre 2025)
+  - **Suppression Complète du Système d'Historique**: Retrait total du système d'historique et "en cours"
+    - Suppression de `SmartHistoryService.ts` et de toutes ses fonctionnalités
+    - Retrait des sections "📺 En cours" et "🏛️ Historique" du HomeScreen
+    - Simplification de l'application : focus uniquement sur la découverte de contenu
+    - Suppression du tracking automatique de visionnage dans AnimeDetailScreen et AnimePlayerScreen
+  - **Correction Build Keystore**: Résolution de l'erreur "alias specified for this keystore does not exist"
+    - Régénération complète du keystore `signing.keystore` avec l'alias correct `atomic-flix-key`
+    - Mots de passe alignés avec `credentials.json` : `atomicflix2025`
 - **Version Update**: 3.6.0 → 3.7.0 with versionCode 370 (16 août 2025)
   - **Suppression du Système de Recommandations**: Retrait complet du système de recommandations intelligentes pour simplifier l'application
-- **Version Update**: 3.5.0 → 3.6.0 with versionCode 360 (16 août 2025)
-  - **Nouvelle Section Historique**: Ajout d'une 5ème section "🏛️ Historique" après "Pépites cachées"
-  - **Système d'Historique de Visionnage**: Nouvel `ViewingHistoryService` qui enregistre automatiquement:
-    - Chaque anime regardé avec détails (titre, image, épisode, saison)
-    - Historique local persistant dans AsyncStorage (jusqu'à 100 éléments)
-    - Intégration dans AnimeDetailScreen et AnimePlayerScreen pour tracking automatique
-    - Section Historique du HomeScreen alimentée par les vraies données de visionnage utilisateur
-    - Statistiques de visionnage (total animes, épisodes, type de contenu favori)
-  - Badge VINTAGE marron authentique pour différencier les animes classiques
-  - Intégration API automatique depuis `/api/popular` avec support historique/retro/vintage
 - **Version Update**: 3.4.0 → 3.5.0 with versionCode 350 (11 août 2025)
   - **Fonctionnalité Sorties Dynamiques**: Section "Sorties cette semaine" maintenant dynamique selon le jour
   - Affichage adaptatif: "Sorties du lundi", "Sorties du mardi", etc. selon le jour actuel

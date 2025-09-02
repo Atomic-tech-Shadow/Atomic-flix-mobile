@@ -24,7 +24,6 @@ import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { animeAPI } from '../utils/animeAPI';
-import SmartHistoryService from '../services/SmartHistoryService';
 
 type AnimeDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimeDetail'>;
 type AnimeDetailScreenRouteProp = RouteProp<RootStackParamList, 'AnimeDetail'>;
@@ -146,20 +145,6 @@ const AnimeDetailScreen: React.FC = () => {
   const goToPlayer = async (season: Season) => {
     if (!animeUrl || !animeData) return;
     
-    // Ajouter à l'historique intelligent avant de naviguer
-    const historyService = SmartHistoryService.getInstance();
-    const animeId = animeUrl.split('/').pop() || animeUrl;
-    
-    await historyService.addToHistory({
-      animeId,
-      animeTitle,
-      animeImage: animeData.image || '',
-      animeUrl,
-      season: season.name,
-      contentType: season.name.toLowerCase().includes('scan') || 
-                   season.name.toLowerCase().includes('manga') ? 'MANGA' : 'ANIME',
-      genres: animeData.genres || []
-    });
     
     // Vérifier si c'est un manga/scan basé sur le nom de la saison
     const isManga = season.name.toLowerCase().includes('scan') || 

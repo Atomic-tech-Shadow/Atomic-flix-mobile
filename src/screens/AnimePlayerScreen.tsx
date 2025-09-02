@@ -25,7 +25,6 @@ import { Episode, VideoSource, Season, AnimeData, EpisodeDetails } from '../type
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
-import SmartHistoryService from '../services/SmartHistoryService';
 
 type AnimePlayerScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimePlayer'>;
 type AnimePlayerScreenRouteProp = RouteProp<RootStackParamList, 'AnimePlayer'>;
@@ -220,23 +219,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           url: episode.url
         });
 
-        // 📈 Ajouter à l'historique intelligent quand l'épisode est chargé avec succès
-        const historyService = SmartHistoryService.getInstance();
-        const animeId = animeUrl.split('/').pop() || animeUrl;
-        
-        await historyService.addToHistory({
-          animeId,
-          animeTitle,
-          animeImage: animeData?.image || '',
-          animeUrl,
-          season: selectedSeason?.name || '',
-          episode: `Épisode ${episode.episodeNumber}`,
-          episodeTitle: episode.title,
-          contentType: 'ANIME',
-          genres: animeData?.genres || [],
-          watchDuration: 25, // Estimation de temps de visionnage par défaut
-          language: selectedLanguage
-        });
 
 
         // Ne pas resetter selectedPlayer pour préserver le choix utilisateur
