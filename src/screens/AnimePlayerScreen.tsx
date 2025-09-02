@@ -16,17 +16,19 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { Picker } from '@react-native-picker/picker';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import * as ScreenOrientation from 'expo-screen-orientation';
-import { RootStackParamList } from '../navigation/AppNavigator';
+import { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator';
 import { Episode, VideoSource, Season, AnimeData, EpisodeDetails } from '../types';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
+import { useNotifications } from '../hooks/useNotifications';
 
-type AnimePlayerScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimePlayer'>;
+type AnimePlayerScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimePlayer'> & DrawerNavigationProp<DrawerParamList>;
 type AnimePlayerScreenRouteProp = RouteProp<RootStackParamList, 'AnimePlayer'>;
 
 interface Props {
@@ -52,6 +54,16 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [serverError, setServerError] = useState<boolean>(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  
+  // Hook pour les notifications
+  const {
+    notifications,
+    unreadCount,
+    markAsRead,
+    markAllAsRead,
+    refreshNotifications,
+  } = useNotifications();
 
   const webViewRef = useRef<WebView>(null);
 
@@ -541,7 +553,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
         {/* Header fixe toujours visible */}
         <View style={styles.headerContainer}>
-          <SharedHeader />
+          <SharedHeader 
+          onSearchPress={() => navigation.navigate('Home')}
+          onNotificationPress={() => setShowNotifications(true)}
+          onMenuPress={() => navigation.openDrawer()}
+        />
         </View>
 
         <View style={styles.loadingContainer}>
@@ -562,7 +578,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
         {/* Header fixe toujours visible */}
         <View style={styles.headerContainer}>
-          <SharedHeader />
+          <SharedHeader 
+          onSearchPress={() => navigation.navigate('Home')}
+          onNotificationPress={() => setShowNotifications(true)}
+          onMenuPress={() => navigation.openDrawer()}
+        />
         </View>
 
         <View style={styles.errorContainer}>
@@ -583,7 +603,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
         {/* Header fixe toujours visible */}
         <View style={styles.headerContainer}>
-          <SharedHeader />
+          <SharedHeader 
+          onSearchPress={() => navigation.navigate('Home')}
+          onNotificationPress={() => setShowNotifications(true)}
+          onMenuPress={() => navigation.openDrawer()}
+        />
         </View>
 
         <View style={styles.errorContainer}>
@@ -602,7 +626,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
-        <SharedHeader />
+        <SharedHeader 
+          onSearchPress={() => navigation.navigate('Home')}
+          onNotificationPress={() => setShowNotifications(true)}
+          onMenuPress={() => navigation.openDrawer()}
+        />
       </View>
 
       <OptimizedScrollView 

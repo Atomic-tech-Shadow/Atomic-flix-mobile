@@ -16,16 +16,18 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
+import type { DrawerNavigationProp } from '@react-navigation/drawer';
 import type { RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-import type { RootStackParamList } from '../navigation/AppNavigator';
+import type { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { animeAPI } from '../utils/animeAPI';
+import { useNotifications } from '../hooks/useNotifications';
 
-type AnimeDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimeDetail'>;
+type AnimeDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnimeDetail'> & DrawerNavigationProp<DrawerParamList>;
 type AnimeDetailScreenRouteProp = RouteProp<RootStackParamList, 'AnimeDetail'>;
 
 const { width, height } = Dimensions.get('window');
@@ -100,6 +102,16 @@ const AnimeDetailScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  
+  // Hook pour les notifications
+  const {
+    notifications,
+    unreadCount,
+    markAsRead,
+    markAllAsRead,
+    refreshNotifications,
+  } = useNotifications();
 
 
 
@@ -196,7 +208,8 @@ const AnimeDetailScreen: React.FC = () => {
         <StatusBar style="light" backgroundColor={COLORS.primary} />
         <SharedHeader 
           onSearchPress={() => navigation.navigate('Home')}
-          onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
+          onNotificationPress={() => setShowNotifications(true)}
+          onMenuPress={() => navigation.openDrawer()}
         />
         <View style={styles.loadingContainer}>
           <LoadingSpinner 
@@ -216,7 +229,8 @@ const AnimeDetailScreen: React.FC = () => {
         <StatusBar style="light" backgroundColor={COLORS.primary} />
         <SharedHeader 
           onSearchPress={() => navigation.navigate('Home')}
-          onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
+          onNotificationPress={() => setShowNotifications(true)}
+          onMenuPress={() => navigation.openDrawer()}
         />
         <View style={styles.errorContainer}>
           <Ionicons name="alert-circle" size={48} color={COLORS.text.error} />
@@ -236,7 +250,8 @@ const AnimeDetailScreen: React.FC = () => {
         <StatusBar style="light" backgroundColor={COLORS.primary} />
         <SharedHeader 
           onSearchPress={() => navigation.navigate('Home')}
-          onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
+          onNotificationPress={() => setShowNotifications(true)}
+          onMenuPress={() => navigation.openDrawer()}
         />
         <View style={styles.errorContainer}>
           <Ionicons name="search" size={48} color={COLORS.text.muted} />
@@ -254,7 +269,8 @@ const AnimeDetailScreen: React.FC = () => {
       <View style={styles.headerContainer}>
         <SharedHeader 
           onSearchPress={() => navigation.navigate('Home')}
-          onNotificationPress={() => console.log('Notifications pressed from AnimeDetail')}
+          onNotificationPress={() => setShowNotifications(true)}
+          onMenuPress={() => navigation.openDrawer()}
         />
       </View>
       
