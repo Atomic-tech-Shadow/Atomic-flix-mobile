@@ -875,7 +875,6 @@ const HomeScreen: React.FC = () => {
             {currentlyWatching.length > 0 && (
               <View style={styles.historySection}>
                 <View style={styles.historyHeader}>
-                  <Ionicons name="radio-button-on" size={24} color={COLORS.text.primary} />
                   <Text style={styles.historyTitle}>🎯 CONTINUER À REGARDER</Text>
                 </View>
                 <OptimizedScrollView 
