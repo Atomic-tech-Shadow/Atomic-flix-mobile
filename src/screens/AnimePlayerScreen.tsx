@@ -539,8 +539,14 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         setSearchLoading(true);
         try {
           const response = await apiRequest(`/api/search?query=${encodeURIComponent(searchQuery)}`);
-          if (response && (response.animes || response.results)) {
-            setSearchResults(response.animes || response.results);
+          
+          if (response && response.success) {
+            const results = response.animes || response.results || [];
+            if (Array.isArray(results)) {
+              setSearchResults(results);
+            } else {
+              setSearchResults([]);
+            }
           } else {
             setSearchResults([]);
           }
@@ -551,7 +557,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         }
       } else {
         setSearchResults([]);
-        return undefined;
       }
     }, 300);
 
