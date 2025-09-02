@@ -1831,7 +1831,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
     borderRadius: 8,
     overflow: 'hidden',
-    backgroundColor: COLORS.surface,
+    backgroundColor: COLORS.background.card,
     elevation: 3,
     shadowColor: COLORS.text.primary,
     shadowOffset: { width: 0, height: 2 },
@@ -1851,8 +1851,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.secondary,
   },
   watchingBadgeText: {
-    ...textStyles.caption,
-    color: COLORS.background,
+    color: COLORS.background.primary,
     fontSize: 10,
     fontWeight: '600',
   },
@@ -1874,7 +1873,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   completedIndicatorText: {
-    color: COLORS.background,
+    color: COLORS.background.primary,
     fontSize: 12,
     fontWeight: 'bold',
   },
@@ -1900,8 +1899,7 @@ const styles = StyleSheet.create({
   },
 
   watchTimeText: {
-    ...textStyles.caption,
-    color: COLORS.text.muted,
+    color: COLORS.text.secondary,
     fontSize: 10,
     fontStyle: 'italic',
   },
