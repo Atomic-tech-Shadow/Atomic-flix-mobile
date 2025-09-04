@@ -71,10 +71,10 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
           {/* Bouton notifications avec badge */}
           <TouchableOpacity 
-            style={styles.notificationButton}
+            style={styles.headerIconButton}
             onPress={onNotificationPress}
           >
-            <Ionicons name="notifications-outline" size={22} color="#000000" />
+            <Ionicons name="notifications-outline" size={22} color="#ffffff" />
             {unreadCount > 0 && (
               <View style={styles.notificationBadge}>
                 <Text style={styles.badgeText}>
@@ -136,13 +136,6 @@ const styles = StyleSheet.create({
     padding: 8,
     marginLeft: 8,
     position: 'relative',
-  },
-  notificationButton: {
-    padding: 8,
-    marginLeft: 8,
-    position: 'relative',
-    backgroundColor: '#ffffff',
-    borderRadius: 20,
   },
   notificationBadge: {
     position: 'absolute',
