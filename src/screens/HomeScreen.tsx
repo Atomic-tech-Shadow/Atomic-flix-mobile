@@ -28,9 +28,12 @@ import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { NotificationPanel } from '../components/NotificationPanel';
 import { useNotifications } from '../hooks/useNotifications';
+import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { PushNotification } from '../types/notifications';
 import { historyService, WatchHistoryItem } from '../services/HistoryService';
 import { getLanguageBadgeText } from '../utils/languageUtils';
+import NetworkStatusBanner from '../components/NetworkStatusBanner';
+import { apiGetWithCache } from '../utils/apiWithRetry';
 
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -96,6 +99,16 @@ const HomeScreen: React.FC = () => {
     markAllAsRead,
     refreshNotifications,
   } = useNotifications();
+
+  // Hook pour détecter la connexion internet
+  const {
+    isOnline,
+    isOffline,
+    showOfflineBanner,
+    hideBanner,
+    checkConnection,
+    networkState
+  } = useNetworkStatus();
 
 
   // Configuration API identique au site web
@@ -748,6 +761,18 @@ const HomeScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <StatusBar style="light" backgroundColor={COLORS.primary} />
+
+      {/* Bannière de statut réseau */}
+      <NetworkStatusBanner
+        isVisible={showOfflineBanner}
+        onRetry={async () => {
+          const isConnected = await checkConnection();
+          if (isConnected) {
+            await loadAllInitialContent();
+          }
+        }}
+        onDismiss={hideBanner}
+      />
 
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
