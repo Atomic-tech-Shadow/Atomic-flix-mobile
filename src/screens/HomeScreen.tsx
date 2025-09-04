@@ -1191,13 +1191,6 @@ const HomeScreen: React.FC = () => {
                           <Text style={styles.horizontalCardTitle} numberOfLines={2}>
                             {anime.title}
                           </Text>
-                          {anime.language && (
-                            <View style={styles.horizontalCardBadge}>
-                              <Text style={styles.horizontalCardBadgeText}>
-                                {anime.language.name}
-                              </Text>
-                            </View>
-                          )}
                         </View>
                       </LinearGradient>
                     </TouchableOpacity>
