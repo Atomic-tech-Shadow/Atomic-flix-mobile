@@ -27,6 +27,9 @@ export class NotificationService {
   private listeners: Set<(notifications: PushNotification[]) => void> = new Set();
   private expoPushToken: string | null = null;
   private isInitialized: boolean = false;
+  private notificationReceivedSubscription: any = null;
+  private notificationResponseSubscription: any = null;
+  private pushTokenSubscription: any = null;
 
   static getInstance(): NotificationService {
     if (!NotificationService.instance) {
@@ -92,14 +95,49 @@ export class NotificationService {
       // Obtenir le token push
       const token = await this.registerForPushNotifications();
       
-      // Configurer les listeners
+      // Configurer les listeners (avec nettoyage automatique)
       await this.setupNotificationListeners();
+      
+      // Nettoyer les anciennes notifications au démarrage
+      await this.cleanOldNotifications();
       
       this.isInitialized = true;
       return { token, success: true };
     } catch (error) {
       console.error('Erreur initialisation notifications:', error);
       return { token: null, success: false };
+    }
+  }
+
+  // Méthode pour nettoyer complètement le service (utile pour debug/reset)
+  async cleanup(): Promise<void> {
+    try {
+      // Nettoyer les listeners
+      if (this.notificationReceivedSubscription) {
+        this.notificationReceivedSubscription.remove();
+        this.notificationReceivedSubscription = null;
+      }
+      if (this.notificationResponseSubscription) {
+        this.notificationResponseSubscription.remove();
+        this.notificationResponseSubscription = null;
+      }
+      if (this.pushTokenSubscription) {
+        this.pushTokenSubscription.remove();
+        this.pushTokenSubscription = null;
+      }
+      
+      // Nettoyer les listeners internes
+      this.listeners.clear();
+      
+      // Reset state
+      this.isInitialized = false;
+      this.expoPushToken = null;
+      
+      if (__DEV__) {
+        console.log('🧹 Service de notifications nettoyé');
+      }
+    } catch (error) {
+      console.error('Erreur nettoyage service notifications:', error);
     }
   }
 
@@ -208,8 +246,19 @@ export class NotificationService {
 
   // Configuration des listeners de notifications
   private async setupNotificationListeners(): Promise<void> {
+    // Nettoyer les anciens listeners si ils existent
+    if (this.notificationReceivedSubscription) {
+      this.notificationReceivedSubscription.remove();
+    }
+    if (this.notificationResponseSubscription) {
+      this.notificationResponseSubscription.remove();
+    }
+    if (this.pushTokenSubscription) {
+      this.pushTokenSubscription.remove();
+    }
+
     // Listener pour notifications reçues (app en premier plan)
-    Notifications.addNotificationReceivedListener(async (notification) => {
+    this.notificationReceivedSubscription = Notifications.addNotificationReceivedListener(async (notification) => {
       if (__DEV__) {
         console.log('🔔 Notification reçue:', notification.request.content.title);
       }
@@ -219,7 +268,7 @@ export class NotificationService {
     });
 
     // Listener pour interactions utilisateur
-    Notifications.addNotificationResponseReceivedListener(async (response) => {
+    this.notificationResponseSubscription = Notifications.addNotificationResponseReceivedListener(async (response) => {
       const { notification } = response;
       const data = notification.request.content.data;
       
@@ -240,7 +289,7 @@ export class NotificationService {
     });
 
     // Listener pour changements de token
-    Notifications.addPushTokenListener((token) => {
+    this.pushTokenSubscription = Notifications.addPushTokenListener((token) => {
       if (__DEV__) {
         console.log('🔄 Token push mis à jour');
       }
@@ -315,23 +364,39 @@ export class NotificationService {
   async detectNewContent(currentContent: SearchResult[]): Promise<void> {
     try {
       const previousContent = await this.getPreviousContent();
+      const existingNotifications = await this.getNotifications();
       const newNotifications: PushNotification[] = [];
+
+      // Si c'est la première fois ou si pas de contenu précédent, juste sauvegarder sans notifier
+      if (previousContent.length === 0) {
+        await this.savePreviousContent(currentContent);
+        return;
+      }
 
       for (const item of currentContent) {
         const previousItem = previousContent.find(p => p.id === item.id);
         
+        // Seul nouveau contenu ou contenu avec changements significatifs
         if (!previousItem || this.hasContentChanged(previousItem, item)) {
           if (this.shouldNotify(item)) {
             const notification = this.createNotificationFromContent(item);
-            newNotifications.push(notification);
             
-            // Envoyer notification locale
-            await this.sendLocalNotification(
-              notification.title,
-              notification.body,
-              notification.type,
-              notification.data
-            );
+            // Vérifier qu'on n'a pas déjà cette notification récemment (dernières 24h)
+            const isDuplicate = this.isDuplicateNotification(notification, existingNotifications);
+            
+            if (!isDuplicate) {
+              newNotifications.push(notification);
+              
+              // Envoyer notification locale seulement pour vraiment nouveau contenu
+              if (!previousItem) {
+                await this.sendLocalNotification(
+                  notification.title,
+                  notification.body,
+                  notification.type,
+                  notification.data
+                );
+              }
+            }
           }
         }
       }
@@ -340,7 +405,6 @@ export class NotificationService {
       await this.savePreviousContent(currentContent);
       
       if (newNotifications.length > 0) {
-        const existingNotifications = await this.getNotifications();
         const allNotifications = [...newNotifications, ...existingNotifications].slice(0, 50);
         await AsyncStorage.setItem('push_notifications', JSON.stringify(allNotifications));
         this.notifyListeners(allNotifications);
@@ -348,6 +412,19 @@ export class NotificationService {
     } catch (error) {
       console.error('Erreur détection nouveau contenu:', error);
     }
+  }
+
+  // Vérifier si c'est une notification en double (même contenu dans les 24h)
+  private isDuplicateNotification(notification: PushNotification, existingNotifications: PushNotification[]): boolean {
+    const twentyFourHoursAgo = Date.now() - (24 * 60 * 60 * 1000);
+    
+    return existingNotifications.some(existing => 
+      existing.title === notification.title &&
+      existing.body === notification.body &&
+      existing.type === notification.type &&
+      existing.timestamp > twentyFourHoursAgo &&
+      existing.data?.animeId === notification.data?.animeId
+    );
   }
 
   // Vérifier si le contenu a changé
