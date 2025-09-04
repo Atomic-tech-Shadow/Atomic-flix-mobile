@@ -33,6 +33,20 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
       icon: 'information-circle-outline',
       route: 'About',
       description: 'Informations sur l\'app'
+    },
+    {
+      id: 'privacy',
+      title: 'Confidentialité',
+      icon: 'shield-checkmark-outline',
+      route: 'PrivacyPolicy',
+      description: 'Politique de confidentialité'
+    },
+    {
+      id: 'terms',
+      title: 'Conditions d\'utilisation',
+      icon: 'document-text-outline',
+      route: 'TermsOfService',
+      description: 'Conditions générales'
     }
   ];
 

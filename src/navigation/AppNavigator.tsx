@@ -14,6 +14,8 @@ import MangaReaderScreen from '../screens/MangaReaderScreen';
 import AboutScreen from '../screens/AboutScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import AnimePlayerScreen from '../screens/AnimePlayerScreen';
+import PrivacyPolicyScreen from '../screens/PrivacyPolicyScreen';
+import TermsOfServiceScreen from '../screens/TermsOfServiceScreen';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -28,11 +30,15 @@ export type RootStackParamList = {
   MangaReader: { mangaUrl: string; mangaTitle: string };
   About: undefined;
   NotFound: undefined;
+  PrivacyPolicy: undefined;
+  TermsOfService: undefined;
 };
 
 export type DrawerParamList = {
   HomeStack: undefined;
   About: undefined;
+  PrivacyPolicy: undefined;
+  TermsOfService: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -116,6 +122,20 @@ const AppNavigator: React.FC = () => {
           component={AboutScreen}
           options={{
             drawerLabel: 'À propos',
+          }}
+        />
+        <Drawer.Screen 
+          name="PrivacyPolicy" 
+          component={PrivacyPolicyScreen}
+          options={{
+            drawerLabel: 'Confidentialité',
+          }}
+        />
+        <Drawer.Screen 
+          name="TermsOfService" 
+          component={TermsOfServiceScreen}
+          options={{
+            drawerLabel: 'Conditions',
           }}
         />
       </Drawer.Navigator>
