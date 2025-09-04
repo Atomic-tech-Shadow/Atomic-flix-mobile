@@ -5,6 +5,7 @@ import * as Device from 'expo-device';
 import Constants from 'expo-constants';
 import { PushNotification, NotificationChannel } from '../types/notifications';
 import { SearchResult } from '../types/index';
+import { getLanguageBadgeText, extractLanguageInfo } from '../utils/languageUtils';
 
 // Configuration moderne des notifications (2025) optimisée
 Notifications.setNotificationHandler({
@@ -460,20 +461,24 @@ export class NotificationService {
     const type = this.mapContentType(item.type);
     const emoji = this.getTypeEmoji(type);
     
+    // Extraire la langue de l'anime
+    const languageBadge = getLanguageBadgeText(item.language);
+    const languageText = languageBadge ? ` (${languageBadge})` : '';
+    
     let title = `${emoji} ATOMIC FLIX`;
     let body = '';
     
     if (item.episodeInfo) {
-      title = `Nouvel épisode disponible`;
+      title = `Nouvel épisode disponible${languageText}`;
       body = `${item.title} - ${item.episodeInfo}`;
     } else if (type === 'manga') {
-      title = `Nouveau chapitre disponible`;
+      title = `Nouveau chapitre disponible${languageText}`;
       body = item.title;
     } else if (type === 'film') {
-      title = `Nouveau film disponible`;
+      title = `Nouveau film disponible${languageText}`;
       body = item.title;
     } else {
-      title = `Nouveau contenu disponible`;
+      title = `Nouveau contenu disponible${languageText}`;
       body = item.title;
     }
 
