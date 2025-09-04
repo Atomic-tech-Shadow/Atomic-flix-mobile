@@ -8,14 +8,15 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
 
 ## Recent Changes (September 2025)
 
-- **Mise à Jour Clés de Signature** (4 septembre 2025): Remplacement complet du système de signature Android
-  - **Nouveau Keystore de Production**: Installation d'un nouveau keystore `signing.keystore` optimisé
-    - Alias maintenu : `atomic-flix-key` pour compatibilité avec les builds existantes  
-    - Nouveaux mots de passe sécurisés : `Q9TSIc286YHu`
-    - Certificat valide jusqu'en 2080 pour stabilité long terme
-    - Informations de signature : ATOMIC FLIX Admin / Engineering / TG
-  - **Configuration EAS Mise à Jour**: Alignement parfait `credentials.json` avec nouveau keystore
-  - **Sauvegarde Automatique**: Ancien keystore sauvegardé en `signing.keystore.backup`
+- **Génération Keystore Propre** (4 septembre 2025): Génération d'un nouveau keystore Android avec keytool
+  - **Keystore Fraîchement Généré**: Nouveau keystore `signing.keystore` créé avec keytool
+    - Alias maintenu : `atomic-flix-key` pour compatibilité totale  
+    - Mots de passe sécurisés : `AtomicFlix2025Secure`
+    - Algorithme moderne : RSA 2048-bit avec SHA256withRSA
+    - Validité : 55 ans (jusqu'en 2080)
+    - Informations complètes : CN=ATOMIC FLIX Admin, OU=Engineering Department, O=ATOMIC FLIX - Streaming Anime, L=Lome, ST=Maritime, C=TG
+  - **Configuration Credentials**: `credentials.json` mis à jour avec nouveaux paramètres
+  - **Sauvegardes Multiples**: Anciens keystores préservés en `.backup` et `.backup-old`
 - **Version Update**: 3.7.0 → 3.8.5 with versionCode 385 (2 septembre 2025)
   - **Suppression Complète du Système d'Historique**: Retrait total du système d'historique et "en cours"
     - Suppression de `SmartHistoryService.ts` et de toutes ses fonctionnalités
