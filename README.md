@@ -56,10 +56,11 @@
 <td width="50%">
 
 ### 🔥 **Contenu & Streaming**
-- 🎬 **Streaming anime** haute qualité
+- 🎬 **Streaming anime** haute qualité avec serveurs multiples
 - 📖 **Lecture manga** fluide et optimisée
-- 🌍 **Multi-langues** : VF, VOSTFR, VJSTFR
+- 🌍 **Multi-langues** : VF, VO simplifiés (badges épurés)
 - 🎭 **Genres variés** : Action, Romance, Shonen, etc.
+- 🎯 **Recommandations** intelligentes sans badges langue
 
 </td>
 </tr>
@@ -67,10 +68,11 @@
 <td width="50%">
 
 ### 📱 **Expérience Mobile**
-- ⚡ **Performance ultra-optimisée** 
-- 🎨 **Interface moderne** avec animations fluides
-- 🔔 **Notifications intelligentes** pour nouveautés
-- 📡 **Cache intelligent** avec stockage local
+- ⚡ **Performance ultra-optimisée** avec gestion mémoire
+- 🎨 **Interface moderne** avec header épuré style WhatsApp
+- 🔔 **Notifications intelligentes** avec images et langues
+- 📡 **Cache intelligent** avec protection anti-doublons
+- 🎪 **Design minimaliste** focus sur le contenu
 
 </td>
 <td width="50%">

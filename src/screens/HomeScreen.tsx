@@ -458,7 +458,7 @@ const HomeScreen: React.FC = () => {
       animeTitle: anime.title,
       seasonData: fallbackSeasonData,
       initialEpisode: anime.currentEpisode,
-      initialLanguage: anime.language?.name || anime.language?.code?.toUpperCase() || 'VOSTFR'
+      initialLanguage: (anime.language?.name as 'VF' | 'VOSTFR') || (anime.language?.code?.toUpperCase() as 'VF' | 'VOSTFR') || 'VOSTFR'
     });
   };
 
@@ -561,7 +561,7 @@ const HomeScreen: React.FC = () => {
       seasonData: null, // Sera déterminé automatiquement
       animeTitle: historyItem.animeTitle,
       initialEpisode: historyItem.episodeNumber,
-      initialLanguage: historyItem.language,
+      initialLanguage: historyItem.language as 'VF' | 'VOSTFR',
     });
   };
 
@@ -594,7 +594,7 @@ const HomeScreen: React.FC = () => {
 
   // Gestionnaire pour ouvrir le menu drawer
   const handleMenuPress = () => {
-    navigation.openDrawer();
+    (navigation as any).openDrawer();
   };
 
   // Gestionnaire pour les actions des notifications
