@@ -1379,13 +1379,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 12,
     left: 16,
-    fontSize: 20,
+    fontSize: 28,
   },
   heroFlagRight: {
     position: 'absolute',
     bottom: 12,
     right: 16,
-    fontSize: 20,
+    fontSize: 28,
   },
 
 
