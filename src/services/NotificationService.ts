@@ -329,26 +329,38 @@ export class NotificationService {
     title: string,
     body: string,
     type: 'episode' | 'manga' | 'film' | 'planning',
-    data: any = {}
+    data: any = {},
+    image?: string
   ): Promise<void> {
     try {
       const channelId = this.getChannelId(type);
       const emoji = this.getTypeEmoji(type);
       
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: `${emoji} ${title}`,
-          body,
-          data: {
-            ...data,
-            type,
-            notificationId: `local_${Date.now()}`,
-            timestamp: Date.now()
-          },
-          sound: 'default',
-          priority: Notifications.AndroidNotificationPriority.HIGH,
-          color: this.getChannelColor(type),
+      const notificationContent: any = {
+        title: `${emoji} ${title}`,
+        body,
+        data: {
+          ...data,
+          type,
+          notificationId: `local_${Date.now()}`,
+          timestamp: Date.now(),
+          image: image || ''
         },
+        sound: 'default',
+        priority: Notifications.AndroidNotificationPriority.HIGH,
+        color: this.getChannelColor(type),
+      };
+
+      // Ajouter l'image si elle est fournie
+      if (image) {
+        notificationContent.attachments = [{
+          url: image,
+          thumbnailClipArea: { x: 0, y: 0, width: 1, height: 1 }
+        }];
+      }
+
+      await Notifications.scheduleNotificationAsync({
+        content: notificationContent,
         trigger: null, // Immédiate
       });
 
@@ -393,7 +405,8 @@ export class NotificationService {
                   notification.title,
                   notification.body,
                   notification.type,
-                  notification.data
+                  notification.data,
+                  notification.image // Inclure l'image de l'anime
                 );
               }
             }
