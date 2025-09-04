@@ -863,11 +863,6 @@ const HomeScreen: React.FC = () => {
                 <Text style={styles.heroSubtitle}>
                   Plongez dans l'univers infini{'\n'}des animes et mangas !
                 </Text>
-                <Image 
-                  source={require('../../assets/atomic-flix-logo-new.png')}
-                  style={styles.heroLogo}
-                  resizeMode="contain"
-                />
               </LinearGradient>
             </View>
 
@@ -875,7 +870,6 @@ const HomeScreen: React.FC = () => {
             {currentlyWatching.length > 0 && (
               <View style={styles.historySection}>
                 <View style={styles.historyHeader}>
-                  <Ionicons name="radio-button-on" size={24} color={COLORS.text.primary} />
                   <Text style={styles.historyTitle}>🎯 CONTINUER À REGARDER</Text>
                 </View>
                 <OptimizedScrollView 
