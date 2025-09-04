@@ -863,6 +863,10 @@ const HomeScreen: React.FC = () => {
                 <Text style={styles.heroSubtitle}>
                   Plongez dans l'univers infini{'\n'}des animes et mangas !
                 </Text>
+                
+                {/* Drapeaux décoratifs dans les coins */}
+                <Text style={styles.heroFlagLeft}>🎌</Text>
+                <Text style={styles.heroFlagRight}>🎌</Text>
               </LinearGradient>
             </View>
 
@@ -1370,6 +1374,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 24,
     marginBottom: 8,
+  },
+  heroFlagLeft: {
+    position: 'absolute',
+    bottom: 12,
+    left: 16,
+    fontSize: 20,
+  },
+  heroFlagRight: {
+    position: 'absolute',
+    bottom: 12,
+    right: 16,
+    fontSize: 20,
   },
 
 
