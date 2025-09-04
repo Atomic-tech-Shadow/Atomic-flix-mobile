@@ -294,7 +294,7 @@ const HomeScreen: React.FC = () => {
   };
 
   // Naviguer vers la page dédiée (anime ou manga) (identique au site web)
-  const loadAnimeDetails = async (animeId: string, contentType?: string) => {
+  const loadAnimeDetails = async (animeId: string, contentType?: string, animeTitle: string = 'Anime') => {
     
     // Vérifier que l'ID n'est pas vide
     if (!animeId || animeId === 'undefined') {
@@ -318,7 +318,7 @@ const HomeScreen: React.FC = () => {
     if (contentType === 'manga') {
       navigation.navigate('MangaReader', { mangaUrl: cleanId, mangaTitle: 'Manga' });
     } else {
-      navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: 'Anime' });
+      navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: animeTitle });
     }
   };
 
@@ -638,7 +638,7 @@ const HomeScreen: React.FC = () => {
       <TouchableOpacity
         key={anime.id || index}
         style={styles.animeCard}
-        onPress={() => loadAnimeDetails(anime.id, anime.contentType || anime.type)}
+        onPress={() => loadAnimeDetails(anime.id, anime.contentType || anime.type, anime.title)}
         activeOpacity={0.8}
       >
         <View style={styles.cardImageContainer}>
@@ -980,7 +980,7 @@ const HomeScreen: React.FC = () => {
                     <TouchableOpacity
                       key={`planning-${anime.id || anime.url || anime.title.replace(/\s+/g, '-')}-${index}`}
                       style={styles.planningCard}
-                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
                       activeOpacity={0.8}
                     >
                       <Image
@@ -1043,7 +1043,7 @@ const HomeScreen: React.FC = () => {
                     <TouchableOpacity
                       key={`classique-${anime.id || index}`}
                       style={styles.legendaryCard}
-                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
                       activeOpacity={0.8}
                     >
                       <Image
@@ -1104,7 +1104,7 @@ const HomeScreen: React.FC = () => {
                     <TouchableOpacity
                       key={`pepite-${anime.id || index}`}
                       style={styles.gemCard}
-                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
                       activeOpacity={0.8}
                     >
                       <Image
@@ -1168,7 +1168,7 @@ const HomeScreen: React.FC = () => {
                     <TouchableOpacity
                       key={`recommendation-${anime.id || index}`}
                       style={styles.recommendationCard}
-                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType)}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
                       activeOpacity={0.8}
                     >
                       <Image
