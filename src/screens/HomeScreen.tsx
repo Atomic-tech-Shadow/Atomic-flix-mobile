@@ -30,6 +30,7 @@ import { NotificationPanel } from '../components/NotificationPanel';
 import { useNotifications } from '../hooks/useNotifications';
 import { PushNotification } from '../types/notifications';
 import { historyService, WatchHistoryItem } from '../services/HistoryService';
+import { getLanguageBadgeText } from '../utils/languageUtils';
 
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -924,7 +925,9 @@ const HomeScreen: React.FC = () => {
                         </Text>
                         <View style={styles.historyBadgeContainer}>
                           <View style={[styles.historyLanguageBadge, { backgroundColor: historyItem.language === 'VF' ? '#0055A4' : '#BC002D' }]}>
-                            <Text style={styles.historyLanguageText}>{historyItem.language}</Text>
+                            <Text style={styles.historyLanguageText}>
+                              {getLanguageBadgeText(historyItem.language)}
+                            </Text>
                           </View>
                           <View style={[styles.historyEpisodeBadge, { backgroundColor: COLORS.secondary }]}>
                             <Text style={styles.historyEpisodeText}>Épisode {historyItem.episodeNumber}</Text>
