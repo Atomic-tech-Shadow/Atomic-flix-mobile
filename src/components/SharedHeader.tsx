@@ -122,8 +122,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   logoImage: {
-    width: 35,
-    height: 35,
+    width: 42,
+    height: 42,
     borderRadius: 60, // Pour rendre le logo rond
     marginRight: 8,
   },
