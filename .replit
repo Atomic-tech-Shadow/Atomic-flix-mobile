@@ -2,7 +2,7 @@ modules = ["nodejs-20", "web", "python-3.11", "python3", "postgresql-16"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["eas-cli", "imagemagick", "jq", "unzip", "openjdk11"]
+packages = ["eas-cli", "freetype", "imagemagick", "jq", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjdk11", "openjpeg", "tcl", "tk", "unzip", "zlib"]
 
 [workflows]
 runButton = "Project"
