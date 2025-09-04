@@ -48,20 +48,15 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           <Ionicons name="menu" size={24} color="#ffffff" />
         </TouchableOpacity>
 
-        {/* Logo centré */}
-        <View style={styles.logoSection}>
-          <Image 
-            source={require('../../assets/atomic-flix-logo-new.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
+        {/* Texte à côté du menu, style WhatsApp */}
+        <View style={styles.titleSection}>
           <LinearGradient
             colors={[COLORS.secondary, COLORS.primary, COLORS.accent]}
             start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
-            style={styles.logoTextGradient}
+            style={styles.titleTextGradient}
           >
-            <Text style={styles.logoText}>ATOMIC FLIX</Text>
+            <Text style={styles.titleText}>ATOMIC FLIX</Text>
           </LinearGradient>
         </View>
 
@@ -114,30 +109,21 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
-  logoSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  titleSection: {
     flex: 1,
-    justifyContent: 'center',
-    marginHorizontal: 16,
+    marginLeft: 16,
   },
-  logoImage: {
-    width: 42,
-    height: 42,
-    borderRadius: 60, // Pour rendre le logo rond
-    marginRight: 8,
-  },
-  logoTextGradient: {
+  titleTextGradient: {
     borderRadius: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    alignSelf: 'flex-start',
   },
-  logoText: {
-    fontSize: 18,
+  titleText: {
+    fontSize: 20,
     fontWeight: 'bold',
     color: COLORS.text.primary,
-    letterSpacing: 0.5,
-    textAlign: 'center',
+    letterSpacing: 0.8,
     textShadowColor: 'rgba(0, 188, 212, 0.3)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
