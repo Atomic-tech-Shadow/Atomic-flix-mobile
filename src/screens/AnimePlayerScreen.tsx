@@ -1105,7 +1105,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   {episodeDetails.sources.map((source, index) => (
                     <Picker.Item
                       key={`server-${index}-${source.server}`}
-                      label={`SERVER ${index + 1} (${source.quality?.toUpperCase() || 'HD'})`}
+                      label={`${source.server?.toUpperCase() || `SERVER ${index + 1}`} (${source.quality?.toUpperCase() || 'HD'})`}
                       value={index.toString()}
                     />
                   ))}
