@@ -1,6 +1,6 @@
 {
-  "name": "mobile",
-  "version": "3.8.5",
+  "name": "com.atomic.flix",
+  "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
     "start": "expo start",

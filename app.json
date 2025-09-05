@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Atomic Flix",
-    "slug": "atomic-flix-mobile", 
-    "version": "3.8.5",
+    "slug": "atomic-flix", 
+    "version": "1.0.0",
     "orientation": "portrait",
     "extra": {
       "eas": {
@@ -15,12 +15,12 @@
 
 
     "android": {
-      "versionCode": 385,
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/atomic-flix-logo-new.png",
         "backgroundColor": "#8B5DFF"
       },
-      "package": "com.atomicflix.mobile",
+      "package": "com.atomic.flix",
       "permissions": [
         "android.permission.INTERNET",
         "android.permission.ACCESS_NETWORK_STATE",
