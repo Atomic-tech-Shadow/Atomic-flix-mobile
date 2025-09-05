@@ -204,7 +204,7 @@ const TermsOfServiceScreen: React.FC<Props> = ({ navigation }) => {
             <View style={styles.updateBox}>
               <Text style={styles.updateText}>
                 📅 <Text style={styles.boldText}>Dernière modification :</Text> {lastUpdated}{'\n'}
-                📱 <Text style={styles.boldText}>Version de l'app :</Text> 3.8.5{'\n'}
+                📱 <Text style={styles.boldText}>Version de l'app :</Text> 1.0.0{'\n'}
                 ✅ <Text style={styles.boldText}>Statut :</Text> Conditions en vigueur
               </Text>
             </View>

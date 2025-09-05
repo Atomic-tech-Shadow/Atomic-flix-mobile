@@ -35,7 +35,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
 
   // Utiliser la version d'app.json via Constants Expo
-  const appVersion = Constants.expoConfig?.version || '3.7.0';
+  const appVersion = Constants.expoConfig?.version || '1.0.0';
 
   return (
     <View style={styles.mobileHeader}>

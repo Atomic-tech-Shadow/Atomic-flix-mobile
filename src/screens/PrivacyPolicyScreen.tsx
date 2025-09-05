@@ -165,7 +165,7 @@ const PrivacyPolicyScreen: React.FC<Props> = ({ navigation }) => {
 
             <View style={styles.contactBox}>
               <Text style={styles.contactText}>
-                📱 <Text style={styles.boldText}>Application :</Text> Atomic Flix v3.8.5{'\n'}
+                📱 <Text style={styles.boldText}>Application :</Text> Atomic Flix v1.0.0{'\n'}
                 🛡️ <Text style={styles.boldText}>Engagement :</Text> Zéro collecte de données personnelles{'\n'}
                 ⏰ <Text style={styles.boldText}>Dernière révision :</Text> {lastUpdated}
               </Text>

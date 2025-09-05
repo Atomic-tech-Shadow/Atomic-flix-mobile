@@ -7,7 +7,7 @@
 ### 🎌 *L'univers de l'anime et du manga dans votre poche* 📱
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-3.8.5-8B5DFF?style=for-the-badge&logo=android&logoColor=white" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.0.0-8B5DFF?style=for-the-badge&logo=android&logoColor=white" alt="Version">
   <img src="https://img.shields.io/badge/React_Native-0.79.5-00D4FF?style=for-the-badge&logo=react&logoColor=white" alt="React Native">
   <img src="https://img.shields.io/badge/Expo-53.0.22-FF6B9D?style=for-the-badge&logo=expo&logoColor=white" alt="Expo">
   <img src="https://img.shields.io/badge/TypeScript-5.8.3-8B5DFF?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">

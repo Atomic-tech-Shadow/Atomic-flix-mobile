@@ -17,7 +17,7 @@ import Constants from 'expo-constants';
 interface DrawerContentProps extends DrawerContentComponentProps {}
 
 const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
-  const appVersion = Constants.expoConfig?.version || '3.7.0';
+  const appVersion = Constants.expoConfig?.version || '1.0.0';
 
   const menuItems = [
     {
