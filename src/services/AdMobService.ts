@@ -20,8 +20,8 @@ class AdMobService {
   // IDs des unités publicitaires - En production, utiliser les vrais IDs
   private readonly AD_UNITS = {
     banner: __DEV__ ? TestIds.BANNER : 'ca-app-pub-2491419083233524/6622947469',
-    interstitial: __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-2491419083233524/6622947469', // TODO: Remplacer par l'ID interstitielle
-    rewarded: __DEV__ ? TestIds.REWARDED : 'ca-app-pub-2491419083233524/6622947469', // TODO: Remplacer par l'ID récompensée
+    interstitial: __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-2491419083233524/8798411011',
+    rewarded: __DEV__ ? TestIds.REWARDED : 'ca-app-pub-2491419083233524/6622947469', // Utilise l'ID bannière temporairement
   };
 
   /**
