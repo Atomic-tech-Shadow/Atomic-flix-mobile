@@ -4,9 +4,17 @@
 
 ATOMIC FLIX is a React Native mobile application built with Expo, designed for streaming anime and reading manga. Developed entirely with Replit Agent, its primary purpose is to provide a seamless and feature-rich experience for anime and manga enthusiasts. The project aims to offer intuitive navigation, robust media playback capabilities, and a consistent user interface across mobile platforms, primarily Android. It integrates advanced features like real-time trending content, personalized planning for new releases, and intelligent notification systems. The vision is to create a go-to platform for otakus, offering a comprehensive and engaging content consumption experience.
 
-**Current Version**: 1.0.0 (Updated: 5 septembre 2025)
+**Current Version**: 1.0.1 (Updated: 24 septembre 2025)
 
 ## Recent Changes (September 2025)
+
+- **Version Update**: 1.0.0 → 1.0.1 with versionCode 2 (24 septembre 2025)
+  - **Expo Project ID Updated**: Nouveau project ID Expo pour nouvelle configuration
+  - **Fix Historique Saga**: Correction complète de la gestion des anime "Saga" vs "Saison" dans l'historique
+    - La fonction `resumeWatching` récupère maintenant les vraies données API pour matcher correctement
+    - Détection automatique de la structure Saga/Saison selon l'anime
+    - Fallback robuste si aucune correspondance exacte trouvée
+    - One Piece et autres anime "Saga" se reprennent correctement depuis l'historique
 
 - **Génération Keystore Propre** (4 septembre 2025): Génération d'un nouveau keystore Android avec keytool
   - **Keystore Fraîchement Généré**: Nouveau keystore `signing.keystore` créé avec keytool
