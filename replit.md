@@ -10,6 +10,14 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
 
 - **Version Update**: 1.0.0 → 1.0.1 with versionCode 2 (24 septembre 2025)
   - **Expo Project ID Updated**: Nouveau project ID Expo pour nouvelle configuration
+  - **Google AdMob Integration Complete**: Intégration complète de Google AdMob pour la monétisation (24 septembre 2025)
+    - **AdMob App ID**: Configuré avec `ca-app-pub-2491419083233524~3466193288`
+    - **Banner Ads**: ID d'unité `ca-app-pub-2491419083233524/6622947469` configuré et fonctionnel
+    - **Interstitial Ads**: ID d'unité `ca-app-pub-2491419083233524/8798411011` configuré
+    - **Service AdMob**: `AdMobService.ts` complet avec initialisation, préchargement et affichage des publicités
+    - **Composant Banner**: `AdBanner.tsx` avec protection web et gestion d'erreurs
+    - **Protection iOS**: Demande de permission ATT (App Tracking Transparency) configurée
+    - **Monétisation Active**: Application prête à générer des revenus publicitaires
   - **Fix Historique Saga**: Correction complète de la gestion des anime "Saga" vs "Saison" dans l'historique
     - La fonction `resumeWatching` récupère maintenant les vraies données API pour matcher correctement
     - Détection automatique de la structure Saga/Saison selon l'anime

@@ -40,6 +40,10 @@ externalPort = 8081
 localPort = 8082
 externalPort = 3000
 
+[[ports]]
+localPort = 44157
+externalPort = 3001
+
 [agent]
 expertMode = true
 
