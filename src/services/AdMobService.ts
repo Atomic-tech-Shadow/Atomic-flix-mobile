@@ -17,11 +17,11 @@ class AdMobService {
   private interstitialAd: InterstitialAd | null = null;
   private rewardedAd: RewardedAd | null = null;
 
-  // IDs des unités publicitaires - TEST IDs pour développement
+  // IDs des unités publicitaires - En production, utiliser les vrais IDs
   private readonly AD_UNITS = {
-    banner: __DEV__ ? TestIds.BANNER : 'ca-app-pub-xxxxxxxx/yyyyyyyyyy',
-    interstitial: __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-xxxxxxxx/yyyyyyyyyy',
-    rewarded: __DEV__ ? TestIds.REWARDED : 'ca-app-pub-xxxxxxxx/yyyyyyyyyy',
+    banner: __DEV__ ? TestIds.BANNER : 'ca-app-pub-2491419083233524/6622947469',
+    interstitial: __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-2491419083233524/6622947469', // TODO: Remplacer par l'ID interstitielle
+    rewarded: __DEV__ ? TestIds.REWARDED : 'ca-app-pub-2491419083233524/6622947469', // TODO: Remplacer par l'ID récompensée
   };
 
   /**
@@ -180,6 +180,20 @@ class AdMobService {
    */
   getBannerAdUnitId(): string {
     return this.AD_UNITS.banner;
+  }
+
+  /**
+   * Obtient l'ID de l'unité publicitaire pour les interstitielles
+   */
+  getInterstitialAdUnitId(): string {
+    return this.AD_UNITS.interstitial;
+  }
+
+  /**
+   * Obtient l'ID de l'unité publicitaire pour les récompensées
+   */
+  getRewardedAdUnitId(): string {
+    return this.AD_UNITS.rewarded;
   }
 
   /**

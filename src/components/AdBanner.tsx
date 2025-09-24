@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { adMobService } from '../services/AdMobService';
 import { COLORS } from '../constants/newColors';
@@ -24,8 +24,8 @@ const AdBanner: React.FC<AdBannerProps> = ({
   const [isAdLoaded, setIsAdLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  // Ne pas afficher si AdMob n'est pas prêt
-  if (!adMobService.isAdMobReady()) {
+  // Ne pas afficher sur web ou si AdMob n'est pas prêt
+  if (Platform.OS === 'web' || !adMobService.isAdMobReady()) {
     return null;
   }
 
