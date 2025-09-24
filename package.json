@@ -8,7 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "web:replit": "expo start --web --port 5000 --host 0.0.0.0",
+    "web:replit": "expo start --web --port 5000 --host lan",
     "doctor": "node doctor-check.js",
     "check-deps": "expo install --check",
     "fix-deps": "expo install --fix",
