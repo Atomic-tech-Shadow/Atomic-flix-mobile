@@ -6,6 +6,9 @@
     "noUnusedParameters": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "lib": ["ES2015", "ES2017", "ES2018", "DOM"],
+    "target": "ES2017",
+    "module": "ESNext",
     "baseUrl": ".",
     "paths": {
       "@/*": [
