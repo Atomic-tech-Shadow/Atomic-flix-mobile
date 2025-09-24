@@ -40,5 +40,14 @@ externalPort = 8081
 localPort = 8082
 externalPort = 3000
 
+[[ports]]
+localPort = 33325
+externalPort = 3001
+
 [agent]
 expertMode = true
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["npm", "run", "start:web"]
+build = ["npm", "run", "build"]

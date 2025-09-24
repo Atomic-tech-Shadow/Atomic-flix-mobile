@@ -9,6 +9,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "web:replit": "expo start --web --port 5000 --host lan",
+    "build": "expo export --platform web",
+    "start:web": "python3 -m http.server 5000 --directory dist",
     "doctor": "node doctor-check.js",
     "check-deps": "expo install --check",
     "fix-deps": "expo install --fix",
