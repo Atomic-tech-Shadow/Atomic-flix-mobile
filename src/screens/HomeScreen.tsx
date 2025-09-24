@@ -567,8 +567,80 @@ const HomeScreen: React.FC = () => {
   }, [searchQuery]);
 
   // Navigation vers un épisode depuis l'historique
-  const resumeWatching = (historyItem: WatchHistoryItem) => {
-    // Naviguer vers le lecteur vidéo avec les paramètres de l'historique
+  const resumeWatching = async (historyItem: WatchHistoryItem) => {
+    try {
+      // 🎯 Récupérer les vraies données de saisons depuis l'API pour éviter les erreurs saga/saison
+      const animeDetails = await apiRequest(`/api/anime/${historyItem.animeId}`);
+      
+      if (animeDetails && animeDetails.success && animeDetails.data && animeDetails.data.seasons) {
+        const seasons = animeDetails.data.seasons;
+        
+        // Extraire le numéro de saison depuis l'ID d'historique si disponible
+        let targetSeasonNumber = 1; // Fallback par défaut
+        
+        // Essayer d'extraire depuis l'ID anime : "one-piece-saison11-vostfr" -> 11
+        if (historyItem.animeId) {
+          const seasonMatch = historyItem.animeId.match(/saison(\d+)|saga(\d+)/i);
+          if (seasonMatch) {
+            targetSeasonNumber = parseInt(seasonMatch[1] || seasonMatch[2], 10);
+          }
+        }
+        
+        let matchingSeason = null;
+        
+        // 1. Essayer de matcher par number exact d'abord
+        matchingSeason = seasons.find((s: any) => s.number === targetSeasonNumber);
+        
+        // 2. Si pas trouvé par number, essayer par value et name avec logique saga/saison
+        if (!matchingSeason) {
+          matchingSeason = seasons.find((s: any) => {
+            const value = s.value?.toLowerCase() || '';
+            const name = s.name?.toLowerCase() || '';
+            
+            // Détection si c'est un anime avec structure "saga"
+            const hasSagaStructure = value.includes('saga') || name.includes('saga');
+            
+            if (hasSagaStructure) {
+              // Pour One Piece et autres animes "saga" : chercher saga exacte
+              return value === `saga${targetSeasonNumber}` || 
+                     value === `saga-${targetSeasonNumber}` ||
+                     value === `saga_${targetSeasonNumber}` ||
+                     name.toLowerCase() === `saga ${targetSeasonNumber}` ||
+                     name.toLowerCase() === `saga${targetSeasonNumber}`;
+            } else {
+              // Pour animes classiques "saison" : chercher saison exacte
+              return value === `saison${targetSeasonNumber}` || 
+                     value === `saison-${targetSeasonNumber}` ||
+                     value === `saison_${targetSeasonNumber}` ||
+                     name.toLowerCase() === `saison ${targetSeasonNumber}` ||
+                     name.toLowerCase() === `saison${targetSeasonNumber}`;
+            }
+          });
+        }
+        
+        // 3. Si toujours pas trouvé, prendre la première saison disponible
+        if (!matchingSeason && seasons.length > 0) {
+          matchingSeason = seasons[0];
+          console.log('🔄 Saga/Saison non trouvée pour historique, utilisation de la première saison:', matchingSeason.name);
+        }
+        
+        if (matchingSeason) {
+          // Naviguer avec les vraies données de saison de l'API
+          navigation.navigate('AnimePlayer', {
+            animeUrl: `https://anime-sama.fr/catalogue/${historyItem.animeId}`,
+            seasonData: matchingSeason,
+            animeTitle: historyItem.animeTitle,
+            initialEpisode: historyItem.episodeNumber,
+            initialLanguage: historyItem.language as 'VF' | 'VOSTFR',
+          });
+          return;
+        }
+      }
+    } catch (apiError) {
+      console.error('❌ Erreur chargement anime details pour historique:', apiError);
+    }
+
+    // Fallback : navigation avec seasonData null si l'API échoue
     navigation.navigate('AnimePlayer', {
       animeUrl: `https://anime-sama.fr/catalogue/${historyItem.animeId}`,
       seasonData: null, // Sera déterminé automatiquement
