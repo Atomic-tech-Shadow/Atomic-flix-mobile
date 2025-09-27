@@ -9,6 +9,7 @@ import 'react-native-gesture-handler';
 import AppNavigator from './src/navigation/AppNavigator';
 import { queryClient } from './src/utils/queryClient';
 import ErrorBoundary from './src/components/ErrorBoundary';
+import StartIOInterstitialManager from './src/components/StartIOInterstitialManager';
 
 // Appeler preventAutoHideAsync() dans le scope global selon la documentation Expo 53
 SplashScreen.preventAutoHideAsync();
@@ -21,6 +22,7 @@ SplashScreen.setOptions({
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
+  const [screenChangeCounter, setScreenChangeCounter] = useState(0);
 
   useEffect(() => {
     async function prepareApp() {
@@ -64,9 +66,14 @@ export default function App() {
               }
             }}
           >
-            <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-              <AppNavigator />
-            </View>
+            <StartIOInterstitialManager
+              showOnScreenChange={true}
+              screenChangeCounter={screenChangeCounter}
+            >
+              <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+                <AppNavigator />
+              </View>
+            </StartIOInterstitialManager>
           </ErrorBoundary>
         </QueryClientProvider>
       </GestureHandlerRootView>

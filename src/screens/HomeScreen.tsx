@@ -33,6 +33,7 @@ import { PushNotification } from '../types/notifications';
 import { historyService, WatchHistoryItem } from '../services/HistoryService';
 import { getLanguageBadgeText } from '../utils/languageUtils';
 import NetworkStatusBanner from '../components/NetworkStatusBanner';
+import StartIOAdBanner from '../components/StartIOAdBanner';
 import { apiGetWithCache } from '../utils/apiWithRetry';
 
 
@@ -1369,6 +1370,12 @@ const HomeScreen: React.FC = () => {
         </SafeAreaView>
       </Modal>
 
+      {/* Banner publicitaire Start.io en bas de l'écran */}
+      <StartIOAdBanner 
+        position="bottom" 
+        visible={true}
+        style={{ zIndex: 100 }}
+      />
 
     </SafeAreaView>
   );

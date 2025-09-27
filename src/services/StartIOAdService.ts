@@ -64,7 +64,7 @@ class StartIOAdService {
       // En production, utilisera le module natif
       const { StartIOAds } = NativeModules as { StartIOAds: StartIOAdModule };
       if (StartIOAds) {
-        this.eventEmitter = new NativeEventEmitter(StartIOAds);
+        this.eventEmitter = new NativeEventEmitter(StartIOAds as any);
         this.setupEventListeners();
         
         const result = await StartIOAds.initialize(STARTIO_APP_ID);
@@ -165,7 +165,7 @@ class StartIOAdService {
       this.notifyListeners({
         type: 'adFailed',
         adType: 'interstitial',
-        data: { error: error.message }
+        data: { error: (error as Error).message }
       });
       return false;
     }
