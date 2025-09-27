@@ -1018,7 +1018,7 @@ const HomeScreen: React.FC = () => {
                           {historyItem.animeTitle}
                         </Text>
                         <Text style={styles.historyEpisodeInfo}>
-                          Saison 1
+                          {historyItem.seasonName || historyService.extractSeasonInfo(historyItem.animeId).seasonName}
                         </Text>
                         <View style={styles.historyBadgeContainer}>
                           <View style={[styles.historyLanguageBadge, { backgroundColor: historyItem.language === 'VF' ? '#0055A4' : '#BC002D' }]}>

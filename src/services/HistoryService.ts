@@ -14,6 +14,8 @@ export interface WatchHistoryItem {
   totalDuration: number; // durée totale de l'épisode
   isCompleted: boolean;
   lastPosition: number; // position de lecture en secondes
+  seasonName?: string; // "Saga 11" ou "Saison 1"
+  seasonNumber?: number; // 11 pour Saga 11
 }
 
 class HistoryService {
@@ -22,6 +24,35 @@ class HistoryService {
   // Génère un ID unique pour l'historique
   private generateId(): string {
     return Date.now().toString() + Math.random().toString(36).substr(2, 9);
+  }
+
+  // Extrait l'information de saison/saga depuis l'animeId
+  extractSeasonInfo(animeId: string): { seasonName: string; seasonNumber: number } {
+    // Essayer d'extraire depuis l'ID : "one-piece-saga11-vostfr" -> 11
+    const sagaMatch = animeId.match(/saga[-_ ]?(\d+)/i);
+    if (sagaMatch) {
+      const number = parseInt(sagaMatch[1], 10);
+      return {
+        seasonName: `Saga ${number}`,
+        seasonNumber: number
+      };
+    }
+
+    // Essayer d'extraire depuis l'ID : "anime-saison3-vf" -> 3
+    const saisonMatch = animeId.match(/saison[-_ ]?(\d+)/i);
+    if (saisonMatch) {
+      const number = parseInt(saisonMatch[1], 10);
+      return {
+        seasonName: `Saison ${number}`,
+        seasonNumber: number
+      };
+    }
+
+    // Fallback par défaut
+    return {
+      seasonName: 'Saison 1',
+      seasonNumber: 1
+    };
   }
 
   // Sauvegarder un épisode regardé dans l'historique
@@ -58,7 +89,7 @@ class HistoryService {
       const limitedHistory = existingHistory.slice(0, 50);
 
       await AsyncStorage.setItem(this.STORAGE_KEY, JSON.stringify(limitedHistory));
-      console.log('📺 Historique sauvegardé:', item.animeTitle, 'Ep.', item.episodeNumber, item.language);
+      console.log('📺 Historique sauvegardé:', item.animeTitle, item.seasonName || 'Saison ?', 'Ep.', item.episodeNumber, item.language);
     } catch (error) {
       console.error('Erreur sauvegarde historique:', error);
     }
@@ -71,12 +102,37 @@ class HistoryService {
       if (!historyData) return [];
 
       const history: WatchHistoryItem[] = JSON.parse(historyData);
+      let needsUpdate = false;
       
-      // Convertir les dates string en objets Date
-      return history.map(item => ({
-        ...item,
-        watchedAt: new Date(item.watchedAt),
-      }));
+      // Convertir les dates string en objets Date et backfill des informations de saison manquantes
+      const enrichedHistory = history.map(item => {
+        const enrichedItem = {
+          ...item,
+          watchedAt: new Date(item.watchedAt),
+        };
+
+        // Si les informations de saison manquent, les extraire de l'animeId
+        if (!enrichedItem.seasonName || !enrichedItem.seasonNumber) {
+          const seasonInfo = this.extractSeasonInfo(enrichedItem.animeId);
+          enrichedItem.seasonName = seasonInfo.seasonName;
+          enrichedItem.seasonNumber = seasonInfo.seasonNumber;
+          needsUpdate = true;
+        }
+
+        return enrichedItem;
+      });
+
+      // Sauvegarder les changements si on a enrichi des éléments
+      if (needsUpdate) {
+        try {
+          await AsyncStorage.setItem(this.STORAGE_KEY, JSON.stringify(enrichedHistory));
+          console.log('📺 Historique enrichi avec informations de saison/saga');
+        } catch (error) {
+          console.warn('Erreur sauvegarde historique enrichi:', error);
+        }
+      }
+      
+      return enrichedHistory;
     } catch (error) {
       console.error('Erreur lecture historique:', error);
       return [];

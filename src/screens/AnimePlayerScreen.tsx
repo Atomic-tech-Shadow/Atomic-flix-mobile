@@ -235,6 +235,16 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     if (!animeData || !episode) return;
 
     try {
+      // Extraire l'information de saison/saga
+      const seasonInfo = historyService.extractSeasonInfo(animeData.id);
+      
+      // Utiliser la saison actuellement sélectionnée si disponible, sinon les données initiales
+      const currentSeasonData = selectedSeason || seasonData;
+      const realSeasonInfo = currentSeasonData ? {
+        seasonName: currentSeasonData.name || `Saison ${currentSeasonData.number}`,
+        seasonNumber: currentSeasonData.number || 1
+      } : seasonInfo;
+
       await historyService.saveWatchHistory({
         animeId: animeData.id,
         animeTitle: animeTitle,
@@ -246,6 +256,8 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         totalDuration,
         isCompleted: watchDuration > 0 && totalDuration > 0 && (watchDuration / totalDuration) >= 0.8,
         lastPosition,
+        seasonName: realSeasonInfo.seasonName,
+        seasonNumber: realSeasonInfo.seasonNumber,
       });
     } catch (error) {
       console.error('Erreur sauvegarde historique:', error);
