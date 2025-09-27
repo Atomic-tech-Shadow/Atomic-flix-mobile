@@ -1059,6 +1059,45 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: 'bold',
   },
+  // Styles pour la section premium
+  premiumSection: {
+    backgroundColor: `${COLORS.primary}99`,
+    marginHorizontal: 16,
+    marginVertical: 16,
+    padding: 20,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: `${COLORS.accent}33`,
+    alignItems: 'center',
+  },
+  premiumHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  premiumTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: COLORS.accent,
+    marginLeft: 8,
+  },
+  premiumDescription: {
+    color: COLORS.text.secondary,
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 12,
+    lineHeight: 20,
+  },
+  premiumFeatures: {
+    color: COLORS.text.primary,
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 20,
+    lineHeight: 22,
+  },
+  premiumButton: {
+    marginTop: 8,
+  },
 });
 
 export default AnimeDetailScreen;

@@ -32,13 +32,10 @@ class StartIOAdService {
   private listeners: ((event: AdEvent) => void)[] = [];
 
   constructor() {
-    if (Platform.OS === 'android') {
-      // Pour l'instant, on simule les fonctionnalités en attendant le module natif
-      this.initializeFallback();
-    }
+    // N'initialise rien automatiquement - l'initialisation se fait via initialize()
   }
 
-  // Initialisation fallback pour le développement
+  // Initialisation fallback pour le développement uniquement
   private initializeFallback() {
     console.log('[StartIO] Initializing with fallback mode for development');
     this.initialized = true;
@@ -53,30 +50,39 @@ class StartIOAdService {
 
       console.log('[StartIO] Initializing SDK with App ID:', STARTIO_APP_ID);
       
-      // En mode développement, on simule l'initialisation
-      if (__DEV__) {
+      // Essayer d'abord le module natif en production
+      const { StartIOAds } = NativeModules as { StartIOAds: StartIOAdModule };
+      if (StartIOAds && !__DEV__) {
+        try {
+          this.eventEmitter = new NativeEventEmitter(StartIOAds as any);
+          this.setupEventListeners();
+          
+          const result = await StartIOAds.initialize(STARTIO_APP_ID);
+          this.initialized = result;
+          
+          if (result) {
+            console.log('[StartIO] Native SDK initialized successfully');
+            return result;
+          }
+        } catch (nativeError) {
+          console.warn('[StartIO] Native SDK failed, falling back to development mode:', nativeError);
+        }
+      }
+
+      // Fallback pour le développement ou si le module natif n'est pas disponible
+      if (__DEV__ || !StartIOAds) {
+        this.initializeFallback();
         await this.setTestAdsEnabled(true);
-        this.initialized = true;
         console.log('[StartIO] SDK initialized successfully (development mode)');
         return true;
       }
 
-      // En production, utilisera le module natif
-      const { StartIOAds } = NativeModules as { StartIOAds: StartIOAdModule };
-      if (StartIOAds) {
-        this.eventEmitter = new NativeEventEmitter(StartIOAds as any);
-        this.setupEventListeners();
-        
-        const result = await StartIOAds.initialize(STARTIO_APP_ID);
-        this.initialized = result;
-        console.log('[StartIO] SDK initialized:', result);
-        return result;
-      }
-
-      throw new Error('Start.io native module not found');
+      throw new Error('Start.io native module not found and not in development mode');
     } catch (error) {
       console.error('[StartIO] Failed to initialize:', error);
-      return false;
+      // En derniers recours, utiliser le mode fallback
+      this.initializeFallback();
+      return true;
     }
   }
 

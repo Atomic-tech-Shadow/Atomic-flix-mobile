@@ -289,6 +289,22 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   };
 
   // Fonction pour charger les sources d'un épisode
+  // Fonction pour prioriser le serveur sibnet
+  const prioritizeSibnetServer = (sources: any[]) => {
+    if (!sources || sources.length === 0) return sources;
+    
+    // Séparer les sources sibnet et les autres
+    const sibnetSources = sources.filter(source => 
+      source.server && source.server.toLowerCase().includes('sibnet')
+    );
+    const otherSources = sources.filter(source => 
+      !source.server || !source.server.toLowerCase().includes('sibnet')
+    );
+    
+    // Retourner sibnet en premier, puis les autres
+    return [...sibnetSources, ...otherSources];
+  };
+
   const loadEpisodeSources = async (episode: Episode) => {
     try {
       // Arrêter le tracking précédent si il y en a un
@@ -301,13 +317,16 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/embed?url=${encodeURIComponent(episode.url)}`);
 
       if (response && response.success && response.sources && response.sources.length > 0) {
+        // Prioriser sibnet en première position
+        const prioritizedSources = prioritizeSibnetServer(response.sources);
+        
         setEpisodeDetails({
           id: episode.id,
           title: episode.title,
           animeTitle: animeTitle,
           episodeNumber: episode.episodeNumber,
-          sources: response.sources,
-          availableServers: response.sources.map((s: any) => s.server),
+          sources: prioritizedSources,
+          availableServers: prioritizedSources.map((s: any) => s.server),
           url: episode.url
         });
 
