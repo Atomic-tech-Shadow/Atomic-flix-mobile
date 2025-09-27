@@ -9,7 +9,6 @@ import 'react-native-gesture-handler';
 import AppNavigator from './src/navigation/AppNavigator';
 import { queryClient } from './src/utils/queryClient';
 import ErrorBoundary from './src/components/ErrorBoundary';
-import { adMobService } from './src/services/AdMobService';
 
 // Appeler preventAutoHideAsync() dans le scope global selon la documentation Expo 53
 SplashScreen.preventAutoHideAsync();
@@ -29,11 +28,7 @@ export default function App() {
         // Préparation de l'app : chargement des ressources nécessaires
         await new Promise(resolve => setTimeout(resolve, 100));
         
-        // 💰 Initialiser AdMob pour la monétisation
-        const adMobInitialized = await adMobService.initialize();
-        if (adMobInitialized) {
-          console.log('💰 AdMob prêt pour les revenus publicitaires !');
-        }
+        // Préparation de l'app terminée
       } catch (e) {
         console.warn('Erreur lors de la préparation de l\'app:', e);
       } finally {
