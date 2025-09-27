@@ -39,6 +39,7 @@
     "plugins": [
       "./android-manifest-config.js", 
       "./android-resources-config.js",
+      "./expo-plugin-startio.js",
       [
         "expo-notifications",
         {
