@@ -1862,14 +1862,16 @@ const styles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: COLORS.primary,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    borderWidth: 1,
-    borderColor: COLORS.border.primary, // Bordure violette pour pépites rares
+    backgroundColor: COLORS.background.secondary, // Fond légèrement visible sur noir
+    // Bordure cosmique pour pépites rares - Effet diamant
+    borderWidth: 2,
+    borderColor: COLORS.badges.atomic, // Violet éclatant - Pouvoir atomique
+    // Effet glow diamant intense pour pépites
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 12,
+    elevation: 10,
   },
 
   // Badges spécialisés sur les images
