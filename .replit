@@ -25,7 +25,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm run web:replit"
+args = "npx expo start --web --port 5000"
 waitForPort = 5000
 
 [[ports]]
@@ -33,12 +33,12 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 36143
-externalPort = 3000
-
-[[ports]]
 localPort = 37703
 externalPort = 5000
+
+[[ports]]
+localPort = 38189
+externalPort = 3000
 
 [[ports]]
 localPort = 38519
