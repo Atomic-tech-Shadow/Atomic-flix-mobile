@@ -1597,16 +1597,20 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   languageBadge: {
-    backgroundColor: 'rgba(0, 212, 255, 0.2)',
+    backgroundColor: COLORS.badges.vostfr + '33', // Violet avec transparence
     borderWidth: 1,
-    borderColor: COLORS.secondary,
+    borderColor: COLORS.badges.vostfr,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 8,
     alignSelf: 'flex-end',
+    // Effet glow violet pour badges langue
+    shadowColor: COLORS.badges.vostfr,
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
   },
   languageText: {
-    color: COLORS.secondary,
+    color: COLORS.text.primary,
     fontSize: 9,
     fontWeight: '600',
   },
@@ -1749,12 +1753,16 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   episodeInfoBadge: {
-    backgroundColor: 'rgba(0, 212, 255, 0.2)',
+    backgroundColor: COLORS.badges.new + '33', // Vert émeraude avec transparence
     borderWidth: 1,
-    borderColor: COLORS.secondary,
+    borderColor: COLORS.badges.new,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 6,
+    // Effet glow vert pour badges épisode
+    shadowColor: COLORS.badges.new,
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
   },
   episodeInfoText: {
     color: COLORS.states.active, // Cyan éclatant pour meilleur contraste
@@ -1796,13 +1804,17 @@ const styles = StyleSheet.create({
     lineHeight: 14,
   },
   horizontalCardBadge: {
-    backgroundColor: 'rgba(0, 188, 212, 0.2)',
+    backgroundColor: COLORS.badges.vostfr + '33', // Violet avec transparence
     borderWidth: 1,
-    borderColor: COLORS.secondary,
+    borderColor: COLORS.badges.vostfr,
     paddingHorizontal: 4,
     paddingVertical: 2,
     borderRadius: 6,
     alignSelf: 'flex-start',
+    // Effet glow violet pour badges horizontaux
+    shadowColor: COLORS.badges.vostfr,
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
   },
   horizontalCardBadgeText: {
     color: COLORS.badges.trending, // Cyan éclatant stratégique
@@ -1905,17 +1917,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     borderWidth: 1,
-    borderColor: 'rgba(139, 69, 19, 0.4)', // Bordure marron vintage pour historique
+    borderColor: COLORS.badges.manga + '66', // Bordure magenta avec transparence pour vintage
   },
   vintageBadge: {
     position: 'absolute',
     top: 6,
     right: 6,
-    backgroundColor: 'rgba(139, 69, 19, 0.95)', // Marron vintage
+    backgroundColor: COLORS.badges.manga, // Magenta atomique pour vintage
     paddingHorizontal: 6,
     paddingVertical: 3,
     borderRadius: 8,
     zIndex: 1,
+    // Effet glow magenta pour badges vintage
+    shadowColor: COLORS.badges.manga,
+    shadowOpacity: 0.6,
+    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.border.focus,
   },
   vintageBadgeText: {
     color: '#ffffff',
@@ -1952,16 +1970,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     borderWidth: 1,
-    borderColor: 'rgba(0, 255, 255, 0.4)', // Bordure cyan pour recommandations
+    borderColor: COLORS.badges.trending + '66', // Bordure violette avec transparence pour recommandations
   },
   recommendationBadge: {
     position: 'absolute',
     top: 6,
     right: 6,
-    backgroundColor: 'rgba(0, 255, 255, 0.95)', // Cyan éclatant du logo
+    backgroundColor: COLORS.badges.trending, // Violet néon pour recommandations
     paddingHorizontal: 6,
     paddingVertical: 3,
     borderRadius: 8,
+    // Effet glow violet pour badges recommandation
+    shadowColor: COLORS.badges.trending,
+    shadowOpacity: 0.6,
+    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.border.glow,
     zIndex: 1,
   },
   recommendationBadgeText: {
@@ -1990,11 +2014,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 6,
     right: 6,
-    backgroundColor: 'rgba(255, 193, 7, 0.95)', // Couleur dorée/orange pour planning
+    backgroundColor: COLORS.text.atomic, // Or atomique pour planning
     paddingHorizontal: 6,
     paddingVertical: 3,
     borderRadius: 8,
     zIndex: 1,
+    // Effet glow doré pour badges planning
+    shadowColor: COLORS.text.atomic,
+    shadowOpacity: 0.6,
+    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.border.focus,
   },
   planningBadgeText: {
     color: '#000000',
