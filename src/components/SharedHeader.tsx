@@ -45,7 +45,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           style={styles.menuButton}
           onPress={onMenuPress}
         >
-          <Ionicons name="menu" size={24} color="#ffffff" />
+          <Ionicons name="menu" size={24} color={COLORS.text.primary} />
         </TouchableOpacity>
 
         {/* Texte à côté du menu, style WhatsApp */}
@@ -66,7 +66,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             style={styles.headerIconButton}
             onPress={handleSearchPress}
           >
-            <Ionicons name="search" size={22} color="#ffffff" />
+            <Ionicons name="search" size={22} color={COLORS.text.primary} />
           </TouchableOpacity>
 
           {/* Bouton notifications avec badge */}
@@ -74,7 +74,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             style={styles.headerIconButton}
             onPress={onNotificationPress}
           >
-            <Ionicons name="notifications-outline" size={22} color="#ffffff" />
+            <Ionicons name="notifications-outline" size={22} color={COLORS.text.primary} />
             {unreadCount > 0 && (
               <View style={styles.notificationBadge}>
                 <Text style={styles.badgeText}>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   menuButton: {
     padding: 8,
     borderRadius: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: COLORS.background.card,
     // Contour néon pour bouton menu
     borderWidth: 2,
     borderColor: COLORS.border.secondary,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.text.primary,
     letterSpacing: 0.8,
-    textShadowColor: 'rgba(0, 188, 212, 0.3)',
+    textShadowColor: COLORS.badges.atomic,
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     // Contour néon pour boutons d'icônes
     borderWidth: 2,
     borderColor: COLORS.border.secondary,
-    backgroundColor: 'rgba(168, 85, 247, 0.1)',
+    backgroundColor: COLORS.background.card,
     shadowColor: COLORS.badges.atomic,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.4,
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
   },
   badgeText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 10,
     fontWeight: 'bold',
     textAlign: 'center',

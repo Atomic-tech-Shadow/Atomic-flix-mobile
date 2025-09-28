@@ -77,7 +77,7 @@ class ErrorBoundary extends Component<Props, State> {
                 onPress={this.handleRetry}
                 activeOpacity={0.8}
               >
-                <Ionicons name="refresh" size={20} color="#ffffff" />
+                <Ionicons name="refresh" size={20} color={COLORS.text.primary} />
                 <Text style={styles.retryButtonText}>Réessayer</Text>
               </TouchableOpacity>
             </View>
@@ -163,13 +163,13 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   retryButtonText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
     fontWeight: 'bold',
     marginLeft: 8,
   },
   debugContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: COLORS.background.card,
     borderRadius: 10,
     padding: 15,
     marginTop: 20,
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   helpContainer: {
-    backgroundColor: 'rgba(0, 212, 255, 0.1)',
+    backgroundColor: COLORS.background.card,
     borderRadius: 10,
     padding: 15,
     marginTop: 20,

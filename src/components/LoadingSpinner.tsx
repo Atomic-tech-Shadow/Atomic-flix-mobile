@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
+import { COLORS } from '../constants/newColors';
 
 interface LoadingSpinnerProps {
   message?: string;
@@ -11,7 +12,7 @@ interface LoadingSpinnerProps {
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ 
   message = 'Chargement...', 
   size = 'medium',
-  color = '#00D4FF', // Cyan du logo par défaut
+  color = COLORS.secondary, // Cyan du logo par défaut
   showMessage = true 
 }) => {
   const spinValue = useRef(new Animated.Value(0)).current;

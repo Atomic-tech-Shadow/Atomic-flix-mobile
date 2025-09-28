@@ -738,7 +738,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           <LoadingSpinner 
             message="Chargement du lecteur..." 
             size="large"
-            color="#00bcd4"
+            color={COLORS.secondary}
           />
         </View>
       );
@@ -752,7 +752,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           {serverError ? (
             // 🚨 Message d'erreur de serveur personnalisé
             <View style={styles.errorContainer}>
-              <Ionicons name="warning-outline" size={48} color="#ef4444" />
+              <Ionicons name="warning-outline" size={48} color={COLORS.text.error} />
               <Text style={styles.errorText}>Serveur temporairement indisponible</Text>
               <Text style={styles.errorMessageText}>Choisissez un autre serveur pour continuer</Text>
               <TouchableOpacity 
@@ -820,7 +820,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               }}
               renderError={() => (
                 <View style={styles.errorContainer}>
-                  <Ionicons name="warning-outline" size={48} color="#ef4444" />
+                  <Ionicons name="warning-outline" size={48} color={COLORS.text.error} />
                   <Text style={styles.errorText}>Serveur temporairement indisponible</Text>
                   <Text style={styles.errorMessageText}>Choisissez un autre serveur pour continuer</Text>
                   <TouchableOpacity 
@@ -841,7 +841,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
           {episodeLoading && !serverError && (
             <View style={styles.loadingOverlay}>
-              <ActivityIndicator size="large" color="#00bcd4" />
+              <ActivityIndicator size="large" color={COLORS.secondary} />
             </View>
           )}
         </View>
@@ -867,7 +867,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           <LoadingSpinner 
             message="Chargement de l'anime..." 
             size="large"
-            color="#00bcd4"
+            color={COLORS.secondary}
           />
         </View>
       </SafeAreaView>
@@ -939,7 +939,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       <OptimizedScrollView 
         style={styles.scrollContainer}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#00bcd4" />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.secondary} />
         }
         showsVerticalScrollIndicator={false}
         // Optimisations pour scroll fluide
@@ -957,7 +957,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 placeholder="Rechercher des animes..."
-                placeholderTextColor="#6b7280"
+                placeholderTextColor={COLORS.text.muted}
                 autoFocus
               />
               <TouchableOpacity
@@ -1192,7 +1192,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               disabled={!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === 0}
               activeOpacity={0.7}
             >
-              <Ionicons name="chevron-back" size={24} color="#ffffff" />
+              <Ionicons name="chevron-back" size={24} color={COLORS.text.primary} />
             </TouchableOpacity>
 
             <View style={styles.downloadContainer}>
@@ -1205,7 +1205,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 disabled={!episodeDetails || episodeDetails.sources.length === 0}
                 activeOpacity={0.7}
               >
-                <Ionicons name="download" size={24} color="#ffffff" />
+                <Ionicons name="download" size={24} color={COLORS.text.primary} />
               </TouchableOpacity>
 
 
@@ -1220,7 +1220,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               disabled={!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === episodes.length - 1}
               activeOpacity={0.7}
             >
-              <Ionicons name="chevron-forward" size={24} color="#ffffff" />
+              <Ionicons name="chevron-forward" size={24} color={COLORS.text.primary} />
             </TouchableOpacity>
           </View>
         )}
@@ -1238,7 +1238,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         {/* Message d'erreur */}
         {error && (
           <View style={styles.errorMessage}>
-            <Ionicons name="warning-outline" size={24} color="#ef4444" />
+            <Ionicons name="warning-outline" size={24} color={COLORS.text.error} />
             <Text style={styles.errorMessageText}>{error}</Text>
             <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
               <Text style={styles.retryButtonText}>Réessayer</Text>
@@ -1326,7 +1326,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   retryButton: {
-    backgroundColor: '#00bcd4',
+    backgroundColor: COLORS.secondary,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
@@ -1348,7 +1348,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: COLORS.primary,
     borderWidth: 2,
-    borderColor: '#00bcd4',
+    borderColor: COLORS.secondary,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
@@ -1372,7 +1372,7 @@ const styles = StyleSheet.create({
     lineHeight: 44,
   },
   languageTextPicker: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -1428,7 +1428,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   episodeTitle: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -1463,7 +1463,7 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.primary,
   },
   dropdownLabel: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 12,
@@ -1484,7 +1484,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   picker: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     backgroundColor: 'transparent',
     fontSize: 16,
     fontWeight: 'bold',
@@ -1594,7 +1594,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 8,
-    backgroundColor: '#00bcd4',
+    backgroundColor: COLORS.secondary,
     borderWidth: 2,
     borderColor: '#0ea5e9',
     justifyContent: 'center',
@@ -1656,7 +1656,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   downloadMenuTitle: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 14,
     fontWeight: '600',
   },
@@ -1676,7 +1676,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   downloadMenuText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 14,
   },
   flagBackground: {

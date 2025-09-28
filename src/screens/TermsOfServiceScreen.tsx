@@ -236,7 +236,7 @@ const TermsOfServiceScreen: React.FC<Props> = ({ navigation }) => {
               style={styles.acceptButton} 
               onPress={() => navigation.goBack()}
             >
-              <Ionicons name="checkmark-circle" size={20} color="#ffffff" />
+              <Ionicons name="checkmark-circle" size={20} color={COLORS.text.primary} />
               <Text style={styles.acceptButtonText}>J'accepte ces conditions</Text>
             </TouchableOpacity>
           </View>
@@ -399,9 +399,9 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   warningBox: {
-    backgroundColor: '#FF6B9D20',
+    backgroundColor: COLORS.badges.manga + '20',
     borderLeftWidth: 4,
-    borderLeftColor: '#FF6B9D',
+    borderLeftColor: COLORS.badges.manga,
     padding: 16,
     borderRadius: 8,
     marginTop: 16,
@@ -466,7 +466,7 @@ const styles = StyleSheet.create({
     minWidth: 200,
     justifyContent: 'center',
     elevation: 3,
-    shadowColor: '#000',
+    shadowColor: COLORS.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
@@ -474,7 +474,7 @@ const styles = StyleSheet.create({
   acceptButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#ffffff',
+    color: COLORS.text.primary,
     marginLeft: 8,
   },
 });

@@ -360,7 +360,7 @@ const AnimeDetailScreen: React.FC = () => {
           <LoadingSpinner 
             message="Chargement des détails de l'anime..." 
             size="large"
-            color="#00bcd4"
+            color={COLORS.secondary}
           />
         </View>
       </SafeAreaView>
@@ -425,8 +425,8 @@ const AnimeDetailScreen: React.FC = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={['#00bcd4']}
-            tintColor="#00bcd4"
+            colors={[COLORS.secondary]}
+            tintColor={COLORS.secondary}
           />
         }
       >
@@ -440,7 +440,7 @@ const AnimeDetailScreen: React.FC = () => {
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 placeholder="Rechercher des animes..."
-                placeholderTextColor="#6b7280"
+                placeholderTextColor={COLORS.text.muted}
                 autoFocus
               />
               <TouchableOpacity
@@ -776,7 +776,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(139,92,246,0.4)',
   },
   genreDot: {
-    backgroundColor: '#8b5cf6', // Violet pour le genre
+    backgroundColor: COLORS.badges.anime, // Violet pour le genre
   },
   badgeTextSmall: {
     ...textStyles.cardTitle,
@@ -789,13 +789,13 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   animeBadgeDetail: {
-    backgroundColor: '#00bcd4', // Cyan cohérent
+    backgroundColor: COLORS.secondary, // Cyan cohérent
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 8,
   },
   animeBadgeMain: {
-    backgroundColor: '#00bcd4', // Cyan principal de l'app
+    backgroundColor: COLORS.secondary, // Cyan principal de l'app
     borderWidth: 1,
     borderColor: 'rgba(0,188,212,0.6)',
   },

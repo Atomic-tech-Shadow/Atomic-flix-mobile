@@ -53,11 +53,11 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
 
   const getTypeColor = (type: string): string => {
     switch (type) {
-      case 'episode': return '#8B5DFF';
-      case 'manga': return '#FF6B9D';
-      case 'film': return '#00D4FF';
-      case 'planning': return '#9CA3AF';
-      default: return '#8B5DFF';
+      case 'episode': return COLORS.badges.anime;
+      case 'manga': return COLORS.badges.manga;
+      case 'film': return COLORS.badges.film;
+      case 'planning': return COLORS.text.muted;
+      default: return COLORS.badges.anime;
     }
   };
 
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    borderBottomColor: COLORS.border.card,
   },
   title: {
     fontSize: 18,
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   markAllButton: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: COLORS.background.card,
     borderRadius: 15,
     // Contour néon pour bouton "Tout marquer lu"
     borderWidth: 2,
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   notificationItem: {
     marginHorizontal: 16,
     marginVertical: 6,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: COLORS.background.card,
     borderRadius: 12,
     overflow: 'hidden',
     // Contour néon pour items de notification
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
   },
   unreadItem: {
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: COLORS.background.secondary,
     // Contour glow intense pour notifications non lues
     borderWidth: 2,
     borderColor: COLORS.border.glow,
