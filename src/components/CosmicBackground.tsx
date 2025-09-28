@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    zIndex: 5, // Réduire le z-index pour permettre aux lignes rouges d'être visibles
+    zIndex: 10, // Z-index élevé pour être au-dessus des lignes rouges
   },
   // Nouveaux styles pour les éléments rouges
   redLinesContainer: {
@@ -257,15 +257,15 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 15, // Z-index très élevé pour être au-dessus du contenu
+    zIndex: 1, // Z-index faible pour être derrière le contenu comme anime-sama
     pointerEvents: 'none', // Permettre les interactions à travers les lignes
   },
   redLineContainer: {
     position: 'absolute',
-    width: 8, // Plus large
+    width: 4, // Plus fin pour être plus subtil comme anime-sama
     height: height,
     top: 0,
-    opacity: 0.8,
+    opacity: 0.4, // Plus subtil pour ne pas gêner la lecture
   },
   redLineGradient: {
     width: '100%',

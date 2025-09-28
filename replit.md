@@ -2,142 +2,56 @@
 
 ## Overview
 
-ATOMIC FLIX is a React Native mobile application built with Expo, designed for streaming anime and reading manga. Developed entirely with Replit Agent, its primary purpose is to provide a seamless and feature-rich experience for anime and manga enthusiasts. The project aims to offer intuitive navigation, robust media playback capabilities, and a consistent user interface across mobile platforms, primarily Android. It integrates advanced features like real-time trending content, personalized planning for new releases, and intelligent notification systems. The vision is to create a go-to platform for otakus, offering a comprehensive and engaging content consumption experience.
-
-**Current Version**: 1.0.1 (Updated: 24 septembre 2025)
-
-## Recent Changes (September 2025)
-
-- **Complete Color Consistency Fix** (28 septembre 2025): Résolution complète du problème de cohérence des couleurs
-  - **Problème résolu**: "Les couleurs sont différents dans certains partis" - couleurs incohérentes dans l'application
-  - **Standardisation Complète**: Remplacement de 100+ couleurs codées en dur (rgba(), hex) par le système COLORS centralisé
-  - **15+ Fichiers Corrigés**: AnimeDetailScreen, AnimePlayerScreen, HomeScreen, MangaReaderScreen, NetworkStatusBanner, DrawerContent, etc.
-  - **Système Sémantique**: Tous les éléments UI utilisent maintenant COLORS.text.*, COLORS.badges.*, COLORS.background.*
-  - **Accents Violets Restaurés**: Les badges année/genre utilisent COLORS.badges.anime pour la hiérarchie visuelle correcte
-  - **Cohérence Visuelle**: Thème sombre unifié avec accents violets (#A855F7) cohérents à travers toute l'application
-  - **Architecture Robuste**: Système de transparence standardisé (COLORS constants + hex transparency)
-
-- **Version Update**: 1.0.0 → 1.0.1 with versionCode 2 (24 septembre 2025)
-  - **Expo Project ID Updated**: Nouveau project ID Expo pour nouvelle configuration
-  - **Fix Historique Saga**: Correction complète de la gestion des anime "Saga" vs "Saison" dans l'historique
-    - La fonction `resumeWatching` récupère maintenant les vraies données API pour matcher correctement
-    - Détection automatique de la structure Saga/Saison selon l'anime
-    - Fallback robuste si aucune correspondance exacte trouvée
-    - One Piece et autres anime "Saga" se reprennent correctement depuis l'historique
-
-- **Génération Keystore Propre** (4 septembre 2025): Génération d'un nouveau keystore Android avec keytool
-  - **Keystore Fraîchement Généré**: Nouveau keystore `signing.keystore` créé avec keytool
-    - Alias maintenu : `atomic-flix-key` pour compatibilité totale  
-    - Mots de passe sécurisés : `AtomicFlix2025Secure`
-    - Algorithme moderne : RSA 2048-bit avec SHA256withRSA
-    - Validité : 55 ans (jusqu'en 2080)
-    - Informations complètes : CN=ATOMIC FLIX Admin, OU=Engineering Department, O=ATOMIC FLIX - Streaming Anime, L=Lome, ST=Maritime, C=TG
-  - **Configuration Credentials**: `credentials.json` mis à jour avec nouveaux paramètres
-  - **Sauvegardes Multiples**: Anciens keystores préservés en `.backup` et `.backup-old`
-- **Version Reset for APKPure Release**: 3.8.5 → 1.0.0 with versionCode 1 (5 septembre 2025)
-  - **Package Name Update**: Renamed package from "mobile" to "com.atomic.flix" for professional release
-  - **Complete Version Reset**: All version references updated to 1.0.0 for fresh APKPure publication
-  - **Ready for Release**: Application optimized and prepared for APKPure distribution
-- **Version Update**: 3.7.0 → 3.8.5 with versionCode 385 (2 septembre 2025)
-  - **Suppression Complète du Système d'Historique**: Retrait total du système d'historique et "en cours"
-    - Suppression de `SmartHistoryService.ts` et de toutes ses fonctionnalités
-    - Retrait des sections "📺 En cours" et "🏛️ Historique" du HomeScreen
-    - Simplification de l'application : focus uniquement sur la découverte de contenu
-    - Suppression du tracking automatique de visionnage dans AnimeDetailScreen et AnimePlayerScreen
-  - **Correction Build Keystore**: Résolution de l'erreur "alias specified for this keystore does not exist"
-    - Régénération complète du keystore `signing.keystore` avec l'alias correct `atomic-flix-key`
-    - Mots de passe alignés avec `credentials.json` : `atomicflix2025`
-- **Version Update**: 3.6.0 → 3.7.0 with versionCode 370 (16 août 2025)
-  - **Suppression du Système de Recommandations**: Retrait complet du système de recommandations intelligentes pour simplifier l'application
-- **Version Update**: 3.4.0 → 3.5.0 with versionCode 350 (11 août 2025)
-  - **Fonctionnalité Sorties Dynamiques**: Section "Sorties cette semaine" maintenant dynamique selon le jour
-  - Affichage adaptatif: "Sorties du lundi", "Sorties du mardi", etc. selon le jour actuel
-  - Amélioration UX: Titre plus personnalisé et contextuel pour les utilisateurs
-- **Version Update**: 3.3.4 → 3.4.0 with versionCode 340 (8 août 2025)
-- **Optimisation Couleurs 10/10** (8 août 2025): Suite à l'analyse concurrentielle approfondie
-  - **Contrastes Optimisés**: Nouveau système de couleurs de texte avec contraste maximal sur fond violet
-  - **Accents Stratégiques**: Utilisation intelligente du cyan (#00FFFF) et rose (#FF6B9D) pour guider l'utilisateur
-  - **Styles Unifiés**: Création de `textStyles` et `interactiveStyles` pour cohérence parfaite
-  - **Lisibilité Améliorée**: Ombres de texte optimisées, espacements, couleurs secondaires plus visibles
-- **Version Bump**: 3.3.0 → 3.3.4 with versionCode 334
-- **Server Switching Bug Fixed** (6 août 2025): Corrected critical issue where changing video servers would reset to episode 1
-  - Removed automatic `setSelectedPlayer(0)` reset in `loadEpisodeSources()` 
-  - Added immediate WebView reload on server change while preserving episode selection
-  - User server preference is now maintained across episode and server changes
-- **Date Updates**: Corrected all 2024 dates to 2025 across application
-- **Visual Consistency**: Complete uniformization of purple background theme (#8B5DFF) across all screens
-- **Color Semantics**: Standardized all background colors to use COLORS.primary instead of COLORS.background.secondary
-- **Text Color System**: Complete standardization of text colors (6 août 2025)
-  - Enhanced `COLORS.text` with semantic color system: primary, secondary, muted, accent, success, warning, error, disabled
-  - Replaced all hardcoded color values (#ffffff, #ef4444, #94a3b8, etc.) with COLORS constants
-  - Improved accessibility and design consistency across all components
-  - Better color hierarchy for titles, descriptions, and UI states
-- **Language Switching**: Complete overhaul for fluid language switching (7 août 2025)
-  - Removed old pendingEpisodeReload system that required refresh
-  - Immediate visual feedback when clicking VF/VOSTFR buttons
-  - Episodes list instantly cleared and repopulated with selected language only
-  - Automatic episode loading for equivalent episode in new language
-  - Enhanced UI with language indicators in episode picker
-  - No page refresh required - completely fluid experience
-
-- **TypeScript**: All compilation errors resolved, production-ready codebase
-- **Code Quality**: Removed duplicate properties, added missing styles, optimized structure, improved maintainability
-- **Analyse Concurrentielle**: Étude complète des palettes de couleurs des plateformes majeures (Crunchyroll, Netflix, Hulu, HIDIVE, RetroCrush, Tubi)
-  - Score final: 9.5→10/10 pour l'unicité et l'adéquation anime de la palette violette
-  - Confirmation: ATOMIC FLIX possède la seule palette violette du marché anime
-  - Différenciation maximale vs Orange (Crunchyroll), Rouge (Netflix), Vert (Hulu)
+ATOMIC FLIX is a React Native mobile application built with Expo, designed for streaming anime and reading manga. Its primary purpose is to provide a seamless and feature-rich experience for anime and manga enthusiasts, offering intuitive navigation, robust media playback, and a consistent user interface across mobile platforms, primarily Android. The project aims to be a comprehensive and engaging platform for otakus, featuring real-time trending content, personalized planning for new releases, and intelligent notification systems.
 
 ## User Preferences
 
-- **Communication style**: Simple, everyday language (français)
-- **Documentation**: Complète et accessible
-- **Architecture**: Propre et bien organisée
-- **Builds**: Scripts automatisés prioritaires
-- **Plateforme**: Android en priorité
-- **Maintenance**: Préfère un projet propre sans fichiers inutiles
-- **Design**: Cohérence visuelle - tous les écrans doivent utiliser le même fond (COLORS.primary)
+-   **Communication style**: Simple, everyday language (français)
+-   **Documentation**: Complète et accessible
+-   **Architecture**: Propre et bien organisée
+-   **Builds**: Scripts automatisés prioritaires
+-   **Plateforme**: Android en priorité
+-   **Maintenance**: Préfère un projet propre sans fichiers inutiles
+-   **Design**: Cohérence visuelle - tous les écrans doivent utiliser le même fond (COLORS.primary)
 
 ## System Architecture
 
-The application adopts a React Native/Expo mobile app architecture with a strong emphasis on clean code, performance, and user experience.
+The application adopts a React Native/Expo mobile app architecture emphasizing clean code, performance, and user experience.
 
--   **Mobile Framework**: React Native with Expo SDK ~53.0.19, ensuring cross-platform compatibility with a focus on Android.
--   **Navigation**: React Navigation is used for stack-based navigation, providing intuitive screen transitions and routing.
--   **State Management**: TanStack React Query is employed for efficient API state management, caching, and synchronization.
--   **Language**: Full TypeScript support with strict configuration for enhanced code quality and maintainability.
--   **Build System**: Expo Application Services (EAS) is utilized for production builds, specifically targeting Android APK generation with custom keystore signing.
+-   **Mobile Framework**: React Native with Expo SDK ~53.0.19, focused on Android compatibility.
+-   **Navigation**: React Navigation for stack-based navigation.
+-   **State Management**: TanStack React Query for efficient API state management.
+-   **Language**: Full TypeScript support with strict configuration.
+-   **Build System**: Expo Application Services (EAS) for Android APK generation with custom keystore signing.
 -   **UI/UX Decisions**:
-    -   **Color Scheme**: Application complètement transformée avec les couleurs exactes du logo 3D - violet principal (`#8B5DFF`) comme fond principal uniforme pour tous les écrans, cyan éclatant (`#00D4FF`) pour les headers et éléments secondaires, et rose accent (`#FF6B9D`) pour les accents et sections spéciales. Correction complète effectuée (4 août 2025) : remplacement de toutes les couleurs de fond codées en dur (`#0a0a1a`) par `COLORS.primary` pour assurer une cohérence visuelle parfaite.
-    -   **Design Patterns**: Consistent use of horizontal scroll sections for content categories (Legendary, Discoveries) and compact, information-rich cards.
-    -   **Interactive Elements**: Nouveau logo 3D F moderne, badges intelligents harmonisés (ANIME: violet, MANGA: rose, FILM: cyan) et badges de langue (VF, VOSTFR) avec couleurs cohérentes du logo.
-    -   **Responsiveness**: Optimized layouts for various screen sizes, including careful management of image dimensions and text truncation.
-    -   **Performance**: Implementation of `OptimizedScrollView` and `OptimizedFlatList` for ultra-smooth scrolling, native drivers, and removal of unnecessary animations in critical paths.
-    -   **Splash Screen**: Custom splash screen with atomic-themed animated logo, slogan, and subtle animations, adhering to Expo's best practices for smooth transitions.
-    -   **Header**: `SharedHeader` unifié avec nouveau logo 3D et gradient moderne (cyan→violet→rose) pour le texte ATOMIC FLIX.
-    -   **Player Interface**: Integrated `WebView` for video streaming, with custom controls for episode navigation, server selection, and language toggling (VF/VOSTFR) using authentic national flags.
-    -   **Notifications**: Comprehensive notification system with interactive bell icon, unread badges, and visual modals displaying anime/manga images and episode details.
-    -   **Telegram Verification**: A dedicated modal for Telegram channel subscription verification, styled consistently with the app's theme and featuring clear instructions.
+    -   **Color Scheme**: Uniform main purple background (`#8B5DFF`), bright cyan (`#00D4FF`) for headers and secondary elements, and accent pink (`#FF6B9D`) for special sections. All background colors use `COLORS.primary` for consistency.
+    -   **Design Patterns**: Consistent use of horizontal scroll sections and compact, information-rich cards.
+    -   **Interactive Elements**: Modern 3D logo, harmonized intelligent badges (ANIME: violet, MANGA: pink, FILM: cyan), and language badges (VF, VOSTFR) with consistent colors.
+    -   **Performance**: `OptimizedScrollView` and `OptimizedFlatList` for smooth scrolling, native drivers, and minimal animations.
+    -   **Splash Screen**: Custom atomic-themed animated logo and slogan.
+    -   **Header**: Unified `SharedHeader` with 3D logo and gradient text.
+    -   **Player Interface**: `WebView` for video streaming with custom controls for episode navigation, server selection, and language toggling using national flags.
+    -   **Notifications**: Comprehensive system with interactive bell icon, unread badges, and visual modals.
+    -   **Telegram Verification**: Dedicated modal for Telegram channel subscription verification.
 -   **System Design Choices**:
-    -   **Modular Components**: Breakdown of UI and logic into reusable components (e.g., `SharedHeader`, `AnimeCard`, `NotificationModal`).
-    -   **API Integration**: Strict adherence to specific API endpoints (`/api/popular`, `/api/details`, `/api/anime/`) with robust error handling and intelligent data parsing.
-    -   **Background Processing**: Services for managing notifications and content updates, leveraging AsyncStorage for data persistence.
-    -   **User Interaction**: Implementation of `expo-keep-awake` for video playback, `expo-screen-orientation` for dynamic screen orientation, and `SafeAreaView` for consistent UI across Android devices.
-    -   **Search Functionality**: Global search modal with intelligent caching, debouncing, and automatic navigation based on content type.
+    -   **Modular Components**: Reusable UI and logic components.
+    -   **API Integration**: Strict adherence to specific API endpoints with robust error handling.
+    -   **Background Processing**: Services for notifications and content updates, using AsyncStorage.
+    -   **User Interaction**: `expo-keep-awake` for video, `expo-screen-orientation` for dynamic orientation, and `SafeAreaView` for consistent UI.
+    -   **Search Functionality**: Global search modal with caching, debouncing, and automatic navigation.
 
 ## External Dependencies
 
--   **React**: Core library for building user interfaces.
--   **React Native**: Framework for building native mobile apps using React.
--   **Expo**: Full SDK providing tools and services for React Native development, including `expo-notifications`, `expo-blur`, `expo-keep-awake`, `expo-screen-orientation`, and `expo-splash-screen`.
--   **React Navigation**: Library for handling navigation between screens.
--   **TanStack React Query**: For declarative and efficient data fetching, caching, and state management.
--   **React Native Gesture Handler**: For handling complex touch gestures and interactions.
--   **React Native Reanimated**: For creating smooth and performant animations.
--   **React Native Svg**: For rendering SVG images and animations.
--   **React Native WebView**: For embedding web content, primarily for video streaming.
--   **@react-native-picker/picker**: For customizable dropdown components.
--   **AsyncStorage**: For local data persistence.
--   **Vercel**: Backend deployment platform for API services (e.g., `atomic-flix-verifier-bot.vercel.app`).
--   **Telegram API**: Integrated for user subscription verification.
--   **Metro Bundler**: JavaScript bundler for React Native.
--   **Babel**: JavaScript compiler for transpilation.
+-   **React**: Core UI library.
+-   **React Native**: Mobile app framework.
+-   **Expo**: SDK including `expo-notifications`, `expo-blur`, `expo-keep-awake`, `expo-screen-orientation`, `expo-splash-screen`.
+-   **React Navigation**: Navigation library.
+-   **TanStack React Query**: Data fetching and state management.
+-   **React Native Gesture Handler**: Touch gestures.
+-   **React Native Reanimated**: Animations.
+-   **React Native Svg**: SVG rendering.
+-   **React Native WebView**: Web content embedding (video streaming).
+-   **@react-native-picker/picker**: Customizable dropdowns.
+-   **AsyncStorage**: Local data persistence.
+-   **Vercel**: Backend deployment for API services (e.g., `atomic-flix-verifier-bot.vercel.app`).
+-   **Telegram API**: User subscription verification.
