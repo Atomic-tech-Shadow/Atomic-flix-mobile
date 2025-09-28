@@ -709,7 +709,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           </View>
 
           <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.95)']}
+            colors={['transparent', COLORS.primary]}
             style={styles.cardGradient}
           />
         </View>
@@ -1280,7 +1280,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Équivalent à bg-black/60
+    backgroundColor: COLORS.primary + '99', // Équivalent à bg-black/60
   },
   bannerContent: {
     position: 'absolute',

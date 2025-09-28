@@ -44,7 +44,7 @@ const NetworkStatusBanner: React.FC<NetworkStatusBannerProps> = ({
     >
       <View style={styles.content}>
         <View style={styles.iconContainer}>
-          <Ionicons name="wifi-outline" size={24} color="#ffffff" />
+          <Ionicons name="wifi-outline" size={24} color={COLORS.text.primary} />
           <View style={styles.offlineIndicator} />
         </View>
         
@@ -60,7 +60,7 @@ const NetworkStatusBanner: React.FC<NetworkStatusBannerProps> = ({
               onPress={onRetry}
               activeOpacity={0.8}
             >
-              <Ionicons name="refresh" size={20} color="#ffffff" />
+              <Ionicons name="refresh" size={20} color={COLORS.text.primary} />
             </TouchableOpacity>
           )}
           
@@ -70,7 +70,7 @@ const NetworkStatusBanner: React.FC<NetworkStatusBannerProps> = ({
               onPress={onDismiss}
               activeOpacity={0.8}
             >
-              <Ionicons name="close" size={20} color="#ffffff" />
+              <Ionicons name="close" size={20} color={COLORS.text.primary} />
             </TouchableOpacity>
           )}
         </View>
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
     zIndex: 1000,
     backgroundColor: COLORS.error, // Rouge atomique
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.2)',
-    shadowColor: '#000',
+    borderBottomColor: COLORS.text.primary + '33',
+    shadowColor: COLORS.primary,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#ffffff',
+    backgroundColor: COLORS.text.primary,
   },
   textContainer: {
     flex: 1,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   subtitle: {
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: COLORS.text.primary + 'E6',
     fontSize: 14,
   },
   actionsContainer: {
@@ -139,12 +139,12 @@ const styles = StyleSheet.create({
     padding: 8,
     marginRight: 4,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: COLORS.text.primary + '33',
   },
   dismissButton: {
     padding: 8,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: COLORS.text.primary + '1A',
   },
 });
 

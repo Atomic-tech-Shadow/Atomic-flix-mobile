@@ -388,9 +388,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     paddingTop: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    backgroundColor: COLORS.primary + 'E6',
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    borderBottomColor: COLORS.text.primary + '1A',
   },
   backButton: {
     padding: 8,
@@ -437,7 +437,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   controls: {
-    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    backgroundColor: COLORS.primary + 'E6',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderTopWidth: 1,

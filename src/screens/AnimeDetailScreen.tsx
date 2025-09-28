@@ -323,7 +323,7 @@ const AnimeDetailScreen: React.FC = () => {
           </View>
 
           <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.95)']}
+            colors={['transparent', COLORS.primary]}
             style={styles.cardGradient}
           />
         </View>
@@ -491,7 +491,7 @@ const AnimeDetailScreen: React.FC = () => {
             
             {/* Gradient overlay pour le contenu */}
             <LinearGradient
-              colors={['transparent', 'rgba(0,0,0,0.3)', 'rgba(0,0,0,0.8)', 'rgba(10,10,26,0.95)']}
+              colors={['transparent', COLORS.primary + '4D', COLORS.primary + 'CC', COLORS.primary]}
               style={styles.heroGradient}
             />
             
@@ -527,7 +527,7 @@ const AnimeDetailScreen: React.FC = () => {
         {/* Section Synopsis exactement comme dans l'image */}
         <View style={styles.mobileSection}>
           <View style={styles.mobileSectionHeader}>
-            <Ionicons name="document-text" size={20} color="#00bcd4" />
+            <Ionicons name="document-text" size={20} color={COLORS.secondary} />
             <Text style={styles.mobileSectionTitle}>Synopsis</Text>
           </View>
           
@@ -564,7 +564,7 @@ const AnimeDetailScreen: React.FC = () => {
         {/* Section Saisons exactement comme le code web */}
         <View style={styles.mobileSection}>
           <View style={styles.mobileSectionHeader}>
-            <Ionicons name="film" size={20} color="#00bcd4" />
+            <Ionicons name="film" size={20} color={COLORS.secondary} />
             <Text style={styles.mobileSectionTitle}>Saisons et Films</Text>
           </View>
           
@@ -761,8 +761,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   yearBadge: {
-    backgroundColor: 'rgba(139,92,246,0.3)', // Violet cohérent avec app
-    borderColor: 'rgba(139,92,246,0.5)',
+    backgroundColor: COLORS.badges.anime + '4D', // Violet cohérent avec app
+    borderColor: COLORS.badges.anime + '80',
   },
   badgeDotSmall: {
     width: 4,
@@ -773,7 +773,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   genreBadge: {
-    borderColor: 'rgba(139,92,246,0.4)',
+    borderColor: COLORS.badges.anime + '66',
   },
   genreDot: {
     backgroundColor: COLORS.badges.anime, // Violet pour le genre
@@ -797,7 +797,7 @@ const styles = StyleSheet.create({
   animeBadgeMain: {
     backgroundColor: COLORS.secondary, // Cyan principal de l'app
     borderWidth: 1,
-    borderColor: 'rgba(0,188,212,0.6)',
+    borderColor: COLORS.secondary + '99',
   },
   animeBadgeText: {
     color: COLORS.text.primary,
@@ -910,7 +910,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.6)', // bg-black/60
+    backgroundColor: COLORS.primary + '99', // bg-black/60
   },
   seasonCardContent: {
     position: 'absolute',
@@ -947,7 +947,7 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: COLORS.text.primary + '1A',
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,

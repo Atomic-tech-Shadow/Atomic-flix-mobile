@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    borderBottomColor: COLORS.text.primary + '1A',
   },
   logoImage: {
     width: 60,
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginVertical: 4,
     borderRadius: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: COLORS.text.primary + '0D',
     overflow: 'hidden',
     // Contour néon pour items du drawer
     borderWidth: 2,
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 20,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+    borderTopColor: COLORS.text.primary + '1A',
   },
   footerText: {
     fontSize: 12,

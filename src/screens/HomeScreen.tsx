@@ -753,7 +753,7 @@ const HomeScreen: React.FC = () => {
           </View>
 
           <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.95)']}
+            colors={['transparent', COLORS.primary]}
             style={styles.cardGradient}
           />
         </View>
@@ -801,7 +801,7 @@ const HomeScreen: React.FC = () => {
         )}
 
         <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.8)']}
+          colors={['transparent', COLORS.primary + 'CC']}
           style={styles.horizontalCardGradient}
         >
           <View style={styles.horizontalCardContent}>
@@ -1096,7 +1096,7 @@ const HomeScreen: React.FC = () => {
                         </Text>
                       </View>
                       <LinearGradient
-                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        colors={['transparent', COLORS.primary + 'CC']}
                         style={styles.horizontalCardGradient}
                       >
                         <View style={styles.horizontalCardContent}>
@@ -1157,7 +1157,7 @@ const HomeScreen: React.FC = () => {
                         <Text style={styles.classicBadgeText}>★ CLASSIQUE</Text>
                       </View>
                       <LinearGradient
-                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        colors={['transparent', COLORS.primary + 'CC']}
                         style={styles.horizontalCardGradient}
                       >
                         <View style={styles.horizontalCardContent}>
@@ -1218,7 +1218,7 @@ const HomeScreen: React.FC = () => {
                         <Text style={styles.rareBadgeText}>💎 RARE</Text>
                       </View>
                       <LinearGradient
-                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        colors={['transparent', COLORS.primary + 'CC']}
                         style={styles.horizontalCardGradient}
                       >
                         <View style={styles.horizontalCardContent}>
@@ -1282,7 +1282,7 @@ const HomeScreen: React.FC = () => {
                         <Text style={styles.recommendationBadgeText}>🎯 RECOMMANDÉ</Text>
                       </View>
                       <LinearGradient
-                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        colors={['transparent', COLORS.primary + 'CC']}
                         style={styles.horizontalCardGradient}
                       >
                         <View style={styles.horizontalCardContent}>
@@ -1404,7 +1404,7 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: COLORS.text.primary + '1A',
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -1429,7 +1429,7 @@ const styles = StyleSheet.create({
     // Contour néon pour bouton clear search
     borderWidth: 2,
     borderColor: COLORS.border.focus, // Magenta atomique
-    backgroundColor: 'rgba(219, 39, 119, 0.1)',
+    backgroundColor: COLORS.badges.manga + '1A',
     shadowColor: COLORS.badges.hot,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
