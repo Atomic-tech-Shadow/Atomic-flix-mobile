@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '../constants/newColors';
@@ -14,6 +14,37 @@ interface CosmicBackgroundProps {
  * Crée une ambiance mystique avec des effets de nébuleuse et d'étoiles
  */
 const CosmicBackground: React.FC<CosmicBackgroundProps> = ({ children }) => {
+  // Mémoriser les positions et propriétés pour éviter le flicker
+  const redLinesData = useMemo(() => 
+    Array.from({ length: 5 }, (_, i) => ({
+      id: i,
+      left: (width / 6) * (i + 1) - 15 + Math.random() * 30,
+      rotation: -8 + Math.random() * 16,
+      opacity: 0.7 + Math.random() * 0.3,
+    })), []
+  );
+
+  const redLightningData = useMemo(() => 
+    Array.from({ length: 4 }, (_, i) => ({
+      id: i,
+      left: width * (0.15 + i * 0.25) + Math.random() * 30 - 15,
+      rotation: -3 + Math.random() * 6,
+      opacity: 0.6 + Math.random() * 0.4,
+    })), []
+  );
+
+  const starsData = useMemo(() => 
+    Array.from({ length: 30 }, (_, i) => ({ // Réduit de 50 à 30
+      id: i,
+      left: Math.random() * width,
+      top: Math.random() * height,
+      opacity: 0.3 + Math.random() * 0.7,
+      scale: 0.5 + Math.random() * 1.5,
+      isRed: i % 5 === 0, // 20% d'étoiles rouges
+      hasGlow: i < 10, // Seulement 10 étoiles avec glow pour les performances
+    })), []
+  );
+
   return (
     <View style={styles.container}>
       {/* Fond principal noir cosmique */}
@@ -59,18 +90,96 @@ const CosmicBackground: React.FC<CosmicBackgroundProps> = ({ children }) => {
         end={{ x: 1, y: 0.5 }}
       />
       
-      {/* Points d'étoiles simulés */}
-      <View style={styles.starsContainer}>
-        {Array.from({ length: 50 }).map((_, i) => (
+      {/* Lignes verticales rouges dramatiques - Optimisées */}
+      <View style={styles.redLinesContainer}>
+        {redLinesData.map((lineData) => (
           <View
-            key={i}
+            key={`red-line-${lineData.id}`}
+            style={[
+              styles.redLineContainer,
+              {
+                left: lineData.left,
+                opacity: lineData.opacity,
+                transform: [
+                  { rotateZ: `${lineData.rotation}deg` }
+                ],
+              },
+            ]}
+          >
+            <LinearGradient
+              colors={[
+                'transparent',
+                COLORS.badges.crimson, // Utiliser la palette COLORS
+                COLORS.badges.danger,
+                COLORS.badges.shadowRed,
+                COLORS.badges.crimson,
+                'transparent'
+              ]}
+              style={styles.redLineGradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+            />
+          </View>
+        ))}
+      </View>
+      
+      {/* Aura rouge dramatique (style Shadow) - Optimisée */}
+      <LinearGradient
+        colors={[
+          'transparent',
+          `${COLORS.badges.crimson}40`, // 25% opacity
+          `${COLORS.badges.shadowRed}59`, // 35% opacity
+          `${COLORS.badges.danger}33`, // 20% opacity
+          'transparent'
+        ]}
+        style={styles.shadowRedAura}
+        start={{ x: 0.8, y: 0.1 }}
+        end={{ x: 0.2, y: 0.9 }}
+      />
+      
+      {/* Éclairs rouges verticaux - Optimisés */}
+      <View style={styles.redLightningContainer}>
+        {redLightningData.map((lightningData) => (
+          <LinearGradient
+            key={`red-lightning-${lightningData.id}`}
+            colors={[
+              'transparent',
+              `${COLORS.badges.crimson}99`, // 60% opacity
+              `${COLORS.badges.danger}CC`, // 80% opacity
+              `${COLORS.badges.shadowRed}80`, // 50% opacity
+              'transparent'
+            ]}
+            style={[
+              styles.redLightning,
+              {
+                left: lightningData.left,
+                opacity: lightningData.opacity,
+                transform: [{ rotateZ: `${lightningData.rotation}deg` }],
+              },
+            ]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+          />
+        ))}
+      </View>
+      
+      {/* Points d'étoiles simulés (violet et rouge) - Optimisées */}
+      <View style={styles.starsContainer}>
+        {starsData.map((starData) => (
+          <View
+            key={starData.id}
             style={[
               styles.star,
               {
-                left: Math.random() * width,
-                top: Math.random() * height,
-                opacity: 0.3 + Math.random() * 0.7,
-                transform: [{ scale: 0.5 + Math.random() * 1.5 }],
+                left: starData.left,
+                top: starData.top,
+                opacity: starData.opacity,
+                transform: [{ scale: starData.scale }],
+                backgroundColor: starData.isRed ? `${COLORS.badges.crimson}CC` : COLORS.text.primary,
+                shadowColor: starData.isRed ? COLORS.badges.crimson : COLORS.secondary,
+                shadowOpacity: starData.hasGlow ? 0.8 : 0.3, // Glow optimisé
+                shadowRadius: starData.hasGlow ? 3 : 1,
+                elevation: starData.hasGlow ? 3 : 1,
               },
             ]}
           />
@@ -134,16 +243,61 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 2,
     height: 2,
-    backgroundColor: COLORS.text.primary,
     borderRadius: 1,
-    shadowColor: COLORS.secondary,
-    shadowOpacity: 0.8,
-    shadowRadius: 3,
-    elevation: 3,
+    // Shadow props are now applied dynamically based on performance optimization
   },
   content: {
     flex: 1,
-    zIndex: 10,
+    zIndex: 5, // Réduire le z-index pour permettre aux lignes rouges d'être visibles
+  },
+  // Nouveaux styles pour les éléments rouges
+  redLinesContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 15, // Z-index très élevé pour être au-dessus du contenu
+    pointerEvents: 'none', // Permettre les interactions à travers les lignes
+  },
+  redLineContainer: {
+    position: 'absolute',
+    width: 8, // Plus large
+    height: height,
+    top: 0,
+    opacity: 0.8,
+  },
+  redLineGradient: {
+    width: '100%',
+    height: '100%',
+    shadowColor: COLORS.badges.crimson,
+    shadowOpacity: 0.8,
+    shadowRadius: 8,
+    elevation: 8, // Réduit pour les performances
+  },
+  shadowRedAura: {
+    position: 'absolute',
+    top: height * 0.2,
+    right: width * 0.1,
+    width: width * 0.5,
+    height: height * 0.6,
+    borderRadius: width * 0.25,
+    opacity: 0.5,
+    zIndex: 1,
+  },
+  redLightningContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 3,
+  },
+  redLightning: {
+    position: 'absolute',
+    width: 2,
+    height: height * 0.8,
+    top: height * 0.1,
   },
 });
 
