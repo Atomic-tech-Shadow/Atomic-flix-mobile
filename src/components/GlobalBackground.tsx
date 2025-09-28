@@ -16,7 +16,7 @@ interface GlobalBackgroundProps {
 const GlobalBackground: React.FC<GlobalBackgroundProps> = ({ children }) => {
   return (
     <>
-      {/* Lignes rouges en position fixed (au-dessus de tout) */}
+      {/* Lignes rouges en arrière-plan (derrière le contenu) */}
       <View style={styles.fixedRedLinesContainer}>
         {Array.from({ length: Math.ceil(width / 20) }).map((_, index) => (
           <View
@@ -26,7 +26,7 @@ const GlobalBackground: React.FC<GlobalBackgroundProps> = ({ children }) => {
         ))}
       </View>
       
-      {/* Contenu de l'app */}
+      {/* Contenu de l'app (au-dessus des lignes rouges) */}
       <View style={styles.container}>
         {children}
       </View>
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: 'relative',
+    zIndex: 10, // Au-dessus des lignes rouges
   },
   fixedRedLinesContainer: {
     position: 'absolute',
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     opacity: 0.7,
-    zIndex: 9999, // Au-dessus de tout
+    zIndex: 1, // En arrière-plan, derrière le contenu
     pointerEvents: 'none', // Ne bloque pas les interactions
   },
   redLine: {
