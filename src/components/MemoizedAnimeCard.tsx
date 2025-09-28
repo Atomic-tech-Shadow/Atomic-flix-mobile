@@ -35,13 +35,14 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
 }) => {
 
   return (
-    <OptimizedTouchable
-      key={`anime-${anime.id || anime.title.replace(/\s+/g, '-')}-${index}`}
-      style={[styles.card, style]}
-      onPress={onPress}
-      scaleOnPress={true}
-      scaleFactor={0.98}
-    >
+    <View style={[styles.cardWrapper, style]}>
+      <OptimizedTouchable
+        key={`anime-${anime.id || anime.title.replace(/\s+/g, '-')}-${index}`}
+        style={styles.card}
+        onPress={onPress}
+        scaleOnPress={true}
+        scaleFactor={0.98}
+      >
       <Image
         source={{ uri: anime.image }}
         style={styles.cardImage}
@@ -72,7 +73,8 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
           </Text>
         </View>
       </LinearGradient>
-    </OptimizedTouchable>
+      </OptimizedTouchable>
+    </View>
   );
 }, (prevProps, nextProps) => {
   // Comparaison optimisée pour éviter les re-renders inutiles
@@ -85,13 +87,26 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
 });
 
 const styles = StyleSheet.create({
-  card: {
+  cardWrapper: {
     width: 120,
     height: 180,
     marginRight: 12,
+    // Effet de glow cosmique sur le wrapper (sans overflow hidden)
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 15,
+    elevation: 10,
+  },
+  card: {
+    width: '100%',
+    height: '100%',
     borderRadius: 8,
-    overflow: 'hidden',
-    backgroundColor: '#1a1a2e',
+    overflow: 'hidden', // Gardé ici pour couper les coins de l'image
+    backgroundColor: '#1A1A1A', // Fond légèrement visible sur noir
+    // Bordure néon violette - Effet "I am Atomic"
+    borderWidth: 2,
+    borderColor: COLORS.border.glow, // Violet néon intense
   },
   cardImage: {
     width: '100%',
@@ -101,11 +116,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     right: 8,
-    backgroundColor: 'rgba(255, 107, 53, 0.9)',
+    backgroundColor: COLORS.badges.atomic, // Violet éclatant
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 4,
     zIndex: 2,
+    // Effet glow sur les badges
+    shadowColor: COLORS.badges.atomic,
+    shadowOpacity: 0.6,
+    shadowRadius: 6,
+    borderWidth: 1,
+    borderColor: COLORS.border.atomic,
   },
   badgeText: {
     color: COLORS.text.primary,
@@ -116,11 +137,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     right: 8,
-    backgroundColor: 'rgba(0, 188, 212, 0.9)',
+    backgroundColor: COLORS.badges.vostfr, // Violet pour badges langue
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 4,
     zIndex: 2,
+    // Effet glow violet pour badges langue
+    shadowColor: COLORS.badges.vostfr,
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.border.secondary,
   },
   languageBadgeText: {
     color: COLORS.text.primary,

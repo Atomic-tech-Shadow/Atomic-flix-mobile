@@ -90,14 +90,21 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 };
 
 const styles = StyleSheet.create({
-  // Header mobile exact
+  // Header mobile exact - Effet "I am Atomic"
   mobileHeader: {
     backgroundColor: COLORS.primary,
     paddingHorizontal: 16,
     paddingTop: 20,
     paddingBottom: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.border.card,
+    // Contour néon cosmique pour le header
+    borderBottomWidth: 2,
+    borderBottomColor: COLORS.border.glow,
+    // Effet glow sur le header
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    elevation: 8,
   },
   headerRow: {
     flexDirection: 'row',
@@ -108,6 +115,13 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    // Contour néon pour bouton menu
+    borderWidth: 2,
+    borderColor: COLORS.border.secondary,
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
   },
   titleSection: {
     flex: 1,
@@ -118,6 +132,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 4,
     alignSelf: 'flex-start',
+    // Contour néon pour le titre ATOMIC FLIX
+    borderWidth: 2,
+    borderColor: COLORS.border.atomic,
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 12,
   },
   titleText: {
     fontSize: 20,
@@ -136,19 +157,33 @@ const styles = StyleSheet.create({
     padding: 8,
     marginLeft: 8,
     position: 'relative',
+    borderRadius: 6,
+    // Contour néon pour boutons d'icônes
+    borderWidth: 2,
+    borderColor: COLORS.border.secondary,
+    backgroundColor: 'rgba(168, 85, 247, 0.1)',
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 5,
   },
   notificationBadge: {
     position: 'absolute',
     top: 4,
     right: 4,
-    backgroundColor: '#ff4444',
+    backgroundColor: COLORS.badges.hot, // Magenta atomique
     borderRadius: 10,
     minWidth: 20,
     height: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    // Contour néon pour badge de notification
     borderWidth: 2,
-    borderColor: COLORS.primary,
+    borderColor: COLORS.border.glow,
+    shadowColor: COLORS.badges.hot,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 8,
   },
   badgeText: {
     color: '#ffffff',

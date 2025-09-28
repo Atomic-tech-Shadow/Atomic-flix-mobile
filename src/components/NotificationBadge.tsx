@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   badge: {
-    backgroundColor: '#ff4444',
+    backgroundColor: COLORS.error, // Badge atomique rouge
     borderRadius: 12,
     minWidth: 24,
     height: 24,
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primary,
   },
   text: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 12,
     fontWeight: 'bold',
     textAlign: 'center',

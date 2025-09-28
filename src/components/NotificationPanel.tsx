@@ -186,6 +186,13 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 15,
+    // Contour néon pour bouton "Tout marquer lu"
+    borderWidth: 2,
+    borderColor: COLORS.border.secondary,
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
   },
   markAllText: {
     color: COLORS.text.accent,
@@ -223,10 +230,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderRadius: 12,
     overflow: 'hidden',
+    // Contour néon pour items de notification
+    borderWidth: 2,
+    borderColor: COLORS.border.card,
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
   },
   unreadItem: {
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    borderLeftWidth: 3,
+    // Contour glow intense pour notifications non lues
+    borderWidth: 2,
+    borderColor: COLORS.border.glow,
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    borderLeftWidth: 4,
     borderLeftColor: COLORS.secondary,
   },
   notificationContent: {

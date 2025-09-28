@@ -862,8 +862,8 @@ const HomeScreen: React.FC = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={['#00bcd4']}
-            tintColor="#00bcd4"
+            colors={[COLORS.secondary]}
+            tintColor={COLORS.secondary}
           />
         }
       >
@@ -1303,7 +1303,7 @@ const HomeScreen: React.FC = () => {
                 <LoadingSpinner 
                   message="Chargement de l'univers des animes..." 
                   size="large"
-                  color="#00bcd4"
+                  color={COLORS.secondary}
                 />
               </View>
             )}
@@ -1408,8 +1408,14 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(0,188,212,0.2)',
+    // Contour néon pour barre de recherche
+    borderWidth: 2,
+    borderColor: COLORS.border.secondary, // Violet néon
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 10,
+    elevation: 8,
   },
   searchInput: {
     flex: 1,
@@ -1419,23 +1425,38 @@ const styles = StyleSheet.create({
   },
   clearSearchButton: {
     padding: 4,
+    borderRadius: 6,
+    // Contour néon pour bouton clear search
+    borderWidth: 2,
+    borderColor: COLORS.border.focus, // Magenta atomique
+    backgroundColor: 'rgba(219, 39, 119, 0.1)',
+    shadowColor: COLORS.badges.hot,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
   },
   clearSearchText: {
     color: COLORS.text.muted,
     fontSize: 16,
   },
 
-  // Hero Section
+  // Hero Section - Effet "I am Atomic"
   heroSection: {
     height: 180,
     position: 'relative',
     marginBottom: 20,
-    backgroundColor: COLORS.accent, // Rose du logo
+    backgroundColor: COLORS.background.secondary, // Fond noir légèrement visible
     borderRadius: 16,
     marginHorizontal: 8,
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(0, 240, 255, 0.2)',
+    // Contour néon cosmique puissant pour hero
+    borderWidth: 3,
+    borderColor: COLORS.border.glow, // Violet néon intense
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 20,
+    elevation: 15,
   },
   heroMosaicContainer: {
     flexDirection: 'row',
@@ -1496,7 +1517,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
 
-  // Cards Anime optimisées pour les performances
+  // Cards Anime optimisées pour les performances - Effet "I am Atomic"
   animeCard: {
     width: (width - 48) / 2,
     minHeight: 200, // minHeight au lieu de height fixe
@@ -1504,12 +1525,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: COLORS.primary,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    backgroundColor: '#1A1A1A', // Fond légèrement visible sur noir
+    // Bordures néon cosmiques
+    borderWidth: 2,
+    borderColor: COLORS.border.glow, // Violet néon intense
+    // Effet de glow atomique puissant
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 15,
+    elevation: 12,
   },
   cardImageContainer: {
     position: 'relative',
@@ -1683,18 +1708,33 @@ const styles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 8,
     overflow: 'hidden',
-    backgroundColor: COLORS.primary,
+    backgroundColor: '#1A1A1A', // Fond légèrement visible sur noir
+    // Bordures néon violettes - Effet cosmique
+    borderWidth: 2,
+    borderColor: COLORS.border.secondary, // Violet néon
+    // Effet de glow atomique
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.7,
+    shadowRadius: 10,
+    elevation: 8,
   },
-  // Badge NOUVEAU pour les nouveaux épisodes
+  // Badge NOUVEAU pour les nouveaux épisodes - Style atomique
   newEpisodeBadge: {
     position: 'absolute',
     top: 8,
     left: 8,
-    backgroundColor: 'rgba(255, 107, 53, 0.95)',
+    backgroundColor: COLORS.badges.new, // Vert émeraude atomique
     paddingHorizontal: 6,
     paddingVertical: 3,
     borderRadius: 6,
     zIndex: 2,
+    // Effet glow sur badge NOUVEAU
+    shadowColor: COLORS.badges.new,
+    shadowOpacity: 0.6,
+    shadowRadius: 5,
+    borderWidth: 1,
+    borderColor: COLORS.border.focus,
   },
   newEpisodeBadgeText: {
     color: '#ffffff',
@@ -1758,7 +1798,7 @@ const styles = StyleSheet.create({
   horizontalCardBadge: {
     backgroundColor: 'rgba(0, 188, 212, 0.2)',
     borderWidth: 1,
-    borderColor: '#00bcd4',
+    borderColor: COLORS.secondary,
     paddingHorizontal: 4,
     paddingVertical: 2,
     borderRadius: 6,
@@ -1779,14 +1819,16 @@ const styles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: COLORS.primary,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.4)', // Bordure dorée pour légendaires
+    backgroundColor: '#1A1A1A', // Fond légèrement visible
+    // Bordure or atomique pour légendaires
+    borderWidth: 2,
+    borderColor: COLORS.badges.legendary, // Or atomique
+    // Effet glow or intense pour légendaires
+    shadowColor: COLORS.badges.legendary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 15,
+    elevation: 12,
   },
   gemCard: {
     width: 120,

@@ -130,6 +130,13 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     marginBottom: 12,
+    // Contour néon pour logo dans le drawer
+    borderWidth: 3,
+    borderColor: COLORS.border.glow,
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 15,
   },
   appName: {
     fontSize: 20,
@@ -153,6 +160,13 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     overflow: 'hidden',
+    // Contour néon pour items du drawer
+    borderWidth: 2,
+    borderColor: COLORS.border.secondary,
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 6,
   },
   menuItemContent: {
     flexDirection: 'row',
