@@ -94,9 +94,9 @@ const HomeStackNavigator: React.FC = () => {
 
 const AppNavigator: React.FC = () => {
   return (
-    <GlobalBackground>
-      <NavigationContainer>
-        <StatusBar style="light" backgroundColor={COLORS.primary} />
+    <NavigationContainer>
+      <StatusBar style="light" backgroundColor={COLORS.primary} />
+      <GlobalBackground>
         <Drawer.Navigator
           initialRouteName="HomeStack"
           drawerContent={(props) => <DrawerContent {...props} />}
@@ -105,6 +105,7 @@ const AppNavigator: React.FC = () => {
             drawerType: 'slide',
             drawerStyle: {
               width: 280,
+              backgroundColor: 'transparent', // Fond transparent pour voir les lignes
             },
             swipeEnabled: true,
             gestureHandlerProps: {
@@ -141,8 +142,8 @@ const AppNavigator: React.FC = () => {
             }}
           />
         </Drawer.Navigator>
-      </NavigationContainer>
-    </GlobalBackground>
+      </GlobalBackground>
+    </NavigationContainer>
   );
 };
 
