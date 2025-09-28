@@ -117,13 +117,24 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
+    // Effet glow sur tout le drawer pour cohérence
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 2, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
   },
   header: {
     alignItems: 'center',
     paddingVertical: 30,
     paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.text.primary + '1A',
+    borderBottomWidth: 2,
+    borderBottomColor: COLORS.border.glow, // Séparateur violet néon
+    // Effet glow sur le header du drawer
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 6,
   },
   logoImage: {
     width: 60,
@@ -160,13 +171,14 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: COLORS.text.primary + '0D',
     overflow: 'hidden',
-    // Contour néon pour items du drawer
+    // Contour néon intense pour items du drawer - cohérent avec le thème principal
     borderWidth: 2,
-    borderColor: COLORS.border.secondary,
+    borderColor: COLORS.border.glow, // Violet néon intense
     shadowColor: COLORS.badges.atomic,
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.4,
-    shadowRadius: 6,
+    shadowOpacity: 0.6, // Glow plus intense
+    shadowRadius: 8,
+    elevation: 8,
   },
   menuItemContent: {
     flexDirection: 'row',
@@ -196,8 +208,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 20,
     paddingHorizontal: 20,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.text.primary + '1A',
+    borderTopWidth: 2,
+    borderTopColor: COLORS.border.glow, // Séparateur violet néon
+    // Effet glow sur le footer du drawer
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 6,
   },
   footerText: {
     fontSize: 12,

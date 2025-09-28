@@ -115,13 +115,14 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
     backgroundColor: COLORS.background.card,
-    // Contour néon pour bouton menu
+    // Contour néon intense pour bouton menu - cohérent avec le thème principal
     borderWidth: 2,
-    borderColor: COLORS.border.secondary,
+    borderColor: COLORS.border.glow, // Violet néon intense
     shadowColor: COLORS.badges.atomic,
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 6,
+    shadowOpacity: 0.7, // Glow plus intense
+    shadowRadius: 8,
+    elevation: 8,
   },
   titleSection: {
     flex: 1,
@@ -158,14 +159,15 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     position: 'relative',
     borderRadius: 6,
-    // Contour néon pour boutons d'icônes
+    // Contour néon intense pour boutons d'icônes - cohérent avec le thème
     borderWidth: 2,
-    borderColor: COLORS.border.secondary,
+    borderColor: COLORS.border.glow, // Violet néon intense
     backgroundColor: COLORS.background.card,
     shadowColor: COLORS.badges.atomic,
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.4,
-    shadowRadius: 5,
+    shadowOpacity: 0.6, // Glow plus intense
+    shadowRadius: 6,
+    elevation: 6,
   },
   notificationBadge: {
     position: 'absolute',
