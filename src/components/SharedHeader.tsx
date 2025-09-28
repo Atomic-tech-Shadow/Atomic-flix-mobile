@@ -96,15 +96,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 20,
     paddingBottom: 8,
-    // Contour néon cosmique pour le header
-    borderBottomWidth: 2,
-    borderBottomColor: COLORS.border.glow,
-    // Effet glow sur le header
+    // Effet glow subtil sur le header
     shadowColor: COLORS.badges.atomic,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.6,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
   },
   headerRow: {
     flexDirection: 'row',
@@ -115,14 +112,12 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
     backgroundColor: COLORS.background.card,
-    // Contour néon intense pour bouton menu - cohérent avec le thème principal
-    borderWidth: 2,
-    borderColor: COLORS.border.glow, // Violet néon intense
+    // Effet glow subtil
     shadowColor: COLORS.badges.atomic,
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.7, // Glow plus intense
-    shadowRadius: 8,
-    elevation: 8,
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 3,
   },
   titleSection: {
     flex: 1,
@@ -133,13 +128,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 4,
     alignSelf: 'flex-start',
-    // Contour néon pour le titre ATOMIC FLIX
-    borderWidth: 2,
-    borderColor: COLORS.border.atomic,
+    // Effet glow subtil pour le titre
     shadowColor: COLORS.badges.atomic,
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 12,
+    shadowOpacity: 0.4,
+    shadowRadius: 6,
   },
   titleText: {
     fontSize: 20,
@@ -159,33 +152,29 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     position: 'relative',
     borderRadius: 6,
-    // Contour néon intense pour boutons d'icônes - cohérent avec le thème
-    borderWidth: 2,
-    borderColor: COLORS.border.glow, // Violet néon intense
     backgroundColor: COLORS.background.card,
+    // Effet glow subtil
     shadowColor: COLORS.badges.atomic,
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.6, // Glow plus intense
-    shadowRadius: 6,
-    elevation: 6,
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 3,
   },
   notificationBadge: {
     position: 'absolute',
     top: 4,
     right: 4,
-    backgroundColor: COLORS.badges.hot, // Magenta atomique
+    backgroundColor: COLORS.badges.hot,
     borderRadius: 10,
     minWidth: 20,
     height: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    // Contour néon pour badge de notification
-    borderWidth: 2,
-    borderColor: COLORS.border.glow,
+    // Effet glow subtil pour le badge
     shadowColor: COLORS.badges.hot,
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 8,
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
   },
   badgeText: {
     color: COLORS.text.primary,
