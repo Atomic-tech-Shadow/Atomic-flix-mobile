@@ -1,0 +1,6 @@
+<svg width="20" height="100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond noir transparent -->
+  <rect width="20" height="100" fill="transparent"/>
+  <!-- Ligne rouge verticale -->
+  <rect x="0" y="0" width="2" height="100" fill="rgba(220, 38, 38, 0.8)" opacity="0.7"/>
+</svg>
