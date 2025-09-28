@@ -27,7 +27,6 @@ import type { RootStackParamList, DrawerParamList } from '../navigation/AppNavig
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
-import StartIORewardedButton from '../components/StartIORewardedButton';
 import { animeAPI } from '../utils/animeAPI';
 import { apiRequest } from '../utils/api';
 import { useNotifications } from '../hooks/useNotifications';
@@ -536,30 +535,6 @@ const AnimeDetailScreen: React.FC = () => {
           </View>
         </View>
 
-        {/* Section Premium - Publicité rewarded pour débloquer du contenu */}
-        <View style={styles.premiumSection}>
-          <View style={styles.premiumHeader}>
-            <Ionicons name="star" size={20} color={COLORS.accent} />
-            <Text style={styles.premiumTitle}>🎁 Contenu Premium</Text>
-          </View>
-          <Text style={styles.premiumDescription}>
-            Regardez une courte publicité pour débloquer des fonctionnalités premium :
-          </Text>
-          <Text style={styles.premiumFeatures}>
-            • 📺 Accès prioritaire aux nouveaux épisodes{'\n'}
-            • 🎨 Qualité vidéo améliorée{'\n'}
-            • 📱 Visionnage sans interruption
-          </Text>
-          <StartIORewardedButton
-            buttonText="🎁 Débloquer le contenu premium"
-            rewardText="Premium activé pour cette session !"
-            onRewardEarned={(reward) => {
-              console.log('[AnimeDetailScreen] Premium content unlocked:', reward);
-              // Ici vous pouvez activer les fonctionnalités premium
-            }}
-            style={styles.premiumButton}
-          />
-        </View>
 
         {/* Section Saisons exactement comme le code web */}
         <View style={styles.mobileSection}>
@@ -1058,45 +1033,6 @@ const styles = StyleSheet.create({
     color: COLORS.text.primary,
     fontSize: 10,
     fontWeight: 'bold',
-  },
-  // Styles pour la section premium
-  premiumSection: {
-    backgroundColor: `${COLORS.primary}99`,
-    marginHorizontal: 16,
-    marginVertical: 16,
-    padding: 20,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: `${COLORS.accent}33`,
-    alignItems: 'center',
-  },
-  premiumHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  premiumTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: COLORS.accent,
-    marginLeft: 8,
-  },
-  premiumDescription: {
-    color: COLORS.text.secondary,
-    fontSize: 14,
-    textAlign: 'center',
-    marginBottom: 12,
-    lineHeight: 20,
-  },
-  premiumFeatures: {
-    color: COLORS.text.primary,
-    fontSize: 14,
-    textAlign: 'center',
-    marginBottom: 20,
-    lineHeight: 22,
-  },
-  premiumButton: {
-    marginTop: 8,
   },
 });
 
