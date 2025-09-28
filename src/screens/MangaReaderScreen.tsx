@@ -219,7 +219,7 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
         <StatusBar style="light" backgroundColor="#0a0a1a" />
         <SharedHeader />
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#00bcd4" />
+          <ActivityIndicator size="large" color={COLORS.secondary} />
           <Text style={styles.loadingText}>Chargement du manga...</Text>
         </View>
       </SafeAreaView>
@@ -322,7 +322,7 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
       {/* Indicateur de chargement */}
       {(loadingChapters || loadingPages) && (
         <View style={styles.loadingOverlay}>
-          <ActivityIndicator size="large" color="#00bcd4" />
+          <ActivityIndicator size="large" color={COLORS.secondary} />
           <Text style={styles.loadingText}>
             {loadingChapters ? 'Chargement des chapitres...' : 'Chargement des pages...'}
           </Text>
@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
   },
   loadingText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
     marginTop: 16,
   },
@@ -366,19 +366,19 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   errorText: {
-    color: '#ff6b6b',
+    color: COLORS.text.error,
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 20,
   },
   retryButton: {
-    backgroundColor: '#00bcd4',
+    backgroundColor: COLORS.secondary,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 8,
   },
   retryButtonText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -396,13 +396,13 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   backButtonText: {
-    color: '#00bcd4',
+    color: COLORS.secondary,
     fontSize: 24,
     fontWeight: 'bold',
   },
   title: {
     flex: 1,
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 18,
     fontWeight: '600',
     textAlign: 'center',
@@ -433,7 +433,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   noPageText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
   },
   controls: {
@@ -450,21 +450,21 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   navButton: {
-    backgroundColor: '#00bcd4',
+    backgroundColor: COLORS.secondary,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 6,
   },
   navButtonDisabled: {
-    backgroundColor: '#333333',
+    backgroundColor: COLORS.text.muted,
   },
   navButtonText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 14,
     fontWeight: '600',
   },
   pageIndicator: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 16,
     fontWeight: '500',
   },
@@ -474,7 +474,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   zoomButton: {
-    backgroundColor: '#333333',
+    backgroundColor: COLORS.text.muted,
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -483,12 +483,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   zoomButtonText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 18,
     fontWeight: 'bold',
   },
   zoomText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 14,
     marginHorizontal: 16,
   },
