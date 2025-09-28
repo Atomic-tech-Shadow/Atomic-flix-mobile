@@ -53,5 +53,4 @@ expertMode = true
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["npm", "run", "start:web"]
-build = ["npm", "run", "build"]
+run = ["npm", "run", "build"]
