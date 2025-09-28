@@ -6,6 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Season } from '../types';
 import DrawerContent from '../components/DrawerContent';
 import { COLORS } from '../constants/newColors';
+import GlobalBackground from '../components/GlobalBackground';
 
 // Import screens - exact reproductions of web pages
 import HomeScreen from '../screens/HomeScreen';
@@ -93,53 +94,55 @@ const HomeStackNavigator: React.FC = () => {
 
 const AppNavigator: React.FC = () => {
   return (
-    <NavigationContainer>
-      <StatusBar style="light" backgroundColor={COLORS.primary} />
-      <Drawer.Navigator
-        initialRouteName="HomeStack"
-        drawerContent={(props) => <DrawerContent {...props} />}
-        screenOptions={{
-          headerShown: false,
-          drawerType: 'slide',
-          drawerStyle: {
-            width: 280,
-          },
-          swipeEnabled: true,
-          gestureHandlerProps: {
-            activeOffsetX: 10,
-          },
-        }}
-      >
-        <Drawer.Screen 
-          name="HomeStack" 
-          component={HomeStackNavigator}
-          options={{
-            drawerLabel: 'Accueil',
+    <GlobalBackground>
+      <NavigationContainer>
+        <StatusBar style="light" backgroundColor={COLORS.primary} />
+        <Drawer.Navigator
+          initialRouteName="HomeStack"
+          drawerContent={(props) => <DrawerContent {...props} />}
+          screenOptions={{
+            headerShown: false,
+            drawerType: 'slide',
+            drawerStyle: {
+              width: 280,
+            },
+            swipeEnabled: true,
+            gestureHandlerProps: {
+              activeOffsetX: 10,
+            },
           }}
-        />
-        <Drawer.Screen 
-          name="About" 
-          component={AboutScreen}
-          options={{
-            drawerLabel: 'À propos',
-          }}
-        />
-        <Drawer.Screen 
-          name="PrivacyPolicy" 
-          component={PrivacyPolicyScreen}
-          options={{
-            drawerLabel: 'Confidentialité',
-          }}
-        />
-        <Drawer.Screen 
-          name="TermsOfService" 
-          component={TermsOfServiceScreen}
-          options={{
-            drawerLabel: 'Conditions',
-          }}
-        />
-      </Drawer.Navigator>
-    </NavigationContainer>
+        >
+          <Drawer.Screen 
+            name="HomeStack" 
+            component={HomeStackNavigator}
+            options={{
+              drawerLabel: 'Accueil',
+            }}
+          />
+          <Drawer.Screen 
+            name="About" 
+            component={AboutScreen}
+            options={{
+              drawerLabel: 'À propos',
+            }}
+          />
+          <Drawer.Screen 
+            name="PrivacyPolicy" 
+            component={PrivacyPolicyScreen}
+            options={{
+              drawerLabel: 'Confidentialité',
+            }}
+          />
+          <Drawer.Screen 
+            name="TermsOfService" 
+            component={TermsOfServiceScreen}
+            options={{
+              drawerLabel: 'Conditions',
+            }}
+          />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    </GlobalBackground>
   );
 };
 
