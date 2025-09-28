@@ -967,7 +967,7 @@ const HomeScreen: React.FC = () => {
                 style={styles.heroContent}
               >
                 <Text style={[styles.heroSubtitle, textStyles.shadowTitle]}>
-                  I AM ATOMIC{'\n'}PLONGEZ DANS L'UNIVERS INFINI
+                  BINGE TOUT L'ANIME QUE TU VEUX{'\n'}GRATUIT • HD • SANS LIMITE
                 </Text>
                 
                 {/* Drapeaux décoratifs dans les coins */}
@@ -1991,14 +1991,16 @@ const styles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: COLORS.primary,
-    elevation: 8,
-    shadowColor: COLORS.badges.trending, // Ombre violette atomique pour recommandations
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5, // Glow plus intense
-    shadowRadius: 6,
+    backgroundColor: COLORS.background.secondary, // Fond légèrement visible sur noir
+    // Bordure recommandation bien visible - Effet cible
     borderWidth: 2,
-    borderColor: COLORS.badges.trending + '66', // Bordure violette avec transparence pour recommandations
+    borderColor: COLORS.badges.trending, // Violet néon - Recommandations ciblées
+    // Effet glow recommandation intense
+    shadowColor: COLORS.badges.trending,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    elevation: 10,
   },
   recommendationBadge: {
     position: 'absolute',
