@@ -970,9 +970,6 @@ const HomeScreen: React.FC = () => {
                 <Text style={[styles.heroSubtitle, textStyles.shadowTitle]}>
                   I AM ATOMIC{'\n'}PLONGEZ DANS L'UNIVERS INFINI
                 </Text>
-                <Text style={[styles.heroSubtitle, textStyles.cosmicSubtitle]}>
-                  L'ombre du pouvoir cosmique des animes et mangas
-                </Text>
                 
                 {/* Drapeaux décoratifs dans les coins */}
                 <Text style={styles.heroFlagLeft}>🎌</Text>
