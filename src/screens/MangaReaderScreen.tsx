@@ -216,7 +216,7 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
   if (loading) {
     return (
       <SafeAreaView style={styles.safeArea}>
-        <StatusBar style="light" backgroundColor="#0a0a1a" />
+        <StatusBar style="light" backgroundColor={COLORS.primary} />
         <SharedHeader />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.secondary} />
@@ -229,7 +229,7 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
   if (error) {
     return (
       <SafeAreaView style={styles.safeArea}>
-        <StatusBar style="light" backgroundColor="#0a0a1a" />
+        <StatusBar style="light" backgroundColor={COLORS.primary} />
         <SharedHeader />
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>{error}</Text>

@@ -1033,7 +1033,7 @@ const HomeScreen: React.FC = () => {
                           {historyItem.seasonName || historyService.extractSeasonInfo(historyItem.animeId).seasonName}
                         </Text>
                         <View style={styles.historyBadgeContainer}>
-                          <View style={[styles.historyLanguageBadge, { backgroundColor: historyItem.language === 'VF' ? '#0055A4' : '#BC002D' }]}>
+                          <View style={[styles.historyLanguageBadge, { backgroundColor: historyItem.language === 'VF' ? COLORS.badges.vf : COLORS.badges.vostfr }]}>
                             <Text style={styles.historyLanguageText}>
                               {getLanguageBadgeText(historyItem.language)}
                             </Text>
@@ -1537,7 +1537,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#1A1A1A', // Fond légèrement visible sur noir
+    backgroundColor: COLORS.background.secondary, // Fond légèrement visible sur noir
     // Bordures néon cosmiques
     borderWidth: 2,
     borderColor: COLORS.border.glow, // Violet néon intense
@@ -1633,7 +1633,7 @@ const styles = StyleSheet.create({
     paddingVertical: 32,
   },
   loadingText: {
-    color: '#6b7280',
+    color: COLORS.text.muted,
     marginTop: 8,
   },
   errorContainer: {
@@ -1642,7 +1642,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   errorText: {
-    color: '#ef4444',
+    color: COLORS.text.error,
     textAlign: 'center',
     marginBottom: 16,
   },
@@ -1653,7 +1653,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   retryText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontWeight: '500',
   },
   emptyContainer: {
@@ -1661,7 +1661,7 @@ const styles = StyleSheet.create({
     paddingVertical: 32,
   },
   emptyText: {
-    color: '#6b7280',
+    color: COLORS.text.muted,
     textAlign: 'center',
     marginBottom: 16,
   },
@@ -1724,7 +1724,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 8,
     overflow: 'hidden',
-    backgroundColor: '#1A1A1A', // Fond légèrement visible sur noir
+    backgroundColor: COLORS.background.secondary, // Fond légèrement visible sur noir
     // Bordures néon violettes - Effet cosmique
     borderWidth: 2,
     borderColor: COLORS.border.glow, // Violet néon intense - cohérent avec les autres cartes
@@ -1894,7 +1894,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   releaseBadgeText: {
-    color: '#000000',
+    color: COLORS.primary,
     fontSize: 8,
     fontWeight: 'bold',
   },
@@ -1909,7 +1909,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   classicBadgeText: {
-    color: '#000000',
+    color: COLORS.primary,
     fontSize: 8,
     fontWeight: 'bold',
   },
@@ -1924,7 +1924,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   rareBadgeText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 8,
     fontWeight: 'bold',
   },
@@ -1960,7 +1960,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border.focus,
   },
   vintageBadgeText: {
-    color: '#ffffff',
+    color: COLORS.text.primary,
     fontSize: 8,
     fontWeight: 'bold',
   },

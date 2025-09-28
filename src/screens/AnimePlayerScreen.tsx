@@ -889,7 +889,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         </View>
 
         <View style={styles.errorContainer}>
-          <Ionicons name="warning-outline" size={48} color="#ef4444" />
+          <Ionicons name="warning-outline" size={48} color={COLORS.text.error} />
           <Text style={styles.errorText}>{error}</Text>
           <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
             <Text style={styles.retryButtonText}>Réessayer</Text>
@@ -1434,14 +1434,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   episodeNumber: {
-    color: '#00bcd4',
+    color: COLORS.secondary,
     fontSize: 14,
     fontWeight: 'bold',
     marginTop: 4,
   },
   videoContainer: {
     height: (width * 9) / 16, // Aspect ratio 16:9
-    backgroundColor: '#000000',
+    backgroundColor: COLORS.primary,
     position: 'relative',
   },
   webView: {
@@ -1596,11 +1596,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: COLORS.secondary,
     borderWidth: 2,
-    borderColor: '#0ea5e9',
+    borderColor: COLORS.secondary,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4,
-    shadowColor: '#00bcd4',
+    shadowColor: COLORS.secondary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.4,
     shadowRadius: 4,

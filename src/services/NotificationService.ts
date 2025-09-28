@@ -49,7 +49,7 @@ export class NotificationService {
       sound: true,
       vibration: true,
       lights: true,
-      color: '#8B5DFF'
+      color: '#A855F7'
     },
     {
       id: 'atomic-flix-manga',
@@ -59,7 +59,7 @@ export class NotificationService {
       sound: true,
       vibration: true,
       lights: true,
-      color: '#FF6B9D'
+      color: '#DB2777'
     },
     {
       id: 'atomic-flix-films',
@@ -69,7 +69,7 @@ export class NotificationService {
       sound: true,
       vibration: true,
       lights: true,
-      color: '#00D4FF'
+      color: '#E879F9'
     },
     {
       id: 'atomic-flix-planning',
@@ -79,7 +79,7 @@ export class NotificationService {
       sound: false,
       vibration: true,
       lights: true,
-      color: '#8B5DFF'
+      color: '#A855F7'
     }
   ];
 

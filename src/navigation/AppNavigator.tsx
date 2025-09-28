@@ -94,7 +94,7 @@ const HomeStackNavigator: React.FC = () => {
 const AppNavigator: React.FC = () => {
   return (
     <NavigationContainer>
-      <StatusBar style="light" backgroundColor="#8B5DFF" />
+      <StatusBar style="light" backgroundColor={COLORS.primary} />
       <Drawer.Navigator
         initialRouteName="HomeStack"
         drawerContent={(props) => <DrawerContent {...props} />}
