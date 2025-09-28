@@ -20,6 +20,25 @@ const CosmicBackground: React.FC<CosmicBackgroundProps> = ({ children }) => {
       {/* Fond principal noir cosmique */}
       <View style={styles.baseBackground} />
       
+      {/* Lignes rouges répétitives - Effet Matrix/Cyberpunk */}
+      <View style={styles.redLinesContainer}>
+        {Array.from({ length: Math.ceil(width / 20) }).map((_, index) => (
+          <LinearGradient
+            key={`redline-${index}`}
+            colors={[
+              'transparent',
+              'rgba(220, 38, 38, 0.3)',
+              'rgba(185, 28, 28, 0.4)',
+              'rgba(220, 38, 38, 0.3)',
+              'transparent'
+            ]}
+            style={[styles.redLine, { left: index * 20 }]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+          />
+        ))}
+      </View>
+      
       {/* Nébuleuse violette principale */}
       <LinearGradient
         colors={[
@@ -112,6 +131,21 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+  },
+  redLinesContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    opacity: 0.6,
+  },
+  redLine: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: 2,
+    opacity: 0.8,
   },
 });
 
