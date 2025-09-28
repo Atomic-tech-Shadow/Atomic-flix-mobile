@@ -21,7 +21,7 @@ export const COLORS = {
     end: '#DB2777'   // Magenta atomique
   },
   
-  // Couleurs de fond - Ombre authentique
+  // Couleurs de fond - Ombre cosmique "I am Atomic"
   background: {
     primary: '#0F0F0F', // Noir absolu - Ombre de Cid
     secondary: '#1A1A1A', // Noir légèrement plus clair
@@ -29,7 +29,13 @@ export const COLORS = {
     modal: 'rgba(15, 15, 15, 0.98)', // Modal noir profond
     atomic: 'linear-gradient(45deg, #0F0F0F 0%, #A855F7 50%, #DB2777 100%)', // Aura atomique sur noir
     glow: 'radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(15, 15, 15, 0.9) 70%)', // Glow violet sur noir
-    shadow: 'linear-gradient(180deg, #0F0F0F 0%, #1A1A1A 100%)' // Gradient d'ombre
+    shadow: 'linear-gradient(180deg, #0F0F0F 0%, #1A1A1A 100%)', // Gradient d'ombre
+    // Nouveaux fonds cosmiques inspirés de "The Eminence in Shadow"
+    cosmic: 'radial-gradient(ellipse at center, rgba(168, 85, 247, 0.15) 0%, rgba(15, 15, 15, 0.95) 50%, #0F0F0F 100%)', // Aura cosmique
+    starfield: 'linear-gradient(45deg, #0F0F0F 0%, rgba(168, 85, 247, 0.1) 30%, rgba(219, 39, 119, 0.1) 70%, #0F0F0F 100%)', // Champ d'étoiles
+    nebula: 'radial-gradient(circle at 20% 80%, rgba(219, 39, 119, 0.2) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 50%), #0F0F0F', // Nébuleuse violette
+    moon: 'radial-gradient(circle at 70% 30%, rgba(255, 182, 193, 0.1) 0%, transparent 30%), linear-gradient(135deg, #0F0F0F 0%, rgba(168, 85, 247, 0.08) 100%)', // Lune dramatique
+    lightning: 'linear-gradient(90deg, #0F0F0F 0%, rgba(168, 85, 247, 0.05) 30%, rgba(219, 39, 119, 0.05) 70%, #0F0F0F 100%)' // Éclairs subtils
   },
   
   // Couleurs de texte - Lueur cosmique de l'ombre
@@ -124,6 +130,18 @@ export const textStyles = {
   atomic: {
     color: COLORS.text.atomic,
     textShadow: '0px 2px 4px rgba(30, 27, 75, 0.8), 0px 0px 15px rgba(251, 191, 36, 0.5)',
+  },
+  // Nouveaux styles inspirés de "I am Atomic"
+  shadowTitle: {
+    color: COLORS.text.primaryBold,
+    textShadow: '0px 0px 20px rgba(168, 85, 247, 0.8), 0px 0px 40px rgba(219, 39, 119, 0.4), 0px 4px 8px rgba(0, 0, 0, 0.9)',
+    letterSpacing: 2,
+    fontWeight: '700' as const,
+  },
+  cosmicSubtitle: {
+    color: COLORS.text.secondary,
+    textShadow: '0px 0px 15px rgba(168, 85, 247, 0.6), 0px 2px 4px rgba(0, 0, 0, 0.8)',
+    letterSpacing: 1,
   }
 };
 

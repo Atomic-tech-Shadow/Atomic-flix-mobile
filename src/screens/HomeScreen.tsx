@@ -25,6 +25,7 @@ import { SearchResult } from '../types/index';
 import type { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
 import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
+import CosmicBackground from '../components/CosmicBackground';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { NotificationPanel } from '../components/NotificationPanel';
 import { useNotifications } from '../hooks/useNotifications';
@@ -832,8 +833,9 @@ const HomeScreen: React.FC = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <StatusBar style="light" backgroundColor={COLORS.primary} />
+    <CosmicBackground>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <StatusBar style="light" backgroundColor={COLORS.primary} />
 
       {/* Bannière de statut réseau */}
       <NetworkStatusBanner
@@ -956,11 +958,20 @@ const HomeScreen: React.FC = () => {
 
               {/* Contenu principal */}
               <LinearGradient
-                colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.95)', '#000000']}
+                colors={[
+                  'rgba(0,0,0,0.6)', 
+                  'rgba(168, 85, 247, 0.15)', 
+                  'rgba(219, 39, 119, 0.1)', 
+                  'rgba(168, 85, 247, 0.05)',
+                  'rgba(0,0,0,0.9)'
+                ]}
                 style={styles.heroContent}
               >
-                <Text style={styles.heroSubtitle}>
-                  Plongez dans l'univers infini{'\n'}des animes et mangas !
+                <Text style={[styles.heroSubtitle, textStyles.shadowTitle]}>
+                  I AM ATOMIC{'\n'}PLONGEZ DANS L'UNIVERS INFINI
+                </Text>
+                <Text style={[styles.heroSubtitle, textStyles.cosmicSubtitle]}>
+                  L'ombre du pouvoir cosmique des animes et mangas
                 </Text>
                 
                 {/* Drapeaux décoratifs dans les coins */}
@@ -1377,14 +1388,15 @@ const HomeScreen: React.FC = () => {
         style={{ zIndex: 100 }}
       />
 
-    </SafeAreaView>
+      </SafeAreaView>
+    </CosmicBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.primary, // Violet principal du logo
+    backgroundColor: COLORS.primary, // Fond cosmique "I am Atomic"
   },
   headerContainer: {
     position: 'relative',
