@@ -46,16 +46,16 @@ export const COLORS = {
     muted: '#A1A1AA',        // Gris cosmique - Informations secondaires
     accent: '#A855F7',       // Violet néon - Actions principales
     accentHover: '#DB2777',  // Magenta atomique - Survol intense
-    success: '#10B981',      // Vert émeraude - Succès
+    success: '#C084FC',      // Violet cosmique - Succès harmonisé
     warning: '#F59E0B',      // Ambre - Avertissement
     error: '#EF4444',        // Rouge ardent - Erreur
     disabled: '#6B7280',     // Gris neutre - Désactivé
-    atomic: '#FBBF24',       // Or atomique - Éléments spéciaux
+    atomic: '#F472B6',       // Rose magenta - Éléments spéciaux harmonisés
     shadow: '#1E1B4B'       // Ombre profonde - Contraste
   },
   
   // États et badges - Pouvoirs cosmiques
-  success: '#10B981', // Vert émeraude - Réussite
+  success: '#C084FC', // Violet cosmique - Réussite harmonisée
   warning: '#F59E0B', // Ambre - Avertissement
   error: '#EF4444',   // Rouge ardent - Erreur
   
@@ -64,15 +64,15 @@ export const COLORS = {
     anime: '#A855F7',    // Violet néon - Anime
     manga: '#DB2777',    // Magenta atomique - Manga  
     film: '#E879F9',     // Violet éclatant - Film
-    nouveau: '#10B981',  // Vert émeraude - Nouveau
-    vf: '#FBBF24',       // Or atomique - Version française
+    nouveau: '#C084FC',  // Violet cosmique - Nouveau harmonisé
+    vf: '#E879F9',       // Violet éclatant - Version française harmonisée
     vostfr: '#C084FC',   // Violet clair - Sous-titres
-    legendary: '#FBBF24', // Or atomique - Légendaire
+    legendary: '#F472B6', // Rose magenta doré - Légendaire harmonisé
     planning: '#DB2777',  // Magenta - Planification
     trending: '#A855F7',  // Violet néon - Tendances
-    premium: '#FBBF24',   // Or atomique - Premium
+    premium: '#F472B6',   // Rose magenta premium - Premium harmonisé
     hot: '#DB2777',       // Magenta - Populaire
-    new: '#10B981',       // Vert émeraude - Nouveautés
+    new: '#C084FC',       // Violet cosmique - Nouveautés harmonisées
     atomic: '#E879F9',    // Violet éclatant - Pouvoir atomique
     shadow: '#000000'     // Noir absolu - Ombre pure
   },
@@ -81,7 +81,7 @@ export const COLORS = {
   states: {
     active: '#A855F7',        // Violet néon - Activé
     hover: '#DB2777',         // Magenta atomique - Survol
-    focus: '#FBBF24',         // Or atomique - Focus
+    focus: '#F472B6',         // Rose magenta - Focus harmonisé
     selected: '#E879F9',      // Violet éclatant - Sélectionné
     pressed: '#7C3AED',       // Violet profond - Pressé
     loading: '#A1A1AA',       // Gris cosmique - Chargement
@@ -129,7 +129,7 @@ export const textStyles = {
   },
   atomic: {
     color: COLORS.text.atomic,
-    textShadow: '0px 2px 4px rgba(30, 27, 75, 0.8), 0px 0px 15px rgba(251, 191, 36, 0.5)',
+    textShadow: '0px 2px 4px rgba(30, 27, 75, 0.8), 0px 0px 15px rgba(244, 114, 182, 0.5)',
   },
   // Nouveaux styles inspirés de "I am Atomic"
   shadowTitle: {
@@ -161,7 +161,7 @@ export const interactiveStyles = {
       borderWidth: 2,
     },
     accent: {
-      backgroundColor: COLORS.badges.premium, // Or atomique - Premium
+      backgroundColor: COLORS.badges.premium, // Rose magenta - Premium harmonisé
       borderColor: COLORS.states.focus,
       shadowColor: COLORS.text.atomic,
       shadowOpacity: 0.3,
