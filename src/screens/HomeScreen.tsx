@@ -1402,6 +1402,7 @@ const styles = StyleSheet.create({
   // Recherche
   searchBarContainer: {
     padding: 16,
+    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
   },
   searchBar: {
     flexDirection: 'row',
@@ -1621,6 +1622,7 @@ const styles = StyleSheet.create({
   loadingContainer: {
     alignItems: 'center',
     paddingVertical: 32,
+    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
   },
   loadingText: {
     color: COLORS.text.muted,
@@ -1630,6 +1632,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 32,
     paddingHorizontal: 16,
+    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
   },
   errorText: {
     color: COLORS.text.error,
@@ -1649,6 +1652,7 @@ const styles = StyleSheet.create({
   emptyContainer: {
     alignItems: 'center',
     paddingVertical: 32,
+    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
   },
   emptyText: {
     color: COLORS.text.muted,
@@ -1689,10 +1693,14 @@ const styles = StyleSheet.create({
   // Styles pour les sections horizontales (Classiques et Pépites)
   horizontalSection: {
     marginBottom: 24,
+    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
+    paddingVertical: 8,
   },
   sectionHeader: {
     paddingHorizontal: 16,
     marginBottom: 16,
+    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
+    paddingVertical: 8,
   },
   sectionTitle: {
     fontSize: 20,

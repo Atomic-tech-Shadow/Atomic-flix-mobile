@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: 'relative',
-    zIndex: 10, // Au-dessus des lignes rouges
   },
   fixedRedLinesContainer: {
     position: 'absolute',
@@ -47,7 +46,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     opacity: 0.7,
-    zIndex: 1, // En arrière-plan, derrière le contenu
+    zIndex: 9999, // Au-dessus de tout
     pointerEvents: 'none', // Ne bloque pas les interactions
   },
   redLine: {
