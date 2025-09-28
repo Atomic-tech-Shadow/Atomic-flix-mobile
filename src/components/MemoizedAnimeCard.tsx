@@ -93,6 +93,8 @@ const styles = StyleSheet.create({
     marginRight: 12,
     backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
     borderRadius: 8,
+    zIndex: 10000, // Au-dessus des lignes rouges pour les masquer
+    position: 'relative',
     // Effet de glow cosmique sur le wrapper (sans overflow hidden)
     shadowColor: COLORS.badges.atomic,
     shadowOffset: { width: 0, height: 0 },

@@ -96,6 +96,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 20,
     paddingBottom: 8,
+    zIndex: 10000, // Au-dessus des lignes rouges pour les masquer
+    position: 'relative',
     // Effet glow subtil sur le header
     shadowColor: COLORS.badges.atomic,
     shadowOffset: { width: 0, height: 2 },

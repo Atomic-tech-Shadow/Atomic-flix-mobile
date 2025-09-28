@@ -1452,6 +1452,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginHorizontal: 8,
     overflow: 'hidden',
+    zIndex: 10000, // Au-dessus des lignes rouges pour les masquer
     // Contour néon cosmique puissant pour hero
     borderWidth: 3,
     borderColor: COLORS.border.glow, // Violet néon intense
@@ -1695,17 +1696,25 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
     paddingVertical: 8,
+    zIndex: 10000, // Au-dessus des lignes rouges pour les masquer
+    position: 'relative',
   },
   sectionHeader: {
     paddingHorizontal: 16,
     marginBottom: 16,
     backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
     paddingVertical: 8,
+    zIndex: 10001, // Au-dessus des lignes rouges pour les masquer
+    position: 'relative',
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: COLORS.secondary, // Couleur cyan du nouveau logo
+    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    alignSelf: 'flex-start',
     textShadowColor: 'rgba(0, 212, 255, 0.3)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
