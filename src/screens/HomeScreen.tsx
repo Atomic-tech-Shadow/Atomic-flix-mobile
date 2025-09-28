@@ -877,7 +877,7 @@ const HomeScreen: React.FC = () => {
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 placeholder="Rechercher des animes..."
-                placeholderTextColor="#6b7280"
+                placeholderTextColor={COLORS.text.muted}
                 autoFocus
               />
               <TouchableOpacity
@@ -1741,9 +1741,13 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border.focus,
   },
   newEpisodeBadgeText: {
-    color: '#ffffff',
+    color: COLORS.text.primary, // Blanc éclatant - cohérent avec le système
     fontSize: 9,
     fontWeight: 'bold',
+    // Effet de lueur pour le texte du badge
+    textShadowColor: COLORS.badges.new,
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
   },
   // Meta info pour les cartes horizontales
   horizontalCardMeta: {
@@ -1799,9 +1803,13 @@ const styles = StyleSheet.create({
   horizontalCardTitle: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#ffffff',
+    color: COLORS.text.primary, // Blanc éclatant - cohérent avec le système
     marginBottom: 4,
     lineHeight: 14,
+    // Effet de lueur atomique sur le titre
+    textShadowColor: COLORS.badges.atomic,
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
   horizontalCardBadge: {
     backgroundColor: COLORS.badges.vostfr + '33', // Violet avec transparence
@@ -1817,9 +1825,13 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   horizontalCardBadgeText: {
-    color: COLORS.badges.trending, // Cyan éclatant stratégique
+    color: COLORS.text.primary, // Blanc éclatant pour meilleure lisibilité
     fontSize: 8,
     fontWeight: '600',
+    // Effet de lueur pour le texte des badges langue
+    textShadowColor: COLORS.badges.vostfr,
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
   },
 
 
