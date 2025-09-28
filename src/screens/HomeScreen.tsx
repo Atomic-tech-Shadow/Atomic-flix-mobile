@@ -1711,7 +1711,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1A1A1A', // Fond légèrement visible sur noir
     // Bordures néon violettes - Effet cosmique
     borderWidth: 2,
-    borderColor: COLORS.border.secondary, // Violet néon
+    borderColor: COLORS.border.glow, // Violet néon intense - cohérent avec les autres cartes
     // Effet de glow atomique
     shadowColor: COLORS.badges.atomic,
     shadowOffset: { width: 0, height: 0 },
@@ -1983,8 +1983,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 193, 7, 0.4)', // Bordure dorée pour planning
+    borderWidth: 2,
+    borderColor: COLORS.text.atomic, // Bordure dorée atomique pour planning
   },
   planningBadge: {
     position: 'absolute',
@@ -2060,8 +2060,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 2,
+    borderColor: COLORS.border.card, // Lueur violette subtile - cohérent avec le système
   },
   historyImageContainer: {
     position: 'relative',
