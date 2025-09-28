@@ -1976,12 +1976,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     backgroundColor: COLORS.primary,
-    elevation: 3,
-    shadowColor: '#000',
+    elevation: 8,
+    shadowColor: COLORS.badges.trending, // Ombre violette atomique pour recommandations
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    borderWidth: 1,
+    shadowOpacity: 0.5, // Glow plus intense
+    shadowRadius: 6,
+    borderWidth: 2,
     borderColor: COLORS.badges.trending + '66', // Bordure violette avec transparence pour recommandations
   },
   recommendationBadge: {
@@ -2001,9 +2001,13 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   recommendationBadgeText: {
-    color: '#000000',
+    color: COLORS.text.primary, // Blanc éclatant pour meilleure lisibilité
     fontSize: 8,
     fontWeight: 'bold',
+    // Effet de lueur pour le texte des badges recommandation
+    textShadowColor: COLORS.badges.trending,
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
   },
 
   // Styles pour les cartes de planning
@@ -2014,11 +2018,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     backgroundColor: COLORS.primary,
-    elevation: 3,
-    shadowColor: '#000',
+    elevation: 8,
+    shadowColor: COLORS.text.atomic, // Ombre dorée atomique pour planning
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowOpacity: 0.6, // Glow plus intense
+    shadowRadius: 8,
     borderWidth: 2,
     borderColor: COLORS.text.atomic, // Bordure dorée atomique pour planning
   },
@@ -2039,9 +2043,13 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border.focus,
   },
   planningBadgeText: {
-    color: '#000000',
+    color: COLORS.text.shadow, // Couleur sombre pour contraste sur fond doré
     fontSize: 8,
     fontWeight: 'bold',
+    // Effet de lueur pour le texte du badge planning
+    textShadowColor: COLORS.text.atomic,
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
   },
 
   // Styles pour la modal de notifications
