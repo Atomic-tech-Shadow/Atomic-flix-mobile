@@ -8,6 +8,15 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
 
 ## Recent Changes (September 2025)
 
+- **Complete Color Consistency Fix** (28 septembre 2025): Résolution complète du problème de cohérence des couleurs
+  - **Problème résolu**: "Les couleurs sont différents dans certains partis" - couleurs incohérentes dans l'application
+  - **Standardisation Complète**: Remplacement de 100+ couleurs codées en dur (rgba(), hex) par le système COLORS centralisé
+  - **15+ Fichiers Corrigés**: AnimeDetailScreen, AnimePlayerScreen, HomeScreen, MangaReaderScreen, NetworkStatusBanner, DrawerContent, etc.
+  - **Système Sémantique**: Tous les éléments UI utilisent maintenant COLORS.text.*, COLORS.badges.*, COLORS.background.*
+  - **Accents Violets Restaurés**: Les badges année/genre utilisent COLORS.badges.anime pour la hiérarchie visuelle correcte
+  - **Cohérence Visuelle**: Thème sombre unifié avec accents violets (#A855F7) cohérents à travers toute l'application
+  - **Architecture Robuste**: Système de transparence standardisé (COLORS constants + hex transparency)
+
 - **Version Update**: 1.0.0 → 1.0.1 with versionCode 2 (24 septembre 2025)
   - **Expo Project ID Updated**: Nouveau project ID Expo pour nouvelle configuration
   - **Fix Historique Saga**: Correction complète de la gestion des anime "Saga" vs "Saison" dans l'historique
