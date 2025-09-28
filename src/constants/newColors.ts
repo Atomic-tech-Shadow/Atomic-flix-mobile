@@ -2,10 +2,10 @@
 // Couleurs inspirées du pouvoir cosmique de Cid Kagenou
 
 export const COLORS = {
-  // Couleurs principales - Thème "I am Atomic"
-  primary: '#4C1D95', // Violet cosmique profond - Pouvoir d'ombre
-  secondary: '#A855F7', // Violet lumineux néon - Énergie magique
-  accent: '#DB2777', // Magenta intense - Aura atomique
+  // Couleurs principales - Thème "I am Atomic" (Fond noir authentique)
+  primary: '#0F0F0F', // Noir cosmique - Ombre de Cid Kagenou
+  secondary: '#A855F7', // Violet néon lumineux - Énergie atomique
+  accent: '#DB2777', // Magenta intense - Aura de pouvoir
   
   // Gradients cosmiques - Pouvoir "I am Atomic"
   primaryGradient: {
@@ -21,14 +21,15 @@ export const COLORS = {
     end: '#DB2777'   // Magenta atomique
   },
   
-  // Couleurs de fond - Cosmos de l'ombre
+  // Couleurs de fond - Ombre authentique
   background: {
-    primary: 'linear-gradient(135deg, #1E1B4B 0%, #4C1D95 50%, #6D28D9 100%)', // Gradient cosmique
-    secondary: '#1E1B4B', // Noir cosmique principal
-    card: 'rgba(76, 29, 149, 0.8)', // Violet d'ombre transparent
-    modal: 'rgba(30, 27, 75, 0.95)', // Noir cosmique modal
-    atomic: 'linear-gradient(45deg, #4C1D95 0%, #A855F7 50%, #DB2777 100%)', // Aura atomique
-    glow: 'radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, rgba(76, 29, 149, 0.1) 70%)' // Effet néon
+    primary: '#0F0F0F', // Noir absolu - Ombre de Cid
+    secondary: '#1A1A1A', // Noir légèrement plus clair
+    card: 'rgba(255, 255, 255, 0.05)', // Cartes subtiles sur noir
+    modal: 'rgba(15, 15, 15, 0.98)', // Modal noir profond
+    atomic: 'linear-gradient(45deg, #0F0F0F 0%, #A855F7 50%, #DB2777 100%)', // Aura atomique sur noir
+    glow: 'radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(15, 15, 15, 0.9) 70%)', // Glow violet sur noir
+    shadow: 'linear-gradient(180deg, #0F0F0F 0%, #1A1A1A 100%)' // Gradient d'ombre
   },
   
   // Couleurs de texte - Lueur cosmique de l'ombre
@@ -52,11 +53,11 @@ export const COLORS = {
   warning: '#F59E0B', // Ambre - Avertissement
   error: '#EF4444',   // Rouge ardent - Erreur
   
-  // Badges - Arsenal des pouvoirs de l'ombre
+  // Badges - Arsenal des pouvoirs de l'ombre (sur fond noir)
   badges: {
-    anime: '#4C1D95',    // Violet cosmique - Anime
+    anime: '#A855F7',    // Violet néon - Anime
     manga: '#DB2777',    // Magenta atomique - Manga  
-    film: '#A855F7',     // Violet néon - Film
+    film: '#E879F9',     // Violet éclatant - Film
     nouveau: '#10B981',  // Vert émeraude - Nouveau
     vf: '#FBBF24',       // Or atomique - Version française
     vostfr: '#C084FC',   // Violet clair - Sous-titres
@@ -67,7 +68,7 @@ export const COLORS = {
     hot: '#DB2777',       // Magenta - Populaire
     new: '#10B981',       // Vert émeraude - Nouveautés
     atomic: '#E879F9',    // Violet éclatant - Pouvoir atomique
-    shadow: '#1E1B4B'    // Noir cosmique - Ombre
+    shadow: '#000000'     // Noir absolu - Ombre pure
   },
   
   // États cosmiques - Réactions du pouvoir
@@ -83,14 +84,14 @@ export const COLORS = {
     shadow: '#374151'         // Gris d'ombre - Ombre
   },
   
-  // Bordures et séparateurs - Contours de l'ombre
+  // Bordures et séparateurs - Contours néon sur ombre
   border: {
-    primary: '#4C1D95',              // Violet cosmique
-    secondary: '#A855F7',            // Violet néon
-    card: 'rgba(76, 29, 149, 0.4)',  // Violet d'ombre transparent
+    primary: '#333333',              // Gris sombre pour contraste sur noir
+    secondary: '#A855F7',            // Violet néon - Éclat atomique
+    card: 'rgba(168, 85, 247, 0.3)', // Lueur violette subtile
     focus: '#DB2777',                // Magenta atomique - Focus
-    glow: 'rgba(168, 85, 247, 0.6)', // Lueur néon
-    atomic: '#E879F9'                // Violet éclatant - Atomique
+    glow: 'rgba(168, 85, 247, 0.8)', // Lueur néon intense
+    atomic: '#E879F9'                // Violet éclatant - Pouvoir
   }
 };
 
