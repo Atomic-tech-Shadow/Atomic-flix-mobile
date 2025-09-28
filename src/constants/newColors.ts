@@ -48,7 +48,7 @@ export const COLORS = {
     accentHover: '#DB2777',  // Magenta atomique - Survol intense
     success: '#C084FC',      // Violet cosmique - Succès harmonisé
     warning: '#F59E0B',      // Ambre - Avertissement
-    error: '#EF4444',        // Rouge ardent - Erreur
+    error: '#DC2626',        // Rouge crimson Shadow - Erreur
     disabled: '#6B7280',     // Gris neutre - Désactivé
     atomic: '#F472B6',       // Rose magenta - Éléments spéciaux harmonisés
     shadow: '#1E1B4B'       // Ombre profonde - Contraste
@@ -57,7 +57,8 @@ export const COLORS = {
   // États et badges - Pouvoirs cosmiques
   success: '#C084FC', // Violet cosmique - Réussite harmonisée
   warning: '#F59E0B', // Ambre - Avertissement
-  error: '#EF4444',   // Rouge ardent - Erreur
+  error: '#DC2626',   // Rouge crimson Shadow - Erreur
+  danger: '#B91C1C',  // Rouge sang Shadow - Danger
   
   // Badges - Arsenal des pouvoirs de l'ombre (sur fond noir)
   badges: {
@@ -71,10 +72,15 @@ export const COLORS = {
     planning: '#DB2777',  // Magenta - Planification
     trending: '#A855F7',  // Violet néon - Tendances
     premium: '#F472B6',   // Rose magenta premium - Premium harmonisé
-    hot: '#DB2777',       // Magenta - Populaire
+    hot: '#DC2626',       // Rouge crimson - Populaire Shadow style
     new: '#C084FC',       // Violet cosmique - Nouveautés harmonisées
     atomic: '#E879F9',    // Violet éclatant - Pouvoir atomique
-    shadow: '#000000'     // Noir absolu - Ombre pure
+    shadow: '#000000',    // Noir absolu - Ombre pure
+    // Nouveaux badges inspirés des couleurs rouge de Shadow
+    danger: '#B91C1C',    // Rouge sang - Danger Shadow
+    blood: '#7F1D1D',     // Rouge sang foncé - Effets dramatiques
+    crimson: '#DC2626',   // Rouge crimson - Pouvoirs Shadow
+    shadowRed: '#991B1B', // Rouge ombre - Yeux de Shadow
   },
   
   // États cosmiques - Réactions du pouvoir
@@ -97,7 +103,9 @@ export const COLORS = {
     card: 'rgba(168, 85, 247, 0.3)', // Lueur violette subtile
     focus: '#DB2777',                // Magenta atomique - Focus
     glow: 'rgba(168, 85, 247, 0.8)', // Lueur néon intense
-    atomic: '#E879F9'                // Violet éclatant - Pouvoir
+    atomic: '#E879F9',               // Violet éclatant - Pouvoir
+    danger: 'rgba(220, 38, 38, 0.6)', // Lueur rouge Shadow - Danger
+    blood: 'rgba(185, 28, 28, 0.8)'   // Lueur sang Shadow - Dramatique
   }
 };
 
@@ -205,5 +213,29 @@ export const atomicEffects = {
     borderWidth: 2,
     borderColor: COLORS.border.glow,
     borderRadius: 12,
+  },
+  // Nouveaux effets rouges inspirés de Shadow
+  shadowRedGlow: {
+    shadowColor: COLORS.badges.crimson,
+    shadowOpacity: 0.9,
+    shadowRadius: 20,
+    elevation: 15,
+  },
+  bloodEffect: {
+    shadowColor: COLORS.badges.blood,
+    shadowOpacity: 1.0,
+    shadowRadius: 25,
+    elevation: 20,
+  },
+  dangerBorder: {
+    borderWidth: 2,
+    borderColor: COLORS.border.danger,
+    borderRadius: 12,
+  },
+  crimsonAura: {
+    shadowColor: COLORS.badges.shadowRed,
+    shadowOpacity: 0.8,
+    shadowRadius: 18,
+    elevation: 12,
   }
 };
