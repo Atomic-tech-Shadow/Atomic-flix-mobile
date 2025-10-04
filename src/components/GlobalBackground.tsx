@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, useColorScheme } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface GlobalBackgroundProps {
   children: React.ReactNode;
@@ -7,15 +8,15 @@ interface GlobalBackgroundProps {
 
 /**
  * Fond global utilisant les couleurs système
- * S'adapte automatiquement au mode sombre/clair du téléphone
+ * Bascule entre mode sombre et clair
  */
 const GlobalBackground: React.FC<GlobalBackgroundProps> = ({ children }) => {
-  const colorScheme = useColorScheme();
+  const { isDark } = useTheme();
   
   return (
     <View style={[
       styles.container,
-      { backgroundColor: colorScheme === 'dark' ? '#000000' : '#FFFFFF' }
+      { backgroundColor: isDark ? '#000000' : '#FFFFFF' }
     ]}>
       {children}
     </View>

@@ -9,6 +9,7 @@ import type { RootStackParamList } from '../navigation/AppNavigator';
 import { COLORS } from '../constants/newColors';
 import { NotificationBadge } from './NotificationBadge';
 import { useNotifications } from '../hooks/useNotifications';
+import { useTheme } from '../contexts/ThemeContext';
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -25,6 +26,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 }) => {
   const navigation = useNavigation<NavigationProp>();
   const { unreadCount } = useNotifications();
+  const { isDark, toggleTheme } = useTheme();
 
   const handleSearchPress = () => {
     // Si un onSearchPress spécifique est fourni (comme dans HomeScreen), l'utiliser
@@ -67,6 +69,18 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             onPress={handleSearchPress}
           >
             <Ionicons name="search" size={22} color={COLORS.text.primary} />
+          </TouchableOpacity>
+
+          {/* Bouton thème (mode sombre/clair) */}
+          <TouchableOpacity 
+            style={styles.headerIconButton}
+            onPress={toggleTheme}
+          >
+            <Ionicons 
+              name={isDark ? "sunny" : "moon"} 
+              size={22} 
+              color={COLORS.text.primary} 
+            />
           </TouchableOpacity>
 
           {/* Bouton notifications avec badge */}

@@ -9,6 +9,7 @@ import 'react-native-gesture-handler';
 import AppNavigator from './src/navigation/AppNavigator';
 import { queryClient } from './src/utils/queryClient';
 import ErrorBoundary from './src/components/ErrorBoundary';
+import { ThemeProvider } from './src/contexts/ThemeContext';
 
 // Appeler preventAutoHideAsync() dans le scope global selon la documentation Expo 53
 SplashScreen.preventAutoHideAsync();
@@ -52,24 +53,26 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <QueryClientProvider client={queryClient}>
-          <ErrorBoundary
-            onError={(error, errorInfo) => {
-              // En production, on pourrait envoyer l'erreur à un service de monitoring
-              if (__DEV__) {
-                console.error('🚨 Global Error:', error);
-                console.error('📍 Error Info:', errorInfo);
-              }
-            }}
-          >
-            <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-              <AppNavigator />
-            </View>
-          </ErrorBoundary>
-        </QueryClientProvider>
-      </GestureHandlerRootView>
-    </SafeAreaProvider>
+    <ThemeProvider>
+      <SafeAreaProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <QueryClientProvider client={queryClient}>
+            <ErrorBoundary
+              onError={(error, errorInfo) => {
+                // En production, on pourrait envoyer l'erreur à un service de monitoring
+                if (__DEV__) {
+                  console.error('🚨 Global Error:', error);
+                  console.error('📍 Error Info:', errorInfo);
+                }
+              }}
+            >
+              <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+                <AppNavigator />
+              </View>
+            </ErrorBoundary>
+          </QueryClientProvider>
+        </GestureHandlerRootView>
+      </SafeAreaProvider>
+    </ThemeProvider>
   );
 }
