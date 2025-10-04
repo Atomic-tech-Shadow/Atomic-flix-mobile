@@ -1,18 +1,22 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { COLORS } from '../constants/newColors';
+import { View, StyleSheet, useColorScheme } from 'react-native';
 
 interface GlobalBackgroundProps {
   children: React.ReactNode;
 }
 
 /**
- * Fond global noir
- * Utilisé sur tous les écrans de l'app
+ * Fond global utilisant les couleurs système
+ * S'adapte automatiquement au mode sombre/clair du téléphone
  */
 const GlobalBackground: React.FC<GlobalBackgroundProps> = ({ children }) => {
+  const colorScheme = useColorScheme();
+  
   return (
-    <View style={styles.container}>
+    <View style={[
+      styles.container,
+      { backgroundColor: colorScheme === 'dark' ? '#000000' : '#FFFFFF' }
+    ]}>
       {children}
     </View>
   );
@@ -21,7 +25,6 @@ const GlobalBackground: React.FC<GlobalBackgroundProps> = ({ children }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
   },
 });
 
