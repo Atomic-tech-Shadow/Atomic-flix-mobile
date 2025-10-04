@@ -39,15 +39,18 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   // Utiliser la version d'app.json via Constants Expo
   const appVersion = Constants.expoConfig?.version || '1.0.0';
 
+  const headerBgColor = isDark ? COLORS.primary : '#FFFFFF';
+  const iconColor = isDark ? COLORS.text.primary : '#000000';
+
   return (
-    <View style={styles.mobileHeader}>
+    <View style={[styles.mobileHeader, { backgroundColor: headerBgColor }]}>
       <View style={styles.headerRow}>
         {/* Menu hamburger - position standard à gauche */}
         <TouchableOpacity 
           style={styles.menuButton}
           onPress={onMenuPress}
         >
-          <Ionicons name="menu" size={24} color={COLORS.text.primary} />
+          <Ionicons name="menu" size={24} color={iconColor} />
         </TouchableOpacity>
 
         {/* Texte à côté du menu, style WhatsApp */}
@@ -68,7 +71,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             style={styles.headerIconButton}
             onPress={handleSearchPress}
           >
-            <Ionicons name="search" size={22} color={COLORS.text.primary} />
+            <Ionicons name="search" size={22} color={iconColor} />
           </TouchableOpacity>
 
           {/* Bouton thème (mode sombre/clair) */}
@@ -79,7 +82,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             <Ionicons 
               name={isDark ? "sunny" : "moon"} 
               size={22} 
-              color={COLORS.text.primary} 
+              color={iconColor} 
             />
           </TouchableOpacity>
 
@@ -88,7 +91,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             style={styles.headerIconButton}
             onPress={onNotificationPress}
           >
-            <Ionicons name="notifications-outline" size={22} color={COLORS.text.primary} />
+            <Ionicons name="notifications-outline" size={22} color={iconColor} />
             {unreadCount > 0 && (
               <View style={styles.notificationBadge}>
                 <Text style={styles.badgeText}>
