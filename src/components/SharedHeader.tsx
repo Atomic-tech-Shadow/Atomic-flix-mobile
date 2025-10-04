@@ -58,7 +58,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             end={{x: 1, y: 0}}
             style={styles.titleTextGradient}
           >
-            <Text style={styles.titleText}>ATOMIC FLIX</Text>
+            <Text style={styles.titleText} numberOfLines={1}>ATOMIC FLIX</Text>
           </LinearGradient>
         </View>
 
