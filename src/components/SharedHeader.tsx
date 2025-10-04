@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   },
   titleSection: {
     flex: 1,
-    marginLeft: 16,
+    marginLeft: 8,
   },
   titleTextGradient: {
     borderRadius: 8,
