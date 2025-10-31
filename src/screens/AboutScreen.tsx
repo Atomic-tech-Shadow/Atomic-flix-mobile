@@ -5,7 +5,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { StatusBar } from 'expo-status-bar';
 import SharedHeader from '../components/SharedHeader';
-import { COLORS } from '../constants/newColors';
+import { getThemedColors } from '../constants/newColors';
+import { useTheme } from '../contexts/ThemeContext';
 
 type AboutScreenNavigationProp = StackNavigationProp<RootStackParamList, 'About'>;
 
@@ -14,13 +15,99 @@ interface Props {
 }
 
 const AboutScreen: React.FC<Props> = ({ navigation }) => {
+  const { isDark } = useTheme();
+  const COLORS = getThemedColors(isDark);
+
   const openURL = (url: string) => {
     Linking.openURL(url);
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: COLORS.primary,
+    },
+    content: {
+      flex: 1,
+      padding: 20,
+    },
+    header: {
+      alignItems: 'center',
+      marginBottom: 30,
+    },
+    logo: {
+      width: 100,
+      height: 100,
+      marginBottom: 15,
+    },
+    appName: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      color: COLORS.text.primary,
+      textAlign: 'center',
+    },
+    version: {
+      fontSize: 16,
+      color: COLORS.text.secondary,
+      marginTop: 5,
+    },
+    section: {
+      marginBottom: 25,
+    },
+    sectionTitle: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: COLORS.text.primary,
+      marginBottom: 10,
+    },
+    description: {
+      fontSize: 16,
+      color: COLORS.text.muted,
+      lineHeight: 24,
+      textAlign: 'justify',
+    },
+    featureList: {
+      gap: 8,
+    },
+    featureItem: {
+      fontSize: 16,
+      color: COLORS.text.muted,
+      lineHeight: 22,
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      marginTop: 20,
+      gap: 15,
+    },
+    linkButton: {
+      flex: 1,
+      backgroundColor: COLORS.secondary,
+      paddingVertical: 12,
+      paddingHorizontal: 20,
+      borderRadius: 8,
+      alignItems: 'center',
+    },
+    linkButtonText: {
+      color: '#FFFFFF',
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    footer: {
+      marginTop: 40,
+      marginBottom: 20,
+      alignItems: 'center',
+    },
+    footerText: {
+      fontSize: 14,
+      color: COLORS.text.muted,
+      textAlign: 'center',
+    },
+  });
+
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="light" backgroundColor="transparent" translucent />
+      <StatusBar style={isDark ? "light" : "dark"} backgroundColor="transparent" translucent />
       <SharedHeader />
       
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -75,94 +162,5 @@ const AboutScreen: React.FC<Props> = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.primary,
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 15,
-  },
-  appName: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: COLORS.text.primary,
-    textAlign: 'center',
-  },
-  version: {
-    fontSize: 16,
-    color: COLORS.text.secondary,
-    marginTop: 5,
-  },
-  section: {
-    marginBottom: 25,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.text.primary,
-    marginBottom: 10,
-  },
-  description: {
-    fontSize: 16,
-    color: COLORS.text.secondary,
-    lineHeight: 24,
-    textAlign: 'justify',
-  },
-  featureList: {
-    gap: 8,
-  },
-  featureItem: {
-    fontSize: 16,
-    color: COLORS.text.secondary,
-    lineHeight: 24,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 30,
-    gap: 15,
-  },
-  linkButton: {
-    backgroundColor: COLORS.primary,
-    paddingHorizontal: 25,
-    paddingVertical: 12,
-    borderRadius: 20,
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  linkButtonText: {
-    color: COLORS.text.primary,
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  footer: {
-    alignItems: 'center',
-    marginTop: 30,
-    paddingTop: 20,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.border.card,
-  },
-  footerText: {
-    fontSize: 14,
-    color: COLORS.text.muted,
-    textAlign: 'center',
-  },
-});
 
 export default AboutScreen;

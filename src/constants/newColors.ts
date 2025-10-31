@@ -239,3 +239,74 @@ export const atomicEffects = {
     elevation: 12,
   }
 };
+
+// Couleurs pour le mode clair
+export const LIGHT_COLORS = {
+  // Couleurs principales - Thème clair
+  primary: '#FFFFFF',
+  secondary: '#6366F1',
+  accent: '#EC4899',
+  
+  // Couleurs de fond - Mode clair
+  background: {
+    primary: '#FFFFFF',
+    secondary: '#F9FAFB',
+    card: 'rgba(0, 0, 0, 0.03)',
+    modal: 'rgba(255, 255, 255, 0.98)',
+  },
+  
+  // Couleurs de texte - Mode clair
+  text: {
+    primary: '#111827',
+    primaryBold: '#000000',
+    secondary: '#6366F1',
+    muted: '#6B7280',
+    accent: '#6366F1',
+    accentHover: '#EC4899',
+    success: '#8B5CF6',
+    warning: '#F59E0B',
+    error: '#DC2626',
+    disabled: '#9CA3AF',
+    atomic: '#EC4899',
+    shadow: '#F3F4F6'
+  },
+  
+  // États et badges - Mode clair
+  success: '#8B5CF6',
+  warning: '#F59E0B',
+  error: '#DC2626',
+  danger: '#B91C1C',
+  
+  // Badges - Mode clair
+  badges: {
+    anime: '#6366F1',
+    manga: '#EC4899',
+    film: '#A78BFA',
+    nouveau: '#8B5CF6',
+    vf: '#A78BFA',
+    vostfr: '#8B5CF6',
+    legendary: '#F472B6',
+    planning: '#EC4899',
+    trending: '#6366F1',
+    premium: '#F472B6',
+    hot: '#DC2626',
+    new: '#8B5CF6',
+    atomic: '#A78BFA',
+    shadow: '#F3F4F6',
+  },
+  
+  // Bordures et séparateurs - Mode clair
+  border: {
+    primary: '#E5E7EB',
+    secondary: '#6366F1',
+    card: 'rgba(99, 102, 241, 0.3)',
+    focus: '#EC4899',
+    glow: 'rgba(99, 102, 241, 0.8)',
+    atomic: '#A78BFA',
+  }
+};
+
+// Fonction pour obtenir les couleurs selon le thème
+export const getThemedColors = (isDark: boolean) => {
+  return isDark ? COLORS : LIGHT_COLORS;
+};
