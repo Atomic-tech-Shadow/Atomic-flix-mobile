@@ -24,7 +24,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { SearchResult } from '../types/index';
 import type { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator';
-import { getThemedColors, textStyles, interactiveStyles } from '../constants/newColors';
+import { getThemedColors, getThemedTextStyles, interactiveStyles } from '../constants/newColors';
 import { useTheme } from '../contexts/ThemeContext';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -125,6 +125,7 @@ const AnimeDetailScreen: React.FC = () => {
   // Hook pour le thème
   const { isDark, colors } = useTheme();
   const COLORS = colors;
+  const textStyles = getThemedTextStyles(isDark);
 
   // Charger les données de l'anime (exactement comme le code web)
   const loadAnimeData = async () => {

@@ -27,7 +27,7 @@ import { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator'
 import { Episode, VideoSource, Season, AnimeData, EpisodeDetails } from '../types';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { getThemedColors, textStyles, interactiveStyles } from '../constants/newColors';
+import { getThemedColors, getThemedTextStyles, interactiveStyles } from '../constants/newColors';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNotifications } from '../hooks/useNotifications';
 import { historyService } from '../services/HistoryService';
@@ -74,6 +74,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   // Hook pour le thème
   const { isDark, colors } = useTheme();
   const COLORS = colors;
+  const textStyles = getThemedTextStyles(isDark);
 
   // États pour le tracking de visionnage
   const [watchStartTime, setWatchStartTime] = useState<Date | null>(null);
