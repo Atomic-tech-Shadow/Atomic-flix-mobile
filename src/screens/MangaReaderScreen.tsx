@@ -17,7 +17,8 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import { MangaChapter, MangaSeason, MangaData } from '../types';
 import { StatusBar } from 'expo-status-bar';
 import SharedHeader from '../components/SharedHeader';
-import { COLORS } from '../constants/newColors';
+import { getThemedColors } from '../constants/newColors';
+import { useTheme } from '../contexts/ThemeContext';
 
 type MangaReaderScreenNavigationProp = StackNavigationProp<RootStackParamList, 'MangaReader'>;
 type MangaReaderScreenRouteProp = RouteProp<RootStackParamList, 'MangaReader'>;
@@ -44,6 +45,182 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
   const [loadingPages, setLoadingPages] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
+
+  // Hook pour le thème
+  const { isDark } = useTheme();
+  const COLORS = getThemedColors(isDark);
+
+  // Styles
+  const styles = StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: COLORS.primary,
+    },
+    headerContainer: {
+      position: 'relative',
+      zIndex: 10,
+      backgroundColor: COLORS.primary,
+    },
+    container: {
+      flex: 1,
+      backgroundColor: COLORS.primary,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: COLORS.primary,
+    },
+    loadingText: {
+      color: COLORS.text.primary,
+      fontSize: 16,
+      marginTop: 16,
+    },
+    errorContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: COLORS.primary,
+      padding: 20,
+    },
+    errorText: {
+      color: COLORS.text.error,
+      fontSize: 16,
+      textAlign: 'center',
+      marginBottom: 20,
+    },
+    retryButton: {
+      backgroundColor: COLORS.secondary,
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+      borderRadius: 8,
+    },
+    retryButtonText: {
+      color: COLORS.text.primary,
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      paddingTop: 20,
+      backgroundColor: COLORS.primary + 'E6',
+      borderBottomWidth: 1,
+      borderBottomColor: COLORS.text.primary + '1A',
+    },
+    backButton: {
+      padding: 8,
+    },
+    backButtonText: {
+      color: COLORS.secondary,
+      fontSize: 24,
+      fontWeight: 'bold',
+    },
+    title: {
+      flex: 1,
+      color: COLORS.text.primary,
+      fontSize: 18,
+      fontWeight: '600',
+      textAlign: 'center',
+      marginHorizontal: 16,
+    },
+    chaptersButton: {
+      padding: 8,
+    },
+    chaptersButtonText: {
+      fontSize: 20,
+    },
+    readerContainer: {
+      flex: 1,
+    },
+    readerContent: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: height - 200,
+    },
+    mangaPage: {
+      width: width - 40,
+      height: height - 200,
+      marginVertical: 10,
+    },
+    noPageContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    noPageText: {
+      color: COLORS.text.primary,
+      fontSize: 16,
+    },
+    controls: {
+      backgroundColor: COLORS.primary + 'E6',
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      borderTopWidth: 1,
+      borderTopColor: 'rgba(255, 255, 255, 0.1)',
+    },
+    pageNavigation: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 12,
+    },
+    navButton: {
+      backgroundColor: COLORS.secondary,
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      borderRadius: 6,
+    },
+    navButtonDisabled: {
+      backgroundColor: COLORS.text.muted,
+    },
+    navButtonText: {
+      color: COLORS.text.primary,
+      fontSize: 14,
+      fontWeight: '600',
+    },
+    pageIndicator: {
+      color: COLORS.text.primary,
+      fontSize: 16,
+      fontWeight: '500',
+    },
+    zoomControls: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    zoomButton: {
+      backgroundColor: COLORS.text.muted,
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginHorizontal: 8,
+    },
+    zoomButtonText: {
+      color: COLORS.text.primary,
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    zoomText: {
+      color: COLORS.text.primary,
+      fontSize: 14,
+      marginHorizontal: 16,
+    },
+    loadingOverlay: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  });
 
   // Fonction pour les requêtes API
   const apiRequest = async (endpoint: string) => {
@@ -216,7 +393,7 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
   if (loading) {
     return (
       <SafeAreaView style={styles.safeArea}>
-        <StatusBar style="light" backgroundColor={COLORS.primary} />
+        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
         <SharedHeader />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.secondary} />
@@ -229,7 +406,7 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
   if (error) {
     return (
       <SafeAreaView style={styles.safeArea}>
-        <StatusBar style="light" backgroundColor={COLORS.primary} />
+        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
         <SharedHeader />
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>{error}</Text>
@@ -245,8 +422,8 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-      <StatusBar style="light" backgroundColor="#0a0a1a" />
-      
+      <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
+
       {/* Header fixe au-dessus du contenu */}
       <View style={styles.headerContainer}>
         <SharedHeader />
@@ -332,174 +509,3 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
   </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: COLORS.primary,
-  },
-  headerContainer: {
-    position: 'relative',
-    zIndex: 10,
-    backgroundColor: COLORS.primary,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.primary,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.primary,
-  },
-  loadingText: {
-    color: COLORS.text.primary,
-    fontSize: 16,
-    marginTop: 16,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.primary,
-    padding: 20,
-  },
-  errorText: {
-    color: COLORS.text.error,
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  retryButton: {
-    backgroundColor: COLORS.secondary,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-  },
-  retryButtonText: {
-    color: COLORS.text.primary,
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    paddingTop: 20,
-    backgroundColor: COLORS.primary + 'E6',
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.text.primary + '1A',
-  },
-  backButton: {
-    padding: 8,
-  },
-  backButtonText: {
-    color: COLORS.secondary,
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  title: {
-    flex: 1,
-    color: COLORS.text.primary,
-    fontSize: 18,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginHorizontal: 16,
-  },
-  chaptersButton: {
-    padding: 8,
-  },
-  chaptersButtonText: {
-    fontSize: 20,
-  },
-  readerContainer: {
-    flex: 1,
-  },
-  readerContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: height - 200,
-  },
-  mangaPage: {
-    width: width - 40,
-    height: height - 200,
-    marginVertical: 10,
-  },
-  noPageContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  noPageText: {
-    color: COLORS.text.primary,
-    fontSize: 16,
-  },
-  controls: {
-    backgroundColor: COLORS.primary + 'E6',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  pageNavigation: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  navButton: {
-    backgroundColor: COLORS.secondary,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 6,
-  },
-  navButtonDisabled: {
-    backgroundColor: COLORS.text.muted,
-  },
-  navButtonText: {
-    color: COLORS.text.primary,
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  pageIndicator: {
-    color: COLORS.text.primary,
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  zoomControls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  zoomButton: {
-    backgroundColor: COLORS.text.muted,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 8,
-  },
-  zoomButtonText: {
-    color: COLORS.text.primary,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  zoomText: {
-    color: COLORS.text.primary,
-    fontSize: 14,
-    marginHorizontal: 16,
-  },
-  loadingOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

@@ -24,7 +24,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { SearchResult } from '../types/index';
 import type { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator';
-import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
+import { getThemedColors, textStyles, interactiveStyles } from '../constants/newColors';
+import { useTheme } from '../contexts/ThemeContext';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { animeAPI } from '../utils/animeAPI';
@@ -121,7 +122,9 @@ const AnimeDetailScreen: React.FC = () => {
     refreshNotifications,
   } = useNotifications();
 
-
+  // Hook pour le thème
+  const { isDark } = useTheme();
+  const COLORS = getThemedColors(isDark);
 
   // Charger les données de l'anime (exactement comme le code web)
   const loadAnimeData = async () => {
@@ -349,7 +352,7 @@ const AnimeDetailScreen: React.FC = () => {
   if (loading && !animeData) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style="light" backgroundColor={COLORS.primary} />
+        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
         <SharedHeader 
           onSearchPress={handleSearchPress}
           onNotificationPress={() => setShowNotifications(true)}
@@ -370,7 +373,7 @@ const AnimeDetailScreen: React.FC = () => {
   if (error && !animeData) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style="light" backgroundColor={COLORS.primary} />
+        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
         <SharedHeader 
           onSearchPress={handleSearchPress}
           onNotificationPress={() => setShowNotifications(true)}
@@ -391,7 +394,7 @@ const AnimeDetailScreen: React.FC = () => {
   if (!animeData) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style="light" backgroundColor={COLORS.primary} />
+        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
         <SharedHeader 
           onSearchPress={handleSearchPress}
           onNotificationPress={() => setShowNotifications(true)}
@@ -405,196 +408,9 @@ const AnimeDetailScreen: React.FC = () => {
     );
   }
 
-  return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <StatusBar style="light" backgroundColor={COLORS.primary} />
-      
-      {/* Header fixe au-dessus du contenu */}
-      <View style={styles.headerContainer}>
-        <SharedHeader 
-          onSearchPress={handleSearchPress}
-          onNotificationPress={() => setShowNotifications(true)}
-          onMenuPress={() => navigation.openDrawer()}
-        />
-      </View>
-      
-      <OptimizedScrollView
-        style={styles.scrollView}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            colors={[COLORS.secondary]}
-            tintColor={COLORS.secondary}
-          />
-        }
-      >
-        {/* Barre de recherche locale */}
-        {showSearchBar && (
-          <View style={styles.searchBarContainer}>
-            <View style={styles.searchBar}>
-              <Ionicons name="search" size={20} color={COLORS.secondary} />
-              <TextInput
-                style={styles.searchInput}
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-                placeholder="Rechercher des animes..."
-                placeholderTextColor={COLORS.text.muted}
-                autoFocus
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  setSearchQuery('');
-                  setShowSearchBar(false);
-                }}
-                style={styles.clearSearchButton}
-              >
-                <Text style={styles.clearSearchText}>✕</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
 
-        {/* Résultats de recherche */}
-        {searchLoading && searchQuery && (
-          <View style={styles.loadingSearchContainer}>
-            <LoadingSpinner 
-              message="Recherche en cours..." 
-              size="large"
-              color={COLORS.primary}
-            />
-          </View>
-        )}
-
-        {searchResults.length > 0 && !searchLoading && (
-          <View style={styles.searchResultsGrid}>
-            {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
-          </View>
-        )}
-
-        {searchQuery && !searchLoading && searchResults.length === 0 && (
-          <View style={styles.emptySearchContainer}>
-            <Text style={styles.emptySearchText}>Aucun résultat trouvé pour "{searchQuery}"</Text>
-          </View>
-        )}
-        {/* Image hero ajustée */}
-        <View style={styles.heroContainer}>
-          {/* Image de fond avec hauteur réduite */}
-          <View style={styles.heroImageContainer}>
-            <Image
-              source={{ uri: animeData.image }}
-              style={styles.heroImage}
-              resizeMode="cover"
-              onError={(e) => {}}
-            />
-            
-            {/* Gradient overlay pour le contenu */}
-            <LinearGradient
-              colors={['transparent', COLORS.primary + '4D', COLORS.primary + 'CC', COLORS.primary]}
-              style={styles.heroGradient}
-            />
-            
-            {/* Contenu overlay exactement comme dans l'image */}
-            <View style={styles.heroContent}>
-              <Text style={styles.heroTitle}>{animeData.title}</Text>
-              
-              {/* Badges compacts alignés à gauche */}
-              <View style={styles.heroBadgesCompact}>
-                <View style={styles.heroBadgeSmall}>
-                  <View style={styles.badgeDotSmall} />
-                  <Text style={styles.badgeTextSmall}>Progrès: {animeData.progressInfo}</Text>
-                </View>
-                <View style={styles.heroBadgeSmall}>
-                  <View style={styles.badgeDotSmall} />
-                  <Text style={styles.badgeTextSmall}>Correspondance: {animeData.correspondence}</Text>
-                </View>
-                {animeData.genres && animeData.genres.length > 0 && (
-                  <View style={[styles.heroBadgeSmall, styles.genreBadge]}>
-                    <View style={[styles.badgeDotSmall, styles.genreDot]} />
-                    <Text style={styles.badgeTextSmall}>
-                      Genre: {animeData.genres.join(', ')}
-                    </Text>
-                  </View>
-                )}
-              </View>
-              
-
-            </View>
-          </View>
-        </View>
-
-        {/* Section Synopsis exactement comme dans l'image */}
-        <View style={styles.mobileSection}>
-          <View style={styles.mobileSectionHeader}>
-            <Ionicons name="document-text" size={20} color={COLORS.secondary} />
-            <Text style={styles.mobileSectionTitle}>Synopsis</Text>
-          </View>
-          
-          <View style={styles.synopsisContainer}>
-            <Text style={styles.synopsisText}>{animeData.synopsis}</Text>
-          </View>
-        </View>
-
-
-        {/* Section Saisons exactement comme le code web */}
-        <View style={styles.mobileSection}>
-          <View style={styles.mobileSectionHeader}>
-            <Ionicons name="film" size={20} color={COLORS.secondary} />
-            <Text style={styles.mobileSectionTitle}>Saisons et Films</Text>
-          </View>
-          
-          {/* Grid 2 colonnes comme le code web */}
-          <View style={styles.seasonsGrid}>
-            {animeData.seasons.map((season, index) => {
-              const isManga = season.name.toLowerCase().includes('scan') || 
-                             season.name.toLowerCase().includes('manga') ||
-                             season.name.toLowerCase().includes('tome') ||
-                             season.name.toLowerCase().includes('chapitre');
-              
-              return (
-                <TouchableOpacity
-                  key={`season-${index}-${season.name}`}
-                  style={[
-                    styles.seasonCard,
-                    isManga ? styles.seasonCardManga : styles.seasonCardAnime
-                  ]}
-                  onPress={() => goToPlayer(season)}
-                  activeOpacity={0.8}
-                >
-                  {/* Image de fond exactement comme le code web */}
-                  <Image
-                    source={{ uri: animeData.image }}
-                    style={styles.seasonCardBackground}
-                    resizeMode="cover"
-                  />
-                  
-                  {/* Overlay dark exactement comme le code web */}
-                  <View style={styles.seasonCardOverlay} />
-                  
-                  {/* Contenu centré exactement comme le code web */}
-                  <View style={styles.seasonCardContent}>
-                    <Text style={styles.seasonCardTitle}>{season.name}</Text>
-                    
-                    {/* Badge type exactement comme le code web */}
-                    {isManga ? (
-                      <Text style={styles.seasonCardBadgeManga}>📖 MANGA</Text>
-                    ) : (
-                      <Text style={styles.seasonCardBadgeAnime}>🎥 ANIME</Text>
-                    )}
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        </View>
-
-
-      </OptimizedScrollView>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
+  // Styles
+  const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.primary,
@@ -1035,5 +851,194 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+  return (
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
+      
+      {/* Header fixe au-dessus du contenu */}
+      <View style={styles.headerContainer}>
+        <SharedHeader 
+          onSearchPress={handleSearchPress}
+          onNotificationPress={() => setShowNotifications(true)}
+          onMenuPress={() => navigation.openDrawer()}
+        />
+      </View>
+      
+      <OptimizedScrollView
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[COLORS.secondary]}
+            tintColor={COLORS.secondary}
+          />
+        }
+      >
+        {/* Barre de recherche locale */}
+        {showSearchBar && (
+          <View style={styles.searchBarContainer}>
+            <View style={styles.searchBar}>
+              <Ionicons name="search" size={20} color={COLORS.secondary} />
+              <TextInput
+                style={styles.searchInput}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholder="Rechercher des animes..."
+                placeholderTextColor={COLORS.text.muted}
+                autoFocus
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setSearchQuery('');
+                  setShowSearchBar(false);
+                }}
+                style={styles.clearSearchButton}
+              >
+                <Text style={styles.clearSearchText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+
+        {/* Résultats de recherche */}
+        {searchLoading && searchQuery && (
+          <View style={styles.loadingSearchContainer}>
+            <LoadingSpinner 
+              message="Recherche en cours..." 
+              size="large"
+              color={COLORS.primary}
+            />
+          </View>
+        )}
+
+        {searchResults.length > 0 && !searchLoading && (
+          <View style={styles.searchResultsGrid}>
+            {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
+          </View>
+        )}
+
+        {searchQuery && !searchLoading && searchResults.length === 0 && (
+          <View style={styles.emptySearchContainer}>
+            <Text style={styles.emptySearchText}>Aucun résultat trouvé pour "{searchQuery}"</Text>
+          </View>
+        )}
+        {/* Image hero ajustée */}
+        <View style={styles.heroContainer}>
+          {/* Image de fond avec hauteur réduite */}
+          <View style={styles.heroImageContainer}>
+            <Image
+              source={{ uri: animeData.image }}
+              style={styles.heroImage}
+              resizeMode="cover"
+              onError={(e) => {}}
+            />
+            
+            {/* Gradient overlay pour le contenu */}
+            <LinearGradient
+              colors={['transparent', COLORS.primary + '4D', COLORS.primary + 'CC', COLORS.primary]}
+              style={styles.heroGradient}
+            />
+            
+            {/* Contenu overlay exactement comme dans l'image */}
+            <View style={styles.heroContent}>
+              <Text style={styles.heroTitle}>{animeData.title}</Text>
+              
+              {/* Badges compacts alignés à gauche */}
+              <View style={styles.heroBadgesCompact}>
+                <View style={styles.heroBadgeSmall}>
+                  <View style={styles.badgeDotSmall} />
+                  <Text style={styles.badgeTextSmall}>Progrès: {animeData.progressInfo}</Text>
+                </View>
+                <View style={styles.heroBadgeSmall}>
+                  <View style={styles.badgeDotSmall} />
+                  <Text style={styles.badgeTextSmall}>Correspondance: {animeData.correspondence}</Text>
+                </View>
+                {animeData.genres && animeData.genres.length > 0 && (
+                  <View style={[styles.heroBadgeSmall, styles.genreBadge]}>
+                    <View style={[styles.badgeDotSmall, styles.genreDot]} />
+                    <Text style={styles.badgeTextSmall}>
+                      Genre: {animeData.genres.join(', ')}
+                    </Text>
+                  </View>
+                )}
+              </View>
+              
+
+            </View>
+          </View>
+        </View>
+
+        {/* Section Synopsis exactement comme dans l'image */}
+        <View style={styles.mobileSection}>
+          <View style={styles.mobileSectionHeader}>
+            <Ionicons name="document-text" size={20} color={COLORS.secondary} />
+            <Text style={styles.mobileSectionTitle}>Synopsis</Text>
+          </View>
+          
+          <View style={styles.synopsisContainer}>
+            <Text style={styles.synopsisText}>{animeData.synopsis}</Text>
+          </View>
+        </View>
+
+
+        {/* Section Saisons exactement comme le code web */}
+        <View style={styles.mobileSection}>
+          <View style={styles.mobileSectionHeader}>
+            <Ionicons name="film" size={20} color={COLORS.secondary} />
+            <Text style={styles.mobileSectionTitle}>Saisons et Films</Text>
+          </View>
+          
+          {/* Grid 2 colonnes comme le code web */}
+          <View style={styles.seasonsGrid}>
+            {animeData.seasons.map((season, index) => {
+              const isManga = season.name.toLowerCase().includes('scan') || 
+                             season.name.toLowerCase().includes('manga') ||
+                             season.name.toLowerCase().includes('tome') ||
+                             season.name.toLowerCase().includes('chapitre');
+              
+              return (
+                <TouchableOpacity
+                  key={`season-${index}-${season.name}`}
+                  style={[
+                    styles.seasonCard,
+                    isManga ? styles.seasonCardManga : styles.seasonCardAnime
+                  ]}
+                  onPress={() => goToPlayer(season)}
+                  activeOpacity={0.8}
+                >
+                  {/* Image de fond exactement comme le code web */}
+                  <Image
+                    source={{ uri: animeData.image }}
+                    style={styles.seasonCardBackground}
+                    resizeMode="cover"
+                  />
+                  
+                  {/* Overlay dark exactement comme le code web */}
+                  <View style={styles.seasonCardOverlay} />
+                  
+                  {/* Contenu centré exactement comme le code web */}
+                  <View style={styles.seasonCardContent}>
+                    <Text style={styles.seasonCardTitle}>{season.name}</Text>
+                    
+                    {/* Badge type exactement comme le code web */}
+                    {isManga ? (
+                      <Text style={styles.seasonCardBadgeManga}>📖 MANGA</Text>
+                    ) : (
+                      <Text style={styles.seasonCardBadgeAnime}>🎥 ANIME</Text>
+                    )}
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+
+
+      </OptimizedScrollView>
+    </SafeAreaView>
+  );
+};
+
 
 export default AnimeDetailScreen;

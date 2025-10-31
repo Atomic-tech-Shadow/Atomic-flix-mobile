@@ -4,18 +4,233 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons';
 import SharedHeader from '../components/SharedHeader';
-import { COLORS } from '../constants/newColors';
+import { getThemedColors } from '../constants/newColors';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface Props {
   navigation: any;
 }
 
 const PrivacyPolicyScreen: React.FC<Props> = ({ navigation }) => {
+  const { isDark } = useTheme();
+  const COLORS = getThemedColors(isDark);
   const lastUpdated = "4 septembre 2025";
+
+  const styles = StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: COLORS.primary,
+    },
+    headerContainer: {
+      zIndex: 1000,
+    },
+    container: {
+      flex: 1,
+      backgroundColor: COLORS.background.primary,
+    },
+    content: {
+      flex: 1,
+      paddingHorizontal: 20,
+    },
+    titleSection: {
+      alignItems: 'center',
+      paddingVertical: 30,
+      borderBottomWidth: 1,
+      borderBottomColor: COLORS.border.card,
+      marginBottom: 20,
+    },
+    icon: {
+      fontSize: 48,
+      marginBottom: 16,
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: COLORS.text.primary,
+      textAlign: 'center',
+      marginBottom: 8,
+    },
+    subtitle: {
+      fontSize: 16,
+      color: COLORS.text.secondary,
+      textAlign: 'center',
+      marginBottom: 16,
+    },
+    badge: {
+      backgroundColor: COLORS.secondary,
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      borderRadius: 20,
+    },
+    badgeText: {
+      fontSize: 12,
+      color: COLORS.text.primary,
+      fontWeight: '600',
+    },
+    section: {
+      marginBottom: 32,
+    },
+    sectionHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    sectionIcon: {
+      fontSize: 24,
+      marginRight: 12,
+    },
+    sectionTitle: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: COLORS.text.primary,
+      flex: 1,
+    },
+    text: {
+      fontSize: 16,
+      color: COLORS.text.secondary,
+      lineHeight: 24,
+      marginBottom: 16,
+    },
+    boldText: {
+      fontWeight: 'bold',
+      color: COLORS.text.primary,
+    },
+    highlightBox: {
+      backgroundColor: COLORS.accent + '20',
+      borderLeftWidth: 4,
+      borderLeftColor: COLORS.accent,
+      padding: 16,
+      borderRadius: 8,
+      marginBottom: 20,
+    },
+    highlightTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: COLORS.text.primary,
+      marginBottom: 8,
+    },
+    highlightText: {
+      fontSize: 15,
+      color: COLORS.text.secondary,
+      lineHeight: 22,
+    },
+    infoBox: {
+      backgroundColor: COLORS.secondary + '30',
+      padding: 16,
+      borderRadius: 12,
+      marginTop: 16,
+    },
+    infoText: {
+      fontSize: 14,
+      color: COLORS.text.secondary,
+      lineHeight: 20,
+    },
+    listTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: COLORS.text.primary,
+      marginBottom: 12,
+    },
+    list: {
+      marginBottom: 16,
+    },
+    listItem: {
+      fontSize: 15,
+      color: COLORS.text.secondary,
+      lineHeight: 24,
+      marginBottom: 8,
+      paddingLeft: 8,
+    },
+    serviceBox: {
+      backgroundColor: COLORS.primary + '40',
+      padding: 16,
+      borderRadius: 12,
+      marginBottom: 12,
+      borderWidth: 1,
+      borderColor: COLORS.border.card,
+    },
+    serviceTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: COLORS.text.primary,
+      marginBottom: 8,
+    },
+    serviceText: {
+      fontSize: 14,
+      color: COLORS.text.secondary,
+      lineHeight: 20,
+    },
+    permissionList: {
+      marginTop: 8,
+    },
+    permissionItem: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      marginBottom: 16,
+      padding: 12,
+      backgroundColor: COLORS.primary + '20',
+      borderRadius: 10,
+    },
+    permissionIcon: {
+      fontSize: 20,
+      marginRight: 12,
+      marginTop: 2,
+    },
+    permissionContent: {
+      flex: 1,
+    },
+    permissionName: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: COLORS.text.primary,
+      marginBottom: 4,
+    },
+    permissionDesc: {
+      fontSize: 14,
+      color: COLORS.text.secondary,
+      lineHeight: 20,
+    },
+    contactBox: {
+      backgroundColor: COLORS.accent + '20',
+      padding: 16,
+      borderRadius: 12,
+      marginTop: 8,
+    },
+    contactText: {
+      fontSize: 14,
+      color: COLORS.text.secondary,
+      lineHeight: 22,
+    },
+    buttonContainer: {
+      paddingVertical: 30,
+      alignItems: 'center',
+    },
+    acceptButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: COLORS.accent,
+      paddingHorizontal: 24,
+      paddingVertical: 14,
+      borderRadius: 25,
+      minWidth: 200,
+      justifyContent: 'center',
+      elevation: 3,
+      shadowColor: COLORS.primary,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
+    acceptButtonText: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: COLORS.text.primary,
+      marginLeft: 8,
+    },
+  });
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-      <StatusBar style="light" backgroundColor={COLORS.primary} />
+      <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
       
       <View style={styles.headerContainer}>
         <SharedHeader />
@@ -188,217 +403,5 @@ const PrivacyPolicyScreen: React.FC<Props> = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: COLORS.primary,
-  },
-  headerContainer: {
-    zIndex: 1000,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background.primary,
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  titleSection: {
-    alignItems: 'center',
-    paddingVertical: 30,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.border.card,
-    marginBottom: 20,
-  },
-  icon: {
-    fontSize: 48,
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: COLORS.text.primary,
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: COLORS.text.secondary,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  badge: {
-    backgroundColor: COLORS.secondary,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  badgeText: {
-    fontSize: 12,
-    color: COLORS.text.primary,
-    fontWeight: '600',
-  },
-  section: {
-    marginBottom: 32,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  sectionIcon: {
-    fontSize: 24,
-    marginRight: 12,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.text.primary,
-    flex: 1,
-  },
-  text: {
-    fontSize: 16,
-    color: COLORS.text.secondary,
-    lineHeight: 24,
-    marginBottom: 16,
-  },
-  boldText: {
-    fontWeight: 'bold',
-    color: COLORS.text.primary,
-  },
-  highlightBox: {
-    backgroundColor: COLORS.accent + '20',
-    borderLeftWidth: 4,
-    borderLeftColor: COLORS.accent,
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 20,
-  },
-  highlightTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: COLORS.text.primary,
-    marginBottom: 8,
-  },
-  highlightText: {
-    fontSize: 15,
-    color: COLORS.text.secondary,
-    lineHeight: 22,
-  },
-  infoBox: {
-    backgroundColor: COLORS.secondary + '30',
-    padding: 16,
-    borderRadius: 12,
-    marginTop: 16,
-  },
-  infoText: {
-    fontSize: 14,
-    color: COLORS.text.secondary,
-    lineHeight: 20,
-  },
-  listTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: COLORS.text.primary,
-    marginBottom: 12,
-  },
-  list: {
-    marginBottom: 16,
-  },
-  listItem: {
-    fontSize: 15,
-    color: COLORS.text.secondary,
-    lineHeight: 24,
-    marginBottom: 8,
-    paddingLeft: 8,
-  },
-  serviceBox: {
-    backgroundColor: COLORS.primary + '40',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: COLORS.border.card,
-  },
-  serviceTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: COLORS.text.primary,
-    marginBottom: 8,
-  },
-  serviceText: {
-    fontSize: 14,
-    color: COLORS.text.secondary,
-    lineHeight: 20,
-  },
-  permissionList: {
-    marginTop: 8,
-  },
-  permissionItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 16,
-    padding: 12,
-    backgroundColor: COLORS.primary + '20',
-    borderRadius: 10,
-  },
-  permissionIcon: {
-    fontSize: 20,
-    marginRight: 12,
-    marginTop: 2,
-  },
-  permissionContent: {
-    flex: 1,
-  },
-  permissionName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: COLORS.text.primary,
-    marginBottom: 4,
-  },
-  permissionDesc: {
-    fontSize: 14,
-    color: COLORS.text.secondary,
-    lineHeight: 20,
-  },
-  contactBox: {
-    backgroundColor: COLORS.accent + '20',
-    padding: 16,
-    borderRadius: 12,
-    marginTop: 8,
-  },
-  contactText: {
-    fontSize: 14,
-    color: COLORS.text.secondary,
-    lineHeight: 22,
-  },
-  buttonContainer: {
-    paddingVertical: 30,
-    alignItems: 'center',
-  },
-  acceptButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.accent,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    borderRadius: 25,
-    minWidth: 200,
-    justifyContent: 'center',
-    elevation: 3,
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  acceptButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: COLORS.text.primary,
-    marginLeft: 8,
-  },
-});
 
 export default PrivacyPolicyScreen;

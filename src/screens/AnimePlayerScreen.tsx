@@ -27,7 +27,8 @@ import { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator'
 import { Episode, VideoSource, Season, AnimeData, EpisodeDetails } from '../types';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
+import { getThemedColors, textStyles, interactiveStyles } from '../constants/newColors';
+import { useTheme } from '../contexts/ThemeContext';
 import { useNotifications } from '../hooks/useNotifications';
 import { historyService } from '../services/HistoryService';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -69,6 +70,10 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     markAllAsRead,
     refreshNotifications,
   } = useNotifications();
+
+  // Hook pour le thème
+  const { isDark } = useTheme();
+  const COLORS = getThemedColors(isDark);
 
   // États pour le tracking de visionnage
   const [watchStartTime, setWatchStartTime] = useState<Date | null>(null);
@@ -852,7 +857,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   if (loading) {
     return (
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
+        <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={COLORS.primary} />
 
         {/* Header fixe toujours visible */}
         <View style={styles.headerContainer}>
@@ -877,7 +882,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   if (error && !animeData) {
     return (
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
+        <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={COLORS.primary} />
 
         {/* Header fixe toujours visible */}
         <View style={styles.headerContainer}>
@@ -902,7 +907,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   if (!animeData) {
     return (
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
+        <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={COLORS.primary} />
 
         {/* Header fixe toujours visible */}
         <View style={styles.headerContainer}>
@@ -923,334 +928,9 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     );
   }
 
-  return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
 
-      {/* Header fixe au-dessus du contenu */}
-      <View style={styles.headerContainer}>
-        <SharedHeader 
-          onSearchPress={() => setShowSearchBar(!showSearchBar)}
-          onNotificationPress={() => setShowNotifications(true)}
-          onMenuPress={() => navigation.openDrawer()}
-        />
-      </View>
-
-      <OptimizedScrollView 
-        style={styles.scrollContainer}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.secondary} />
-        }
-        showsVerticalScrollIndicator={false}
-        // Optimisations pour scroll fluide
-        removeClippedSubviews={true}
-        scrollEventThrottle={16}
-        keyboardShouldPersistTaps="handled"
-      >
-        {/* Barre de recherche locale */}
-        {showSearchBar && (
-          <View style={styles.searchBarContainer}>
-            <View style={styles.searchBar}>
-              <Ionicons name="search" size={20} color={COLORS.secondary} />
-              <TextInput
-                style={styles.searchInput}
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-                placeholder="Rechercher des animes..."
-                placeholderTextColor={COLORS.text.muted}
-                autoFocus
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  setSearchQuery('');
-                  setShowSearchBar(false);
-                }}
-                style={styles.clearSearchButton}
-              >
-                <Text style={styles.clearSearchText}>✕</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-
-        {/* Résultats de recherche */}
-        {searchLoading && searchQuery && (
-          <View style={styles.loadingSearchContainer}>
-            <LoadingSpinner 
-              message="Recherche en cours..." 
-              size="large"
-              color={COLORS.primary}
-            />
-          </View>
-        )}
-
-        {searchResults.length > 0 && !searchLoading && (
-          <View style={styles.searchResultsGrid}>
-            {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
-          </View>
-        )}
-
-        {searchQuery && !searchLoading && searchResults.length === 0 && (
-          <View style={styles.emptySearchContainer}>
-            <Text style={styles.emptySearchText}>Aucun résultat trouvé pour "{searchQuery}"</Text>
-          </View>
-        )}
-        {/* Bannière avec titre de la saison - Pleine largeur comme le web */}
-        <View style={styles.bannerContainer}>
-          {animeData?.image && (
-            <Image
-              source={{ uri: animeData.image }}
-              style={styles.bannerImage}
-              resizeMode="cover"
-            />
-          )}
-          <View style={styles.bannerOverlay} />
-          <View style={styles.bannerContent}>
-            <Text style={styles.bannerTitle}>{animeData.title}</Text>
-            <Text style={styles.bannerSeason}>{selectedSeason?.name}</Text>
-          </View>
-        </View>
-        {/* Sélecteur de langue - Style simplifié */}
-        {selectedSeason && selectedSeason.languages.length > 1 && (
-          <View style={styles.languageSelector}>
-            {selectedSeason.languages.map((lang) => (
-              <TouchableOpacity
-                key={lang}
-                style={[
-                  styles.languageButton,
-                  selectedLanguage === lang && styles.languageButtonActive
-                ]}
-                onPress={() => changeLanguage(lang)}
-                activeOpacity={0.7}
-              >
-                {/* Fond drapeau personnalisé */}
-                {(lang === 'VF' || lang === 'VF1' || lang === 'VF2') ? (
-                  // Drapeau français tricolore pour toutes les versions françaises
-                  <View style={styles.flagBackground}>
-                    <View style={styles.frenchFlagStripe1} />
-                    <View style={styles.frenchFlagStripe2} />
-                    <View style={styles.frenchFlagStripe3} />
-                  </View>
-                ) : lang === 'VA' ? (
-                  // Drapeau américain authentique pour Version Américaine
-                  <View style={styles.flagBackground}>
-                    {/* Rayures rouges et blanches */}
-                    <View style={styles.americanStripe1} />
-                    <View style={styles.americanStripe2} />
-                    <View style={styles.americanStripe3} />
-                    <View style={styles.americanStripe4} />
-                    <View style={styles.americanStripe5} />
-                    <View style={styles.americanStripe6} />
-                    <View style={styles.americanStripe7} />
-                    {/* Canton bleu avec effet étoiles */}
-                    <View style={styles.americanCanton} />
-                  </View>
-                ) : (
-                  // Drapeau japonais pour VOSTFR et autres
-                  <View style={styles.flagBackground}>
-                    <View style={styles.japaneseFlagBg} />
-                    <View style={styles.japaneseRedCircle} />
-                  </View>
-                )}
-                {/* Texte de langue au centre */}
-                <Text style={[
-                  styles.languageTextPicker,
-                  selectedLanguage === lang && styles.languageTextActive
-                ]}>
-                  {(lang === 'VF' || lang === 'VF1' || lang === 'VF2') ? 'VF' : 
-                   lang === 'VA' ? 'VA' :
-                   lang === 'VOSTFR' ? 'VO' : 
-                   lang}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-
-        {/* Sélecteurs en grille 2 colonnes - Style simplifié */}
-        {episodes.length > 0 && (
-          <View style={styles.selectorsGrid}>
-            {/* Sélecteur d'épisode */}
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={selectedEpisode?.id || ''}
-                onValueChange={(itemValue) => {
-                  const episode = episodes.find(ep => ep.id === itemValue);
-                  if (episode) {
-                    setSelectedEpisode(episode);
-                    loadEpisodeSources(episode);
-                  }
-                }}
-                style={styles.picker}
-                dropdownIconColor={COLORS.secondary}
-                itemStyle={{ 
-                  color: COLORS.text.primary, 
-                  fontSize: 16, 
-                  fontWeight: 'bold',
-                  backgroundColor: COLORS.primary
-                }}
-                mode="dropdown"
-              >
-                {episodes.length > 0 ? (
-                  episodes.map((episode) => (
-                    <Picker.Item
-                      key={episode.id}
-                      label={`ÉPISODE ${episode.episodeNumber}`}
-                      value={episode.id}
-                    />
-                  ))
-                ) : (
-                  <Picker.Item
-                    label="Aucun épisode disponible"
-                    value=""
-                  />
-                )}
-              </Picker>
-            </View>
-
-            {/* Sélecteur de serveur */}
-            <View style={styles.pickerContainer}>
-              {episodeDetails && episodeDetails.sources.length > 0 ? (
-                <Picker
-                  selectedValue={selectedPlayer.toString()}
-                  onValueChange={(itemValue) => {
-                    const newServerIndex = parseInt(itemValue as string);
-                    setSelectedPlayer(newServerIndex);
-                    // 🔄 Réinitialiser l'erreur de serveur lors du changement
-                    setServerError(false);
-                    // Forcer le rechargement de la WebView avec le nouveau serveur
-                    if (webViewRef.current) {
-                      webViewRef.current.reload();
-                    }
-                  }}
-                  style={styles.picker}
-                  dropdownIconColor={COLORS.secondary}
-                  itemStyle={{ 
-                    color: COLORS.text.primary, 
-                    fontSize: 16, 
-                    fontWeight: 'bold',
-                    backgroundColor: COLORS.primary
-                  }}
-                  mode="dropdown"
-                >
-                  {episodeDetails.sources.map((source, index) => (
-                    <Picker.Item
-                      key={`server-${index}-${source.server}`}
-                      label={`${source.server?.toUpperCase() || `SERVER ${index + 1}`} (${source.quality?.toUpperCase() || 'HD'})`}
-                      value={index.toString()}
-                    />
-                  ))}
-                </Picker>
-              ) : (
-                <Picker
-                  selectedValue=""
-                  onValueChange={() => {}}
-                  style={styles.picker}
-                  dropdownIconColor={COLORS.secondary}
-                  itemStyle={{ 
-                    color: COLORS.text.primary, 
-                    fontSize: 16, 
-                    fontWeight: 'bold',
-                    backgroundColor: COLORS.primary
-                  }}
-                  mode="dropdown"
-                >
-                  <Picker.Item
-                    label="AUCUN SERVEUR DISPONIBLE"
-                    value=""
-                  />
-                </Picker>
-              )}
-            </View>
-          </View>
-        )}
-
-
-
-        {/* Dernière sélection - Style anime-sama */}
-        {selectedEpisode && (
-          <View style={styles.lastSelectionContainer}>
-            <Text style={styles.lastSelectionText}>
-              <Text style={styles.lastSelectionLabel}>DERNIÈRE SÉLECTION : </Text>
-              <Text style={styles.lastSelectionValue}>ÉPISODE {selectedEpisode.episodeNumber}</Text>
-            </Text>
-          </View>
-        )}
-
-        {/* Lecteur vidéo */}
-        {renderVideoPlayer()}
-
-        {/* Navigation entre épisodes - Style anime-sama identique au web */}
-        {episodes.length > 0 && (
-          <View style={styles.navigationContainer}>
-            <TouchableOpacity
-              style={[
-                styles.navButtonCustom,
-                (!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === 0) && styles.navButtonDisabled
-              ]}
-              onPress={() => navigateEpisode('prev')}
-              disabled={!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === 0}
-              activeOpacity={0.7}
-            >
-              <Ionicons name="chevron-back" size={24} color={COLORS.text.primary} />
-            </TouchableOpacity>
-
-            <View style={styles.downloadContainer}>
-              <TouchableOpacity
-                style={[
-                  styles.downloadButton,
-                  (!episodeDetails || episodeDetails.sources.length === 0) && styles.navButtonDisabled
-                ]}
-                onPress={() => alert('Fonction non disponible - URLs de streaming protégées')}
-                disabled={!episodeDetails || episodeDetails.sources.length === 0}
-                activeOpacity={0.7}
-              >
-                <Ionicons name="download" size={24} color={COLORS.text.primary} />
-              </TouchableOpacity>
-
-
-            </View>
-
-            <TouchableOpacity
-              style={[
-                styles.navButtonCustom,
-                (!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === episodes.length - 1) && styles.navButtonDisabled
-              ]}
-              onPress={() => navigateEpisode('next')}
-              disabled={!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === episodes.length - 1}
-              activeOpacity={0.7}
-            >
-              <Ionicons name="chevron-forward" size={24} color={COLORS.text.primary} />
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {/* Message d'erreur de pub - Style anime-sama */}
-        {selectedEpisode && (
-          <View style={styles.atomicMessageContainer}>
-            <Text style={styles.atomicMessageText}>⚛️I AM ATOMIC⚛️</Text>
-            <Text style={styles.atomicMessageSubtext}>
-              <Text style={styles.atomicMessageBold}>Trop de pub🙄? Changez de lecteur.</Text>
-            </Text>
-          </View>
-        )}
-
-        {/* Message d'erreur */}
-        {error && (
-          <View style={styles.errorMessage}>
-            <Ionicons name="warning-outline" size={24} color={COLORS.text.error} />
-            <Text style={styles.errorMessageText}>{error}</Text>
-            <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
-              <Text style={styles.retryButtonText}>Réessayer</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </OptimizedScrollView>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
+  // Styles
+  const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.primary,
@@ -1927,5 +1607,332 @@ const styles = StyleSheet.create({
   },
 
 });
+  return (
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={COLORS.primary} />
+
+      {/* Header fixe au-dessus du contenu */}
+      <View style={styles.headerContainer}>
+        <SharedHeader 
+          onSearchPress={() => setShowSearchBar(!showSearchBar)}
+          onNotificationPress={() => setShowNotifications(true)}
+          onMenuPress={() => navigation.openDrawer()}
+        />
+      </View>
+
+      <OptimizedScrollView 
+        style={styles.scrollContainer}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.secondary} />
+        }
+        showsVerticalScrollIndicator={false}
+        // Optimisations pour scroll fluide
+        removeClippedSubviews={true}
+        scrollEventThrottle={16}
+        keyboardShouldPersistTaps="handled"
+      >
+        {/* Barre de recherche locale */}
+        {showSearchBar && (
+          <View style={styles.searchBarContainer}>
+            <View style={styles.searchBar}>
+              <Ionicons name="search" size={20} color={COLORS.secondary} />
+              <TextInput
+                style={styles.searchInput}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholder="Rechercher des animes..."
+                placeholderTextColor={COLORS.text.muted}
+                autoFocus
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setSearchQuery('');
+                  setShowSearchBar(false);
+                }}
+                style={styles.clearSearchButton}
+              >
+                <Text style={styles.clearSearchText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+
+        {/* Résultats de recherche */}
+        {searchLoading && searchQuery && (
+          <View style={styles.loadingSearchContainer}>
+            <LoadingSpinner 
+              message="Recherche en cours..." 
+              size="large"
+              color={COLORS.primary}
+            />
+          </View>
+        )}
+
+        {searchResults.length > 0 && !searchLoading && (
+          <View style={styles.searchResultsGrid}>
+            {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
+          </View>
+        )}
+
+        {searchQuery && !searchLoading && searchResults.length === 0 && (
+          <View style={styles.emptySearchContainer}>
+            <Text style={styles.emptySearchText}>Aucun résultat trouvé pour "{searchQuery}"</Text>
+          </View>
+        )}
+        {/* Bannière avec titre de la saison - Pleine largeur comme le web */}
+        <View style={styles.bannerContainer}>
+          {animeData?.image && (
+            <Image
+              source={{ uri: animeData.image }}
+              style={styles.bannerImage}
+              resizeMode="cover"
+            />
+          )}
+          <View style={styles.bannerOverlay} />
+          <View style={styles.bannerContent}>
+            <Text style={styles.bannerTitle}>{animeData.title}</Text>
+            <Text style={styles.bannerSeason}>{selectedSeason?.name}</Text>
+          </View>
+        </View>
+        {/* Sélecteur de langue - Style simplifié */}
+        {selectedSeason && selectedSeason.languages.length > 1 && (
+          <View style={styles.languageSelector}>
+            {selectedSeason.languages.map((lang) => (
+              <TouchableOpacity
+                key={lang}
+                style={[
+                  styles.languageButton,
+                  selectedLanguage === lang && styles.languageButtonActive
+                ]}
+                onPress={() => changeLanguage(lang)}
+                activeOpacity={0.7}
+              >
+                {/* Fond drapeau personnalisé */}
+                {(lang === 'VF' || lang === 'VF1' || lang === 'VF2') ? (
+                  // Drapeau français tricolore pour toutes les versions françaises
+                  <View style={styles.flagBackground}>
+                    <View style={styles.frenchFlagStripe1} />
+                    <View style={styles.frenchFlagStripe2} />
+                    <View style={styles.frenchFlagStripe3} />
+                  </View>
+                ) : lang === 'VA' ? (
+                  // Drapeau américain authentique pour Version Américaine
+                  <View style={styles.flagBackground}>
+                    {/* Rayures rouges et blanches */}
+                    <View style={styles.americanStripe1} />
+                    <View style={styles.americanStripe2} />
+                    <View style={styles.americanStripe3} />
+                    <View style={styles.americanStripe4} />
+                    <View style={styles.americanStripe5} />
+                    <View style={styles.americanStripe6} />
+                    <View style={styles.americanStripe7} />
+                    {/* Canton bleu avec effet étoiles */}
+                    <View style={styles.americanCanton} />
+                  </View>
+                ) : (
+                  // Drapeau japonais pour VOSTFR et autres
+                  <View style={styles.flagBackground}>
+                    <View style={styles.japaneseFlagBg} />
+                    <View style={styles.japaneseRedCircle} />
+                  </View>
+                )}
+                {/* Texte de langue au centre */}
+                <Text style={[
+                  styles.languageTextPicker,
+                  selectedLanguage === lang && styles.languageTextActive
+                ]}>
+                  {(lang === 'VF' || lang === 'VF1' || lang === 'VF2') ? 'VF' : 
+                   lang === 'VA' ? 'VA' :
+                   lang === 'VOSTFR' ? 'VO' : 
+                   lang}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+
+        {/* Sélecteurs en grille 2 colonnes - Style simplifié */}
+        {episodes.length > 0 && (
+          <View style={styles.selectorsGrid}>
+            {/* Sélecteur d'épisode */}
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={selectedEpisode?.id || ''}
+                onValueChange={(itemValue) => {
+                  const episode = episodes.find(ep => ep.id === itemValue);
+                  if (episode) {
+                    setSelectedEpisode(episode);
+                    loadEpisodeSources(episode);
+                  }
+                }}
+                style={styles.picker}
+                dropdownIconColor={COLORS.secondary}
+                itemStyle={{ 
+                  color: COLORS.text.primary, 
+                  fontSize: 16, 
+                  fontWeight: 'bold',
+                  backgroundColor: COLORS.primary
+                }}
+                mode="dropdown"
+              >
+                {episodes.length > 0 ? (
+                  episodes.map((episode) => (
+                    <Picker.Item
+                      key={episode.id}
+                      label={`ÉPISODE ${episode.episodeNumber}`}
+                      value={episode.id}
+                    />
+                  ))
+                ) : (
+                  <Picker.Item
+                    label="Aucun épisode disponible"
+                    value=""
+                  />
+                )}
+              </Picker>
+            </View>
+
+            {/* Sélecteur de serveur */}
+            <View style={styles.pickerContainer}>
+              {episodeDetails && episodeDetails.sources.length > 0 ? (
+                <Picker
+                  selectedValue={selectedPlayer.toString()}
+                  onValueChange={(itemValue) => {
+                    const newServerIndex = parseInt(itemValue as string);
+                    setSelectedPlayer(newServerIndex);
+                    // 🔄 Réinitialiser l'erreur de serveur lors du changement
+                    setServerError(false);
+                    // Forcer le rechargement de la WebView avec le nouveau serveur
+                    if (webViewRef.current) {
+                      webViewRef.current.reload();
+                    }
+                  }}
+                  style={styles.picker}
+                  dropdownIconColor={COLORS.secondary}
+                  itemStyle={{ 
+                    color: COLORS.text.primary, 
+                    fontSize: 16, 
+                    fontWeight: 'bold',
+                    backgroundColor: COLORS.primary
+                  }}
+                  mode="dropdown"
+                >
+                  {episodeDetails.sources.map((source, index) => (
+                    <Picker.Item
+                      key={`server-${index}-${source.server}`}
+                      label={`${source.server?.toUpperCase() || `SERVER ${index + 1}`} (${source.quality?.toUpperCase() || 'HD'})`}
+                      value={index.toString()}
+                    />
+                  ))}
+                </Picker>
+              ) : (
+                <Picker
+                  selectedValue=""
+                  onValueChange={() => {}}
+                  style={styles.picker}
+                  dropdownIconColor={COLORS.secondary}
+                  itemStyle={{ 
+                    color: COLORS.text.primary, 
+                    fontSize: 16, 
+                    fontWeight: 'bold',
+                    backgroundColor: COLORS.primary
+                  }}
+                  mode="dropdown"
+                >
+                  <Picker.Item
+                    label="AUCUN SERVEUR DISPONIBLE"
+                    value=""
+                  />
+                </Picker>
+              )}
+            </View>
+          </View>
+        )}
+
+
+
+        {/* Dernière sélection - Style anime-sama */}
+        {selectedEpisode && (
+          <View style={styles.lastSelectionContainer}>
+            <Text style={styles.lastSelectionText}>
+              <Text style={styles.lastSelectionLabel}>DERNIÈRE SÉLECTION : </Text>
+              <Text style={styles.lastSelectionValue}>ÉPISODE {selectedEpisode.episodeNumber}</Text>
+            </Text>
+          </View>
+        )}
+
+        {/* Lecteur vidéo */}
+        {renderVideoPlayer()}
+
+        {/* Navigation entre épisodes - Style anime-sama identique au web */}
+        {episodes.length > 0 && (
+          <View style={styles.navigationContainer}>
+            <TouchableOpacity
+              style={[
+                styles.navButtonCustom,
+                (!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === 0) && styles.navButtonDisabled
+              ]}
+              onPress={() => navigateEpisode('prev')}
+              disabled={!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === 0}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="chevron-back" size={24} color={COLORS.text.primary} />
+            </TouchableOpacity>
+
+            <View style={styles.downloadContainer}>
+              <TouchableOpacity
+                style={[
+                  styles.downloadButton,
+                  (!episodeDetails || episodeDetails.sources.length === 0) && styles.navButtonDisabled
+                ]}
+                onPress={() => alert('Fonction non disponible - URLs de streaming protégées')}
+                disabled={!episodeDetails || episodeDetails.sources.length === 0}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="download" size={24} color={COLORS.text.primary} />
+              </TouchableOpacity>
+
+
+            </View>
+
+            <TouchableOpacity
+              style={[
+                styles.navButtonCustom,
+                (!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === episodes.length - 1) && styles.navButtonDisabled
+              ]}
+              onPress={() => navigateEpisode('next')}
+              disabled={!selectedEpisode || episodes.findIndex(ep => ep.id === selectedEpisode.id) === episodes.length - 1}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="chevron-forward" size={24} color={COLORS.text.primary} />
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Message d'erreur de pub - Style anime-sama */}
+        {selectedEpisode && (
+          <View style={styles.atomicMessageContainer}>
+            <Text style={styles.atomicMessageText}>⚛️I AM ATOMIC⚛️</Text>
+            <Text style={styles.atomicMessageSubtext}>
+              <Text style={styles.atomicMessageBold}>Trop de pub🙄? Changez de lecteur.</Text>
+            </Text>
+          </View>
+        )}
+
+        {/* Message d'erreur */}
+        {error && (
+          <View style={styles.errorMessage}>
+            <Ionicons name="warning-outline" size={24} color={COLORS.text.error} />
+            <Text style={styles.errorMessageText}>{error}</Text>
+            <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
+              <Text style={styles.retryButtonText}>Réessayer</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </OptimizedScrollView>
+    </SafeAreaView>
+  );
+};
+
 
 export default AnimePlayerScreen;

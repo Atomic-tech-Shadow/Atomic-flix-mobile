@@ -24,7 +24,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { SearchResult } from '../types/index';
 import type { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
-import { COLORS, textStyles, interactiveStyles } from '../constants/newColors';
+import { getThemedColors, textStyles, interactiveStyles } from '../constants/newColors';
+import { useTheme } from '../contexts/ThemeContext';
 import CosmicBackground from '../components/CosmicBackground';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { NotificationPanel } from '../components/NotificationPanel';
@@ -111,6 +112,9 @@ const HomeScreen: React.FC = () => {
     networkState
   } = useNetworkStatus();
 
+  // Hook pour le thème
+  const { isDark } = useTheme();
+  const COLORS = getThemedColors(isDark);
 
   // Configuration API identique au site web
   const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';
@@ -831,10 +835,725 @@ const HomeScreen: React.FC = () => {
     );
   }, []);
 
+  // Styles  
+  const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.primary, // Fond cosmique "I am Atomic"
+  },
+  headerContainer: {
+    position: 'relative',
+    zIndex: 10,
+    backgroundColor: COLORS.secondary, // Cyan du logo
+  },
+  scrollView: {
+    flex: 1,
+  },
+
+
+
+  // Recherche
+  searchBarContainer: {
+    padding: 16,
+    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.text.primary + '1A',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    // Contour néon pour barre de recherche
+    borderWidth: 2,
+    borderColor: COLORS.border.secondary, // Violet néon
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  searchInput: {
+    flex: 1,
+    color: COLORS.text.primary,
+    fontSize: 16,
+    marginLeft: 12,
+  },
+  clearSearchButton: {
+    padding: 4,
+    borderRadius: 6,
+    // Contour néon pour bouton clear search
+    borderWidth: 2,
+    borderColor: COLORS.border.focus, // Magenta atomique
+    backgroundColor: COLORS.badges.manga + '1A',
+    shadowColor: COLORS.badges.hot,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+  },
+  clearSearchText: {
+    color: COLORS.text.muted,
+    fontSize: 16,
+  },
+
+  // Hero Section - Effet "I am Atomic"
+  heroSection: {
+    height: 180,
+    position: 'relative',
+    marginBottom: 20,
+    backgroundColor: COLORS.background.secondary, // Fond noir légèrement visible
+    borderRadius: 16,
+    marginHorizontal: 8,
+    overflow: 'hidden',
+    zIndex: 10000, // Au-dessus des lignes rouges pour les masquer
+    // Contour néon cosmique puissant pour hero
+    borderWidth: 3,
+    borderColor: COLORS.border.glow, // Violet néon intense
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 20,
+    elevation: 15,
+  },
+  heroMosaicContainer: {
+    flexDirection: 'row',
+    height: 90, // 50% de la hauteur totale (180px)
+  },
+  heroMosaicImage: {
+    flex: 1,
+    marginHorizontal: -1,
+  },
+  heroMosaicImageContent: {
+    width: '100%',
+    height: '100%',
+  },
+  heroContent: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 90, // 50% de la hauteur totale (180px)
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    alignItems: 'center', // Contenu centré par défaut
+    justifyContent: 'center', // Contenu centré verticalement
+  },
+  heroLogo: {
+    width: 48,
+    height: 48,
+    borderRadius: 24, // Logo parfaitement rond (la moitié de width/height)
+    position: 'absolute',
+    bottom: 16,
+    right: 16, // Positionné dans l'angle inférieur droit
+  },
+  heroSubtitle: {
+    fontSize: 16,
+    color: COLORS.text.secondary,
+    textAlign: 'center',
+    lineHeight: 24,
+    marginBottom: 8,
+  },
+  heroFlagLeft: {
+    position: 'absolute',
+    bottom: 12,
+    left: 16,
+    fontSize: 28,
+  },
+  heroFlagRight: {
+    position: 'absolute',
+    bottom: 12,
+    right: 16,
+    fontSize: 28,
+  },
+
+
+  searchResultsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+  },
+
+  // Cards Anime optimisées pour les performances - Effet "I am Atomic"
+  animeCard: {
+    width: (width - 48) / 2,
+    minHeight: 200, // minHeight au lieu de height fixe
+    height: 'auto', // Hauteur automatique pour s'adapter au contenu
+    marginBottom: 16,
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: COLORS.background.secondary, // Fond légèrement visible sur noir
+    // Bordures néon cosmiques
+    borderWidth: 2,
+    borderColor: COLORS.border.glow, // Violet néon intense
+    // Effet de glow atomique puissant
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 15,
+    elevation: 12,
+  },
+  cardImageContainer: {
+    position: 'relative',
+    height: 200,
+  },
+  cardImage: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: COLORS.primary,
+  },
+  contentBadge: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  mangaBadge: {
+    backgroundColor: COLORS.badges.manga,
+  },
+  movieBadge: {
+    backgroundColor: COLORS.badges.film,
+  },
+  animeBadge: {
+    backgroundColor: COLORS.badges.anime,
+  },
+  badgeText: {
+    color: COLORS.text.primary,
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  cardGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 140,
+  },
+  cardContent: {
+    padding: 12,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  cardTitle: {
+    color: COLORS.text.primary,
+    fontSize: 14,
+    fontWeight: 'bold',
+    lineHeight: 18,
+    marginBottom: 8,
+    flex: 1,
+  },
+  cardMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  languageBadge: {
+    backgroundColor: COLORS.secondary, // Cyan cohérent
+    borderRadius: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    marginRight: 4,
+  },
+  languageText: {
+    color: COLORS.text.primary,
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+
+  // Sections horizontales
+  horizontalSection: {
+    marginBottom: 24,
+    paddingLeft: 16,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.secondary, // Couleur cyan du nouveau logo
+    // Ombre de texte néon pour intensité atomique
+    textShadowColor: 'rgba(0, 212, 255, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+  horizontalScroll: {
+    marginBottom: 8,
+  },
+  horizontalScrollContainer: {
+    paddingRight: 16,
+  },
+
+  // Cards horizontales - Effet "I am Atomic"
+  horizontalCard: {
+    width: 116,
+    height: 164,
+    marginRight: 12,
+    borderRadius: 8,
+    overflow: 'hidden',
+    position: 'relative',
+    // Bordures néon cosmiques
+    borderWidth: 2,
+    borderColor: COLORS.border.glow, // Violet néon intense
+    // Effet de glow atomique puissant
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 15,
+    elevation: 12,
+  },
+  horizontalCardImage: {
+    width: '100%',
+    height: '100%',
+  },
+  horizontalCardGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '75%',
+  },
+  horizontalCardContent: {
+    position: 'absolute',
+    bottom: 4,
+    left: 4,
+    right: 4,
+  },
+  horizontalCardTitle: {
+    color: COLORS.text.primary,
+    fontSize: 12,
+    fontWeight: 'bold',
+    lineHeight: 16,
+    marginBottom: 4,
+    ...textStyles.shadowTitle,
+  },
+  horizontalCardMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 4,
+  },
+  horizontalCardBadge: {
+    backgroundColor: COLORS.secondary, // Cyan cohérent
+    borderRadius: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+  },
+  horizontalCardBadgeText: {
+    color: COLORS.text.primary,
+    fontSize: 8,
+    fontWeight: 'bold',
+  },
+
+  // Badges spéciaux
+  newEpisodeBadge: {
+    position: 'absolute',
+    top: 4,
+    left: 4,
+    backgroundColor: COLORS.badges.nouveau, // Violet cosmique
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 8,
+    elevation: 6,
+    borderWidth: 1,
+    borderColor: COLORS.border.secondary,
+  },
+  newEpisodeBadgeText: {
+    color: COLORS.text.primary,
+    fontSize: 8,
+    fontWeight: 'bold',
+  },
+
+  episodeInfoBadge: {
+    backgroundColor: COLORS.accent, // Magenta atomique
+    borderRadius: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    maxWidth: '70%',
+  },
+  episodeInfoText: {
+    color: COLORS.text.primary,
+    fontSize: 8,
+    fontWeight: 'bold',
+  },
+
+  // États de chargement et erreur
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 64,
+  },
+  errorContainer: {
+    padding: 32,
+    alignItems: 'center',
+  },
+  errorText: {
+    color: COLORS.error,
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  retryButton: {
+    backgroundColor: COLORS.secondary, // Cyan cohérent
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+    // Effet néon pour bouton retry
+    borderWidth: 2,
+    borderColor: COLORS.border.secondary,
+    shadowColor: COLORS.badges.atomic,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.7,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  retryText: {
+    color: COLORS.text.primary,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  emptyContainer: {
+    padding: 64,
+    alignItems: 'center',
+  },
+  emptyText: {
+    color: COLORS.text.muted,
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+
+  // Cartes spéciales avec effets uniques
+  legendaryCard: {
+    width: 116,
+    height: 164,
+    marginRight: 12,
+    borderRadius: 8,
+    overflow: 'hidden',
+    position: 'relative',
+    // Contour doré pour légendaires
+    borderWidth: 2,
+    borderColor: COLORS.badges.legendary,
+    shadowColor: COLORS.badges.legendary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 12,
+    elevation: 10,
+  },
+
+  classicBadge: {
+    position: 'absolute',
+    top: 4,
+    left: 4,
+    right: 4,
+    backgroundColor: COLORS.badges.legendary, // Fond doré
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    shadowColor: COLORS.badges.legendary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.border.focus,
+  },
+  classicBadgeText: {
+    color: COLORS.text.shadow, // Couleur sombre pour contraste sur fond doré
+    fontSize: 8,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    // Effet de lueur pour le texte du badge
+    textShadowColor: COLORS.text.atomic,
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
+  },
+
+  gemCard: {
+    width: 116,
+    height: 164,
+    marginRight: 12,
+    borderRadius: 8,
+    overflow: 'hidden',
+    position: 'relative',
+    // Contour bleu diamant pour pépites
+    borderWidth: 2,
+    borderColor: COLORS.badges.premium,
+    shadowColor: COLORS.badges.premium,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 12,
+    elevation: 10,
+  },
+
+  rareBadge: {
+    position: 'absolute',
+    top: 4,
+    left: 4,
+    right: 4,
+    backgroundColor: COLORS.badges.premium, // Fond premium
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    shadowColor: COLORS.badges.premium,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.border.focus,
+  },
+  rareBadgeText: {
+    color: COLORS.text.shadow, // Couleur sombre pour contraste sur fond premium
+    fontSize: 8,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    // Effet de lueur pour le texte du badge
+    textShadowColor: COLORS.text.atomic,
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
+  },
+
+  planningCard: {
+    width: 116,
+    height: 164,
+    marginRight: 12,
+    borderRadius: 8,
+    overflow: 'hidden',
+    position: 'relative',
+    // Contour doré pour planning
+    borderWidth: 2,
+    borderColor: COLORS.badges.planning,
+    shadowColor: COLORS.badges.planning,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 12,
+    elevation: 10,
+  },
+
+  recommendationCard: {
+    width: 116,
+    height: 164,
+    marginRight: 12,
+    borderRadius: 8,
+    overflow: 'hidden',
+    position: 'relative',
+    // Contour cyan pour recommandations
+    borderWidth: 2,
+    borderColor: COLORS.badges.trending,
+    shadowColor: COLORS.badges.trending,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 12,
+    elevation: 10,
+  },
+
+  recommendationBadge: {
+    position: 'absolute',
+    top: 4,
+    left: 4,
+    right: 4,
+    backgroundColor: COLORS.badges.trending, // Fond cyan
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    shadowColor: COLORS.badges.trending,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.border.focus,
+  },
+  recommendationBadgeText: {
+    color: COLORS.text.shadow, // Couleur sombre pour contraste sur fond doré
+    fontSize: 8,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    // Effet de lueur pour le texte du badge planning
+    textShadowColor: COLORS.text.atomic,
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
+  },
+
+  planningBadge: {
+    position: 'absolute',
+    top: 4,
+    left: 4,
+    right: 4,
+    backgroundColor: COLORS.badges.planning, // Fond doré
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    shadowColor: COLORS.badges.planning,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.border.focus,
+  },
+  planningBadgeText: {
+    color: COLORS.text.shadow, // Couleur sombre pour contraste sur fond doré
+    fontSize: 8,
+    fontWeight: 'bold',
+    // Effet de lueur pour le texte du badge planning
+    textShadowColor: COLORS.text.atomic,
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
+  },
+
+  // Styles pour la modal de notifications
+  notificationModalContainer: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  notificationModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: COLORS.primary,
+  },
+  notificationModalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.text.primary,
+  },
+  closeButton: {
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+
+  // Styles pour la section historique
+  historySection: {
+    marginBottom: 24,
+    paddingHorizontal: 16,
+  },
+  historyHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    gap: 8,
+  },
+  historyTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.secondary, // Couleur cyan du nouveau logo
+    textShadowColor: 'rgba(0, 212, 255, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+  historyScrollContainer: {
+    paddingRight: 16,
+  },
+  historyCard: {
+    width: 160,
+    backgroundColor: COLORS.primary,
+    borderRadius: 12,
+    marginRight: 12,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    borderWidth: 2,
+    borderColor: COLORS.border.card, // Lueur violette subtile - cohérent avec le système
+  },
+  historyImageContainer: {
+    position: 'relative',
+    height: 120,
+  },
+  historyImage: {
+    width: '100%',
+    height: '100%',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
+  historyRemoveButton: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 2,
+  },
+  progressBarContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: COLORS.secondary,
+  },
+  historyContent: {
+    padding: 12,
+    gap: 8,
+  },
+  historyAnimeTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: COLORS.text.primary,
+    lineHeight: 18,
+  },
+  historyEpisodeInfo: {
+    fontSize: 12,
+    color: COLORS.text.secondary,
+  },
+  historyBadgeContainer: {
+    flexDirection: 'row',
+    gap: 6,
+  },
+  historyLanguageBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    flex: 1,
+  },
+  historyLanguageText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: COLORS.text.primary,
+    textAlign: 'center',
+  },
+  historyEpisodeBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    flex: 2,
+  },
+  historyEpisodeText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: COLORS.text.primary,
+    textAlign: 'center',
+  },
+
+});
+
   return (
     <CosmicBackground>
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <StatusBar style="light" backgroundColor={COLORS.primary} />
+        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
 
       {/* Bannière de statut réseau */}
       <NetworkStatusBanner
@@ -1382,849 +2101,5 @@ const HomeScreen: React.FC = () => {
     </CosmicBackground>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.primary, // Fond cosmique "I am Atomic"
-  },
-  headerContainer: {
-    position: 'relative',
-    zIndex: 10,
-    backgroundColor: COLORS.secondary, // Cyan du logo
-  },
-  scrollView: {
-    flex: 1,
-  },
-
-
-
-  // Recherche
-  searchBarContainer: {
-    padding: 16,
-    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.text.primary + '1A',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    // Contour néon pour barre de recherche
-    borderWidth: 2,
-    borderColor: COLORS.border.secondary, // Violet néon
-    shadowColor: COLORS.badges.atomic,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.6,
-    shadowRadius: 10,
-    elevation: 8,
-  },
-  searchInput: {
-    flex: 1,
-    color: COLORS.text.primary,
-    fontSize: 16,
-    marginLeft: 12,
-  },
-  clearSearchButton: {
-    padding: 4,
-    borderRadius: 6,
-    // Contour néon pour bouton clear search
-    borderWidth: 2,
-    borderColor: COLORS.border.focus, // Magenta atomique
-    backgroundColor: COLORS.badges.manga + '1A',
-    shadowColor: COLORS.badges.hot,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-  },
-  clearSearchText: {
-    color: COLORS.text.muted,
-    fontSize: 16,
-  },
-
-  // Hero Section - Effet "I am Atomic"
-  heroSection: {
-    height: 180,
-    position: 'relative',
-    marginBottom: 20,
-    backgroundColor: COLORS.background.secondary, // Fond noir légèrement visible
-    borderRadius: 16,
-    marginHorizontal: 8,
-    overflow: 'hidden',
-    zIndex: 10000, // Au-dessus des lignes rouges pour les masquer
-    // Contour néon cosmique puissant pour hero
-    borderWidth: 3,
-    borderColor: COLORS.border.glow, // Violet néon intense
-    shadowColor: COLORS.badges.atomic,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.9,
-    shadowRadius: 20,
-    elevation: 15,
-  },
-  heroMosaicContainer: {
-    flexDirection: 'row',
-    height: 90, // 50% de la hauteur totale (180px)
-  },
-  heroMosaicImage: {
-    flex: 1,
-    marginHorizontal: -1,
-  },
-  heroMosaicImageContent: {
-    width: '100%',
-    height: '100%',
-  },
-  heroContent: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 90, // 50% de la hauteur totale (180px)
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    alignItems: 'center', // Contenu centré par défaut
-    justifyContent: 'center', // Contenu centré verticalement
-  },
-  heroLogo: {
-    width: 48,
-    height: 48,
-    borderRadius: 24, // Logo parfaitement rond (la moitié de width/height)
-    position: 'absolute',
-    bottom: 16,
-    right: 16, // Positionné dans l'angle inférieur droit
-  },
-  heroSubtitle: {
-    fontSize: 16,
-    color: COLORS.text.secondary,
-    textAlign: 'center',
-    lineHeight: 24,
-    marginBottom: 8,
-  },
-  heroFlagLeft: {
-    position: 'absolute',
-    bottom: 12,
-    left: 16,
-    fontSize: 28,
-  },
-  heroFlagRight: {
-    position: 'absolute',
-    bottom: 12,
-    right: 16,
-    fontSize: 28,
-  },
-
-
-  searchResultsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-  },
-
-  // Cards Anime optimisées pour les performances - Effet "I am Atomic"
-  animeCard: {
-    width: (width - 48) / 2,
-    minHeight: 200, // minHeight au lieu de height fixe
-    height: 'auto', // Hauteur automatique pour s'adapter au contenu
-    marginBottom: 16,
-    borderRadius: 12,
-    overflow: 'hidden',
-    backgroundColor: COLORS.background.secondary, // Fond légèrement visible sur noir
-    // Bordures néon cosmiques
-    borderWidth: 2,
-    borderColor: COLORS.border.glow, // Violet néon intense
-    // Effet de glow atomique puissant
-    shadowColor: COLORS.badges.atomic,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.9,
-    shadowRadius: 15,
-    elevation: 12,
-  },
-  cardImageContainer: {
-    position: 'relative',
-    height: 200,
-  },
-  cardImage: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: COLORS.primary,
-  },
-  contentBadge: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  mangaBadge: {
-    backgroundColor: COLORS.badges.manga,
-  },
-  movieBadge: {
-    backgroundColor: COLORS.badges.film,
-  },
-  animeBadge: {
-    backgroundColor: COLORS.badges.anime,
-  },
-  badgeText: {
-    color: COLORS.text.primary,
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-  cardGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 140,
-  },
-  cardContent: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 12,
-    paddingBottom: 10,
-  },
-  cardTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    ...textStyles.cardTitle,
-    marginBottom: 8,
-    lineHeight: 18,
-    minHeight: 54,
-  },
-  cardMeta: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginTop: 4,
-  },
-  languageBadge: {
-    backgroundColor: COLORS.badges.vostfr + '33', // Violet avec transparence
-    borderWidth: 1,
-    borderColor: COLORS.badges.vostfr,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 8,
-    alignSelf: 'flex-end',
-    // Effet glow violet pour badges langue
-    shadowColor: COLORS.badges.vostfr,
-    shadowOpacity: 0.4,
-    shadowRadius: 3,
-  },
-  languageText: {
-    color: COLORS.text.primary,
-    fontSize: 9,
-    fontWeight: '600',
-  },
-
-  // États
-  loadingContainer: {
-    alignItems: 'center',
-    paddingVertical: 32,
-    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
-  },
-  loadingText: {
-    color: COLORS.text.muted,
-    marginTop: 8,
-  },
-  errorContainer: {
-    alignItems: 'center',
-    paddingVertical: 32,
-    paddingHorizontal: 16,
-    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
-  },
-  errorText: {
-    color: COLORS.text.error,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  retryButton: {
-    backgroundColor: COLORS.primary,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-  },
-  retryText: {
-    color: COLORS.text.primary,
-    fontWeight: '500',
-  },
-  emptyContainer: {
-    alignItems: 'center',
-    paddingVertical: 32,
-    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
-  },
-  emptyText: {
-    color: COLORS.text.muted,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-
-  // Styles pour le modal Telegram avec effet blur
-  telegramModalOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 1000,
-  },
-  blurView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-  },
-  telegramModalContainer: {
-    width: '90%',
-    maxWidth: 400,
-    backgroundColor: COLORS.background.modal,
-    borderRadius: 20,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: COLORS.border.secondary,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.5,
-    shadowRadius: 20,
-    elevation: 20,
-  },
-
-  // Styles pour les sections horizontales (Classiques et Pépites)
-  horizontalSection: {
-    marginBottom: 24,
-    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
-    paddingVertical: 8,
-    zIndex: 10000, // Au-dessus des lignes rouges pour les masquer
-    position: 'relative',
-  },
-  sectionHeader: {
-    paddingHorizontal: 16,
-    marginBottom: 16,
-    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
-    paddingVertical: 8,
-    zIndex: 10001, // Au-dessus des lignes rouges pour les masquer
-    position: 'relative',
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.secondary, // Couleur cyan du nouveau logo
-    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    alignSelf: 'flex-start',
-    textShadowColor: 'rgba(0, 212, 255, 0.3)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
-  },
-  horizontalScroll: {
-    paddingLeft: 16,
-  },
-  horizontalScrollContainer: {
-    paddingRight: 16,
-  },
-  horizontalCard: {
-    width: 120,
-    height: 180,
-    marginRight: 12,
-    borderRadius: 8,
-    overflow: 'hidden',
-    backgroundColor: COLORS.background.secondary, // Fond légèrement visible sur noir
-    // Bordures néon violettes - Effet cosmique
-    borderWidth: 2,
-    borderColor: COLORS.border.glow, // Violet néon intense - cohérent avec les autres cartes
-    // Effet de glow atomique
-    shadowColor: COLORS.badges.atomic,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.7,
-    shadowRadius: 10,
-    elevation: 8,
-  },
-  // Badge NOUVEAU pour les nouveaux épisodes - Style atomique
-  newEpisodeBadge: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    backgroundColor: COLORS.badges.new, // Vert émeraude atomique
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderRadius: 6,
-    zIndex: 2,
-    // Effet glow sur badge NOUVEAU
-    shadowColor: COLORS.badges.new,
-    shadowOpacity: 0.6,
-    shadowRadius: 5,
-    borderWidth: 1,
-    borderColor: COLORS.border.focus,
-  },
-  newEpisodeBadgeText: {
-    color: COLORS.text.primary, // Blanc éclatant - cohérent avec le système
-    fontSize: 9,
-    fontWeight: 'bold',
-    // Effet de lueur pour le texte du badge
-    textShadowColor: COLORS.badges.new,
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 1,
-  },
-  // Meta info pour les cartes horizontales
-  horizontalCardMeta: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 4,
-    marginTop: 4,
-  },
-  episodeInfoBadge: {
-    backgroundColor: COLORS.badges.new + '33', // Vert émeraude avec transparence
-    borderWidth: 1,
-    borderColor: COLORS.badges.new,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 6,
-    // Effet glow vert pour badges épisode
-    shadowColor: COLORS.badges.new,
-    shadowOpacity: 0.4,
-    shadowRadius: 3,
-  },
-  episodeInfoText: {
-    color: COLORS.states.active, // Cyan éclatant pour meilleur contraste
-    fontSize: 9,
-    fontWeight: '600',
-    borderRadius: 12,
-    overflow: 'hidden',
-    backgroundColor: COLORS.primary,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  horizontalCardImage: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: COLORS.primary,
-  },
-  horizontalCardGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 80,
-  },
-  horizontalCardContent: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 8,
-  },
-  horizontalCardTitle: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: COLORS.text.primary, // Blanc éclatant - cohérent avec le système
-    marginBottom: 4,
-    lineHeight: 14,
-    // Effet de lueur atomique sur le titre
-    textShadowColor: COLORS.badges.atomic,
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
-  },
-  horizontalCardBadge: {
-    backgroundColor: COLORS.badges.vostfr + '33', // Violet avec transparence
-    borderWidth: 1,
-    borderColor: COLORS.badges.vostfr,
-    paddingHorizontal: 4,
-    paddingVertical: 2,
-    borderRadius: 6,
-    alignSelf: 'flex-start',
-    // Effet glow violet pour badges horizontaux
-    shadowColor: COLORS.badges.vostfr,
-    shadowOpacity: 0.4,
-    shadowRadius: 3,
-  },
-  horizontalCardBadgeText: {
-    color: COLORS.text.primary, // Blanc éclatant pour meilleure lisibilité
-    fontSize: 8,
-    fontWeight: '600',
-    // Effet de lueur pour le texte des badges langue
-    textShadowColor: COLORS.badges.vostfr,
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 1,
-  },
-
-
-
-  // Styles pour les cartes spécialisées
-  legendaryCard: {
-    width: 120,
-    height: 180,
-    marginRight: 12,
-    borderRadius: 12,
-    overflow: 'hidden',
-    backgroundColor: '#1A1A1A', // Fond légèrement visible
-    // Bordure or atomique pour légendaires
-    borderWidth: 2,
-    borderColor: COLORS.badges.legendary, // Or atomique
-    // Effet glow or intense pour légendaires
-    shadowColor: COLORS.badges.legendary,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.9,
-    shadowRadius: 15,
-    elevation: 12,
-  },
-  gemCard: {
-    width: 120,
-    height: 180,
-    marginRight: 12,
-    borderRadius: 12,
-    overflow: 'hidden',
-    backgroundColor: COLORS.background.secondary, // Fond légèrement visible sur noir
-    // Bordure cosmique pour pépites rares - Effet diamant
-    borderWidth: 2,
-    borderColor: COLORS.badges.atomic, // Violet éclatant - Pouvoir atomique
-    // Effet glow diamant intense pour pépites
-    shadowColor: COLORS.badges.atomic,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 12,
-    elevation: 10,
-  },
-
-  // Badges spécialisés sur les images
-  releaseBadge: {
-    position: 'absolute',
-    top: 6,
-    right: 6,
-    backgroundColor: 'rgba(255, 193, 7, 0.95)',
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderRadius: 8,
-    zIndex: 1,
-  },
-  releaseBadgeText: {
-    color: COLORS.primary,
-    fontSize: 8,
-    fontWeight: 'bold',
-  },
-  classicBadge: {
-    position: 'absolute',
-    top: 6,
-    right: 6,
-    backgroundColor: COLORS.badges.legendary,
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderRadius: 8,
-    zIndex: 1,
-    // Effet glow pour badge classique
-    shadowColor: COLORS.badges.legendary,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.6,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  classicBadgeText: {
-    color: COLORS.primary,
-    fontSize: 8,
-    fontWeight: 'bold',
-  },
-  rareBadge: {
-    position: 'absolute',
-    top: 6,
-    right: 6,
-    backgroundColor: COLORS.badges.atomic,
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderRadius: 8,
-    zIndex: 1,
-    // Effet glow pour badge rare
-    shadowColor: COLORS.badges.atomic,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.6,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  rareBadgeText: {
-    color: COLORS.text.primary,
-    fontSize: 8,
-    fontWeight: 'bold',
-  },
-  vintageCard: {
-    width: 120,
-    height: 180,
-    marginRight: 12,
-    borderRadius: 12,
-    overflow: 'hidden',
-    backgroundColor: COLORS.primary,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    borderWidth: 1,
-    borderColor: COLORS.badges.manga + '66', // Bordure magenta avec transparence pour vintage
-  },
-  vintageBadge: {
-    position: 'absolute',
-    top: 6,
-    right: 6,
-    backgroundColor: COLORS.badges.manga, // Magenta atomique pour vintage
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderRadius: 8,
-    zIndex: 1,
-    // Effet glow magenta pour badges vintage
-    shadowColor: COLORS.badges.manga,
-    shadowOpacity: 0.6,
-    shadowRadius: 4,
-    borderWidth: 1,
-    borderColor: COLORS.border.focus,
-  },
-  vintageBadgeText: {
-    color: COLORS.text.primary,
-    fontSize: 8,
-    fontWeight: 'bold',
-  },
-
-  // Styles pour l'historique intelligent
-  smartCard: {
-    width: 120,
-    marginRight: 15,
-    borderRadius: 8,
-    overflow: 'hidden',
-    backgroundColor: COLORS.background.card,
-    elevation: 3,
-    shadowColor: COLORS.text.primary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-
-
-  // Styles pour les cartes de recommandations
-  recommendationCard: {
-    width: 120,
-    height: 180,
-    marginRight: 12,
-    borderRadius: 12,
-    overflow: 'hidden',
-    backgroundColor: COLORS.background.secondary, // Fond légèrement visible sur noir
-    // Bordure recommandation bien visible - Effet cible
-    borderWidth: 2,
-    borderColor: COLORS.badges.trending, // Violet néon - Recommandations ciblées
-    // Effet glow recommandation intense
-    shadowColor: COLORS.badges.trending,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 10,
-    elevation: 10,
-  },
-  recommendationBadge: {
-    position: 'absolute',
-    top: 6,
-    right: 6,
-    backgroundColor: COLORS.badges.trending, // Violet néon pour recommandations
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderRadius: 8,
-    // Effet glow violet pour badges recommandation
-    shadowColor: COLORS.badges.trending,
-    shadowOpacity: 0.6,
-    shadowRadius: 4,
-    borderWidth: 1,
-    borderColor: COLORS.border.glow,
-    zIndex: 1,
-  },
-  recommendationBadgeText: {
-    color: COLORS.text.primary, // Blanc éclatant pour meilleure lisibilité
-    fontSize: 8,
-    fontWeight: 'bold',
-    // Effet de lueur pour le texte des badges recommandation
-    textShadowColor: COLORS.badges.trending,
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 1,
-  },
-
-  // Styles pour les cartes de planning
-  planningCard: {
-    width: 120,
-    height: 180,
-    marginRight: 12,
-    borderRadius: 12,
-    overflow: 'hidden',
-    backgroundColor: COLORS.primary,
-    elevation: 8,
-    shadowColor: COLORS.text.atomic, // Ombre dorée atomique pour planning
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.6, // Glow plus intense
-    shadowRadius: 8,
-    borderWidth: 2,
-    borderColor: COLORS.text.atomic, // Bordure dorée atomique pour planning
-  },
-  planningBadge: {
-    position: 'absolute',
-    top: 6,
-    right: 6,
-    backgroundColor: COLORS.text.atomic, // Or atomique pour planning
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderRadius: 8,
-    zIndex: 1,
-    // Effet glow doré pour badges planning
-    shadowColor: COLORS.text.atomic,
-    shadowOpacity: 0.6,
-    shadowRadius: 4,
-    borderWidth: 1,
-    borderColor: COLORS.border.focus,
-  },
-  planningBadgeText: {
-    color: COLORS.text.shadow, // Couleur sombre pour contraste sur fond doré
-    fontSize: 8,
-    fontWeight: 'bold',
-    // Effet de lueur pour le texte du badge planning
-    textShadowColor: COLORS.text.atomic,
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 1,
-  },
-
-  // Styles pour la modal de notifications
-  notificationModalContainer: {
-    flex: 1,
-    backgroundColor: COLORS.primary,
-  },
-  notificationModalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-    backgroundColor: COLORS.primary,
-  },
-  notificationModalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.text.primary,
-  },
-  closeButton: {
-    padding: 8,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-  },
-
-  // Styles pour la section historique
-  historySection: {
-    marginBottom: 24,
-    paddingHorizontal: 16,
-  },
-  historyHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-    gap: 8,
-  },
-  historyTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.secondary, // Couleur cyan du nouveau logo
-    textShadowColor: 'rgba(0, 212, 255, 0.3)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
-  },
-  historyScrollContainer: {
-    paddingRight: 16,
-  },
-  historyCard: {
-    width: 160,
-    backgroundColor: COLORS.primary,
-    borderRadius: 12,
-    marginRight: 12,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    borderWidth: 2,
-    borderColor: COLORS.border.card, // Lueur violette subtile - cohérent avec le système
-  },
-  historyImageContainer: {
-    position: 'relative',
-    height: 120,
-  },
-  historyImage: {
-    width: '100%',
-    height: '100%',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-  },
-  historyRemoveButton: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 2,
-  },
-  progressBarContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-  },
-  progressBar: {
-    height: '100%',
-    backgroundColor: COLORS.secondary,
-  },
-  historyContent: {
-    padding: 12,
-    gap: 8,
-  },
-  historyAnimeTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: COLORS.text.primary,
-    lineHeight: 18,
-  },
-  historyEpisodeInfo: {
-    fontSize: 12,
-    color: COLORS.text.secondary,
-  },
-  historyBadgeContainer: {
-    flexDirection: 'row',
-    gap: 6,
-  },
-  historyLanguageBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-    flex: 1,
-  },
-  historyLanguageText: {
-    fontSize: 10,
-    fontWeight: 'bold',
-    color: COLORS.text.primary,
-    textAlign: 'center',
-  },
-  historyEpisodeBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-    flex: 2,
-  },
-  historyEpisodeText: {
-    fontSize: 10,
-    fontWeight: 'bold',
-    color: COLORS.text.primary,
-    textAlign: 'center',
-  },
-
-});
 
 export default HomeScreen;
