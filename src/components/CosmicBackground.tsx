@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '../constants/newColors';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { width, height } = Dimensions.get('window');
 
@@ -12,21 +13,62 @@ interface CosmicBackgroundProps {
 /**
  * 🌌 Fond cosmique inspiré de "The Eminence in Shadow"
  * Crée une ambiance mystique avec des effets de nébuleuse et d'étoiles
+ * S'adapte automatiquement au thème clair ou sombre
  */
 const CosmicBackground: React.FC<CosmicBackgroundProps> = ({ children }) => {
+  const { isDark } = useTheme();
+
+  const darkColors = useMemo(() => ({
+    mainNebula: [
+      'rgba(168, 85, 247, 0.1)',
+      'rgba(219, 39, 119, 0.05)',
+      'transparent',
+      'rgba(168, 85, 247, 0.08)'
+    ] as const,
+    atomicGlow: [
+      'transparent',
+      'rgba(168, 85, 247, 0.15)',
+      'rgba(219, 39, 119, 0.1)',
+      'transparent'
+    ] as const,
+    lightning: [
+      'transparent',
+      'rgba(168, 85, 247, 0.05)',
+      'transparent',
+      'rgba(219, 39, 119, 0.05)',
+      'transparent'
+    ] as const
+  }), []);
+
+  const lightColors = useMemo(() => ({
+    mainNebula: [
+      'rgba(147, 197, 253, 0.15)',
+      'rgba(253, 224, 71, 0.08)',
+      'transparent',
+      'rgba(196, 181, 253, 0.12)'
+    ] as const,
+    atomicGlow: [
+      'transparent',
+      'rgba(186, 230, 253, 0.2)',
+      'rgba(254, 240, 138, 0.15)',
+      'transparent'
+    ] as const,
+    lightning: [
+      'transparent',
+      'rgba(147, 197, 253, 0.08)',
+      'transparent',
+      'rgba(253, 224, 71, 0.06)',
+      'transparent'
+    ] as const
+  }), []);
+
+  const colors = isDark ? darkColors : lightColors;
 
   return (
     <View style={styles.container}>
-      {/* Fond transparent pour laisser passer le GlobalBackground */}
-      
-      {/* Nébuleuse violette principale */}
+      {/* Nébuleuse principale */}
       <LinearGradient
-        colors={[
-          'rgba(168, 85, 247, 0.1)',
-          'rgba(219, 39, 119, 0.05)',
-          'transparent',
-          'rgba(168, 85, 247, 0.08)'
-        ]}
+        colors={colors.mainNebula}
         style={styles.mainNebula}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -34,12 +76,7 @@ const CosmicBackground: React.FC<CosmicBackgroundProps> = ({ children }) => {
       
       {/* Lueur atomique centrale */}
       <LinearGradient
-        colors={[
-          'transparent',
-          'rgba(168, 85, 247, 0.15)',
-          'rgba(219, 39, 119, 0.1)',
-          'transparent'
-        ]}
+        colors={colors.atomicGlow}
         style={styles.atomicGlow}
         start={{ x: 0.3, y: 0.2 }}
         end={{ x: 0.8, y: 0.9 }}
@@ -47,21 +84,11 @@ const CosmicBackground: React.FC<CosmicBackgroundProps> = ({ children }) => {
       
       {/* Éclairs cosmiques subtils */}
       <LinearGradient
-        colors={[
-          'transparent',
-          'rgba(168, 85, 247, 0.05)',
-          'transparent',
-          'rgba(219, 39, 119, 0.05)',
-          'transparent'
-        ]}
+        colors={colors.lightning}
         style={styles.lightning}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0.5 }}
       />
-      
-      
-      
-      
       
       {/* Contenu par-dessus */}
       <View style={styles.content}>
