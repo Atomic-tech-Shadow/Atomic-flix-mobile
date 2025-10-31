@@ -45,6 +45,7 @@ The application adopts a React Native/Expo mobile app architecture emphasizing c
         -   `useThemedStyles()` hook: Creates reactive styles that update automatically on theme change
         -   Complete color palettes: COLORS (dark) and LIGHT_COLORS with full parity (gradients, states, badges, borders)
         -   Gradient helpers: `getGradientColors()`, `createCosmicGradient()`, `createOverlayGradient()` for consistent theming
+        -   Text styles helper: `getThemedTextStyles(isDark)` returns dynamic text styles that adapt to theme (white text in dark mode, black text in light mode)
         -   Memoized color computations for optimal performance
 
 ## External Dependencies
