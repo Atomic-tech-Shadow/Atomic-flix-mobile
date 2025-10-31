@@ -24,7 +24,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SearchResult } from '../types/index';
 import type { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
-import { textStyles, interactiveStyles } from '../constants/newColors';
+import { getThemedTextStyles, interactiveStyles } from '../constants/newColors';
 import { useTheme } from '../contexts/ThemeContext';
 import CosmicBackground from '../components/CosmicBackground';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -115,6 +115,7 @@ const HomeScreen: React.FC = () => {
   // Hook pour le thème
   const { isDark, colors, getOverlayGradient } = useTheme();
   const COLORS = colors;
+  const textStyles = getThemedTextStyles(isDark);
 
   // Configuration API identique au site web
   const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';

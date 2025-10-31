@@ -173,7 +173,7 @@ export const createOverlayGradient = (isDark: boolean) => {
   }
 };
 
-// Styles de texte - Lueur cosmique de l'ombre
+// Styles de texte - Lueur cosmique de l'ombre (pour compatibilité, utilise le thème sombre par défaut)
 export const textStyles = {
   heroTitle: {
     color: COLORS.text.primaryBold,
@@ -207,6 +207,84 @@ export const textStyles = {
     color: COLORS.text.secondary,
     textShadow: '0px 0px 15px rgba(168, 85, 247, 0.6), 0px 2px 4px rgba(0, 0, 0, 0.8)',
     letterSpacing: 1,
+  }
+};
+
+// Fonction pour obtenir les styles de texte selon le thème
+export const getThemedTextStyles = (isDark: boolean) => {
+  const colors = getThemedColors(isDark);
+  
+  if (isDark) {
+    return {
+      heroTitle: {
+        color: colors.text.primaryBold,
+        textShadow: '0px 3px 6px rgba(30, 27, 75, 0.9), 0px 0px 20px rgba(168, 85, 247, 0.3)',
+      },
+      cardTitle: {
+        color: colors.text.primary,
+        textShadow: '0px 2px 4px rgba(30, 27, 75, 0.8), 0px 0px 10px rgba(168, 85, 247, 0.2)',
+      },
+      description: {
+        color: colors.text.secondary,
+        lineHeight: 22,
+        textShadow: '0px 1px 2px rgba(30, 27, 75, 0.6)',
+      },
+      accent: {
+        color: colors.text.accent,
+        textShadow: '0px 1px 3px rgba(30, 27, 75, 0.7), 0px 0px 8px rgba(168, 85, 247, 0.4)',
+      },
+      atomic: {
+        color: colors.text.atomic,
+        textShadow: '0px 2px 4px rgba(30, 27, 75, 0.8), 0px 0px 15px rgba(244, 114, 182, 0.5)',
+      },
+      shadowTitle: {
+        color: colors.text.primaryBold,
+        textShadow: '0px 0px 20px rgba(168, 85, 247, 0.8), 0px 0px 40px rgba(219, 39, 119, 0.4), 0px 4px 8px rgba(0, 0, 0, 0.9)',
+        letterSpacing: 2,
+        fontWeight: '700' as const,
+      },
+      cosmicSubtitle: {
+        color: colors.text.secondary,
+        textShadow: '0px 0px 15px rgba(168, 85, 247, 0.6), 0px 2px 4px rgba(0, 0, 0, 0.8)',
+        letterSpacing: 1,
+      }
+    };
+  } else {
+    // Mode clair - ombres et couleurs adaptées
+    return {
+      heroTitle: {
+        color: colors.text.primaryBold,
+        textShadow: '0px 2px 4px rgba(0, 0, 0, 0.1), 0px 0px 10px rgba(99, 102, 241, 0.2)',
+      },
+      cardTitle: {
+        color: colors.text.primary,
+        textShadow: '0px 1px 2px rgba(0, 0, 0, 0.08), 0px 0px 6px rgba(99, 102, 241, 0.1)',
+      },
+      description: {
+        color: colors.text.secondary,
+        lineHeight: 22,
+        textShadow: '0px 1px 1px rgba(0, 0, 0, 0.05)',
+      },
+      accent: {
+        color: colors.text.accent,
+        textShadow: '0px 1px 2px rgba(0, 0, 0, 0.1), 0px 0px 6px rgba(99, 102, 241, 0.3)',
+      },
+      atomic: {
+        color: colors.text.atomic,
+        textShadow: '0px 2px 3px rgba(0, 0, 0, 0.1), 0px 0px 10px rgba(236, 72, 153, 0.3)',
+      },
+      shadowTitle: {
+        color: colors.text.primaryBold,
+        textShadow: '0px 0px 15px rgba(99, 102, 241, 0.5), 0px 0px 30px rgba(236, 72, 153, 0.3), 0px 3px 6px rgba(0, 0, 0, 0.15)',
+        letterSpacing: 2,
+        fontWeight: '700' as const,
+      },
+      cosmicSubtitle: {
+        color: colors.text.secondary,
+        textShadow: '0px 0px 10px rgba(99, 102, 241, 0.4), 0px 2px 3px rgba(0, 0, 0, 0.1)',
+        letterSpacing: 1,
+      }
+    };
   }
 };
 
