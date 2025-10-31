@@ -39,6 +39,13 @@ The application adopts a React Native/Expo mobile app architecture emphasizing c
     -   **Background Processing**: Services for notifications and content updates, using AsyncStorage.
     -   **User Interaction**: `expo-keep-awake` for video, `expo-screen-orientation` for dynamic orientation, and `SafeAreaView` for consistent UI.
     -   **Search Functionality**: Global search modal with caching, debouncing, and automatic navigation.
+    -   **Theme System**: Comprehensive dark/light theme support with:
+        -   `ThemeContext`: Centralized theme management with automatic persistence via AsyncStorage
+        -   `useTheme()` hook: Provides theme state, colors, and utility functions (getGradient, getOverlayGradient, hexToRgba)
+        -   `useThemedStyles()` hook: Creates reactive styles that update automatically on theme change
+        -   Complete color palettes: COLORS (dark) and LIGHT_COLORS with full parity (gradients, states, badges, borders)
+        -   Gradient helpers: `getGradientColors()`, `createCosmicGradient()`, `createOverlayGradient()` for consistent theming
+        -   Memoized color computations for optimal performance
 
 ## External Dependencies
 

@@ -24,7 +24,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SearchResult } from '../types/index';
 import type { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator';
 import SharedHeader from '../components/SharedHeader';
-import { getThemedColors, textStyles, interactiveStyles } from '../constants/newColors';
+import { textStyles, interactiveStyles } from '../constants/newColors';
 import { useTheme } from '../contexts/ThemeContext';
 import CosmicBackground from '../components/CosmicBackground';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -113,8 +113,8 @@ const HomeScreen: React.FC = () => {
   } = useNetworkStatus();
 
   // Hook pour le thème
-  const { isDark } = useTheme();
-  const COLORS = getThemedColors(isDark);
+  const { isDark, colors, getOverlayGradient } = useTheme();
+  const COLORS = colors;
 
   // Configuration API identique au site web
   const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';
@@ -1126,9 +1126,7 @@ const HomeScreen: React.FC = () => {
     right: 4,
   },
   horizontalCardTitle: {
-    color: COLORS.text.primary,
     fontSize: 12,
-    fontWeight: 'bold',
     lineHeight: 16,
     marginBottom: 4,
     ...textStyles.shadowTitle,
@@ -1676,13 +1674,7 @@ const HomeScreen: React.FC = () => {
 
               {/* Contenu principal */}
               <LinearGradient
-                colors={[
-                  'rgba(0,0,0,0.6)', 
-                  'rgba(168, 85, 247, 0.15)', 
-                  'rgba(219, 39, 119, 0.1)', 
-                  'rgba(168, 85, 247, 0.05)',
-                  'rgba(0,0,0,0.9)'
-                ]}
+                colors={getOverlayGradient() as any}
                 style={styles.heroContent}
               >
                 <Text style={[styles.heroSubtitle, textStyles.shadowTitle]}>

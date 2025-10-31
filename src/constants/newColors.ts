@@ -116,6 +116,63 @@ export const createGradient = (colors: string[], opacity = 1) => {
   );
 };
 
+// Helper pour convertir une couleur hex en rgba
+export const hexToRgba = (hex: string, alpha: number = 1): string => {
+  const cleanHex = hex.replace('#', '');
+  const r = parseInt(cleanHex.substring(0, 2), 16);
+  const g = parseInt(cleanHex.substring(2, 4), 16);
+  const b = parseInt(cleanHex.substring(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
+// Helper pour obtenir les couleurs d'un gradient thématique
+export const getGradientColors = (isDark: boolean, gradientType: 'primary' | 'secondary' | 'atomic') => {
+  const colors = getThemedColors(isDark);
+  const gradient = gradientType === 'primary' ? colors.primaryGradient :
+                   gradientType === 'secondary' ? colors.secondaryGradient :
+                   colors.atomicGradient;
+  return [gradient.start, gradient.end];
+};
+
+// Helper pour créer des gradients cosmiques avec opacité personnalisée
+export const createCosmicGradient = (isDark: boolean, opacity: number = 1) => {
+  const colors = getThemedColors(isDark);
+  if (isDark) {
+    return [
+      hexToRgba('#0F0F0F', opacity),
+      hexToRgba('#A855F7', opacity * 0.5),
+      hexToRgba('#DB2777', opacity),
+    ];
+  } else {
+    return [
+      hexToRgba('#FFFFFF', opacity),
+      hexToRgba('#6366F1', opacity * 0.5),
+      hexToRgba('#EC4899', opacity),
+    ];
+  }
+};
+
+// Helper pour créer des overlays de gradient
+export const createOverlayGradient = (isDark: boolean) => {
+  if (isDark) {
+    return [
+      'rgba(0,0,0,0.6)',
+      'rgba(168, 85, 247, 0.15)',
+      'rgba(219, 39, 119, 0.1)',
+      'rgba(168, 85, 247, 0.05)',
+      'rgba(0,0,0,0.9)'
+    ];
+  } else {
+    return [
+      'rgba(255,255,255,0.6)',
+      'rgba(99, 102, 241, 0.08)',
+      'rgba(236, 72, 153, 0.05)',
+      'rgba(99, 102, 241, 0.03)',
+      'rgba(255,255,255,0.9)'
+    ];
+  }
+};
+
 // Styles de texte - Lueur cosmique de l'ombre
 export const textStyles = {
   heroTitle: {
@@ -247,12 +304,34 @@ export const LIGHT_COLORS = {
   secondary: '#6366F1',
   accent: '#EC4899',
   
+  // Gradients - Mode clair
+  primaryGradient: {
+    start: '#F3F4F6',
+    end: '#E5E7EB'
+  },
+  secondaryGradient: {
+    start: '#818CF8',
+    end: '#6366F1'
+  },
+  atomicGradient: {
+    start: '#6366F1',
+    end: '#EC4899'
+  },
+  
   // Couleurs de fond - Mode clair
   background: {
     primary: '#FFFFFF',
     secondary: '#F9FAFB',
     card: 'rgba(0, 0, 0, 0.03)',
     modal: 'rgba(255, 255, 255, 0.98)',
+    atomic: 'linear-gradient(45deg, #FFFFFF 0%, #6366F1 50%, #EC4899 100%)',
+    glow: 'radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, rgba(255, 255, 255, 0.9) 70%)',
+    shadow: 'linear-gradient(180deg, #FFFFFF 0%, #F9FAFB 100%)',
+    cosmic: 'radial-gradient(ellipse at center, rgba(99, 102, 241, 0.08) 0%, rgba(255, 255, 255, 0.95) 50%, #FFFFFF 100%)',
+    starfield: 'linear-gradient(45deg, #FFFFFF 0%, rgba(99, 102, 241, 0.05) 30%, rgba(236, 72, 153, 0.05) 70%, #FFFFFF 100%)',
+    nebula: 'radial-gradient(circle at 20% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%), #FFFFFF',
+    moon: 'radial-gradient(circle at 70% 30%, rgba(244, 114, 182, 0.05) 0%, transparent 30%), linear-gradient(135deg, #FFFFFF 0%, rgba(99, 102, 241, 0.04) 100%)',
+    lightning: 'linear-gradient(90deg, #FFFFFF 0%, rgba(99, 102, 241, 0.03) 30%, rgba(236, 72, 153, 0.03) 70%, #FFFFFF 100%)'
   },
   
   // Couleurs de texte - Mode clair
@@ -293,6 +372,23 @@ export const LIGHT_COLORS = {
     new: '#8B5CF6',
     atomic: '#A78BFA',
     shadow: '#F3F4F6',
+    danger: '#B91C1C',
+    blood: '#991B1B',
+    crimson: '#DC2626',
+    shadowRed: '#B91C1C',
+  },
+  
+  // États - Mode clair
+  states: {
+    active: '#6366F1',
+    hover: '#EC4899',
+    focus: '#F472B6',
+    selected: '#A78BFA',
+    pressed: '#4F46E5',
+    loading: '#9CA3AF',
+    inactive: '#D1D5DB',
+    atomic: '#8B5CF6',
+    shadow: '#E5E7EB'
   },
   
   // Bordures et séparateurs - Mode clair
@@ -303,6 +399,8 @@ export const LIGHT_COLORS = {
     focus: '#EC4899',
     glow: 'rgba(99, 102, 241, 0.8)',
     atomic: '#A78BFA',
+    danger: 'rgba(220, 38, 38, 0.6)',
+    blood: 'rgba(185, 28, 28, 0.8)'
   }
 };
 

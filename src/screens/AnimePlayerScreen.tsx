@@ -72,8 +72,8 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   } = useNotifications();
 
   // Hook pour le thème
-  const { isDark } = useTheme();
-  const COLORS = getThemedColors(isDark);
+  const { isDark, colors } = useTheme();
+  const COLORS = colors;
 
   // États pour le tracking de visionnage
   const [watchStartTime, setWatchStartTime] = useState<Date | null>(null);

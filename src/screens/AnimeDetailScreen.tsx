@@ -123,8 +123,8 @@ const AnimeDetailScreen: React.FC = () => {
   } = useNotifications();
 
   // Hook pour le thème
-  const { isDark } = useTheme();
-  const COLORS = getThemedColors(isDark);
+  const { isDark, colors } = useTheme();
+  const COLORS = colors;
 
   // Charger les données de l'anime (exactement comme le code web)
   const loadAnimeData = async () => {

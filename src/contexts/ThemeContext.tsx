@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getThemedColors, getGradientColors as getGradientColorsHelper, createOverlayGradient, hexToRgba } from '../constants/newColors';
 
 type Theme = 'light' | 'dark';
 
@@ -8,6 +9,11 @@ interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
   isDark: boolean;
+  isLight: boolean;
+  colors: ReturnType<typeof getThemedColors>;
+  getGradient: (type: 'primary' | 'secondary' | 'atomic') => string[];
+  getOverlayGradient: () => string[];
+  hexToRgba: (hex: string, alpha?: number) => string;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -41,8 +47,34 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
+  const isDark = theme === 'dark';
+  const isLight = theme === 'light';
+  
+  const colors = useMemo(() => getThemedColors(isDark), [isDark]);
+  
+  const getGradient = useMemo(
+    () => (type: 'primary' | 'secondary' | 'atomic') => getGradientColorsHelper(isDark, type),
+    [isDark]
+  );
+  
+  const getOverlayGradient = useMemo(
+    () => () => createOverlayGradient(isDark),
+    [isDark]
+  );
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, isDark: theme === 'dark' }}>
+    <ThemeContext.Provider 
+      value={{ 
+        theme, 
+        toggleTheme, 
+        isDark, 
+        isLight,
+        colors,
+        getGradient,
+        getOverlayGradient,
+        hexToRgba
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );
