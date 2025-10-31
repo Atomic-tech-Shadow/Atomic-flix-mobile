@@ -76,6 +76,685 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   const COLORS = colors;
   const textStyles = getThemedTextStyles(isDark);
 
+  // Styles
+  const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+  },
+  headerContainer: {
+    position: 'relative',
+    zIndex: 10,
+    backgroundColor: COLORS.primary,
+  },
+  bannerContainer: {
+    position: 'relative',
+    height: 200, // Équivalent à h-48 (192px) ou h-56 (224px)
+    overflow: 'hidden',
+  },
+  bannerImage: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100%',
+    height: '100%',
+  },
+  bannerOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: COLORS.primary + '99', // Équivalent à bg-black/60
+  },
+  bannerContent: {
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
+    right: 16,
+  },
+  bannerTitle: {
+    fontSize: 24, // Équivalent à text-2xl
+    fontWeight: 'bold',
+    ...textStyles.heroTitle,
+    marginBottom: 4,
+  },
+  bannerSeason: {
+    fontSize: 18, // Équivalent à text-lg
+    color: COLORS.text.secondary,
+    textTransform: 'uppercase',
+  },
+  scrollContainer: {
+    flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    color: COLORS.text.muted,
+    marginTop: 16,
+    fontSize: 16,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 32,
+  },
+  errorText: {
+    color: COLORS.text.error,
+    fontSize: 18,
+    textAlign: 'center',
+    marginTop: 16,
+    marginBottom: 24,
+  },
+  retryButton: {
+    backgroundColor: COLORS.secondary,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
+  retryButtonText: {
+    color: COLORS.text.primary,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  languageSelector: {
+    flexDirection: 'row',
+    padding: 16,
+    justifyContent: 'flex-start',
+    gap: 16,
+  },
+  languageButton: {
+    width: 48, // Bouton carré 48x48 comme spécifié
+    height: 48,
+    borderRadius: 8,
+    backgroundColor: COLORS.primary,
+    borderWidth: 2,
+    borderColor: COLORS.secondary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    overflow: 'hidden',
+    opacity: 0.5, // 50% d'opacité par défaut
+  },
+  languageButtonActive: {
+    opacity: 1, // 100% d'opacité quand actif
+    // Suppression des changements de couleur et effets
+  },
+  languageFlag: {
+    position: 'absolute',
+    fontSize: 40,
+    opacity: 1,
+    zIndex: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    textAlign: 'center',
+    lineHeight: 44,
+  },
+  languageTextPicker: {
+    color: COLORS.text.primary,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    zIndex: 2,
+    position: 'relative',
+    textShadowColor: 'rgba(0, 0, 0, 0.9)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  languageTextActive: {
+    // Accent stratégique pour langue active
+    color: COLORS.states.active, // Cyan éclatant pour état actif
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    zIndex: 2,
+    position: 'relative',
+    textShadowColor: 'rgba(0, 0, 0, 0.9)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: COLORS.states.active, // Bordure cyan pour accent
+    overflow: 'hidden',
+  },
+
+  episodeControls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.primary,
+  },
+  navButton: {
+    width: 44,
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.primary,
+    borderRadius: 22,
+  },
+  episodeInfo: {
+    flex: 1,
+    marginHorizontal: 16,
+    alignItems: 'center',
+  },
+  episodeTitle: {
+    color: COLORS.text.primary,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  episodeNumber: {
+    color: COLORS.secondary,
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginTop: 4,
+  },
+  videoContainer: {
+    height: (width * 9) / 16, // Aspect ratio 16:9
+    backgroundColor: COLORS.primary,
+    position: 'relative',
+  },
+  webView: {
+    flex: 1,
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  dropdownContainer: {
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.primary,
+  },
+  dropdownLabel: {
+    color: COLORS.text.primary,
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
+  pickerContainer: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: COLORS.secondary,
+    height: 56,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    elevation: 4,
+    shadowColor: COLORS.secondary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    flex: 1,
+  },
+  picker: {
+    color: COLORS.text.primary,
+    backgroundColor: 'transparent',
+    fontSize: 16,
+    fontWeight: 'bold',
+    height: 56,
+    marginVertical: 0,
+    paddingHorizontal: 16,
+    marginLeft: -8,
+    marginRight: -8,
+  },
+  selectorsGrid: {
+    flexDirection: 'row',
+    gap: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  videoPlayerWrapper: {
+    borderRadius: 8,
+    overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: COLORS.secondary,
+    marginHorizontal: 16,
+    marginVertical: 8,
+  },
+
+  lastSelectionContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  lastSelectionText: {
+    color: COLORS.text.secondary,
+    fontSize: 14,
+  },
+  lastSelectionValue: {
+    color: COLORS.text.primary,
+  },
+  lastSelectionLabel: {
+    color: COLORS.accent,
+    fontWeight: 'bold',
+  },
+  atomicMessageContainer: {
+    marginHorizontal: 16,
+    marginVertical: 8,
+    padding: 16,
+    backgroundColor: 'rgba(255, 107, 157, 0.1)',
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: COLORS.accent,
+    alignItems: 'center',
+  },
+  atomicMessageBold: {
+    fontWeight: 'bold',
+    color: COLORS.accent,
+  },
+  atomicMessageText: {
+    color: COLORS.text.secondary,
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  atomicMessageSubtext: {
+    color: COLORS.text.secondary,
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 4,
+    fontStyle: 'italic',
+  },
+
+  errorMessage: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    margin: 16,
+    borderRadius: 8,
+    backgroundColor: `${COLORS.error}33`,
+    gap: 12,
+  },
+  errorMessageText: {
+    flex: 1,
+    color: COLORS.text.primary,
+    fontSize: 14,
+  },
+
+  // Styles pour la navigation et le téléchargement
+  navigationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    marginVertical: 12,
+  },
+  navButtonCustom: {
+    width: 56,
+    height: 56,
+    borderRadius: 8,
+    backgroundColor: COLORS.primary,
+    borderWidth: 2,
+    borderColor: COLORS.accent,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
+    shadowColor: COLORS.accent,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  downloadButtonCustom: {
+    width: 56,
+    height: 56,
+    borderRadius: 8,
+    backgroundColor: COLORS.secondary,
+    borderWidth: 2,
+    borderColor: COLORS.secondary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
+    shadowColor: COLORS.secondary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+  },
+  customNavButton: {
+    backgroundColor: COLORS.primary,
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 56,
+    minHeight: 56,
+    borderWidth: 1,
+    borderColor: COLORS.secondary,
+  },
+  navButtonDisabled: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.text.muted,
+    opacity: 0.5,
+  },
+  downloadContainer: {
+    position: 'relative',
+    alignItems: 'center',
+  },
+  downloadButton: {
+    backgroundColor: COLORS.accent,
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 56,
+    minHeight: 56,
+    borderWidth: 1,
+    borderColor: COLORS.secondary,
+  },
+  downloadMenu: {
+    position: 'absolute',
+    top: 55,
+    backgroundColor: COLORS.primary,
+    borderRadius: 8,
+    minWidth: 200,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    zIndex: 1000,
+  },
+  downloadMenuHeader: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#475569',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  downloadMenuTitle: {
+    color: COLORS.text.primary,
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  downloadMenuContent: {
+    paddingVertical: 8,
+  },
+  downloadMenuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  qualityIndicator: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 12,
+  },
+  downloadMenuText: {
+    color: COLORS.text.primary,
+    fontSize: 14,
+  },
+  flagBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: 48, // Dimensions exactes du bouton carré 48x48
+    height: 48,
+    opacity: 0.6,
+  },
+  // Drapeau français tricolore
+  frenchFlagStripe1: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: '33.33%',
+    backgroundColor: '#0055A4', // Bleu France
+  },
+  frenchFlagStripe2: {
+    position: 'absolute',
+    left: '33.33%',
+    top: 0,
+    bottom: 0,
+    width: '33.33%',
+    backgroundColor: '#FFFFFF', // Blanc France
+  },
+  frenchFlagStripe3: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: '33.33%',
+    backgroundColor: '#EF4135', // Rouge France
+  },
+  // Drapeau japonais
+  japaneseFlagBg: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#FFFFFF', // Fond blanc
+  },
+  japaneseRedCircle: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: 24, // Ajusté pour les nouvelles proportions 80x48
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#BC002D', // Rouge japonais
+    transform: [
+      { translateX: -12 },
+      { translateY: -12 }
+    ],
+  },
+  // Drapeau américain authentique avec rayures
+  americanStripe1: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: Math.floor(48 / 7), // Première rayure rouge
+    backgroundColor: '#B22234',
+  },
+  americanStripe2: {
+    position: 'absolute',
+    top: Math.floor(48 / 7),
+    left: 0,
+    right: 0,
+    height: Math.floor(48 / 7), // Rayure blanche
+    backgroundColor: '#FFFFFF',
+  },
+  americanStripe3: {
+    position: 'absolute',
+    top: Math.floor(48 / 7) * 2,
+    left: 0,
+    right: 0,
+    height: Math.floor(48 / 7), // Rayure rouge
+    backgroundColor: '#B22234',
+  },
+  americanStripe4: {
+    position: 'absolute',
+    top: Math.floor(48 / 7) * 3,
+    left: 0,
+    right: 0,
+    height: Math.floor(48 / 7), // Rayure blanche
+    backgroundColor: '#FFFFFF',
+  },
+  americanStripe5: {
+    position: 'absolute',
+    top: Math.floor(48 / 7) * 4,
+    left: 0,
+    right: 0,
+    height: Math.floor(48 / 7), // Rayure rouge
+    backgroundColor: '#B22234',
+  },
+  americanStripe6: {
+    position: 'absolute',
+    top: Math.floor(48 / 7) * 5,
+    left: 0,
+    right: 0,
+    height: Math.floor(48 / 7), // Rayure blanche
+    backgroundColor: '#FFFFFF',
+  },
+  americanStripe7: {
+    position: 'absolute',
+    top: Math.floor(48 / 7) * 6,
+    left: 0,
+    right: 0,
+    height: 48 - Math.floor(48 / 7) * 6, // Dernière rayure rouge (ajustée)
+    backgroundColor: '#B22234',
+  },
+  americanCanton: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: 19, // 40% de 48px pour format carré
+    height: 29, // 60% de 48px
+    backgroundColor: '#3C3B6E', // Bleu américain
+    // Effet étoiles simulé avec des points
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
+    borderStyle: 'dotted',
+  },
+
+  // Styles pour la recherche
+  searchBarContainer: {
+    padding: 16,
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  searchInput: {
+    flex: 1,
+    color: COLORS.text.primary,
+    fontSize: 16,
+    marginLeft: 12,
+  },
+  clearSearchButton: {
+    padding: 4,
+  },
+  clearSearchText: {
+    color: COLORS.text.secondary,
+    fontSize: 18,
+  },
+  loadingSearchContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 64,
+  },
+  searchResultsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+  },
+  emptySearchContainer: {
+    padding: 32,
+    alignItems: 'center',
+  },
+  emptySearchText: {
+    color: COLORS.text.secondary,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  animeCard: {
+    width: (width - 48) / 2,
+    minHeight: 200,
+    height: 'auto',
+    marginBottom: 16,
+    borderRadius: 12,
+    backgroundColor: `${COLORS.primary}cc`,
+    overflow: 'hidden',
+  },
+  cardImageContainer: {
+    position: 'relative',
+    height: 160,
+  },
+  cardImage: {
+    width: '100%',
+    height: '100%',
+  },
+  cardGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 40,
+  },
+  cardContent: {
+    padding: 12,
+    flex: 1,
+  },
+  cardTitle: {
+    ...textStyles.cardTitle,
+    fontSize: 14,
+    marginBottom: 8,
+  },
+  cardMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  languageBadge: {
+    backgroundColor: COLORS.secondary,
+    borderRadius: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    marginRight: 4,
+  },
+  languageTextSearch: {
+    color: COLORS.text.primary,
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  contentBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    zIndex: 1,
+  },
+  mangaBadge: {
+    backgroundColor: COLORS.badges.manga,
+  },
+  movieBadge: {
+    backgroundColor: COLORS.badges.film,
+  },
+  animeBadge: {
+    backgroundColor: COLORS.badges.anime,
+  },
+  badgeText: {
+    color: COLORS.text.primary,
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+
+});
+
   // États pour le tracking de visionnage
   const [watchStartTime, setWatchStartTime] = useState<Date | null>(null);
   const [totalWatchTime, setTotalWatchTime] = useState(0);
@@ -929,685 +1608,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     );
   }
 
-
-  // Styles
-  const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.primary,
-  },
-  headerContainer: {
-    position: 'relative',
-    zIndex: 10,
-    backgroundColor: COLORS.primary,
-  },
-  bannerContainer: {
-    position: 'relative',
-    height: 200, // Équivalent à h-48 (192px) ou h-56 (224px)
-    overflow: 'hidden',
-  },
-  bannerImage: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: '100%',
-    height: '100%',
-  },
-  bannerOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: COLORS.primary + '99', // Équivalent à bg-black/60
-  },
-  bannerContent: {
-    position: 'absolute',
-    bottom: 16,
-    left: 16,
-    right: 16,
-  },
-  bannerTitle: {
-    fontSize: 24, // Équivalent à text-2xl
-    fontWeight: 'bold',
-    ...textStyles.heroTitle,
-    marginBottom: 4,
-  },
-  bannerSeason: {
-    fontSize: 18, // Équivalent à text-lg
-    color: COLORS.text.secondary,
-    textTransform: 'uppercase',
-  },
-  scrollContainer: {
-    flex: 1,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    color: COLORS.text.muted,
-    marginTop: 16,
-    fontSize: 16,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 32,
-  },
-  errorText: {
-    color: COLORS.text.error,
-    fontSize: 18,
-    textAlign: 'center',
-    marginTop: 16,
-    marginBottom: 24,
-  },
-  retryButton: {
-    backgroundColor: COLORS.secondary,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  retryButtonText: {
-    color: COLORS.text.primary,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  languageSelector: {
-    flexDirection: 'row',
-    padding: 16,
-    justifyContent: 'flex-start',
-    gap: 16,
-  },
-  languageButton: {
-    width: 48, // Bouton carré 48x48 comme spécifié
-    height: 48,
-    borderRadius: 8,
-    backgroundColor: COLORS.primary,
-    borderWidth: 2,
-    borderColor: COLORS.secondary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    overflow: 'hidden',
-    opacity: 0.5, // 50% d'opacité par défaut
-  },
-  languageButtonActive: {
-    opacity: 1, // 100% d'opacité quand actif
-    // Suppression des changements de couleur et effets
-  },
-  languageFlag: {
-    position: 'absolute',
-    fontSize: 40,
-    opacity: 1,
-    zIndex: 1,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    textAlign: 'center',
-    lineHeight: 44,
-  },
-  languageTextPicker: {
-    color: COLORS.text.primary,
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    zIndex: 2,
-    position: 'relative',
-    textShadowColor: 'rgba(0, 0, 0, 0.9)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  languageTextActive: {
-    // Accent stratégique pour langue active
-    color: COLORS.states.active, // Cyan éclatant pour état actif
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    zIndex: 2,
-    position: 'relative',
-    textShadowColor: 'rgba(0, 0, 0, 0.9)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: COLORS.states.active, // Bordure cyan pour accent
-    overflow: 'hidden',
-  },
-
-  episodeControls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.primary,
-  },
-  navButton: {
-    width: 44,
-    height: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.primary,
-    borderRadius: 22,
-  },
-  episodeInfo: {
-    flex: 1,
-    marginHorizontal: 16,
-    alignItems: 'center',
-  },
-  episodeTitle: {
-    color: COLORS.text.primary,
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  episodeNumber: {
-    color: COLORS.secondary,
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginTop: 4,
-  },
-  videoContainer: {
-    height: (width * 9) / 16, // Aspect ratio 16:9
-    backgroundColor: COLORS.primary,
-    position: 'relative',
-  },
-  webView: {
-    flex: 1,
-  },
-  loadingOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  dropdownContainer: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.primary,
-  },
-  dropdownLabel: {
-    color: COLORS.text.primary,
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  pickerContainer: {
-    backgroundColor: COLORS.primary,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: COLORS.secondary,
-    height: 56,
-    justifyContent: 'center',
-    overflow: 'hidden',
-    elevation: 4,
-    shadowColor: COLORS.secondary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    flex: 1,
-  },
-  picker: {
-    color: COLORS.text.primary,
-    backgroundColor: 'transparent',
-    fontSize: 16,
-    fontWeight: 'bold',
-    height: 56,
-    marginVertical: 0,
-    paddingHorizontal: 16,
-    marginLeft: -8,
-    marginRight: -8,
-  },
-  selectorsGrid: {
-    flexDirection: 'row',
-    gap: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-  },
-  videoPlayerWrapper: {
-    borderRadius: 8,
-    overflow: 'hidden',
-    borderWidth: 2,
-    borderColor: COLORS.secondary,
-    marginHorizontal: 16,
-    marginVertical: 8,
-  },
-
-  lastSelectionContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  lastSelectionText: {
-    color: COLORS.text.secondary,
-    fontSize: 14,
-  },
-  lastSelectionValue: {
-    color: COLORS.text.primary,
-  },
-  lastSelectionLabel: {
-    color: COLORS.accent,
-    fontWeight: 'bold',
-  },
-  atomicMessageContainer: {
-    marginHorizontal: 16,
-    marginVertical: 8,
-    padding: 16,
-    backgroundColor: 'rgba(255, 107, 157, 0.1)',
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: COLORS.accent,
-    alignItems: 'center',
-  },
-  atomicMessageBold: {
-    fontWeight: 'bold',
-    color: COLORS.accent,
-  },
-  atomicMessageText: {
-    color: COLORS.text.secondary,
-    fontSize: 14,
-    textAlign: 'center',
-  },
-  atomicMessageSubtext: {
-    color: COLORS.text.secondary,
-    fontSize: 14,
-    textAlign: 'center',
-    marginTop: 4,
-    fontStyle: 'italic',
-  },
-
-  errorMessage: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    margin: 16,
-    borderRadius: 8,
-    backgroundColor: `${COLORS.error}33`,
-    gap: 12,
-  },
-  errorMessageText: {
-    flex: 1,
-    color: COLORS.text.primary,
-    fontSize: 14,
-  },
-
-  // Styles pour la navigation et le téléchargement
-  navigationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    marginVertical: 12,
-  },
-  navButtonCustom: {
-    width: 56,
-    height: 56,
-    borderRadius: 8,
-    backgroundColor: COLORS.primary,
-    borderWidth: 2,
-    borderColor: COLORS.accent,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 4,
-    shadowColor: COLORS.accent,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
-  downloadButtonCustom: {
-    width: 56,
-    height: 56,
-    borderRadius: 8,
-    backgroundColor: COLORS.secondary,
-    borderWidth: 2,
-    borderColor: COLORS.secondary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 4,
-    shadowColor: COLORS.secondary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
-  },
-  customNavButton: {
-    backgroundColor: COLORS.primary,
-    padding: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    minWidth: 56,
-    minHeight: 56,
-    borderWidth: 1,
-    borderColor: COLORS.secondary,
-  },
-  navButtonDisabled: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.text.muted,
-    opacity: 0.5,
-  },
-  downloadContainer: {
-    position: 'relative',
-    alignItems: 'center',
-  },
-  downloadButton: {
-    backgroundColor: COLORS.accent,
-    padding: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    minWidth: 56,
-    minHeight: 56,
-    borderWidth: 1,
-    borderColor: COLORS.secondary,
-  },
-  downloadMenu: {
-    position: 'absolute',
-    top: 55,
-    backgroundColor: COLORS.primary,
-    borderRadius: 8,
-    minWidth: 200,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    zIndex: 1000,
-  },
-  downloadMenuHeader: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#475569',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  downloadMenuTitle: {
-    color: COLORS.text.primary,
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  downloadMenuContent: {
-    paddingVertical: 8,
-  },
-  downloadMenuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  qualityIndicator: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    marginRight: 12,
-  },
-  downloadMenuText: {
-    color: COLORS.text.primary,
-    fontSize: 14,
-  },
-  flagBackground: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: 48, // Dimensions exactes du bouton carré 48x48
-    height: 48,
-    opacity: 0.6,
-  },
-  // Drapeau français tricolore
-  frenchFlagStripe1: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    bottom: 0,
-    width: '33.33%',
-    backgroundColor: '#0055A4', // Bleu France
-  },
-  frenchFlagStripe2: {
-    position: 'absolute',
-    left: '33.33%',
-    top: 0,
-    bottom: 0,
-    width: '33.33%',
-    backgroundColor: '#FFFFFF', // Blanc France
-  },
-  frenchFlagStripe3: {
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    bottom: 0,
-    width: '33.33%',
-    backgroundColor: '#EF4135', // Rouge France
-  },
-  // Drapeau japonais
-  japaneseFlagBg: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#FFFFFF', // Fond blanc
-  },
-  japaneseRedCircle: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: 24, // Ajusté pour les nouvelles proportions 80x48
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#BC002D', // Rouge japonais
-    transform: [
-      { translateX: -12 },
-      { translateY: -12 }
-    ],
-  },
-  // Drapeau américain authentique avec rayures
-  americanStripe1: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: Math.floor(48 / 7), // Première rayure rouge
-    backgroundColor: '#B22234',
-  },
-  americanStripe2: {
-    position: 'absolute',
-    top: Math.floor(48 / 7),
-    left: 0,
-    right: 0,
-    height: Math.floor(48 / 7), // Rayure blanche
-    backgroundColor: '#FFFFFF',
-  },
-  americanStripe3: {
-    position: 'absolute',
-    top: Math.floor(48 / 7) * 2,
-    left: 0,
-    right: 0,
-    height: Math.floor(48 / 7), // Rayure rouge
-    backgroundColor: '#B22234',
-  },
-  americanStripe4: {
-    position: 'absolute',
-    top: Math.floor(48 / 7) * 3,
-    left: 0,
-    right: 0,
-    height: Math.floor(48 / 7), // Rayure blanche
-    backgroundColor: '#FFFFFF',
-  },
-  americanStripe5: {
-    position: 'absolute',
-    top: Math.floor(48 / 7) * 4,
-    left: 0,
-    right: 0,
-    height: Math.floor(48 / 7), // Rayure rouge
-    backgroundColor: '#B22234',
-  },
-  americanStripe6: {
-    position: 'absolute',
-    top: Math.floor(48 / 7) * 5,
-    left: 0,
-    right: 0,
-    height: Math.floor(48 / 7), // Rayure blanche
-    backgroundColor: '#FFFFFF',
-  },
-  americanStripe7: {
-    position: 'absolute',
-    top: Math.floor(48 / 7) * 6,
-    left: 0,
-    right: 0,
-    height: 48 - Math.floor(48 / 7) * 6, // Dernière rayure rouge (ajustée)
-    backgroundColor: '#B22234',
-  },
-  americanCanton: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: 19, // 40% de 48px pour format carré
-    height: 29, // 60% de 48px
-    backgroundColor: '#3C3B6E', // Bleu américain
-    // Effet étoiles simulé avec des points
-    borderWidth: 1,
-    borderColor: '#FFFFFF',
-    borderStyle: 'dotted',
-  },
-
-  // Styles pour la recherche
-  searchBarContainer: {
-    padding: 16,
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  searchInput: {
-    flex: 1,
-    color: COLORS.text.primary,
-    fontSize: 16,
-    marginLeft: 12,
-  },
-  clearSearchButton: {
-    padding: 4,
-  },
-  clearSearchText: {
-    color: COLORS.text.secondary,
-    fontSize: 18,
-  },
-  loadingSearchContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 64,
-  },
-  searchResultsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-  },
-  emptySearchContainer: {
-    padding: 32,
-    alignItems: 'center',
-  },
-  emptySearchText: {
-    color: COLORS.text.secondary,
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  animeCard: {
-    width: (width - 48) / 2,
-    minHeight: 200,
-    height: 'auto',
-    marginBottom: 16,
-    borderRadius: 12,
-    backgroundColor: `${COLORS.primary}cc`,
-    overflow: 'hidden',
-  },
-  cardImageContainer: {
-    position: 'relative',
-    height: 160,
-  },
-  cardImage: {
-    width: '100%',
-    height: '100%',
-  },
-  cardGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 40,
-  },
-  cardContent: {
-    padding: 12,
-    flex: 1,
-  },
-  cardTitle: {
-    ...textStyles.cardTitle,
-    fontSize: 14,
-    marginBottom: 8,
-  },
-  cardMeta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-  },
-  languageBadge: {
-    backgroundColor: COLORS.secondary,
-    borderRadius: 8,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    marginRight: 4,
-  },
-  languageTextSearch: {
-    color: COLORS.text.primary,
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-  contentBadge: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    zIndex: 1,
-  },
-  mangaBadge: {
-    backgroundColor: COLORS.badges.manga,
-  },
-  movieBadge: {
-    backgroundColor: COLORS.badges.film,
-  },
-  animeBadge: {
-    backgroundColor: COLORS.badges.anime,
-  },
-  badgeText: {
-    color: COLORS.text.primary,
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-
-});
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={COLORS.primary} />

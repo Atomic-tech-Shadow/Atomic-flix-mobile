@@ -127,289 +127,6 @@ const AnimeDetailScreen: React.FC = () => {
   const COLORS = colors;
   const textStyles = getThemedTextStyles(isDark);
 
-  // Charger les données de l'anime (exactement comme le code web)
-  const loadAnimeData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      // Extraire l'ID de l'anime depuis l'URL exactement comme dans le code web
-      const animeId = animeUrl.split('/').pop() || animeUrl;
-
-      
-      // Appeler directement animeAPI.getDetails comme dans le code web
-      const apiResponse = await animeAPI.getDetails(animeId);
-      
-      if (!apiResponse || !apiResponse.success) {
-        const errorMsg = apiResponse?.error || apiResponse?.message || 'Anime non trouvé dans la base de données';
-        throw new Error(errorMsg);
-      }
-      
-      setAnimeData(apiResponse.data);
-      
-    } catch (err) {
-
-      const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue';
-      
-      if (errorMessage.includes('Timeout') || errorMessage.includes('timeout')) {
-        setError('Le serveur met trop de temps à répondre. Cet anime pourrait nécessiter plus de temps de traitement.');
-      } else if (errorMessage.includes('500')) {
-        setError('Erreur temporaire du serveur. Veuillez réessayer.');
-      } else if (errorMessage.includes('404') || errorMessage.includes('non trouvé')) {
-        setError('Cet anime n\'a pas été trouvé. Vérifiez l\'orthographe ou essayez un autre anime.');
-      } else {
-        setError(`Impossible de charger l'anime: ${errorMessage}`);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Navigation vers la page de lecteur appropriée (identique au site web)
-  const goToPlayer = async (season: Season) => {
-    if (!animeUrl || !animeData) return;
-    
-    
-    // Vérifier si c'est un manga/scan basé sur le nom de la saison
-    const isManga = season.name.toLowerCase().includes('scan') || 
-                   season.name.toLowerCase().includes('manga') ||
-                   season.name.toLowerCase().includes('tome') ||
-                   season.name.toLowerCase().includes('chapitre');
-    
-    if (isManga) {
-      // Rediriger vers le lecteur de manga
-      navigation.navigate('MangaReader', {
-        mangaUrl: animeUrl,
-        mangaTitle: animeTitle
-      });
-    } else {
-      // Rediriger vers le lecteur vidéo
-      navigation.navigate('AnimePlayer', {
-        animeUrl: animeUrl,
-        seasonData: season,
-        animeTitle: animeTitle
-      });
-    }
-  };
-
-  // Charger les données au démarrage
-  useEffect(() => {
-    if (animeUrl) {
-      loadAnimeData();
-    }
-  }, [animeUrl]);
-
-  // Refresh control
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await loadAnimeData();
-    setRefreshing(false);
-  };
-
-  // Retry function
-  const retryLoad = () => {
-    loadAnimeData();
-  };
-
-  // Recherche d'animes (copié depuis HomeScreen)
-  const searchAnimes = async (query: string) => {
-    if (query.trim().length < 2) {
-      setSearchResults([]);
-      return;
-    }
-
-    setSearchLoading(true);
-
-    try {
-      const response = await apiRequest(`/api/search?query=${encodeURIComponent(query)}`);
-
-      if (response && response.success) {
-        const results = response.animes || response.results || [];
-        if (Array.isArray(results)) {
-          setSearchResults(results);
-        } else {
-          setSearchResults([]);
-        }
-      } else {
-        throw new Error('Réponse API invalide');
-      }
-    } catch (err) {
-      console.error('Erreur recherche:', err);
-      setSearchResults([]);
-    } finally {
-      setSearchLoading(false);
-    }
-  };
-
-  // Navigation vers un anime depuis les résultats de recherche
-  const loadAnimeDetails = async (animeId: string, contentType?: string) => {
-    if (!animeId || animeId === 'undefined') {
-      return;
-    }
-    
-    let cleanId = animeId;
-    if (animeId.includes('anime-sama.fr')) {
-      const urlParts = animeId.split('/');
-      const catalogueIndex = urlParts.findIndex(part => part === 'catalogue');
-      if (catalogueIndex !== -1 && urlParts[catalogueIndex + 1]) {
-        cleanId = urlParts[catalogueIndex + 1];
-      }
-    }
-    
-    if (contentType === 'manga') {
-      navigation.navigate('MangaReader', { mangaUrl: cleanId, mangaTitle: 'Manga' });
-    } else {
-      navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: 'Anime' });
-    }
-  };
-
-  // Gestionnaire pour l'icône de recherche
-  const handleSearchPress = () => {
-    setShowSearchBar(true);
-    setSearchQuery('');
-    setSearchResults([]);
-  };
-
-  // Effet pour la recherche en temps réel
-  useEffect(() => {
-    if (searchQuery) {
-      const timeoutId = setTimeout(() => {
-        searchAnimes(searchQuery);
-      }, 300);
-      return () => clearTimeout(timeoutId);
-    } else {
-      setSearchResults([]);
-      return undefined;
-    }
-  }, [searchQuery]);
-
-  // Fonction pour extraire la langue depuis l'objet language de l'API
-  const getLanguageFromAPI = (anime: SearchResult) => {
-    if (anime.language && anime.language.name) {
-      return anime.language.name;
-    }
-    return null;
-  };
-
-  // Composant Carte Anime pour les résultats de recherche
-  const renderAnimeCard = React.useCallback((anime: SearchResult, index: number) => {
-    const detectedLanguage = getLanguageFromAPI(anime);
-    const realTitle = anime.title;
-    
-    return (
-      <TouchableOpacity
-        key={anime.id || index}
-        style={styles.animeCard}
-        onPress={() => loadAnimeDetails(anime.id, anime.contentType || anime.type)}
-        activeOpacity={0.8}
-      >
-        <View style={styles.cardImageContainer}>
-          <Image
-            source={{ uri: anime.image }}
-            style={styles.cardImage}
-            resizeMode="cover"
-            fadeDuration={200}
-            onError={(e) => {}}
-          />
-
-          <View style={[
-            styles.contentBadge,
-            anime.contentType === 'manga' ? styles.mangaBadge :
-            anime.contentType === 'film' || anime.contentType === 'movie' ? styles.movieBadge :
-            styles.animeBadgeDetail
-          ]}>
-            <Text style={styles.badgeText}>
-              {anime.contentType === 'manga' ? 'MANGA' :
-               anime.contentType === 'film' || anime.contentType === 'movie' ? 'FILM' :
-               'ANIME'}
-            </Text>
-          </View>
-
-          <LinearGradient
-            colors={['transparent', COLORS.primary]}
-            style={styles.cardGradient}
-          />
-        </View>
-
-        <View style={styles.cardContent}>
-          <Text style={styles.cardTitle} numberOfLines={3}>
-            {realTitle}
-          </Text>
-          <View style={styles.cardMeta}>
-            {detectedLanguage && (
-              <View style={styles.languageBadge}>
-                <Text style={styles.languageText}>{detectedLanguage}</Text>
-              </View>
-            )}
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  }, []);
-
-
-
-  // État de chargement
-  if (loading && !animeData) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
-        <SharedHeader 
-          onSearchPress={handleSearchPress}
-          onNotificationPress={() => setShowNotifications(true)}
-          onMenuPress={() => navigation.openDrawer()}
-        />
-        <View style={styles.loadingContainer}>
-          <LoadingSpinner 
-            message="Chargement des détails de l'anime..." 
-            size="large"
-            color={COLORS.secondary}
-          />
-        </View>
-      </SafeAreaView>
-    );
-  }
-
-  // État d'erreur
-  if (error && !animeData) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
-        <SharedHeader 
-          onSearchPress={handleSearchPress}
-          onNotificationPress={() => setShowNotifications(true)}
-          onMenuPress={() => navigation.openDrawer()}
-        />
-        <View style={styles.errorContainer}>
-          <Ionicons name="alert-circle" size={48} color={COLORS.text.error} />
-          <Text style={styles.errorText}>{error}</Text>
-          <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
-            <Text style={styles.retryText}>Réessayer</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-    );
-  }
-
-  // Anime non trouvé
-  if (!animeData) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
-        <SharedHeader 
-          onSearchPress={handleSearchPress}
-          onNotificationPress={() => setShowNotifications(true)}
-          onMenuPress={() => navigation.openDrawer()}
-        />
-        <View style={styles.errorContainer}>
-          <Ionicons name="search" size={48} color={COLORS.text.muted} />
-          <Text style={styles.errorText}>Anime non trouvé</Text>
-        </View>
-      </SafeAreaView>
-    );
-  }
-
-
   // Styles
   const styles = StyleSheet.create({
   container: {
@@ -852,6 +569,289 @@ const AnimeDetailScreen: React.FC = () => {
     fontWeight: 'bold',
   },
 });
+
+  // Charger les données de l'anime (exactement comme le code web)
+  const loadAnimeData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Extraire l'ID de l'anime depuis l'URL exactement comme dans le code web
+      const animeId = animeUrl.split('/').pop() || animeUrl;
+
+      
+      // Appeler directement animeAPI.getDetails comme dans le code web
+      const apiResponse = await animeAPI.getDetails(animeId);
+      
+      if (!apiResponse || !apiResponse.success) {
+        const errorMsg = apiResponse?.error || apiResponse?.message || 'Anime non trouvé dans la base de données';
+        throw new Error(errorMsg);
+      }
+      
+      setAnimeData(apiResponse.data);
+      
+    } catch (err) {
+
+      const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue';
+      
+      if (errorMessage.includes('Timeout') || errorMessage.includes('timeout')) {
+        setError('Le serveur met trop de temps à répondre. Cet anime pourrait nécessiter plus de temps de traitement.');
+      } else if (errorMessage.includes('500')) {
+        setError('Erreur temporaire du serveur. Veuillez réessayer.');
+      } else if (errorMessage.includes('404') || errorMessage.includes('non trouvé')) {
+        setError('Cet anime n\'a pas été trouvé. Vérifiez l\'orthographe ou essayez un autre anime.');
+      } else {
+        setError(`Impossible de charger l'anime: ${errorMessage}`);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Navigation vers la page de lecteur appropriée (identique au site web)
+  const goToPlayer = async (season: Season) => {
+    if (!animeUrl || !animeData) return;
+    
+    
+    // Vérifier si c'est un manga/scan basé sur le nom de la saison
+    const isManga = season.name.toLowerCase().includes('scan') || 
+                   season.name.toLowerCase().includes('manga') ||
+                   season.name.toLowerCase().includes('tome') ||
+                   season.name.toLowerCase().includes('chapitre');
+    
+    if (isManga) {
+      // Rediriger vers le lecteur de manga
+      navigation.navigate('MangaReader', {
+        mangaUrl: animeUrl,
+        mangaTitle: animeTitle
+      });
+    } else {
+      // Rediriger vers le lecteur vidéo
+      navigation.navigate('AnimePlayer', {
+        animeUrl: animeUrl,
+        seasonData: season,
+        animeTitle: animeTitle
+      });
+    }
+  };
+
+  // Charger les données au démarrage
+  useEffect(() => {
+    if (animeUrl) {
+      loadAnimeData();
+    }
+  }, [animeUrl]);
+
+  // Refresh control
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadAnimeData();
+    setRefreshing(false);
+  };
+
+  // Retry function
+  const retryLoad = () => {
+    loadAnimeData();
+  };
+
+  // Recherche d'animes (copié depuis HomeScreen)
+  const searchAnimes = async (query: string) => {
+    if (query.trim().length < 2) {
+      setSearchResults([]);
+      return;
+    }
+
+    setSearchLoading(true);
+
+    try {
+      const response = await apiRequest(`/api/search?query=${encodeURIComponent(query)}`);
+
+      if (response && response.success) {
+        const results = response.animes || response.results || [];
+        if (Array.isArray(results)) {
+          setSearchResults(results);
+        } else {
+          setSearchResults([]);
+        }
+      } else {
+        throw new Error('Réponse API invalide');
+      }
+    } catch (err) {
+      console.error('Erreur recherche:', err);
+      setSearchResults([]);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  // Navigation vers un anime depuis les résultats de recherche
+  const loadAnimeDetails = async (animeId: string, contentType?: string) => {
+    if (!animeId || animeId === 'undefined') {
+      return;
+    }
+    
+    let cleanId = animeId;
+    if (animeId.includes('anime-sama.fr')) {
+      const urlParts = animeId.split('/');
+      const catalogueIndex = urlParts.findIndex(part => part === 'catalogue');
+      if (catalogueIndex !== -1 && urlParts[catalogueIndex + 1]) {
+        cleanId = urlParts[catalogueIndex + 1];
+      }
+    }
+    
+    if (contentType === 'manga') {
+      navigation.navigate('MangaReader', { mangaUrl: cleanId, mangaTitle: 'Manga' });
+    } else {
+      navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: 'Anime' });
+    }
+  };
+
+  // Gestionnaire pour l'icône de recherche
+  const handleSearchPress = () => {
+    setShowSearchBar(true);
+    setSearchQuery('');
+    setSearchResults([]);
+  };
+
+  // Effet pour la recherche en temps réel
+  useEffect(() => {
+    if (searchQuery) {
+      const timeoutId = setTimeout(() => {
+        searchAnimes(searchQuery);
+      }, 300);
+      return () => clearTimeout(timeoutId);
+    } else {
+      setSearchResults([]);
+      return undefined;
+    }
+  }, [searchQuery]);
+
+  // Fonction pour extraire la langue depuis l'objet language de l'API
+  const getLanguageFromAPI = (anime: SearchResult) => {
+    if (anime.language && anime.language.name) {
+      return anime.language.name;
+    }
+    return null;
+  };
+
+  // Composant Carte Anime pour les résultats de recherche
+  const renderAnimeCard = React.useCallback((anime: SearchResult, index: number) => {
+    const detectedLanguage = getLanguageFromAPI(anime);
+    const realTitle = anime.title;
+    
+    return (
+      <TouchableOpacity
+        key={anime.id || index}
+        style={styles.animeCard}
+        onPress={() => loadAnimeDetails(anime.id, anime.contentType || anime.type)}
+        activeOpacity={0.8}
+      >
+        <View style={styles.cardImageContainer}>
+          <Image
+            source={{ uri: anime.image }}
+            style={styles.cardImage}
+            resizeMode="cover"
+            fadeDuration={200}
+            onError={(e) => {}}
+          />
+
+          <View style={[
+            styles.contentBadge,
+            anime.contentType === 'manga' ? styles.mangaBadge :
+            anime.contentType === 'film' || anime.contentType === 'movie' ? styles.movieBadge :
+            styles.animeBadgeDetail
+          ]}>
+            <Text style={styles.badgeText}>
+              {anime.contentType === 'manga' ? 'MANGA' :
+               anime.contentType === 'film' || anime.contentType === 'movie' ? 'FILM' :
+               'ANIME'}
+            </Text>
+          </View>
+
+          <LinearGradient
+            colors={['transparent', COLORS.primary]}
+            style={styles.cardGradient}
+          />
+        </View>
+
+        <View style={styles.cardContent}>
+          <Text style={styles.cardTitle} numberOfLines={3}>
+            {realTitle}
+          </Text>
+          <View style={styles.cardMeta}>
+            {detectedLanguage && (
+              <View style={styles.languageBadge}>
+                <Text style={styles.languageText}>{detectedLanguage}</Text>
+              </View>
+            )}
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }, []);
+
+
+
+  // État de chargement
+  if (loading && !animeData) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
+        <SharedHeader 
+          onSearchPress={handleSearchPress}
+          onNotificationPress={() => setShowNotifications(true)}
+          onMenuPress={() => navigation.openDrawer()}
+        />
+        <View style={styles.loadingContainer}>
+          <LoadingSpinner 
+            message="Chargement des détails de l'anime..." 
+            size="large"
+            color={COLORS.secondary}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // État d'erreur
+  if (error && !animeData) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
+        <SharedHeader 
+          onSearchPress={handleSearchPress}
+          onNotificationPress={() => setShowNotifications(true)}
+          onMenuPress={() => navigation.openDrawer()}
+        />
+        <View style={styles.errorContainer}>
+          <Ionicons name="alert-circle" size={48} color={COLORS.text.error} />
+          <Text style={styles.errorText}>{error}</Text>
+          <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
+            <Text style={styles.retryText}>Réessayer</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // Anime non trouvé
+  if (!animeData) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
+        <SharedHeader 
+          onSearchPress={handleSearchPress}
+          onNotificationPress={() => setShowNotifications(true)}
+          onMenuPress={() => navigation.openDrawer()}
+        />
+        <View style={styles.errorContainer}>
+          <Ionicons name="search" size={48} color={COLORS.text.muted} />
+          <Text style={styles.errorText}>Anime non trouvé</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
