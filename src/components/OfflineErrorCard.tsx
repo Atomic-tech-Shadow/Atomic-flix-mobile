@@ -18,14 +18,14 @@ const OfflineErrorCard: React.FC<OfflineErrorCardProps> = ({
   icon = 'cloud-offline-outline'
 }) => {
   const { isDark } = useTheme();
-  const COLORS = getThemedColors(isDark);
+  const colors = getThemedColors(isDark);
   
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const bounceAnim = useRef(new Animated.Value(0)).current;
 
   // Styles dynamiques basés sur le thème
-  const styles = useMemo(() => createStyles(COLORS), [COLORS]);
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   useEffect(() => {
     // Animation de fade-in pour le conteneur
@@ -92,7 +92,7 @@ const OfflineErrorCard: React.FC<OfflineErrorCardProps> = ({
           <Ionicons 
             name={icon} 
             size={72} 
-            color={COLORS.secondary} 
+            color={colors.secondary} 
           />
         </Animated.View>
 
@@ -109,7 +109,7 @@ const OfflineErrorCard: React.FC<OfflineErrorCardProps> = ({
             onPress={onRetry}
             activeOpacity={0.8}
           >
-            <Ionicons name="refresh" size={20} color={COLORS.text.primary} style={styles.retryIcon} />
+            <Ionicons name="refresh" size={20} color={colors.text.primary} style={styles.retryIcon} />
             <Text style={styles.retryText}>Réessayer</Text>
           </TouchableOpacity>
         )}
