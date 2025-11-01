@@ -28,6 +28,7 @@
     "@babel/runtime": "^7.27.6",
     "@egjs/hammerjs": "^2.0.17",
     "@expo/config-plugins": "~54.0.1",
+    "@expo/metro-config": "~54.0.2",
     "@expo/metro-runtime": "~6.1.2",
     "@expo/prebuild-config": "~54.0.0",
     "@react-native-async-storage/async-storage": "^2.1.2",
@@ -55,10 +56,10 @@
     "expo-status-bar": "~3.0.8",
     "hoist-non-react-statics": "^3.3.2",
     "memoizee": "^0.4.17",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-freeze": "^1.0.4",
-    "react-native": "0.76.5",
+    "react-native": "^0.81.5",
     "react-native-gesture-handler": "~2.28.0",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "^5.4.0",
@@ -71,12 +72,11 @@
   "devDependencies": {
     "@babel/preset-env": "^7.28.0",
     "@babel/preset-react": "^7.20.0",
-    "@expo/cli": "^0.24.20",
-    "@types/react": "~18.3.12",
-    "metro": "^0.82.0",
-    "metro-config": "^0.82.0",
-    "metro-resolver": "^0.82.0",
-    "typescript": "~5.8.3"
+    "@types/react": "~19.1.10",
+    "metro": "^0.83.3",
+    "metro-config": "^0.83.3",
+    "metro-resolver": "^0.83.3",
+    "typescript": "~5.9.2"
   },
   "expo": {
     "doctor": {
