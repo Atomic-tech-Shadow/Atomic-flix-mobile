@@ -36,6 +36,12 @@ The application adopts a React Native/Expo mobile app architecture emphasizing c
 -   **System Design Choices**:
     -   **Modular Components**: Reusable UI and logic components.
     -   **API Integration**: Strict adherence to specific API endpoints with robust error handling.
+    -   **Error Handling System**: Intelligent error detection and display system that distinguishes between network errors (no internet connection) and server errors (server temporarily unavailable):
+        -   `apiRequestWithRetry` in `src/utils/apiWithRetry.ts`: Automatic retry logic with exponential backoff and error type detection
+        -   `ErrorType`: Type system that categorizes errors as 'network', 'server', or 'unknown'
+        -   `ServerErrorCard`: Displays friendly message "Serveur temporairement indisponible - Notre équipe travaille pour résoudre le problème au plus vite" when server is down
+        -   `OfflineErrorCard`: Displays "Connexion interrompue - Vérifiez votre connexion internet" when user has no internet
+        -   Smart classification: Timeouts and AbortErrors are classified as server errors, while NetworkErrors and Failed fetch are network errors
     -   **Background Processing**: Services for notifications and content updates, using AsyncStorage.
     -   **User Interaction**: `expo-keep-awake` for video, `expo-screen-orientation` for dynamic orientation, and `SafeAreaView` for consistent UI.
     -   **Search Functionality**: Global search modal with caching, debouncing, and automatic navigation.
