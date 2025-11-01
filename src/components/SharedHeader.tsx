@@ -6,7 +6,7 @@ import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
-import { COLORS } from '../constants/newColors';
+import { COLORS, getThemedColors } from '../constants/newColors';
 import { NotificationBadge } from './NotificationBadge';
 import { useNotifications } from '../hooks/useNotifications';
 import { useTheme } from '../contexts/ThemeContext';
@@ -27,6 +27,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   const navigation = useNavigation<NavigationProp>();
   const { unreadCount } = useNotifications();
   const { isDark, toggleTheme } = useTheme();
+  const themedColors = getThemedColors(isDark);
 
   const handleSearchPress = () => {
     // Si un onSearchPress spécifique est fourni (comme dans HomeScreen), l'utiliser
@@ -39,8 +40,9 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
   // Utiliser la version d'app.json via Constants Expo
   const appVersion = Constants.expoConfig?.version || '1.0.0';
 
-  const headerBgColor = isDark ? COLORS.primary : '#FFFFFF';
-  const iconColor = isDark ? COLORS.text.primary : '#000000';
+  const headerBgColor = themedColors.primary;
+  const iconColor = themedColors.text.primary;
+  const titleGradientColors = [themedColors.secondary, themedColors.primary, themedColors.accent] as const;
 
   return (
     <View style={[styles.mobileHeader, { backgroundColor: headerBgColor }]}>
@@ -56,12 +58,12 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
         {/* Texte à côté du menu, style WhatsApp */}
         <View style={styles.titleSection}>
           <LinearGradient
-            colors={[COLORS.secondary, COLORS.primary, COLORS.accent]}
+            colors={titleGradientColors}
             start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
             style={styles.titleTextGradient}
           >
-            <Text style={styles.titleText} numberOfLines={1}>ATOMIC FLIX</Text>
+            <Text style={[styles.titleText, { color: themedColors.text.primary }]} numberOfLines={1}>ATOMIC FLIX</Text>
           </LinearGradient>
         </View>
 
