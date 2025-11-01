@@ -1,12 +1,12 @@
 {
   "expo": {
     "name": "Atomic Flix",
-    "slug": "comatomicflix", 
+    "slug": "atomic-flix", 
     "version": "1.0.1",
     "orientation": "portrait",
     "extra": {
       "eas": {
-        "projectId": "da51d40c-3616-40a7-8748-922a59085fff"
+        "projectId": "b87dc272-b220-4dcf-8e9b-45b7ca648227"
       }
     },
     "icon": "./assets/atomic-flix-logo-new.png",
