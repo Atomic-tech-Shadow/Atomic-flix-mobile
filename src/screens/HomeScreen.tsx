@@ -36,6 +36,7 @@ import { historyService, WatchHistoryItem } from '../services/HistoryService';
 import { getLanguageBadgeText } from '../utils/languageUtils';
 import NetworkStatusBanner from '../components/NetworkStatusBanner';
 import { apiGetWithCache } from '../utils/apiWithRetry';
+import OfflineErrorCard from '../components/OfflineErrorCard';
 
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -2045,15 +2046,9 @@ const HomeScreen: React.FC = () => {
 
             {/* Message vide si pas de contenu et pas de chargement */}
             {!initialLoading && !error && classiquesAnimes.length === 0 && pepitesAnimes.length === 0 && (
-              <View style={styles.emptyContainer}>
-                <Text style={styles.emptyText}>Aucun contenu trouvé</Text>
-                <TouchableOpacity 
-                  onPress={() => loadPopularAnimes()}
-                  style={styles.retryButton}
-                >
-                  <Text style={styles.retryText}>Charger le contenu</Text>
-                </TouchableOpacity>
-              </View>
+              <OfflineErrorCard 
+                onRetry={() => loadPopularAnimes()}
+              />
             )}
           </View>
         )}
