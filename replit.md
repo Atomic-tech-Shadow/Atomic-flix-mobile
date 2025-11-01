@@ -4,6 +4,16 @@
 
 ATOMIC FLIX is a React Native mobile application built with Expo, designed for streaming anime and reading manga. Its primary purpose is to provide a seamless and feature-rich experience for anime and manga enthusiasts, offering intuitive navigation, robust media playback, and a consistent user interface across mobile platforms, primarily Android. The project aims to be a comprehensive and engaging platform for otakus, featuring real-time trending content, personalized planning for new releases, and intelligent notification systems.
 
+## Recent Changes
+
+### November 1, 2025 - Migration vers Expo SDK 54
+-   **Mise à jour majeure**: Migration de React Native et React vers des versions compatibles avec Expo SDK 54.0.21
+    -   React: 19.1.0 (version exacte requise)
+    -   React Native: 0.81.5 (compatible avec Expo SDK 54)
+    -   Résolution du problème `ReactNativeApplicationEntryPoint` qui causait l'échec des builds Android
+-   **Nettoyage des dépendances**: Suppression de `@expo/cli` dans devDependencies pour éviter les conflits de versions
+-   **Validation**: Tous les 15 checks expo doctor passent avec succès
+
 ## User Preferences
 
 -   **Communication style**: Simple, everyday language (français)
@@ -18,7 +28,7 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
 
 The application adopts a React Native/Expo mobile app architecture emphasizing clean code, performance, and user experience.
 
--   **Mobile Framework**: React Native with Expo SDK ~53.0.19, focused on Android compatibility.
+-   **Mobile Framework**: React Native 0.81.5 with Expo SDK 54.0.21, focused on Android compatibility.
 -   **Navigation**: React Navigation for stack-based navigation.
 -   **State Management**: TanStack React Query for efficient API state management.
 -   **Language**: Full TypeScript support with strict configuration.
