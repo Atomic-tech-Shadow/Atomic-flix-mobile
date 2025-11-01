@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../constants/newColors';
+import { getThemedColors } from '../constants/newColors';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface OfflineErrorCardProps {
   onRetry?: () => void;
@@ -16,9 +17,15 @@ const OfflineErrorCard: React.FC<OfflineErrorCardProps> = ({
   subtitle = 'Vérifiez votre connexion internet et réessayez',
   icon = 'cloud-offline-outline'
 }) => {
+  const { isDark } = useTheme();
+  const COLORS = getThemedColors(isDark);
+  
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const bounceAnim = useRef(new Animated.Value(0)).current;
+
+  // Styles dynamiques basés sur le thème
+  const styles = useMemo(() => createStyles(COLORS), [COLORS]);
 
   useEffect(() => {
     // Animation de fade-in pour le conteneur
@@ -118,7 +125,7 @@ const OfflineErrorCard: React.FC<OfflineErrorCardProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (COLORS: ReturnType<typeof getThemedColors>) => StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -153,8 +160,8 @@ const styles = StyleSheet.create({
   message: {
     color: COLORS.text.primary,
     fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: 'bold' as 'bold',
+    textAlign: 'center' as 'center',
     marginBottom: 12,
     textShadowColor: COLORS.secondary,
     textShadowOffset: { width: 0, height: 0 },
@@ -163,14 +170,14 @@ const styles = StyleSheet.create({
   subtitle: {
     color: COLORS.text.muted,
     fontSize: 14,
-    textAlign: 'center',
+    textAlign: 'center' as 'center',
     marginBottom: 32,
     paddingHorizontal: 16,
     lineHeight: 20,
   },
   retryButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'row' as 'row',
+    alignItems: 'center' as 'center',
     backgroundColor: COLORS.secondary,
     paddingHorizontal: 32,
     paddingVertical: 14,
@@ -189,18 +196,18 @@ const styles = StyleSheet.create({
   retryText: {
     color: COLORS.text.primary,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: 'bold' as 'bold',
   },
   particlesContainer: {
-    position: 'absolute',
+    position: 'absolute' as 'absolute',
     width: 300,
     height: 300,
     top: -50,
     left: -50,
-    pointerEvents: 'none',
+    pointerEvents: 'none' as 'none',
   },
   particle: {
-    position: 'absolute',
+    position: 'absolute' as 'absolute',
     borderRadius: 50,
     backgroundColor: COLORS.accent,
   },
