@@ -1,0 +1,228 @@
+import React, { useEffect, useRef, useMemo } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { getThemedColors } from '../constants/newColors';
+import { useTheme } from '../contexts/ThemeContext';
+
+interface ServerErrorCardProps {
+  onRetry?: () => void;
+  message?: string;
+  subtitle?: string;
+}
+
+const ServerErrorCard: React.FC<ServerErrorCardProps> = ({ 
+  onRetry,
+  message = 'Serveur temporairement indisponible',
+  subtitle = 'Notre équipe travaille pour résoudre le problème au plus vite'
+}) => {
+  const { isDark } = useTheme();
+  const colors = getThemedColors(isDark);
+  
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const bounceAnim = useRef(new Animated.Value(0)).current;
+
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 600,
+      useNativeDriver: true,
+    }).start();
+
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.2,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(bounceAnim, {
+          toValue: -8,
+          duration: 1200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(bounceAnim, {
+          toValue: 0,
+          duration: 1200,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, [fadeAnim, pulseAnim, bounceAnim]);
+
+  return (
+    <Animated.View 
+      style={[
+        styles.container,
+        { opacity: fadeAnim }
+      ]}
+    >
+      <View style={styles.content}>
+        <Animated.View 
+          style={[
+            styles.iconContainer,
+            {
+              transform: [
+                { scale: pulseAnim },
+                { translateY: bounceAnim }
+              ]
+            }
+          ]}
+        >
+          <View style={styles.iconGlow} />
+          <Ionicons 
+            name="server-outline" 
+            size={72} 
+            color={colors.accent} 
+          />
+        </Animated.View>
+
+        <Text style={styles.message}>{message}</Text>
+        
+        <Text style={styles.subtitle}>{subtitle}</Text>
+
+        {onRetry && (
+          <TouchableOpacity 
+            style={styles.retryButton}
+            onPress={onRetry}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="refresh" size={20} color={colors.text.primary} style={styles.retryIcon} />
+            <Text style={styles.retryText}>Réessayer</Text>
+          </TouchableOpacity>
+        )}
+
+        <View style={styles.particlesContainer}>
+          <View style={[styles.particle, styles.particle1]} />
+          <View style={[styles.particle, styles.particle2]} />
+          <View style={[styles.particle, styles.particle3]} />
+        </View>
+      </View>
+    </Animated.View>
+  );
+};
+
+const createStyles = (COLORS: ReturnType<typeof getThemedColors>) => StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 32,
+    minHeight: 400,
+  },
+  content: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  iconContainer: {
+    position: 'relative',
+    marginBottom: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconGlow: {
+    position: 'absolute',
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: COLORS.accent,
+    opacity: 0.15,
+    shadowColor: COLORS.accent,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
+    elevation: 10,
+  },
+  message: {
+    color: COLORS.text.primary,
+    fontSize: 20,
+    fontWeight: 'bold' as 'bold',
+    textAlign: 'center' as 'center',
+    marginBottom: 12,
+    textShadowColor: COLORS.accent,
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
+  },
+  subtitle: {
+    color: COLORS.text.muted,
+    fontSize: 14,
+    textAlign: 'center' as 'center',
+    marginBottom: 32,
+    paddingHorizontal: 16,
+    lineHeight: 20,
+  },
+  retryButton: {
+    flexDirection: 'row' as 'row',
+    alignItems: 'center' as 'center',
+    backgroundColor: COLORS.accent,
+    paddingHorizontal: 32,
+    paddingVertical: 14,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: COLORS.border.focus,
+    shadowColor: COLORS.accent,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.7,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  retryIcon: {
+    marginRight: 8,
+  },
+  retryText: {
+    color: COLORS.text.primary,
+    fontSize: 16,
+    fontWeight: 'bold' as 'bold',
+  },
+  particlesContainer: {
+    position: 'absolute' as 'absolute',
+    width: 300,
+    height: 300,
+    top: -50,
+    left: -50,
+    pointerEvents: 'none' as 'none',
+  },
+  particle: {
+    position: 'absolute' as 'absolute',
+    borderRadius: 50,
+    backgroundColor: COLORS.accent,
+  },
+  particle1: {
+    width: 4,
+    height: 4,
+    top: 20,
+    left: 40,
+    opacity: 0.3,
+  },
+  particle2: {
+    width: 6,
+    height: 6,
+    top: 80,
+    right: 60,
+    opacity: 0.2,
+    backgroundColor: COLORS.secondary,
+  },
+  particle3: {
+    width: 3,
+    height: 3,
+    bottom: 40,
+    left: 100,
+    opacity: 0.25,
+    backgroundColor: COLORS.text.atomic,
+  },
+});
+
+export default ServerErrorCard;

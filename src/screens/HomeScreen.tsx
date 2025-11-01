@@ -35,8 +35,9 @@ import { PushNotification } from '../types/notifications';
 import { historyService, WatchHistoryItem } from '../services/HistoryService';
 import { getLanguageBadgeText } from '../utils/languageUtils';
 import NetworkStatusBanner from '../components/NetworkStatusBanner';
-import { apiGetWithCache } from '../utils/apiWithRetry';
+import { apiGetWithCache, apiRequestWithRetry, ErrorType } from '../utils/apiWithRetry';
 import OfflineErrorCard from '../components/OfflineErrorCard';
+import ServerErrorCard from '../components/ServerErrorCard';
 
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -82,6 +83,7 @@ const HomeScreen: React.FC = () => {
   const [searchLoading, setSearchLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [errorType, setErrorType] = useState<ErrorType | null>(null);
   const [classiquesAnimes, setClassiquesAnimes] = useState<SearchResult[]>([]);
   const [pepitesAnimes, setPepitesAnimes] = useState<SearchResult[]>([]);
   const [nouveauxEpisodes, setNouveauxEpisodes] = useState<SearchResult[]>([]);
@@ -183,32 +185,19 @@ const HomeScreen: React.FC = () => {
 
 
 
-  // Fonction pour les requêtes API avec retry (identique au site web)
+  // Fonction pour les requêtes API avec retry et détection du type d'erreur
   const apiRequest = async (endpoint: string, options = {}) => {
-    const maxRetries = 2;
-    let attempt = 0;
+    const result = await apiRequestWithRetry(`${API_BASE_URL}${endpoint}`, {
+      method: 'GET',
+      ...options
+    });
 
-    while (attempt < maxRetries) {
-      try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-          method: 'GET',
-          ...options
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-
-        return await response.json();
-      } catch (error) {
-        attempt++;
-        if (attempt >= maxRetries) {
-          throw error;
-        }
-
-        await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
-      }
+    if (!result.success) {
+      setErrorType(result.errorType || 'unknown');
+      throw new Error(result.error || 'Erreur API');
     }
+
+    return result.data;
   };
 
 
@@ -283,6 +272,7 @@ const HomeScreen: React.FC = () => {
 
     setSearchLoading(true);
     setError(null);
+    setErrorType(null);
 
     try {
       const response = await apiRequest(`/api/search?query=${encodeURIComponent(query)}`);
@@ -2028,13 +2018,34 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-            {/* Message d'erreur */}
-            {error && (
+            {/* Message d'erreur selon le type */}
+            {error && errorType === 'server' && (
+              <ServerErrorCard 
+                onRetry={() => {
+                  setError(null);
+                  setErrorType(null);
+                  loadPopularAnimes();
+                }}
+              />
+            )}
+            
+            {error && errorType === 'network' && (
+              <OfflineErrorCard 
+                onRetry={() => {
+                  setError(null);
+                  setErrorType(null);
+                  loadPopularAnimes();
+                }}
+              />
+            )}
+
+            {error && errorType !== 'server' && errorType !== 'network' && (
               <View style={styles.errorContainer}>
                 <Text style={styles.errorText}>{error}</Text>
                 <TouchableOpacity 
                   onPress={() => {
                     setError(null);
+                    setErrorType(null);
                     loadPopularAnimes();
                   }}
                   style={styles.retryButton}
@@ -2046,7 +2057,7 @@ const HomeScreen: React.FC = () => {
 
             {/* Message vide si pas de contenu et pas de chargement */}
             {!initialLoading && !error && classiquesAnimes.length === 0 && pepitesAnimes.length === 0 && (
-              <OfflineErrorCard 
+              <ServerErrorCard 
                 onRetry={() => loadPopularAnimes()}
               />
             )}

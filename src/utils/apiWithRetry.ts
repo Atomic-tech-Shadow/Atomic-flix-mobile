@@ -10,10 +10,13 @@ interface RetryOptions {
   timeout?: number;
 }
 
+export type ErrorType = 'network' | 'server' | 'unknown';
+
 interface ApiResponse<T = any> {
   success: boolean;
   data: T;
   error?: string;
+  errorType?: ErrorType;
   cached?: boolean;
 }
 
@@ -42,6 +45,45 @@ const calculateDelay = (attempt: number, options: Required<RetryOptions>): numbe
 };
 
 /**
+ * Détermine le type d'erreur (réseau, serveur, ou inconnu)
+ */
+const getErrorType = (error: any): ErrorType => {
+  // Extraire le code HTTP de l'erreur si présent
+  const httpStatusMatch = error.message?.match(/HTTP (\d{3})/);
+  const statusCode = httpStatusMatch ? parseInt(httpStatusMatch[1]) : error.status;
+  
+  // Erreurs serveur (5xx)
+  if (statusCode) {
+    if (statusCode >= 500 && statusCode < 600) {
+      return 'server';
+    }
+    if (statusCode === 408 || statusCode === 429) {
+      return 'server';
+    }
+  }
+  
+  // AbortError causé par notre timeout = serveur lent/indisponible
+  // (Le fetch a été aborted car le serveur met trop de temps à répondre)
+  if (error.name === 'AbortError') {
+    return 'server';
+  }
+  
+  // TimeoutError ou message contenant timeout = problème serveur
+  if (error.name === 'TimeoutError' || error.message?.includes('timeout')) {
+    return 'server';
+  }
+  
+  // Erreurs de connexion réseau (pas d'internet)
+  if (error.name === 'NetworkError' || 
+      error.message?.includes('Network request failed') ||
+      error.message?.includes('Failed to fetch')) {
+    return 'network';
+  }
+  
+  return 'unknown';
+};
+
+/**
  * Vérifie si une erreur est récupérable (temporaire)
  */
 const isRetryableError = (error: any): boolean => {
@@ -50,10 +92,19 @@ const isRetryableError = (error: any): boolean => {
     return true;
   }
   
+  // AbortError (timeout) = serveur lent, on peut réessayer
+  if (error.name === 'AbortError') {
+    return true;
+  }
+  
+  // Extraire le code HTTP de l'erreur si présent (même logique que getErrorType)
+  const httpStatusMatch = error.message?.match(/HTTP (\d{3})/);
+  const statusCode = httpStatusMatch ? parseInt(httpStatusMatch[1]) : error.status;
+  
   // Status codes HTTP récupérables
-  if (error.status) {
+  if (statusCode) {
     const retryableStatusCodes = [408, 429, 500, 502, 503, 504];
-    return retryableStatusCodes.includes(error.status);
+    return retryableStatusCodes.includes(statusCode);
   }
   
   // Erreurs de connexion
@@ -133,10 +184,12 @@ export async function apiRequestWithRetry<T = any>(
   }
 
   // Toutes les tentatives ont échoué
+  const errorType = getErrorType(lastError);
   return {
     success: false,
     data: null as T,
     error: lastError?.message || 'Erreur API inconnue',
+    errorType,
   };
 }
 
