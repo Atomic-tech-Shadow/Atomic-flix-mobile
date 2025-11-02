@@ -105,12 +105,9 @@ const AppNavigator: React.FC = () => {
             drawerType: 'slide',
             drawerStyle: {
               width: 280,
-              backgroundColor: 'transparent', // Fond transparent pour voir les lignes
+              backgroundColor: 'transparent',
             },
             swipeEnabled: true,
-            gestureHandlerProps: {
-              activeOffsetX: 10,
-            },
           }}
         >
           <Drawer.Screen 
