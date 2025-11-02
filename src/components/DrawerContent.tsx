@@ -13,11 +13,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../contexts/ThemeContext';
 import Constants from 'expo-constants';
 
+const packageJson = require('../../package.json');
+
 interface DrawerContentProps extends DrawerContentComponentProps {}
 
 const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
   const { colors, getGradient } = useTheme();
-  const appVersion = Constants.expoConfig?.version || '2.0.0';
+  const appVersion = packageJson.version;
 
   const menuItems = [
     {
