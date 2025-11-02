@@ -26,11 +26,15 @@ export default function App() {
       try {
         console.log('🚀 Préparation de l\'app...');
         
-        // Charger les fonts Ionicons avant tout
+        // Charger les fonts Ionicons uniquement sur les plateformes natives
         console.log('📝 Chargement des fonts...');
-        await Font.loadAsync({
-          ...Ionicons.font,
-        });
+        const { Platform } = require('react-native');
+        
+        if (Platform.OS !== 'web') {
+          await Font.loadAsync({
+            ...Ionicons.font,
+          });
+        }
         console.log('✅ Fonts chargés !');
         
         // Simuler le chargement des ressources
