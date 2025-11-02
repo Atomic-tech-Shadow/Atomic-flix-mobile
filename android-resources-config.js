@@ -93,7 +93,7 @@ function createDataExtractionRules(config) {
     </style>
     
     <!-- Couleur de fond de l'application -->
-    <color name="app_background">#0a0a1a</color>
+    <color name="app_background">#0F0F0F</color>
 </resources>`;
       
       // Styles spécifiques Android 35+ pour edge-to-edge
@@ -111,7 +111,7 @@ function createDataExtractionRules(config) {
     </style>
     
     <!-- Couleur de fond de l'application -->
-    <color name="app_background">#0a0a1a</color>
+    <color name="app_background">#0F0F0F</color>
 </resources>`;
       
       fs.writeFileSync(path.join(valuesDir, "styles.xml"), stylesContent);

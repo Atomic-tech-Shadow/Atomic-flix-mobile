@@ -11,14 +11,14 @@
     },
     "icon": "./assets/atomic-flix-logo-new.png",
     "userInterfaceStyle": "dark",
-    "backgroundColor": "#8B5DFF",
+    "backgroundColor": "#0F0F0F",
 
 
     "android": {
       "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/atomic-flix-logo-new.png",
-        "backgroundColor": "#8B5DFF"
+        "backgroundColor": "#0F0F0F"
       },
       "package": "com.atomic.flix",
       "permissions": [
@@ -55,9 +55,9 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#8B5DFF",
+          "backgroundColor": "#0F0F0F",
           "image": "./assets/atomic-flix-logo-new.png",
-          "imageWidth": 200,
+          "imageWidth": 280,
           "resizeMode": "contain"
         }
       ],

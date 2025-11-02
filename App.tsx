@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -10,29 +10,32 @@ import AppNavigator from './src/navigation/AppNavigator';
 import { queryClient } from './src/utils/queryClient';
 import ErrorBoundary from './src/components/ErrorBoundary';
 import { ThemeProvider } from './src/contexts/ThemeContext';
+import AnimatedSplashScreen from './src/components/AnimatedSplashScreen';
 
-// Appeler preventAutoHideAsync() dans le scope global selon la documentation Expo 53
+// Empêcher le splash screen natif de se cacher automatiquement
 SplashScreen.preventAutoHideAsync();
-
-// Configuration de l'animation selon la documentation officielle
-SplashScreen.setOptions({
-  duration: 1000,
-  fade: true,
-});
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
+  const [showAnimatedSplash, setShowAnimatedSplash] = useState(true);
 
   useEffect(() => {
     async function prepareApp() {
       try {
-        // Préparation de l'app : chargement des ressources nécessaires
-        await new Promise(resolve => setTimeout(resolve, 100));
+        console.log('🚀 Préparation de l\'app...');
+        // Simuler le chargement des ressources
+        await new Promise(resolve => setTimeout(resolve, 500));
         
-        // Préparation de l'app terminée
+        console.log('📱 Cachage du splash screen natif...');
+        // Cacher le splash screen natif et montrer notre splash personnalisé
+        await SplashScreen.hideAsync();
+        
+        console.log('✅ App prête !');
+        // Préparation terminée
+        setAppIsReady(true);
       } catch (e) {
-        console.warn('Erreur lors de la préparation de l\'app:', e);
-      } finally {
+        console.warn('❌ Erreur lors de la préparation de l\'app:', e);
+        await SplashScreen.hideAsync();
         setAppIsReady(true);
       }
     }
@@ -40,17 +43,17 @@ export default function App() {
     prepareApp();
   }, []);
 
-  const onLayoutRootView = useCallback(() => {
-    if (appIsReady) {
-      // Cacher le splash screen natif d'Expo quand l'app est prête
-      SplashScreen.hide();
-    }
-  }, [appIsReady]);
+  const handleSplashFinish = () => {
+    console.log('🎬 Splash screen terminé');
+    setShowAnimatedSplash(false);
+  };
 
-  // Ne rien rendre jusqu'à ce que l'app soit prête
   if (!appIsReady) {
+    console.log('⏳ En attente de préparation de l\'app...');
     return null;
   }
+
+  console.log('🎨 Rendu de l\'app principale, showAnimatedSplash:', showAnimatedSplash);
 
   return (
     <ThemeProvider>
@@ -59,15 +62,20 @@ export default function App() {
           <QueryClientProvider client={queryClient}>
             <ErrorBoundary
               onError={(error, errorInfo) => {
-                // En production, on pourrait envoyer l'erreur à un service de monitoring
                 if (__DEV__) {
                   console.error('🚨 Global Error:', error);
                   console.error('📍 Error Info:', errorInfo);
                 }
               }}
             >
-              <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+              <View style={{ flex: 1 }}>
                 <AppNavigator />
+                {showAnimatedSplash && (
+                  <AnimatedSplashScreen 
+                    onFinish={handleSplashFinish}
+                    duration={2500}
+                  />
+                )}
               </View>
             </ErrorBoundary>
           </QueryClientProvider>
