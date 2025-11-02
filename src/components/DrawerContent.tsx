@@ -11,13 +11,14 @@ import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS } from '../constants/newColors';
+import { useTheme } from '../contexts/ThemeContext';
 import Constants from 'expo-constants';
 
 interface DrawerContentProps extends DrawerContentComponentProps {}
 
 const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
-  const appVersion = Constants.expoConfig?.version || '1.0.0';
+  const { colors, getGradient } = useTheme();
+  const appVersion = Constants.expoConfig?.version || '2.0.0';
 
   const menuItems = [
     {
@@ -56,20 +57,46 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.primary }]}>
       <LinearGradient
-        colors={[COLORS.primary, COLORS.secondary]}
+        colors={getGradient('primary')}
         style={styles.gradient}
       >
         {/* Header du drawer */}
-        <View style={styles.header}>
+        <View style={[
+          styles.header,
+          {
+            borderBottomColor: colors.secondary,
+            shadowColor: colors.secondary,
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.5,
+            shadowRadius: 8,
+          }
+        ]}>
           <Image 
             source={require('../../assets/atomic-flix-logo-new.png')}
-            style={styles.logoImage}
+            style={[
+              styles.logoImage,
+              {
+                borderColor: colors.secondary,
+                shadowColor: colors.secondary,
+                shadowOffset: { width: 0, height: 0 },
+                shadowOpacity: 1,
+                shadowRadius: 20,
+              }
+            ]}
             resizeMode="contain"
           />
-          <Text style={styles.appName}>ATOMIC FLIX</Text>
-          <Text style={styles.appVersion}>Version {appVersion}</Text>
+          <Text style={[
+            styles.appName,
+            {
+              color: colors.text.primary,
+              textShadowColor: colors.secondary,
+              textShadowOffset: { width: 0, height: 0 },
+              textShadowRadius: 10,
+            }
+          ]}>ATOMIC FLIX</Text>
+          <Text style={[styles.appVersion, { color: colors.text.secondary }]}>Version {appVersion}</Text>
         </View>
 
         {/* Menu items */}
@@ -77,7 +104,18 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
           {menuItems.map((item) => (
             <TouchableOpacity
               key={item.id}
-              style={styles.menuItem}
+              style={[
+                styles.menuItem,
+                {
+                  backgroundColor: colors.background.card,
+                  borderColor: colors.secondary,
+                  shadowColor: colors.secondary,
+                  shadowOffset: { width: 0, height: 0 },
+                  shadowOpacity: 0.7,
+                  shadowRadius: 10,
+                  elevation: 10,
+                }
+              ]}
               onPress={() => handleMenuPress(item.route)}
               activeOpacity={0.7}
             >
@@ -85,12 +123,12 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
                 <Ionicons 
                   name={item.icon as any} 
                   size={24} 
-                  color={COLORS.text.primary} 
+                  color={colors.text.primary} 
                   style={styles.menuIcon}
                 />
                 <View style={styles.menuTextContainer}>
-                  <Text style={styles.menuTitle}>{item.title}</Text>
-                  <Text style={styles.menuDescription}>{item.description}</Text>
+                  <Text style={[styles.menuTitle, { color: colors.text.primary }]}>{item.title}</Text>
+                  <Text style={[styles.menuDescription, { color: colors.text.secondary }]}>{item.description}</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -98,11 +136,20 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
         </ScrollView>
 
         {/* Footer */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>
+        <View style={[
+          styles.footer,
+          {
+            borderTopColor: colors.secondary,
+            shadowColor: colors.secondary,
+            shadowOffset: { width: 0, height: -2 },
+            shadowOpacity: 0.5,
+            shadowRadius: 8,
+          }
+        ]}>
+          <Text style={[styles.footerText, { color: colors.text.secondary }]}>
             © 2025 ATOMIC FLIX
           </Text>
-          <Text style={styles.footerSubtext}>
+          <Text style={[styles.footerSubtext, { color: colors.text.muted }]}>
             La meilleure app pour les otakus
           </Text>
         </View>
@@ -114,27 +161,15 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.primary,
   },
   gradient: {
     flex: 1,
-    backgroundColor: COLORS.primary,
-    shadowColor: COLORS.secondary,
-    shadowOffset: { width: 2, height: 0 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-    elevation: 8,
   },
   header: {
     alignItems: 'center',
     paddingVertical: 30,
     paddingHorizontal: 20,
     borderBottomWidth: 2,
-    borderBottomColor: COLORS.secondary,
-    shadowColor: COLORS.secondary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 8,
   },
   logoImage: {
     width: 60,
@@ -142,25 +177,15 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginBottom: 12,
     borderWidth: 3,
-    borderColor: COLORS.secondary,
-    shadowColor: COLORS.secondary,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 20,
   },
   appName: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: COLORS.text.primary,
     marginBottom: 4,
     letterSpacing: 1,
-    textShadowColor: COLORS.secondary,
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 10,
   },
   appVersion: {
     fontSize: 12,
-    color: COLORS.text.secondary,
     opacity: 0.9,
   },
   menuContainer: {
@@ -171,15 +196,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginVertical: 4,
     borderRadius: 12,
-    backgroundColor: COLORS.background.card,
     overflow: 'hidden',
     borderWidth: 2,
-    borderColor: COLORS.secondary,
-    shadowColor: COLORS.secondary,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.7,
-    shadowRadius: 10,
-    elevation: 10,
   },
   menuItemContent: {
     flexDirection: 'row',
@@ -197,12 +215,10 @@ const styles = StyleSheet.create({
   menuTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: COLORS.text.primary,
     marginBottom: 2,
   },
   menuDescription: {
     fontSize: 12,
-    color: COLORS.text.secondary,
     lineHeight: 16,
   },
   footer: {
@@ -210,21 +226,14 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 20,
     borderTopWidth: 2,
-    borderTopColor: COLORS.secondary,
-    shadowColor: COLORS.secondary,
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 8,
   },
   footerText: {
     fontSize: 12,
-    color: COLORS.text.secondary,
     fontWeight: '600',
     marginBottom: 2,
   },
   footerSubtext: {
     fontSize: 10,
-    color: COLORS.text.muted,
     textAlign: 'center',
   },
 });
