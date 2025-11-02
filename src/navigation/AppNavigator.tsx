@@ -54,7 +54,6 @@ const HomeStackNavigator: React.FC = () => {
         headerShown: false,
         // Optimisations pour des transitions rapides et fluides
         ...TransitionPresets.SlideFromRightIOS,
-        animationEnabled: true,
         gestureEnabled: true,
         gestureDirection: 'horizontal',
         transitionSpec: {
