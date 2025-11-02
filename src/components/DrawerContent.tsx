@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../contexts/ThemeContext';
 import Constants from 'expo-constants';
@@ -57,11 +56,8 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.primary }]}>
-      <LinearGradient
-        colors={getGradient('primary')}
-        style={styles.gradient}
-      >
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background.primary }]}>
+      <View style={[styles.gradient, { backgroundColor: colors.background.primary }]}>
         {/* Header du drawer */}
         <View style={[
           styles.header,
@@ -153,7 +149,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
             La meilleure app pour les otakus
           </Text>
         </View>
-      </LinearGradient>
+      </View>
     </SafeAreaView>
   );
 };
