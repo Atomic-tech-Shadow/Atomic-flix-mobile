@@ -4,6 +4,8 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as SplashScreen from 'expo-splash-screen';
+import * as Font from 'expo-font';
+import { Ionicons } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
 
 import AppNavigator from './src/navigation/AppNavigator';
@@ -23,8 +25,16 @@ export default function App() {
     async function prepareApp() {
       try {
         console.log('🚀 Préparation de l\'app...');
+        
+        // Charger les fonts Ionicons avant tout
+        console.log('📝 Chargement des fonts...');
+        await Font.loadAsync({
+          ...Ionicons.font,
+        });
+        console.log('✅ Fonts chargés !');
+        
         // Simuler le chargement des ressources
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 300));
         
         console.log('📱 Cachage du splash screen natif...');
         // Cacher le splash screen natif et montrer notre splash personnalisé
