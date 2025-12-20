@@ -28,6 +28,7 @@ import { getThemedColors, getThemedTextStyles, interactiveStyles } from '../cons
 import { useTheme } from '../contexts/ThemeContext';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ImageWithPlaceholder from '../components/ImageWithPlaceholder';
 import { animeAPI } from '../utils/animeAPI';
 import { apiRequest } from '../utils/api';
 import { useNotifications } from '../hooks/useNotifications';
@@ -928,11 +929,10 @@ const AnimeDetailScreen: React.FC = () => {
         <View style={styles.heroContainer}>
           {/* Image de fond avec hauteur réduite */}
           <View style={styles.heroImageContainer}>
-            <Image
-              source={{ uri: animeData.image }}
+            <ImageWithPlaceholder
+              uri={animeData.image}
               style={styles.heroImage}
               resizeMode="cover"
-              onError={(e) => {}}
             />
             
             {/* Gradient overlay pour le contenu */}
@@ -1009,8 +1009,8 @@ const AnimeDetailScreen: React.FC = () => {
                   activeOpacity={0.8}
                 >
                   {/* Image de fond exactement comme le code web */}
-                  <Image
-                    source={{ uri: animeData.image }}
+                  <ImageWithPlaceholder
+                    uri={animeData.image}
                     style={styles.seasonCardBackground}
                     resizeMode="cover"
                   />

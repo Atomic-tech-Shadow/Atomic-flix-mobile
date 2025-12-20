@@ -27,6 +27,7 @@ import { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator'
 import { Episode, VideoSource, Season, AnimeData, EpisodeDetails } from '../types';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ImageWithPlaceholder from '../components/ImageWithPlaceholder';
 import { getThemedColors, getThemedTextStyles, interactiveStyles } from '../constants/newColors';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNotifications } from '../hooks/useNotifications';
@@ -1683,8 +1684,8 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         {/* Bannière avec titre de la saison - Pleine largeur comme le web */}
         <View style={styles.bannerContainer}>
           {animeData?.image && (
-            <Image
-              source={{ uri: animeData.image }}
+            <ImageWithPlaceholder
+              uri={animeData.image}
               style={styles.bannerImage}
               resizeMode="cover"
             />
