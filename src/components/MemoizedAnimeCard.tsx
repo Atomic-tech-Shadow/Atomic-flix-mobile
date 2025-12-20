@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import OptimizedTouchable from './OptimizedTouchable';
+import ImageWithPlaceholder from './ImageWithPlaceholder';
 import { COLORS } from '../constants/newColors';
 import { getLanguageBadgeText } from '../utils/languageUtils';
 
@@ -43,8 +44,8 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
         scaleOnPress={true}
         scaleFactor={0.98}
       >
-      <Image
-        source={{ uri: anime.image }}
+      <ImageWithPlaceholder
+        uri={anime.image}
         style={styles.cardImage}
         resizeMode="cover"
         fadeDuration={200}
