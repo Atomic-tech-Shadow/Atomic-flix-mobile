@@ -218,6 +218,7 @@ const AnimeDetailScreen: React.FC = () => {
   heroContainer: {
     position: 'relative',
     height: height * 0.35, // 35% de la hauteur de l'écran au lieu de 50%
+    backgroundColor: 'transparent',
   },
   heroImageContainer: {
     position: 'absolute',
@@ -225,6 +226,7 @@ const AnimeDetailScreen: React.FC = () => {
     left: 0,
     right: 0,
     bottom: 0,
+    backgroundColor: 'transparent',
   },
   heroImage: {
     width: '100%',
