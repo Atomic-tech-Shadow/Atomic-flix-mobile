@@ -8,7 +8,7 @@
     "android": "npx expo start --android",
     "ios": "npx expo start --ios",
     "web": "npx expo start --web",
-    "web:replit": "npx expo start --web --port 5000 --host lan",
+    "web:replit": "npx -y expo start --web --port 5000 --host lan",
     "build": "npx expo export --platform web",
     "start:web": "python3 -m http.server 5000 --directory dist",
     "doctor": "node doctor-check.js",
