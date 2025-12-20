@@ -92,11 +92,10 @@ const styles = StyleSheet.create({
     width: 120,
     height: 180,
     marginRight: 12,
-    backgroundColor: COLORS.primary, // Fond opaque pour masquer les lignes rouges
     borderRadius: 8,
-    zIndex: 10000, // Au-dessus des lignes rouges pour les masquer
+    zIndex: 10000,
     position: 'relative',
-    // Effet de glow cosmique sur le wrapper (sans overflow hidden)
+    // Effet de glow cosmique sur le wrapper
     shadowColor: COLORS.badges.atomic,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
@@ -108,7 +107,6 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 8,
     overflow: 'hidden', // Gardé ici pour couper les coins de l'image
-    backgroundColor: '#1A1A1A', // Fond légèrement visible sur noir
     // Bordure néon violette - Effet "I am Atomic"
     borderWidth: 2,
     borderColor: COLORS.border.glow, // Violet néon intense
