@@ -35,12 +35,12 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
   badgeText,
   badgeStyle
 }) => {
-  const { isDark } = useTheme();
-  const themedColors = getThemedColors(isDark);
+  // Les cartes doivent toujours avoir un fond sombre pour un bon affichage des images
+  const darkColors = getThemedColors(true);
   
   const dynamicStyles = StyleSheet.create({
     cardWrapper: {
-      backgroundColor: isDark ? themedColors.background.secondary : themedColors.background.primary,
+      backgroundColor: darkColors.background.secondary,
     },
   });
 
