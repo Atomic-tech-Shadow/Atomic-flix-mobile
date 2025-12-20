@@ -11,7 +11,7 @@ interface AnimatedSplashScreenProps {
 
 export default function AnimatedSplashScreen({ 
   onFinish, 
-  duration = 2500 
+  duration = 800 
 }: AnimatedSplashScreenProps) {
   const logoOpacity = useRef(new Animated.Value(0)).current;
   const logoScale = useRef(new Animated.Value(0.8)).current;

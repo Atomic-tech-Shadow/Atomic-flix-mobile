@@ -24,6 +24,7 @@ const ImageWithPlaceholder: React.FC<ImageWithPlaceholderProps> = ({
 
   const handleLoadStart = () => {
     setIsLoading(true);
+    fadeAnim.setValue(0);
     onLoadStart?.();
   };
 
@@ -43,28 +44,37 @@ const ImageWithPlaceholder: React.FC<ImageWithPlaceholderProps> = ({
   };
 
   return (
-    <View style={[styles.container, style]}>
-      {/* Placeholder visible pendant le chargement */}
-      {isLoading && (
-        <View style={[styles.placeholder, style]}>
-          <View style={styles.shimmer} />
-        </View>
-      )}
-
+    <View style={style}>
       {/* Image réelle avec fade-in */}
-      <Animated.Image
+      <Image
         source={{ uri }}
-        style={[
-          style,
-          {
-            opacity: fadeAnim,
-          },
-        ]}
+        style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
         resizeMode={resizeMode}
         onLoadStart={handleLoadStart}
         onLoadEnd={handleLoadEnd}
         onError={handleLoadError}
         fadeDuration={0}
+      />
+
+      {/* Placeholder overlay - disparaît quand image est chargée */}
+      <Animated.View
+        style={[
+          StyleSheet.absoluteFill,
+          {
+            width: '100%',
+            height: '100%',
+            backgroundColor: COLORS.primary,
+            opacity: fadeAnim.interpolate({
+              inputRange: [0, 1],
+              outputRange: [1, 0],
+            }),
+            zIndex: fadeAnim.interpolate({
+              inputRange: [0, 1],
+              outputRange: [10, -1],
+            }),
+          },
+        ]}
+        pointerEvents="none"
       />
     </View>
   );
@@ -72,16 +82,15 @@ const ImageWithPlaceholder: React.FC<ImageWithPlaceholderProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.primary,
+    position: 'relative',
   },
   placeholder: {
     position: 'absolute',
     backgroundColor: COLORS.primary,
-    zIndex: 1,
-  },
-  shimmer: {
-    flex: 1,
-    backgroundColor: COLORS.primary,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });
 
