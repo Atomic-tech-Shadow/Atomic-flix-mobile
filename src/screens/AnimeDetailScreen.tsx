@@ -400,10 +400,10 @@ const AnimeDetailScreen: React.FC = () => {
     borderWidth: 2,
   },
   seasonCardAnime: {
-    borderColor: COLORS.accent,
+    borderColor: '#A855F7', // Violet toujours visible
   },
   seasonCardManga: {
-    borderColor: COLORS.badges.manga,
+    borderColor: '#DB2777', // Magenta toujours visible
   },
   seasonCardBackground: {
     position: 'absolute',
@@ -420,7 +420,7 @@ const AnimeDetailScreen: React.FC = () => {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: COLORS.primary + '99', // bg-black/60
+    backgroundColor: '#0F0F0F99', // Toujours noir 60% pour lisibilité
   },
   seasonCardContent: {
     position: 'absolute',
