@@ -3,8 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import OptimizedTouchable from './OptimizedTouchable';
 import ImageWithPlaceholder from './ImageWithPlaceholder';
-import { COLORS } from '../constants/newColors';
+import { COLORS, getThemedColors } from '../constants/newColors';
 import { getLanguageBadgeText } from '../utils/languageUtils';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface AnimeCardProps {
   anime: {
@@ -34,9 +35,17 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
   badgeText,
   badgeStyle
 }) => {
+  const { isDark } = useTheme();
+  const themedColors = getThemedColors(isDark);
+  
+  const dynamicStyles = StyleSheet.create({
+    cardWrapper: {
+      backgroundColor: isDark ? themedColors.background.secondary : themedColors.background.primary,
+    },
+  });
 
   return (
-    <View style={[styles.cardWrapper, style]}>
+    <View style={[styles.cardWrapper, dynamicStyles.cardWrapper, style]}>
       <OptimizedTouchable
         key={`anime-${anime.id || anime.title.replace(/\s+/g, '-')}-${index}`}
         style={styles.card}
