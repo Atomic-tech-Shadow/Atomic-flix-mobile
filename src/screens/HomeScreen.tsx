@@ -38,6 +38,7 @@ import { apiGetWithCache, apiRequestWithRetry, ErrorType } from '../utils/apiWit
 import OfflineErrorCard from '../components/OfflineErrorCard';
 import ServerErrorCard from '../components/ServerErrorCard';
 import SimpleAnimeCard from '../components/SimpleAnimeCard';
+import { formatAddedDate, formatPlanningTime } from '../utils/dateFormatter';
 
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -1718,7 +1719,7 @@ const HomeScreen: React.FC = () => {
                     <SimpleAnimeCard
                       key={`new-${anime.id}-${anime.language?.name || index}`}
                       anime={anime}
-                      badge={`S${anime.currentSeason || 1}E${anime.currentEpisode || 1}`}
+                      badge={anime.addedAt ? formatAddedDate(anime.addedAt) : `S${anime.currentSeason || 1}E${anime.currentEpisode || 1}`}
                       badgeColor={COLORS.badges.hot}
                       languageBadge={anime.language?.name}
                       index={index}
@@ -1755,7 +1756,7 @@ const HomeScreen: React.FC = () => {
                     <SimpleAnimeCard
                       key={`planning-${anime.id || index}`}
                       anime={anime}
-                      badge={anime.releaseTime && anime.releaseTime !== '?' ? anime.releaseTime : '⏰'}
+                      badge={anime.releaseTime ? formatPlanningTime(anime.releaseTime) : '⏰'}
                       badgeColor={COLORS.secondary}
                       index={index}
                       onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}

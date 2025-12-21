@@ -21,6 +21,7 @@ export interface SearchResult {
   };
   // Champs spécifiques au planning
   releaseTime?: string;
+  day?: string;
   isVFCrunchyroll?: boolean;
   planningType?: string;
   // Champs spécifiques à l'API trending pour les nouveaux épisodes
@@ -28,6 +29,10 @@ export interface SearchResult {
   currentEpisode?: number;
   currentSeason?: number;
   isFinale?: boolean;
+  // Champs pour les dates
+  addedAt?: string;
+  category?: string;
+  genres?: string[];
 }
 
 export interface Episode {
