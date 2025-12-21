@@ -6,18 +6,20 @@
   "build": {
     "development": {
       "distribution": "internal",
+      "channel": "development",
       "android": {
         "buildType": "apk",
         "gradleCommand": ":app:assembleDebug",
         "withoutCredentials": true
       },
-
       "env": {
         "NODE_ENV": "development"
       }
     },
     "preview": {
+      "extends": "production",
       "distribution": "internal",
+      "channel": "staging",
       "android": {
         "buildType": "apk",
         "gradleCommand": ":app:assembleRelease --no-daemon",
@@ -34,10 +36,15 @@
       }
     },
     "production": {
+      "channel": "production",
+      "distribution": "store",
       "android": {
-        "buildType": "apk",
-        "gradleCommand": ":app:assembleRelease",
+        "buildType": "app-bundle",
+        "gradleCommand": ":app:bundleRelease",
         "credentialsSource": "local"
+      },
+      "ios": {
+        "resourceClass": "m-medium"
       },
       "env": {
         "NODE_ENV": "production",
@@ -53,8 +60,10 @@
   "submit": {
     "production": {
       "android": {
-        "track": "internal",
-        "releaseStatus": "draft"
+        "track": "production"
+      },
+      "ios": {
+        "appleTeamId": "YOUR_TEAM_ID"
       }
     }
   }

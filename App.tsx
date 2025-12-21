@@ -13,7 +13,6 @@ import { queryClient } from './src/utils/queryClient';
 import ErrorBoundary from './src/components/ErrorBoundary';
 import { ThemeProvider } from './src/contexts/ThemeContext';
 import AnimatedSplashScreen from './src/components/AnimatedSplashScreen';
-import UpdateAlert from './src/components/UpdateAlert';
 
 // Empêcher le splash screen natif de se cacher automatiquement
 SplashScreen.preventAutoHideAsync();
@@ -83,7 +82,6 @@ export default function App() {
                 }
               }}
             >
-              <UpdateAlert />
               <View style={{ flex: 1 }}>
                 <AppNavigator />
                 {showAnimatedSplash && (
