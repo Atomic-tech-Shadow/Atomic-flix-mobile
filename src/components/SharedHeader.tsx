@@ -112,9 +112,9 @@ const styles = StyleSheet.create({
   // Header mobile exact - Effet "I am Atomic"
   mobileHeader: {
     backgroundColor: COLORS.primary,
-    paddingHorizontal: 16,
-    paddingTop: 20,
-    paddingBottom: 8,
+    paddingHorizontal: 12,
+    paddingTop: 8,
+    paddingBottom: 4,
     zIndex: 10000, // Au-dessus des lignes rouges pour les masquer
     position: 'relative',
     // Effet glow subtil sur le header
@@ -130,8 +130,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   menuButton: {
-    padding: 8,
-    borderRadius: 8,
+    padding: 6,
+    borderRadius: 6,
     backgroundColor: COLORS.background.card,
     // Effet glow subtil
     shadowColor: COLORS.badges.atomic,
@@ -145,9 +145,9 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   titleTextGradient: {
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
     alignSelf: 'flex-start',
     // Effet glow subtil pour le titre
     shadowColor: COLORS.badges.atomic,
@@ -156,10 +156,10 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
   },
   titleText: {
-    fontSize: 20,
+    fontSize: 12,
     fontWeight: 'bold',
     color: COLORS.text.primary,
-    letterSpacing: 0.8,
+    letterSpacing: 0.5,
     textShadowColor: COLORS.badges.atomic,
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
@@ -169,8 +169,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerIconButton: {
-    padding: 8,
-    marginLeft: 8,
+    padding: 6,
+    marginLeft: 4,
     position: 'relative',
     borderRadius: 6,
     backgroundColor: COLORS.background.card,
