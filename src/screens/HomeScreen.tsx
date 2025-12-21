@@ -207,7 +207,7 @@ const HomeScreen: React.FC = () => {
     try {
       const response = await apiRequest('/api/popular');
 
-      if (response && response.success && response.categories) {
+      if (response && response.categories) {
         // Extraire les classiques et pépites de l'API
         const classiques = response.categories.classiques?.anime || [];
         const pepites = response.categories.pepites?.anime || [];
@@ -229,7 +229,7 @@ const HomeScreen: React.FC = () => {
     try {
       const response: RecentEpisodesResponse = await apiRequest('/api/recent');
 
-      if (response && response.success && response.recentEpisodes) {
+      if (response && response.recentEpisodes) {
         // Convertir les données de l'API en format SearchResult
         const recentEpisodes: SearchResult[] = response.recentEpisodes.slice(0, 15).map((episode: RecentEpisode) => ({
           id: episode.animeId,
@@ -478,9 +478,9 @@ const HomeScreen: React.FC = () => {
     try {
       const response = await apiRequest('/api/recommendations');
 
-      if (response && response.success && response.data) {
+      if (response && Array.isArray(response)) {
         // Convertir les données de l'API en format SearchResult
-        const recommendations: SearchResult[] = response.data.slice(0, 20).map((anime: any) => ({
+        const recommendations: SearchResult[] = response.slice(0, 20).map((anime: any) => ({
           id: anime.id,
           animeId: anime.id,
           title: anime.title,
@@ -515,7 +515,7 @@ const HomeScreen: React.FC = () => {
     try {
       const response = await apiRequest('/api/planning');
 
-      if (response && response.success && response.items) {
+      if (response && response.items) {
         // Convertir les données de l'API en format SearchResult
         const planning: SearchResult[] = response.items.slice(0, 15).map((item: any) => ({
           id: `${item.animeId}-${item.language}`,
