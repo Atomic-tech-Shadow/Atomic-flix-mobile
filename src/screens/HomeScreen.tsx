@@ -59,8 +59,9 @@ interface RecentEpisode {
   animeId: string;
   animeTitle: string;
   season: number;
+  seasonPart: number;
+  episode: number | null;
   language: string;
-  seasonInfo: string;
   url: string;
   image: string;
   addedAt: string;
@@ -236,27 +237,38 @@ const HomeScreen: React.FC = () => {
 
       if (response && response.recentEpisodes) {
         // Convertir les données de l'API en format SearchResult
-        const recentEpisodes: SearchResult[] = response.recentEpisodes.slice(0, 15).map((episode: RecentEpisode) => ({
-          id: episode.animeId,
-          animeId: episode.animeId,
-          title: episode.animeTitle,
-          image: episode.image,
-          url: episode.url,
-          contentType: 'anime',
-          type: episode.type,
-          currentSeason: episode.season,
-          currentEpisode: undefined,
-          episodeInfo: episode.seasonInfo,
-          language: {
-            name: episode.language,
-            code: episode.language.toLowerCase(),
-            fullName: episode.language,
-            flag: episode.language.includes('VF') ? '🇫🇷' : 
-                  episode.language === 'VA' ? '🇺🇸' : '🇯🇵',
-            priority: 1
-          },
-          addedAt: episode.addedAt
-        }));
+        const recentEpisodes: SearchResult[] = response.recentEpisodes.slice(0, 15).map((episode: RecentEpisode) => {
+          // Construire l'info épisode depuis season et seasonPart
+          let episodeInfo = `Saison ${episode.season}`;
+          if (episode.seasonPart) {
+            episodeInfo += ` - Partie ${episode.seasonPart}`;
+          }
+          if (episode.episode !== null && episode.episode !== undefined) {
+            episodeInfo += ` - Épisode ${episode.episode}`;
+          }
+          
+          return {
+            id: episode.animeId,
+            animeId: episode.animeId,
+            title: episode.animeTitle,
+            image: episode.image,
+            url: episode.url,
+            contentType: 'anime',
+            type: episode.type,
+            currentSeason: episode.season,
+            currentEpisode: episode.episode || undefined,
+            episodeInfo: episodeInfo,
+            language: {
+              name: episode.language,
+              code: episode.language.toLowerCase(),
+              fullName: episode.language,
+              flag: episode.language.includes('VF') ? '🇫🇷' : 
+                    episode.language === 'VA' ? '🇺🇸' : '🇯🇵',
+              priority: 1
+            },
+            addedAt: episode.addedAt
+          };
+        });
         
         console.log('✅ Nouveaux épisodes convertis:', recentEpisodes.length);
         setNouveauxEpisodes(recentEpisodes);
