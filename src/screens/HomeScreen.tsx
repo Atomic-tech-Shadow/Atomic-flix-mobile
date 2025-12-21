@@ -202,11 +202,15 @@ const HomeScreen: React.FC = () => {
   const loadPopularAnimes = async () => {
     try {
       const response = await apiRequest('/api/popular');
+      console.log('📊 API /popular réponse complète:', response);
 
       if (response && response.categories) {
         // Extraire les classiques et pépites de l'API
         const classiques = response.categories.classiques?.anime || [];
         const pepites = response.categories.pepites?.anime || [];
+        
+        console.log('👑 Classiques trouvés:', classiques.length, classiques);
+        console.log('💎 Pépites trouvées:', pepites.length, pepites);
         
         setClassiquesAnimes(classiques);
         setPepitesAnimes(pepites);
@@ -224,6 +228,11 @@ const HomeScreen: React.FC = () => {
   const loadRecentEpisodes = async () => {
     try {
       const response: RecentEpisodesResponse = await apiRequest('/api/recent');
+      console.log('🔥 API /recent réponse complète:', response);
+      console.log('📋 Nombre d\'épisodes reçus:', response?.recentEpisodes?.length);
+      if (response?.recentEpisodes && response.recentEpisodes.length > 0) {
+        console.log('🎬 Premier épisode:', response.recentEpisodes[0]);
+      }
 
       if (response && response.recentEpisodes) {
         // Convertir les données de l'API en format SearchResult
@@ -249,6 +258,7 @@ const HomeScreen: React.FC = () => {
           addedAt: episode.addedAt
         }));
         
+        console.log('✅ Nouveaux épisodes convertis:', recentEpisodes.length);
         setNouveauxEpisodes(recentEpisodes);
       } else {
         setNouveauxEpisodes([]);
@@ -473,6 +483,11 @@ const HomeScreen: React.FC = () => {
   const loadRecommendations = async () => {
     try {
       const response = await apiRequest('/api/recommendations');
+      console.log('💭 API /recommendations réponse complète:', response);
+      console.log('📋 Nombre de recommandations reçues:', Array.isArray(response) ? response.length : 'N/A');
+      if (Array.isArray(response) && response.length > 0) {
+        console.log('🎬 Première recommandation:', response[0]);
+      }
 
       if (response && Array.isArray(response)) {
         // Convertir les données de l'API en format SearchResult
@@ -510,6 +525,11 @@ const HomeScreen: React.FC = () => {
   const loadPlanning = async () => {
     try {
       const response = await apiRequest('/api/planning');
+      console.log('📅 API /planning réponse complète:', response);
+      console.log('📋 Nombre d\'items planning reçus:', response?.items?.length || 'N/A');
+      if (response?.items && response.items.length > 0) {
+        console.log('🎬 Premier item planning:', response.items[0]);
+      }
 
       if (response && response.items) {
         // Convertir les données de l'API en format SearchResult
