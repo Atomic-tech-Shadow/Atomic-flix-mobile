@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   menuButton: {
-    padding: 6,
   },
   titleSection: {
     flex: 1,
@@ -161,7 +160,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerIconButton: {
-    padding: 6,
     marginLeft: 4,
     position: 'relative',
   },
