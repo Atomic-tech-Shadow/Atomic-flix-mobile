@@ -239,9 +239,10 @@ const HomeScreen: React.FC = () => {
         // Convertir les données de l'API en format SearchResult
         const recentEpisodes: SearchResult[] = response.recentEpisodes.slice(0, 15).map((episode: RecentEpisode) => {
           // Construire l'info épisode depuis season et seasonPart
-          // Format: "Saison X - Partie Y" (ex: "Saison 2 - Partie 3")
+          // Format: "Saison X" ou "Saison X - Partie Y" si partie > 1
           let episodeInfo = `Saison ${episode.season}`;
-          if (episode.seasonPart !== null && episode.seasonPart !== undefined && episode.seasonPart > 0) {
+          // Afficher "Partie" seulement si elle est > 1 (ignorer Partie 1 qui est par défaut)
+          if (episode.seasonPart !== null && episode.seasonPart !== undefined && episode.seasonPart > 1) {
             episodeInfo += ` - Partie ${episode.seasonPart}`;
           }
           if (episode.episode !== null && episode.episode !== undefined && episode.episode > 0) {
