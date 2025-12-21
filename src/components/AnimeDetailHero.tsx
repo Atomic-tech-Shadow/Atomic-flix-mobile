@@ -54,7 +54,7 @@ const AnimeDetailHero: React.FC<AnimeDetailHeroProps> = ({
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
-    height: height * 0.35,
+    height: 200,
     overflow: 'hidden',
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border.secondary,
