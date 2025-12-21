@@ -237,40 +237,27 @@ const HomeScreen: React.FC = () => {
 
       if (response && response.recentEpisodes) {
         // Convertir les données de l'API en format SearchResult
-        const recentEpisodes: SearchResult[] = response.recentEpisodes.slice(0, 15).map((episode: RecentEpisode) => {
-          // Construire l'info épisode depuis season et seasonPart
-          // Format: "Saison X" ou "Saison X - Partie Y" si partie > 1
-          let episodeInfo = `Saison ${episode.season}`;
-          // Afficher "Partie" seulement si elle est > 1 (ignorer Partie 1 qui est par défaut)
-          if (episode.seasonPart !== null && episode.seasonPart !== undefined && episode.seasonPart > 1) {
-            episodeInfo += ` - Partie ${episode.seasonPart}`;
-          }
-          if (episode.episode !== null && episode.episode !== undefined && episode.episode > 0) {
-            episodeInfo += ` - Épisode ${episode.episode}`;
-          }
-          
-          return {
-            id: episode.animeId,
-            animeId: episode.animeId,
-            title: episode.animeTitle,
-            image: episode.image,
-            url: episode.url,
-            contentType: 'anime',
-            type: episode.type,
-            currentSeason: episode.season,
-            currentEpisode: episode.episode || undefined,
-            episodeInfo: episodeInfo,
-            language: {
-              name: episode.language,
-              code: episode.language.toLowerCase(),
-              fullName: episode.language,
-              flag: episode.language.includes('VF') ? '🇫🇷' : 
-                    episode.language === 'VA' ? '🇺🇸' : '🇯🇵',
-              priority: 1
-            },
-            addedAt: episode.addedAt
-          };
-        });
+        const recentEpisodes: SearchResult[] = response.recentEpisodes.slice(0, 15).map((episode: RecentEpisode) => ({
+          id: episode.animeId,
+          animeId: episode.animeId,
+          title: episode.animeTitle,
+          image: episode.image,
+          url: episode.url,
+          contentType: 'anime',
+          type: episode.type,
+          currentSeason: episode.season,
+          currentEpisode: episode.episode || undefined,
+          episodeInfo: undefined,
+          language: {
+            name: episode.language,
+            code: episode.language.toLowerCase(),
+            fullName: episode.language,
+            flag: episode.language.includes('VF') ? '🇫🇷' : 
+                  episode.language === 'VA' ? '🇺🇸' : '🇯🇵',
+            priority: 1
+          },
+          addedAt: episode.addedAt
+        }));
         
         console.log('✅ Nouveaux épisodes convertis:', recentEpisodes.length);
         setNouveauxEpisodes(recentEpisodes);
@@ -1753,7 +1740,7 @@ const HomeScreen: React.FC = () => {
                     <SimpleAnimeCard
                       key={`new-${anime.id}-${anime.language?.name || index}`}
                       anime={anime}
-                      badge={anime.episodeInfo || `S${anime.currentSeason || 1}E${anime.currentEpisode || 1}`}
+                      badge={`S${anime.currentSeason || 1}${anime.currentEpisode ? `E${anime.currentEpisode}` : ''}`}
                       badgeColor={COLORS.badges.hot}
                       languageBadge={anime.language?.name}
                       index={index}
