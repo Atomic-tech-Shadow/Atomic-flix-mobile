@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   title: {
     fontSize: 24,
