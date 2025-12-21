@@ -141,9 +141,9 @@ const AnimeDetailScreen: React.FC = () => {
   // Header mobile exact
   mobileHeader: {
     backgroundColor: `${COLORS.background.primary}f2`,
-    paddingHorizontal: 16,
-    paddingTop: 20,
-    paddingBottom: 8,
+    paddingHorizontal: 12,
+    paddingTop: 8,
+    paddingBottom: 6,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.primary,
     position: 'absolute',
@@ -162,19 +162,19 @@ const AnimeDetailScreen: React.FC = () => {
     alignItems: 'center',
   },
   atomicIcon: {
-    marginRight: 8,
+    marginRight: 4,
   },
   atomicSymbolSmall: {
-    width: 24,
-    height: 24,
+    width: 18,
+    height: 18,
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
   },
   atomicCoreSmall: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
+    width: 3,
+    height: 3,
+    borderRadius: 1.5,
     backgroundColor: COLORS.accent,
     position: 'absolute',
   },
@@ -189,7 +189,7 @@ const AnimeDetailScreen: React.FC = () => {
     height: 16,
   },
   logoTextMobile: {
-    fontSize: 18,
+    fontSize: 13,
     fontWeight: 'bold',
   },
   atomicTextMobile: {
@@ -205,8 +205,8 @@ const AnimeDetailScreen: React.FC = () => {
     alignItems: 'center',
   },
   headerIconButton: {
-    padding: 8,
-    marginLeft: 8,
+    padding: 4,
+    marginLeft: 4,
   },
   // Header fixe
   headerContainer: {
