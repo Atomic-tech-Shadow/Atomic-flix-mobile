@@ -28,7 +28,6 @@ import { getThemedTextStyles, interactiveStyles } from '../constants/newColors';
 import { useTheme } from '../contexts/ThemeContext';
 import CosmicBackground from '../components/CosmicBackground';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { NotificationPanel } from '../components/NotificationPanel';
 import { useNotifications } from '../hooks/useNotifications';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { PushNotification } from '../types/notifications';
@@ -89,7 +88,6 @@ const HomeScreen: React.FC = () => {
   const [planningAnimes, setPlanningAnimes] = useState<SearchResult[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
   const [currentlyWatching, setCurrentlyWatching] = useState<WatchHistoryItem[]>([]);
   
   // Hook pour les notifications
@@ -667,9 +665,9 @@ const HomeScreen: React.FC = () => {
     setError(null);
   };
 
-  // Gestionnaire pour ouvrir le panneau de notifications
+  // Gestionnaire pour les notifications (icône)
   const handleNotificationPress = () => {
-    setShowNotifications(true);
+    // Icône de notification - juste pour afficher le badge
   };
 
   // Gestionnaire pour ouvrir le menu drawer
@@ -684,8 +682,6 @@ const HomeScreen: React.FC = () => {
     
     // Navigation selon le type de contenu
     if (notification.data?.screen && notification.data?.params) {
-      setShowNotifications(false);
-      
       if (notification.data.screen === 'AnimeDetail') {
         navigation.navigate('AnimeDetail', notification.data.params);
       } else if (notification.data.screen === 'MangaReader') {
@@ -1937,36 +1933,6 @@ const HomeScreen: React.FC = () => {
           </View>
         )}
       </OptimizedScrollView>
-
-      {/* Modal des notifications */}
-      <Modal
-        visible={showNotifications}
-        animationType="slide"
-        presentationStyle="pageSheet"
-        onRequestClose={() => setShowNotifications(false)}
-      >
-        <SafeAreaView style={styles.notificationModalContainer}>
-          {/* Header de la modal */}
-          <View style={styles.notificationModalHeader}>
-            <Text style={styles.notificationModalTitle}>Notifications</Text>
-            <TouchableOpacity
-              onPress={() => setShowNotifications(false)}
-              style={styles.closeButton}
-            >
-              <Ionicons name="close" size={24} color={COLORS.text.primary} />
-            </TouchableOpacity>
-          </View>
-          
-          {/* Panneau de notifications */}
-          <NotificationPanel
-            notifications={notifications}
-            onNotificationPress={handleNotificationItemPress}
-            onMarkAllRead={markAllAsRead}
-            onRefresh={refreshNotifications}
-            isRefreshing={false}
-          />
-        </SafeAreaView>
-      </Modal>
 
 
       </SafeAreaView>
