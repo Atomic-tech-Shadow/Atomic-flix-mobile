@@ -37,10 +37,10 @@
     },
     "production": {
       "channel": "production",
-      "distribution": "store",
+      "distribution": "internal",
       "android": {
-        "buildType": "app-bundle",
-        "gradleCommand": ":app:bundleRelease",
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease",
         "credentialsSource": "local"
       },
       "ios": {
