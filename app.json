@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Atomic Flix",
-    "slug": "atomic-flix", 
+    "slug": "atomic-flix",
     "version": "2.0.0",
     "orientation": "portrait",
     "extra": {
@@ -12,8 +12,6 @@
     "icon": "./assets/atomic-flix-logo-new.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0F0F0F",
-
-
     "android": {
       "versionCode": 3,
       "adaptiveIcon": {
@@ -22,6 +20,10 @@
       },
       "package": "com.atomic.flix",
       "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
         "android.permission.INTERNET",
         "android.permission.ACCESS_NETWORK_STATE",
         "android.permission.RECORD_AUDIO",
@@ -37,7 +39,7 @@
       "color": "#ffffff"
     },
     "plugins": [
-      "./android-manifest-config.js", 
+      "./android-manifest-config.js",
       "./android-resources-config.js",
       [
         "expo-notifications",
@@ -72,6 +74,14 @@
           }
         }
       ]
-    ]
+    ],
+    "owner": "ghostshadow228",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/6e1fff1f-d2c0-42cf-b4be-238c665a3fd5"
+    },
+    "ios": {}
   }
 }
