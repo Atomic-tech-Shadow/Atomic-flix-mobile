@@ -131,14 +131,6 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     padding: 6,
-    borderRadius: 6,
-    backgroundColor: COLORS.background.card,
-    // Effet glow subtil
-    shadowColor: COLORS.badges.atomic,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 3,
   },
   titleSection: {
     flex: 1,
@@ -172,14 +164,6 @@ const styles = StyleSheet.create({
     padding: 6,
     marginLeft: 4,
     position: 'relative',
-    borderRadius: 6,
-    backgroundColor: COLORS.background.card,
-    // Effet glow subtil
-    shadowColor: COLORS.badges.atomic,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 3,
   },
   notificationBadge: {
     position: 'absolute',
