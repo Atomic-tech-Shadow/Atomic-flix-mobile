@@ -8,6 +8,7 @@ interface SimpleAnimeCardProps {
   onPress: () => void;
   badge?: string;
   badgeColor?: string;
+  languageBadge?: string;
   index: number;
 }
 
@@ -16,6 +17,7 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
   onPress,
   badge,
   badgeColor,
+  languageBadge,
   index
 }) => {
   return (
@@ -32,6 +34,13 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
         fadeDuration={200}
       />
       
+      {/* Badge de langue en haut à gauche */}
+      {languageBadge && (
+        <View style={[styles.languageBadge, { backgroundColor: COLORS.badges.atomic }]}>
+          <Text style={styles.badgeText}>{languageBadge}</Text>
+        </View>
+      )}
+
       {/* Badge simple en haut à droite */}
       {badge && (
         <View style={[styles.badge, { backgroundColor: badgeColor || COLORS.badges.atomic }]}>
@@ -68,6 +77,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 6,
     right: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 3,
+    zIndex: 2,
+  },
+  languageBadge: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 3,

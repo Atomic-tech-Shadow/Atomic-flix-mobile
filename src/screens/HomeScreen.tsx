@@ -1720,10 +1720,11 @@ const HomeScreen: React.FC = () => {
                 >
                   {nouveauxEpisodes.map((anime, index) => (
                     <SimpleAnimeCard
-                      key={`new-${anime.id}-${anime.language || index}`}
+                      key={`new-${anime.id}-${anime.language?.name || index}`}
                       anime={anime}
                       badge={`S${anime.currentSeason || 1}E${anime.currentEpisode || 1}`}
                       badgeColor={COLORS.badges.hot}
+                      languageBadge={anime.language?.name}
                       index={index}
                       onPress={() => loadEpisodeDirectly(anime)}
                     />
