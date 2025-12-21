@@ -38,6 +38,7 @@ import NetworkStatusBanner from '../components/NetworkStatusBanner';
 import { apiGetWithCache, apiRequestWithRetry, ErrorType } from '../utils/apiWithRetry';
 import OfflineErrorCard from '../components/OfflineErrorCard';
 import ServerErrorCard from '../components/ServerErrorCard';
+import SimpleAnimeCard from '../components/SimpleAnimeCard';
 
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -1760,7 +1761,16 @@ const HomeScreen: React.FC = () => {
                   style={styles.horizontalScroll}
                   contentContainerStyle={styles.horizontalScrollContainer}
                 >
-                  {nouveauxEpisodes.map((anime, index) => renderTrendingAnimeCard(anime, index))}
+                  {nouveauxEpisodes.map((anime, index) => (
+                    <SimpleAnimeCard
+                      key={`new-${anime.id || index}`}
+                      anime={anime}
+                      badge="🔥 NOUVEAU"
+                      badgeColor={COLORS.badges.hot}
+                      index={index}
+                      onPress={() => loadEpisodeDirectly(anime)}
+                    />
+                  ))}
                 </OptimizedScrollView>
               </View>
             )}
@@ -1788,41 +1798,14 @@ const HomeScreen: React.FC = () => {
                   disableIntervalMomentum={true}
                 >
                   {planningAnimes.map((anime, index) => (
-                    <TouchableOpacity
-                      key={`planning-${anime.id || anime.url || anime.title.replace(/\s+/g, '-')}-${index}`}
-                      style={styles.planningCard}
+                    <SimpleAnimeCard
+                      key={`planning-${anime.id || index}`}
+                      anime={anime}
+                      badge={anime.releaseTime && anime.releaseTime !== '?' ? anime.releaseTime : '⏰'}
+                      badgeColor={COLORS.secondary}
+                      index={index}
                       onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
-                      activeOpacity={0.8}
-                    >
-                      <Image
-                        source={{ uri: anime.image }}
-                        style={styles.horizontalCardImage}
-                        resizeMode="cover"
-                      />
-                      {/* Badge PLANNING avec heure sur l'image */}
-                      <View style={styles.planningBadge}>
-                        <Text style={styles.planningBadgeText}>
-                          {anime.releaseTime && anime.releaseTime !== '?' ? anime.releaseTime : 'PLANNING'}
-                        </Text>
-                      </View>
-                      <LinearGradient
-                        colors={['transparent', COLORS.primary + 'CC']}
-                        style={styles.horizontalCardGradient}
-                      >
-                        <View style={styles.horizontalCardContent}>
-                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
-                            {anime.title}
-                          </Text>
-                          {anime.language && (
-                            <View style={styles.horizontalCardBadge}>
-                              <Text style={styles.horizontalCardBadgeText}>
-                                {anime.language.name}
-                              </Text>
-                            </View>
-                          )}
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
+                    />
                   ))}
                 </OptimizedScrollView>
               </View>
@@ -1851,39 +1834,14 @@ const HomeScreen: React.FC = () => {
                   disableIntervalMomentum={true}
                 >
                   {classiquesAnimes.map((anime, index) => (
-                    <TouchableOpacity
+                    <SimpleAnimeCard
                       key={`classique-${anime.id || index}`}
-                      style={styles.legendaryCard}
+                      anime={anime}
+                      badge="★ CLASSIQUE"
+                      badgeColor={COLORS.badges.atomic}
+                      index={index}
                       onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
-                      activeOpacity={0.8}
-                    >
-                      <Image
-                        source={{ uri: anime.image }}
-                        style={styles.horizontalCardImage}
-                        resizeMode="cover"
-                      />
-                      {/* Badge CLASSIQUE sur l'image */}
-                      <View style={styles.classicBadge}>
-                        <Text style={styles.classicBadgeText}>★ CLASSIQUE</Text>
-                      </View>
-                      <LinearGradient
-                        colors={['transparent', COLORS.primary + 'CC']}
-                        style={styles.horizontalCardGradient}
-                      >
-                        <View style={styles.horizontalCardContent}>
-                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
-                            {anime.title}
-                          </Text>
-                          {anime.language && (
-                            <View style={styles.horizontalCardBadge}>
-                              <Text style={styles.horizontalCardBadgeText}>
-                                {getLanguageBadge(anime.language)}
-                              </Text>
-                            </View>
-                          )}
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
+                    />
                   ))}
                 </OptimizedScrollView>
               </View>
@@ -1912,39 +1870,14 @@ const HomeScreen: React.FC = () => {
                   disableIntervalMomentum={true}
                 >
                   {pepitesAnimes.map((anime, index) => (
-                    <TouchableOpacity
+                    <SimpleAnimeCard
                       key={`pepite-${anime.id || index}`}
-                      style={styles.gemCard}
+                      anime={anime}
+                      badge="💎 RARE"
+                      badgeColor={COLORS.badges.manga}
+                      index={index}
                       onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
-                      activeOpacity={0.8}
-                    >
-                      <Image
-                        source={{ uri: anime.image }}
-                        style={styles.horizontalCardImage}
-                        resizeMode="cover"
-                      />
-                      {/* Badge RARE sur l'image */}
-                      <View style={styles.rareBadge}>
-                        <Text style={styles.rareBadgeText}>💎 RARE</Text>
-                      </View>
-                      <LinearGradient
-                        colors={['transparent', COLORS.primary + 'CC']}
-                        style={styles.horizontalCardGradient}
-                      >
-                        <View style={styles.horizontalCardContent}>
-                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
-                            {anime.title}
-                          </Text>
-                          {anime.language && (
-                            <View style={styles.horizontalCardBadge}>
-                              <Text style={styles.horizontalCardBadgeText}>
-                                {getLanguageBadge(anime.language)}
-                              </Text>
-                            </View>
-                          )}
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
+                    />
                   ))}
                 </OptimizedScrollView>
               </View>
@@ -1976,32 +1909,14 @@ const HomeScreen: React.FC = () => {
                   disableIntervalMomentum={true}
                 >
                   {recommendationsAnimes.map((anime, index) => (
-                    <TouchableOpacity
+                    <SimpleAnimeCard
                       key={`recommendation-${anime.id || index}`}
-                      style={styles.recommendationCard}
+                      anime={anime}
+                      badge="🎯 RECOM."
+                      badgeColor={COLORS.secondary}
+                      index={index}
                       onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
-                      activeOpacity={0.8}
-                    >
-                      <Image
-                        source={{ uri: anime.image }}
-                        style={styles.horizontalCardImage}
-                        resizeMode="cover"
-                      />
-                      {/* Badge RECOMMANDÉ sur l'image */}
-                      <View style={styles.recommendationBadge}>
-                        <Text style={styles.recommendationBadgeText}>🎯 RECOMMANDÉ</Text>
-                      </View>
-                      <LinearGradient
-                        colors={['transparent', COLORS.primary + 'CC']}
-                        style={styles.horizontalCardGradient}
-                      >
-                        <View style={styles.horizontalCardContent}>
-                          <Text style={styles.horizontalCardTitle} numberOfLines={2}>
-                            {anime.title}
-                          </Text>
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
+                    />
                   ))}
                 </OptimizedScrollView>
               </View>
