@@ -29,6 +29,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ImageWithPlaceholder from '../components/ImageWithPlaceholder';
+import AnimeDetailHero from '../components/AnimeDetailHero';
 import { animeAPI } from '../utils/animeAPI';
 import { apiRequest } from '../utils/api';
 import { useNotifications } from '../hooks/useNotifications';
@@ -927,50 +928,14 @@ const AnimeDetailScreen: React.FC = () => {
             <Text style={styles.emptySearchText}>Aucun résultat trouvé pour "{searchQuery}"</Text>
           </View>
         )}
-        {/* Image hero ajustée */}
-        <View style={styles.heroContainer}>
-          {/* Image de fond avec hauteur réduite */}
-          <View style={styles.heroImageContainer}>
-            <ImageWithPlaceholder
-              uri={animeData.image}
-              style={styles.heroImage}
-              resizeMode="cover"
-            />
-            
-            {/* Gradient overlay pour le contenu */}
-            <LinearGradient
-              colors={['transparent', COLORS.primary + '4D', COLORS.primary + 'CC', COLORS.primary]}
-              style={styles.heroGradient}
-            />
-            
-            {/* Contenu overlay exactement comme dans l'image */}
-            <View style={styles.heroContent}>
-              <Text style={styles.heroTitle}>{animeData.title}</Text>
-              
-              {/* Badges compacts alignés à gauche */}
-              <View style={styles.heroBadgesCompact}>
-                <View style={styles.heroBadgeSmall}>
-                  <View style={styles.badgeDotSmall} />
-                  <Text style={styles.badgeTextSmall}>Progrès: {animeData.progressInfo}</Text>
-                </View>
-                <View style={styles.heroBadgeSmall}>
-                  <View style={styles.badgeDotSmall} />
-                  <Text style={styles.badgeTextSmall}>Correspondance: {animeData.correspondence}</Text>
-                </View>
-                {animeData.genres && animeData.genres.length > 0 && (
-                  <View style={[styles.heroBadgeSmall, styles.genreBadge]}>
-                    <View style={[styles.badgeDotSmall, styles.genreDot]} />
-                    <Text style={styles.badgeTextSmall}>
-                      Genre: {animeData.genres.join(', ')}
-                    </Text>
-                  </View>
-                )}
-              </View>
-              
 
-            </View>
-          </View>
-        </View>
+        <AnimeDetailHero
+          title={animeData.title}
+          image={animeData.image}
+          progressInfo={animeData.progressInfo}
+          correspondence={animeData.correspondence}
+          genres={animeData.genres}
+        />
 
         {/* Section Synopsis exactement comme dans l'image */}
         <View style={styles.mobileSection}>
