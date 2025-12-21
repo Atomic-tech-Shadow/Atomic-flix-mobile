@@ -41,6 +41,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: 200,
     overflow: 'hidden',
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border.secondary,
   },
   image: {
     width: '100%',
