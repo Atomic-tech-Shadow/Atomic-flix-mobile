@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
 import { COLORS } from '../constants/newColors';
-import ImageWithPlaceholder from './ImageWithPlaceholder';
 
 const { height } = Dimensions.get('window');
 
@@ -22,9 +21,9 @@ const AnimeDetailHero: React.FC<AnimeDetailHeroProps> = ({
 }) => {
   return (
     <View style={styles.container}>
-      {/* Image nette directement - rien devant */}
-      <ImageWithPlaceholder
-        uri={image}
+      {/* Image DIRECTE sans progressive rendering pour netteté maximale */}
+      <Image
+        source={{ uri: image }}
         style={styles.image}
         resizeMode="cover"
         fadeDuration={200}
