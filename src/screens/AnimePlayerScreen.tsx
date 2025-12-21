@@ -28,6 +28,7 @@ import { Episode, VideoSource, Season, AnimeData, EpisodeDetails } from '../type
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ImageWithPlaceholder from '../components/ImageWithPlaceholder';
+import AnimePlayerHero from '../components/AnimePlayerHero';
 import { getThemedColors, getThemedTextStyles, interactiveStyles } from '../constants/newColors';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNotifications } from '../hooks/useNotifications';
@@ -1676,21 +1677,14 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
             <Text style={styles.emptySearchText}>Aucun résultat trouvé pour "{searchQuery}"</Text>
           </View>
         )}
-        {/* Bannière avec titre de la saison - Pleine largeur comme le web */}
-        <View style={styles.bannerContainer}>
-          {animeData?.image && (
-            <Image
-              source={{ uri: animeData.image }}
-              style={styles.bannerImage}
-              resizeMode="cover"
-              fadeDuration={200}
-            />
-          )}
-          <View style={styles.bannerContent}>
-            <Text style={styles.bannerTitle}>{animeData.title}</Text>
-            <Text style={styles.bannerSeason}>{selectedSeason?.name}</Text>
-          </View>
-        </View>
+
+        {animeData && (
+          <AnimePlayerHero
+            title={animeData.title}
+            image={animeData.image}
+            seasonName={selectedSeason?.name}
+          />
+        )}
         {/* Sélecteur de langue - Style simplifié */}
         {selectedSeason && selectedSeason.languages.length > 1 && (
           <View style={styles.languageSelector}>
