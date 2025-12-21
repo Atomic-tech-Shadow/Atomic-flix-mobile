@@ -1719,7 +1719,7 @@ const HomeScreen: React.FC = () => {
                     <SimpleAnimeCard
                       key={`new-${anime.id}-${anime.language?.name || index}`}
                       anime={anime}
-                      badge={anime.addedAt ? formatAddedDate(anime.addedAt) : `S${anime.currentSeason || 1}E${anime.currentEpisode || 1}`}
+                      badge={anime.episodeInfo || `S${anime.currentSeason || 1}E${anime.currentEpisode || 1}`}
                       badgeColor={COLORS.badges.hot}
                       languageBadge={anime.language?.name}
                       index={index}
