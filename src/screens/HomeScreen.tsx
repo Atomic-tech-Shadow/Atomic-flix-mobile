@@ -1699,7 +1699,7 @@ const HomeScreen: React.FC = () => {
                         image: historyItem.animeImage || 'https://via.placeholder.com/200x280',
                         id: historyItem.id
                       }}
-                      badge={`EP ${historyItem.episodeNumber}`}
+                      badge={`S${historyItem.seasonNumber || 1}E${historyItem.episodeNumber}`}
                       badgeColor={COLORS.secondary}
                       index={index}
                       onPress={() => resumeWatching(historyItem)}
