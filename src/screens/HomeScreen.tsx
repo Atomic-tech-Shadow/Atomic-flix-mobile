@@ -1725,7 +1725,7 @@ const HomeScreen: React.FC = () => {
                     <SimpleAnimeCard
                       key={`new-${anime.id || index}`}
                       anime={anime}
-                      badge="🔥 NOUVEAU"
+                      badge={`S${anime.currentSeason || 1}E${anime.currentEpisode || 1}`}
                       badgeColor={COLORS.badges.hot}
                       index={index}
                       onPress={() => loadEpisodeDirectly(anime)}
