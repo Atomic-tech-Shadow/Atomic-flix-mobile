@@ -103,12 +103,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     height: '100%',
   },
   bannerOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: COLORS.primary + '99', // Équivalent à bg-black/60
+    display: 'none',
   },
   bannerContent: {
     position: 'absolute',
@@ -1684,13 +1679,13 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         {/* Bannière avec titre de la saison - Pleine largeur comme le web */}
         <View style={styles.bannerContainer}>
           {animeData?.image && (
-            <ImageWithPlaceholder
-              uri={animeData.image}
+            <Image
+              source={{ uri: animeData.image }}
               style={styles.bannerImage}
               resizeMode="cover"
+              fadeDuration={200}
             />
           )}
-          <View style={styles.bannerOverlay} />
           <View style={styles.bannerContent}>
             <Text style={styles.bannerTitle}>{animeData.title}</Text>
             <Text style={styles.bannerSeason}>{selectedSeason?.name}</Text>
