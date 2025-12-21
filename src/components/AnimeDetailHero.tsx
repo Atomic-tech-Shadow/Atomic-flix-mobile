@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: COLORS.text.primary,
+    color: '#000000',
     marginBottom: 8,
   },
   badges: {
