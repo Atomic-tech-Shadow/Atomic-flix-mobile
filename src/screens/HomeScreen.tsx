@@ -59,13 +59,10 @@ interface RecentEpisode {
   animeId: string;
   animeTitle: string;
   season: number;
-  episode: number;
   language: string;
-  isFinale: boolean;
-  isVFCrunchyroll: boolean;
+  seasonInfo: string;
   url: string;
   image: string;
-  badgeInfo: string;
   addedAt: string;
   type: string;
 }
@@ -240,8 +237,8 @@ const HomeScreen: React.FC = () => {
           contentType: 'anime',
           type: episode.type,
           currentSeason: episode.season,
-          currentEpisode: episode.episode,
-          episodeInfo: episode.badgeInfo,
+          currentEpisode: undefined,
+          episodeInfo: episode.seasonInfo,
           language: {
             name: episode.language,
             code: episode.language.toLowerCase(),
@@ -1723,7 +1720,7 @@ const HomeScreen: React.FC = () => {
                 >
                   {nouveauxEpisodes.map((anime, index) => (
                     <SimpleAnimeCard
-                      key={`new-${anime.id || index}`}
+                      key={`new-${anime.id}-${anime.language || index}`}
                       anime={anime}
                       badge={`S${anime.currentSeason || 1}E${anime.currentEpisode || 1}`}
                       badgeColor={COLORS.badges.hot}
