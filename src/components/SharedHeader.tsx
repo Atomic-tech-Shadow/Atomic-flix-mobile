@@ -95,11 +95,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           >
             <Ionicons name="notifications-outline" size={22} color={iconColor} />
             {unreadCount > 0 && (
-              <View style={styles.notificationBadge}>
-                <Text style={styles.badgeText}>
-                  {unreadCount > 99 ? '99+' : unreadCount.toString()}
-                </Text>
-              </View>
+              <View style={styles.notificationBadge} />
             )}
           </TouchableOpacity>
         </View>
@@ -165,25 +161,17 @@ const styles = StyleSheet.create({
   },
   notificationBadge: {
     position: 'absolute',
-    top: 4,
-    right: 4,
+    top: 6,
+    right: 6,
+    width: 8,
+    height: 8,
     backgroundColor: COLORS.badges.hot,
-    borderRadius: 10,
-    minWidth: 20,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderRadius: 4,
     // Effet glow subtil pour le badge
     shadowColor: COLORS.badges.hot,
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
-  },
-  badgeText: {
-    color: COLORS.text.primary,
-    fontSize: 10,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    shadowOpacity: 0.6,
+    shadowRadius: 3,
   },
 });
 
