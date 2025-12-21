@@ -1,0 +1,99 @@
+Task :expo-eas-client:lintVitalAnalyzeRelease
+> Task :expo-json-utils:lintVitalAnalyzeRelease
+> Task :expo-dev-menu:compileReleaseJavaWithJavac
+> Task :expo-dev-menu:bundleLibCompileToJarRelease
+> Task :expo-dev-menu:bundleLibRuntimeToJarRelease
+> Task :expo-dev-menu:bundleLibRuntimeToDirRelease
+> Task :expo-updates:kspReleaseKotlin
+e: [ksp] java.lang.OutOfMemoryError: Metaspace
+> Task :expo-updates:kspReleaseKotlin FAILED
+> Task :expo-dev-menu-interface:lintVitalAnalyzeRelease
+> Task :expo-manifests:lintVitalAnalyzeRelease
+> Task :expo-dev-launcher:compileReleaseKotlin
+> Task :react-native-reanimated:buildCMakeRelWithDebInfo[armeabi-v7a][reanimated]
+Exception in thread "RMI TCP Connection(idle)" java.lang.OutOfMemoryError: Metaspace
+Exception in thread "RMI TCP Connection(idle)" java.lang.OutOfMemoryError: Metaspace
+> Task :react-native-screens:lintVitalAnalyzeRelease FAILED
+> Task :expo-dev-launcher:compileReleaseKotlin FAILED
+> Task :expo-manifests:lintVitalAnalyzeRelease FAILED
+> Task :expo-dev-menu-interface:lintVitalAnalyzeRelease FAILED
+[Incubating] Problems report is available at: file:///home/expo/workingdir/build/android/build/reports/problems/problems-report.html
+FAILURE: Build completed with 5 failures.
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':expo-updates:kspReleaseKotlin'.
+> A failure occurred while executing com.google.devtools.ksp.gradle.KspAAWorkerAction
+   > Metaspace
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+> A failure occurred while executing com.google.devtools.ksp.gradle.KspAAWorkerAction
+   > Metaspace
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+==============================================================================
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':react-native-screens:lintVitalAnalyzeRelease'.
+> A failure occurred while executing com.android.build.gradle.internal.lint.AndroidLintWorkAction
+   > Metaspace
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+==============================================================================
+3: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':expo-dev-launcher:compileReleaseKotlin'.
+> Could not resolve all files for configuration ':expo-dev-launcher:detachedConfiguration8'.
+   > Failed to transform R.jar to match attributes {artifactType=classpath-entry-snapshot, org.gradle.libraryelements=jar, org.gradle.usage=java-runtime}.
+      > Execution failed for BuildToolsApiClasspathEntrySnapshotTransform: /home/expo/workingdir/build/node_modules/expo-dev-launcher/android/build/intermediates/compile_r_class_jar/release/generateReleaseRFile/R.jar.
+         > Metaspace
+> There are 29 more failures with identical causes.
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+============================================
+https://docs.gradle.org/8.14.3/userguide/command_line_interface.html#sec:command_line_warnings
+============================================================================
+4: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':expo-manifests:lintVitalAnalyzeRelease'.
+> A failure occurred while executing com.android.build.gradle.internal.lint.AndroidLintWorkAction
+   > Metaspace
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+==============================================================================
+5: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':expo-dev-menu-interface:lintVitalAnalyzeRelease'.
+> A failure occurred while executing com.android.build.gradle.internal.lint.AndroidLintWorkAction
+   > Metaspace
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+==============================================================================
+BUILD FAILED in 7m 24s
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+For more on this, please refer to https://docs.gradle.org/8.14.3/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+892 actionable tasks: 892 executed
+Error: Gradle build failed with unknown error. See logs for the "Run gradlew" phase for more information.
