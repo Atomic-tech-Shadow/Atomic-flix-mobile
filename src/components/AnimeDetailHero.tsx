@@ -22,7 +22,7 @@ const AnimeDetailHero: React.FC<AnimeDetailHeroProps> = ({
 }) => {
   return (
     <View style={styles.container}>
-      {/* Image nette directement - pas de wrappers supplémentaires */}
+      {/* Image nette directement - rien devant */}
       <ImageWithPlaceholder
         uri={image}
         style={styles.image}
@@ -30,10 +30,7 @@ const AnimeDetailHero: React.FC<AnimeDetailHeroProps> = ({
         fadeDuration={200}
       />
       
-      {/* Overlay gradient simple en bas */}
-      <View style={styles.overlay} />
-      
-      {/* Contenu textuel par-dessus */}
+      {/* Contenu SEULEMENT en bas - position absolute */}
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
         
@@ -65,35 +62,30 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  overlay: {
+  content: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    height: '70%',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-  },
-  content: {
-    position: 'absolute',
-    bottom: 16,
-    left: 16,
-    right: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: COLORS.text.primary,
-    marginBottom: 12,
+    marginBottom: 8,
   },
   badges: {
     flexDirection: 'column',
     gap: 4,
   },
   badge: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: 6,
+    borderRadius: 4,
     alignSelf: 'flex-start',
   },
   badgeText: {
