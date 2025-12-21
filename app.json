@@ -38,6 +38,13 @@
       "icon": "./assets/notification-icon-96x96.png",
       "color": "#ffffff"
     },
+    "updates": {
+      "url": "https://u.expo.dev/6e1fff1f-d2c0-42cf-b4be-238c665a3fd5",
+      "fallbackToCacheTimeout": 30000
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "plugins": [
       "./android-manifest-config.js",
       "./android-resources-config.js",
