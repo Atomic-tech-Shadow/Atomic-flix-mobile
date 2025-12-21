@@ -1682,68 +1682,28 @@ const HomeScreen: React.FC = () => {
 
             {/* Section Historique - REPRENEZ VOTRE VISIONNAGE */}
             {currentlyWatching.length > 0 && (
-              <View style={styles.historySection}>
-                <View style={styles.historyHeader}>
-                  <Text style={styles.historyTitle}>🎯 CONTINUER À REGARDER</Text>
+              <View style={styles.horizontalSection}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>🎯 CONTINUER À REGARDER</Text>
                 </View>
                 <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.historyScrollContainer}
+                  contentContainerStyle={styles.horizontalScrollContainer}
                 >
                   {currentlyWatching.map((historyItem, index) => (
-                    <TouchableOpacity
-                      key={historyItem.id}
-                      style={styles.historyCard}
+                    <SimpleAnimeCard
+                      key={`history-${historyItem.id}`}
+                      anime={{
+                        title: historyItem.animeTitle,
+                        image: historyItem.animeImage || 'https://via.placeholder.com/200x280',
+                        id: historyItem.id
+                      }}
+                      badge={`EP ${historyItem.episodeNumber}`}
+                      badgeColor={COLORS.secondary}
+                      index={index}
                       onPress={() => resumeWatching(historyItem)}
-                      activeOpacity={0.8}
-                    >
-                      <View style={styles.historyImageContainer}>
-                        <Image 
-                          source={{ uri: historyItem.animeImage || 'https://via.placeholder.com/200x280' }}
-                          style={styles.historyImage}
-                          resizeMode="cover"
-                        />
-                        {/* Bouton de suppression */}
-                        <TouchableOpacity 
-                          style={styles.historyRemoveButton}
-                          onPress={() => removeFromHistory(historyItem)}
-                        >
-                          <Ionicons name="close" size={16} color={COLORS.text.primary} />
-                        </TouchableOpacity>
-                        
-                        {/* Barre de progression */}
-                        <View style={styles.progressBarContainer}>
-                          <View 
-                            style={[
-                              styles.progressBar, 
-                              { 
-                                width: `${historyService.calculateProgress(historyItem.watchDuration, historyItem.totalDuration)}%` 
-                              }
-                            ]} 
-                          />
-                        </View>
-                      </View>
-                      
-                      <View style={styles.historyContent}>
-                        <Text style={styles.historyAnimeTitle} numberOfLines={2}>
-                          {historyItem.animeTitle}
-                        </Text>
-                        <Text style={styles.historyEpisodeInfo}>
-                          {historyItem.seasonName || historyService.extractSeasonInfo(historyItem.animeId).seasonName}
-                        </Text>
-                        <View style={styles.historyBadgeContainer}>
-                          <View style={[styles.historyLanguageBadge, { backgroundColor: historyItem.language === 'VF' ? COLORS.badges.vf : COLORS.badges.vostfr }]}>
-                            <Text style={styles.historyLanguageText}>
-                              {getLanguageBadgeText(historyItem.language)}
-                            </Text>
-                          </View>
-                          <View style={[styles.historyEpisodeBadge, { backgroundColor: COLORS.secondary }]}>
-                            <Text style={styles.historyEpisodeText}>Épisode {historyItem.episodeNumber}</Text>
-                          </View>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
+                    />
                   ))}
                 </OptimizedScrollView>
               </View>
