@@ -1532,30 +1532,35 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 const requestUrl = request.url;
                 const initialUrl = currentSource.url;
                 
-                // Liste des domaines/patterns autorisés pour les lecteurs vidéo intégrés
+                // Liste complète des domaines/patterns autorisés pour les lecteurs vidéo intégrés
                 const allowedDomains = [
+                  // Serveurs vidéo principaux
                   'sibnet.ru',
                   'video.sibnet.ru',
+                  'smoothpre.com',
+                  'vidmoly.to',
+                  'sendvid.com',
                   'dailymotion.com',
                   'youtube.com',
                   'youtu.be',
                   'vimeo.com',
-                  'anime-sama.fr',
                   'mp4upload.com',
                   'streamtape.com',
                   'kwik.cx',
                   'okru',
-                  'sendvid.com',
                   'netu.tv',
                   'dropload.io',
+                  // Domaines de confiance pour sécurité
+                  'anime-sama.fr',
+                  'anime-sama.eu',
                   'cloudflare.com',
                   'hcaptcha.com',
-                  'challenges.cloudflare.com',
-                  'cdn',
-                  'img',
+                  'recaptcha.net',
+                  'google.com',
+                  // CDN et images
+                  'cdn.statically.io',
                 ];
                 
-                // Vérifier si la redirection est vers le même domaine
                 try {
                   const requestUrlObj = new URL(requestUrl);
                   const initialUrlObj = new URL(initialUrl);
@@ -1565,34 +1570,30 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                     return true;
                   }
                   
-                  // Permettre les domaines autorisés
+                  // Permettre les domaines autorisés uniquement
                   const hostname = requestUrlObj.hostname.toLowerCase();
                   const isAllowed = allowedDomains.some(domain => 
-                    hostname.includes(domain.toLowerCase())
+                    hostname === domain || hostname.endsWith('.' + domain)
                   );
                   
                   if (isAllowed) {
+                    console.log('Navigation autorisée vers:', requestUrl);
                     return true;
                   }
                   
-                  // Permettre les URLs en http/https depuis le même serveur embed
+                  // Bloquer tout autre domaine
+                  console.log('Navigation bloquée - domaine non autorisé:', requestUrl);
+                  return false;
+                  
+                } catch (e) {
+                  // Si parsing URL échoue, vérifier au minimum si c'est HTTP/HTTPS
                   if (requestUrl.startsWith('http://') || requestUrl.startsWith('https://')) {
-                    // Ne pas bloquer les protocoles standards, laisser le navigateur gérer
-                    // Cela permet aux lecteurs vidéo intégrés de fonctionner correctement
+                    console.log('Navigation permise (parsing échoué mais HTTP/HTTPS):', requestUrl);
                     return true;
                   }
-                } catch (e) {
-                  // Si parsing URL échoue, permettre par défaut pour compatibilité
-                  return true;
-                }
-                
-                // Bloquer les schémas non-HTTP (tel:, mailto:, sms:, etc.)
-                if (!requestUrl.startsWith('http://') && !requestUrl.startsWith('https://')) {
-                  console.log('Navigation bloquée (schéma non-HTTP):', requestUrl);
+                  console.log('Navigation bloquée (parsing échoué et non-HTTP):', requestUrl);
                   return false;
                 }
-                
-                return true;
               }}
               onNavigationStateChange={(navState) => {
                 // Détecter les erreurs de chargement
