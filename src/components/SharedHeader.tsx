@@ -108,9 +108,9 @@ const styles = StyleSheet.create({
   // Header mobile exact - Effet "I am Atomic"
   mobileHeader: {
     backgroundColor: COLORS.primary,
-    paddingHorizontal: 12,
-    paddingTop: 8,
-    paddingBottom: 4,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 12,
     zIndex: 10000, // Au-dessus des lignes rouges pour les masquer
     position: 'relative',
     // Effet glow subtil sur le header
@@ -126,15 +126,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   menuButton: {
+    padding: 8,
+    marginLeft: -8,
   },
   titleSection: {
     flex: 1,
-    marginLeft: 8,
+    marginLeft: 12,
   },
   titleTextGradient: {
     borderRadius: 6,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     alignSelf: 'flex-start',
     // Effet glow subtil pour le titre
     shadowColor: COLORS.badges.atomic,
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
   },
   titleText: {
-    fontSize: 12,
+    fontSize: 18,
     fontWeight: 'bold',
     color: COLORS.text.primary,
     letterSpacing: 0.5,
@@ -156,17 +158,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerIconButton: {
-    marginLeft: 4,
+    marginLeft: 12,
+    padding: 8,
+    marginRight: -8,
     position: 'relative',
   },
   notificationBadge: {
     position: 'absolute',
-    top: 6,
-    right: 6,
-    width: 8,
-    height: 8,
+    top: 4,
+    right: 4,
+    width: 12,
+    height: 12,
     backgroundColor: COLORS.badges.hot,
-    borderRadius: 4,
+    borderRadius: 6,
     // Effet glow subtil pour le badge
     shadowColor: COLORS.badges.hot,
     shadowOffset: { width: 0, height: 0 },
