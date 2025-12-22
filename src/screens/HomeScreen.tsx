@@ -1740,7 +1740,7 @@ const HomeScreen: React.FC = () => {
                     <SimpleAnimeCard
                       key={`new-${anime.id}-${anime.language?.name || index}`}
                       anime={anime}
-                      badge={`S${anime.currentSeason || 1}${anime.currentEpisode ? `E${anime.currentEpisode}` : ''}`}
+                      badge={anime.addedAt ? formatAddedDate(anime.addedAt) : `S${anime.currentSeason || 1}${anime.currentEpisode ? `E${anime.currentEpisode}` : ''}`}
                       badgeColor={COLORS.badges.hot}
                       languageBadge={anime.language?.name}
                       index={index}
