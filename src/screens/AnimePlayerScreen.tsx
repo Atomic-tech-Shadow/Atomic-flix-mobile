@@ -1460,6 +1460,74 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               allowsFullscreenVideo={true}
               allowsInlineMediaPlayback={true}
               mediaPlaybackRequiresUserAction={false}
+              injectedJavaScriptBeforeContentLoaded={`
+                (function() {
+                  const initialUrl = '${currentSource.url}';
+                  
+                  // Bloquer window.location
+                  const originalLocation = window.location;
+                  Object.defineProperty(window, 'location', {
+                    get: function() { return originalLocation; },
+                    set: function(value) { 
+                      console.warn('Redirection bloquée:', value);
+                      return false;
+                    },
+                    configurable: false
+                  });
+                  
+                  // Bloquer window.open
+                  const originalOpen = window.open;
+                  window.open = function(url, target, features) {
+                    console.warn('window.open bloqué:', url);
+                    return null;
+                  };
+                  
+                  // Bloquer window.location.href
+                  Object.defineProperty(window.location, 'href', {
+                    get: function() { return initialUrl; },
+                    set: function(value) {
+                      console.warn('Redirection href bloquée:', value);
+                      return false;
+                    },
+                    configurable: false
+                  });
+                  
+                  // Bloquer window.location.replace
+                  window.location.replace = function(url) {
+                    console.warn('location.replace bloqué:', url);
+                    return false;
+                  };
+                  
+                  // Bloquer window.location.assign
+                  window.location.assign = function(url) {
+                    console.warn('location.assign bloqué:', url);
+                    return false;
+                  };
+                  
+                  // Bloquer les clics sur les liens
+                  document.addEventListener('click', function(e) {
+                    const link = e.target.closest('a');
+                    if (link) {
+                      const href = link.getAttribute('href');
+                      if (href && !href.startsWith('javascript:') && !href.startsWith('#')) {
+                        console.warn('Clic sur lien bloqué:', href);
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }
+                    }
+                  }, true);
+                  
+                  // Bloquer les form submissions
+                  document.addEventListener('submit', function(e) {
+                    const action = e.target.getAttribute('action');
+                    if (action && !action.startsWith('javascript:')) {
+                      console.warn('Submission de formulaire bloquée:', action);
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }
+                  }, true);
+                })();
+              `}
               onShouldStartLoadWithRequest={(request) => {
                 // Bloquer toutes les redirections vers d'autres URLs
                 // Permettre uniquement l'URL initiale du lecteur vidéo
@@ -1472,6 +1540,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 }
                 
                 // Bloquer toutes les autres redirections
+                console.log('Redirection bloquée par onShouldStartLoadWithRequest:', requestUrl);
                 return false;
               }}
               onNavigationStateChange={(navState) => {
