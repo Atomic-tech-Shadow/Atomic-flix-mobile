@@ -1980,15 +1980,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
           </View>
         )}
 
-        {/* Message d'erreur de pub - Style anime-sama */}
-        {selectedEpisode && (
-          <View style={styles.atomicMessageContainer}>
-            <Text style={styles.atomicMessageText}>⚛️I AM ATOMIC⚛️</Text>
-            <Text style={styles.atomicMessageSubtext}>
-              <Text style={styles.atomicMessageBold}>Trop de pub🙄? Changez de lecteur.</Text>
-            </Text>
-          </View>
-        )}
 
         {/* Message d'erreur */}
         {error && (
