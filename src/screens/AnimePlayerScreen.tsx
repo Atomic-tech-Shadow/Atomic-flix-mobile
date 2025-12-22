@@ -1461,7 +1461,18 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               allowsInlineMediaPlayback={true}
               mediaPlaybackRequiresUserAction={false}
               onShouldStartLoadWithRequest={(request) => {
-                return true;
+                // Bloquer toutes les redirections vers d'autres URLs
+                // Permettre uniquement l'URL initiale du lecteur vidéo
+                const initialUrl = currentSource.url;
+                const requestUrl = request.url;
+                
+                // Si l'URL est la même que l'initiale, permettre
+                if (requestUrl === initialUrl) {
+                  return true;
+                }
+                
+                // Bloquer toutes les autres redirections
+                return false;
               }}
               onNavigationStateChange={(navState) => {
                 // Détecter les erreurs de chargement
