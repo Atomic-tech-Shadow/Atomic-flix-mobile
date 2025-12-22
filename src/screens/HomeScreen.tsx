@@ -1736,17 +1736,23 @@ const HomeScreen: React.FC = () => {
                   style={styles.horizontalScroll}
                   contentContainerStyle={styles.horizontalScrollContainer}
                 >
-                  {nouveauxEpisodes.map((anime, index) => (
-                    <SimpleAnimeCard
-                      key={`new-${anime.id}-${anime.language?.name || index}`}
-                      anime={anime}
-                      badge={anime.addedAt ? formatAddedDate(anime.addedAt) : `S${anime.currentSeason || 1}${anime.currentEpisode ? `E${anime.currentEpisode}` : ''}`}
-                      badgeColor={COLORS.badges.hot}
-                      languageBadge={anime.language?.name}
-                      index={index}
-                      onPress={() => loadEpisodeDirectly(anime)}
-                    />
-                  ))}
+                  {nouveauxEpisodes.map((anime, index) => {
+                    const timeText = anime.addedAt ? formatAddedDate(anime.addedAt) : `S${anime.currentSeason || 1}${anime.currentEpisode ? `E${anime.currentEpisode}` : ''}`;
+                    if (index === 0) {
+                      console.log('🕐 Premier épisode - addedAt:', anime.addedAt, 'Formaté:', timeText);
+                    }
+                    return (
+                      <SimpleAnimeCard
+                        key={`new-${anime.id}-${anime.language?.name || index}`}
+                        anime={anime}
+                        badge={timeText}
+                        badgeColor={COLORS.badges.hot}
+                        languageBadge={anime.language?.name}
+                        index={index}
+                        onPress={() => loadEpisodeDirectly(anime)}
+                      />
+                    );
+                  })}
                 </OptimizedScrollView>
               </View>
             )}
