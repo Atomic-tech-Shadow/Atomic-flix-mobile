@@ -35,7 +35,7 @@
       "favicon": "./assets/favicon.png"
     },
     "notification": {
-      "icon": "./assets/notification-icon-96x96.png",
+      "icon": "./assets/notification-icon-384x384.png",
       "color": "#ffffff"
     },
     "plugins": [
@@ -44,7 +44,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/notification-icon-96x96.png",
+          "icon": "./assets/notification-icon-384x384.png",
           "color": "#ffffff",
           "defaultChannel": "atomic-flix-main",
           "sounds": [],
