@@ -73,7 +73,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             style={styles.headerIconButton}
             onPress={handleSearchPress}
           >
-            <Ionicons name="search" size={22} color={iconColor} />
+            <Ionicons name="search" size={28} color={iconColor} />
           </TouchableOpacity>
 
           {/* Bouton thème (mode sombre/clair) */}
@@ -83,7 +83,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           >
             <Ionicons 
               name={isDark ? "sunny" : "moon"} 
-              size={22} 
+              size={28} 
               color={iconColor} 
             />
           </TouchableOpacity>
@@ -93,7 +93,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             style={styles.headerIconButton}
             onPress={onNotificationPress}
           >
-            <Ionicons name="notifications-outline" size={22} color={iconColor} />
+            <Ionicons name="notifications-outline" size={28} color={iconColor} />
             {unreadCount > 0 && (
               <View style={styles.notificationBadge} />
             )}
