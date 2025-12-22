@@ -1780,7 +1780,7 @@ const HomeScreen: React.FC = () => {
                       badge={anime.releaseTime ? formatPlanningTime(anime.releaseTime) : '⏰'}
                       badgeColor={COLORS.secondary}
                       index={index}
-                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
+                      onPress={() => loadAnimeDetails(anime.animeId || anime.url, anime.contentType, anime.title)}
                     />
                   ))}
                 </OptimizedScrollView>
