@@ -38,6 +38,7 @@ import { apiGetWithCache, apiRequestWithRetry, ErrorType } from '../utils/apiWit
 import OfflineErrorCard from '../components/OfflineErrorCard';
 import ServerErrorCard from '../components/ServerErrorCard';
 import SimpleAnimeCard from '../components/SimpleAnimeCard';
+import SectionTitle from '../components/SectionTitle';
 import { formatAddedDate, formatPlanningTime } from '../utils/dateFormatter';
 
 
@@ -1698,9 +1699,7 @@ const HomeScreen: React.FC = () => {
             {/* Section Historique - REPRENEZ VOTRE VISIONNAGE */}
             {currentlyWatching.length > 0 && (
               <View style={styles.horizontalSection}>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>🎯 CONTINUER À REGARDER</Text>
-                </View>
+                <SectionTitle title="🎯 CONTINUER À REGARDER" colors={COLORS} />
                 <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
@@ -1727,9 +1726,7 @@ const HomeScreen: React.FC = () => {
             {/* Section Nouveaux épisodes - 1ère position */}
             {nouveauxEpisodes.length > 0 && (
               <View style={styles.horizontalSection}>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>🔥 Nouveaux épisodes</Text>
-                </View>
+                <SectionTitle title="🔥 Nouveaux épisodes" colors={COLORS} />
                 <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
@@ -1754,9 +1751,7 @@ const HomeScreen: React.FC = () => {
             {/* Section Sorties aujourd'hui - 2ème position planning immédiat */}
             {planningAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>⏰ Sorties aujourd'hui</Text>
-                </View>
+                <SectionTitle title="⏰ Sorties aujourd'hui" colors={COLORS} />
                 <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
@@ -1790,9 +1785,7 @@ const HomeScreen: React.FC = () => {
             {/* Section Classiques - 3ème position valeurs sûres */}
             {classiquesAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>👑 Légendaires</Text>
-                </View>
+                <SectionTitle title="👑 Légendaires" colors={COLORS} />
                 <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
@@ -1826,9 +1819,7 @@ const HomeScreen: React.FC = () => {
             {/* Section Pépites - 4ème position exploration */}
             {pepitesAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>💎 Pépites cachées</Text>
-                </View>
+                <SectionTitle title="💎 Pépites cachées" colors={COLORS} />
                 <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
@@ -1865,9 +1856,7 @@ const HomeScreen: React.FC = () => {
             {/* Section Recommandations - Position après Historique */}
             {recommendationsAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>🎯 Recommandations</Text>
-                </View>
+                <SectionTitle title="🎯 Recommandations" colors={COLORS} />
                 <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
