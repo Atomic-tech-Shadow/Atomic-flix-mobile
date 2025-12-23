@@ -17,6 +17,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({ title, icon = 'pencil', col
     header: {
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'center',
       backgroundColor: colors.background.surface,
       paddingHorizontal: 14,
       paddingVertical: 12,
@@ -25,14 +26,13 @@ const SectionTitle: React.FC<SectionTitleProps> = ({ title, icon = 'pencil', col
       borderBottomColor: colors.secondary,
     },
     iconBox: {
-      marginRight: 10,
+      marginRight: 8,
     },
     titleText: {
       fontSize: 16,
       fontWeight: '700',
       color: colors.text.primary,
       letterSpacing: 1,
-      flex: 1,
     },
     underline: {
       height: 2,
