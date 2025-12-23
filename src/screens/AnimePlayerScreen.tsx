@@ -1463,22 +1463,25 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               injectedJavaScriptBeforeContentLoaded={`
                 (function() {
                   const initialUrl = '${currentSource.url}';
+                  let redirectAttempts = 0;
                   
                   // Bloquer window.location
                   const originalLocation = window.location;
                   Object.defineProperty(window, 'location', {
                     get: function() { return originalLocation; },
                     set: function(value) { 
-                      console.warn('Redirection bloquée:', value);
+                      redirectAttempts++;
+                      console.warn('Tentative de redirection #' + redirectAttempts + ' bloquée:', value);
                       return false;
                     },
                     configurable: false
                   });
                   
-                  // Bloquer window.open
+                  // Bloquer window.open avec force
                   const originalOpen = window.open;
                   window.open = function(url, target, features) {
-                    console.warn('window.open bloqué:', url);
+                    redirectAttempts++;
+                    console.warn('window.open bloqué (#' + redirectAttempts + '):', url);
                     return null;
                   };
                   
@@ -1486,7 +1489,8 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   Object.defineProperty(window.location, 'href', {
                     get: function() { return initialUrl; },
                     set: function(value) {
-                      console.warn('Redirection href bloquée:', value);
+                      redirectAttempts++;
+                      console.warn('location.href bloqué (#' + redirectAttempts + '):', value);
                       return false;
                     },
                     configurable: false
@@ -1494,25 +1498,47 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   
                   // Bloquer window.location.replace
                   window.location.replace = function(url) {
-                    console.warn('location.replace bloqué:', url);
+                    redirectAttempts++;
+                    console.warn('location.replace bloqué (#' + redirectAttempts + '):', url);
                     return false;
                   };
                   
                   // Bloquer window.location.assign
                   window.location.assign = function(url) {
-                    console.warn('location.assign bloqué:', url);
+                    redirectAttempts++;
+                    console.warn('location.assign bloqué (#' + redirectAttempts + '):', url);
                     return false;
                   };
                   
-                  // Bloquer les clics sur les liens
+                  // Intercepter et bloquer tous les clics globalement avec capture
                   document.addEventListener('click', function(e) {
-                    const link = e.target.closest('a');
+                    // Bloquer ALL les clics sauf sur les éléments du lecteur vidéo
+                    const target = e.target;
+                    
+                    // Vérifier si c'est un lien
+                    const link = target.closest('a');
                     if (link) {
                       const href = link.getAttribute('href');
                       if (href && !href.startsWith('javascript:') && !href.startsWith('#')) {
                         console.warn('Clic sur lien bloqué:', href);
                         e.preventDefault();
                         e.stopPropagation();
+                        e.stopImmediatePropagation();
+                        return false;
+                      }
+                    }
+                    
+                    // Vérifier si c'est un bouton suspect (play redirection)
+                    const button = target.closest('button');
+                    if (button) {
+                      const onclick = button.getAttribute('onclick');
+                      const dataHref = button.getAttribute('data-href');
+                      if ((onclick && (onclick.includes('location') || onclick.includes('open'))) || dataHref) {
+                        console.warn('Clic sur bouton redirection bloqué');
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+                        return false;
                       }
                     }
                   }, true);
@@ -1524,8 +1550,29 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                       console.warn('Submission de formulaire bloquée:', action);
                       e.preventDefault();
                       e.stopPropagation();
+                      e.stopImmediatePropagation();
+                      return false;
                     }
                   }, true);
+                  
+                  // Bloquer les tentatives d'ajout d'event listeners de redirection
+                  const originalAddEventListener = document.addEventListener;
+                  document.addEventListener = function(type, listener, options) {
+                    if (type === 'click' || type === 'touchstart') {
+                      const wrappedListener = function(e) {
+                        try {
+                          if (e.target.getAttribute && (e.target.getAttribute('data-redirect') || e.target.getAttribute('onclick'))) {
+                            return false;
+                          }
+                          return listener.call(this, e);
+                        } catch(err) {
+                          return false;
+                        }
+                      };
+                      return originalAddEventListener.call(this, type, wrappedListener, options);
+                    }
+                    return originalAddEventListener.call(this, type, listener, options);
+                  };
                 })();
               `}
               onShouldStartLoadWithRequest={(request) => {
