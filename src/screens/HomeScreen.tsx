@@ -39,6 +39,7 @@ import OfflineErrorCard from '../components/OfflineErrorCard';
 import ServerErrorCard from '../components/ServerErrorCard';
 import SimpleAnimeCard from '../components/SimpleAnimeCard';
 import SectionTitle from '../components/SectionTitle';
+import ScrollProgressIndicator from '../components/ScrollProgressIndicator';
 import { formatAddedDate, formatPlanningTime } from '../utils/dateFormatter';
 
 
@@ -92,6 +93,7 @@ const HomeScreen: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [currentlyWatching, setCurrentlyWatching] = useState<WatchHistoryItem[]>([]);
+  const [scrollPositions, setScrollPositions] = useState<Record<string, number>>({});
   
   // Hook pour les notifications
   const {
@@ -1704,6 +1706,8 @@ const HomeScreen: React.FC = () => {
                   horizontal 
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
+                  onScroll={(e) => setScrollPositions(prev => ({ ...prev, history: e.nativeEvent.contentOffset.x }))}
+                  scrollEventThrottle={16}
                 >
                   {currentlyWatching.map((historyItem, index) => (
                     <SimpleAnimeCard
@@ -1720,6 +1724,11 @@ const HomeScreen: React.FC = () => {
                     />
                   ))}
                 </OptimizedScrollView>
+                <ScrollProgressIndicator 
+                  contentLength={currentlyWatching.length * 132}
+                  containerWidth={width - 32}
+                  colors={COLORS}
+                />
               </View>
             )}
 
@@ -1732,6 +1741,8 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   style={styles.horizontalScroll}
                   contentContainerStyle={styles.horizontalScrollContainer}
+                  onScroll={(e) => setScrollPositions(prev => ({ ...prev, recent: e.nativeEvent.contentOffset.x }))}
+                  scrollEventThrottle={16}
                 >
                   {nouveauxEpisodes.map((anime, index) => (
                     <SimpleAnimeCard
@@ -1745,6 +1756,11 @@ const HomeScreen: React.FC = () => {
                     />
                   ))}
                 </OptimizedScrollView>
+                <ScrollProgressIndicator 
+                  contentLength={nouveauxEpisodes.length * 132}
+                  containerWidth={width - 32}
+                  colors={COLORS}
+                />
               </View>
             )}
 
@@ -1767,6 +1783,7 @@ const HomeScreen: React.FC = () => {
                   bouncesZoom={false}
                   overScrollMode="auto"
                   disableIntervalMomentum={true}
+                  onScroll={(e) => setScrollPositions(prev => ({ ...prev, planning: e.nativeEvent.contentOffset.x }))}
                 >
                   {planningAnimes.map((anime, index) => (
                     <SimpleAnimeCard
@@ -1779,6 +1796,11 @@ const HomeScreen: React.FC = () => {
                     />
                   ))}
                 </OptimizedScrollView>
+                <ScrollProgressIndicator 
+                  contentLength={planningAnimes.length * 132}
+                  containerWidth={width - 32}
+                  colors={COLORS}
+                />
               </View>
             )}
 
@@ -1801,6 +1823,7 @@ const HomeScreen: React.FC = () => {
                   bouncesZoom={false}
                   overScrollMode="auto"
                   disableIntervalMomentum={true}
+                  onScroll={(e) => setScrollPositions(prev => ({ ...prev, classiques: e.nativeEvent.contentOffset.x }))}
                 >
                   {classiquesAnimes.map((anime, index) => (
                     <SimpleAnimeCard
@@ -1813,6 +1836,11 @@ const HomeScreen: React.FC = () => {
                     />
                   ))}
                 </OptimizedScrollView>
+                <ScrollProgressIndicator 
+                  contentLength={classiquesAnimes.length * 132}
+                  containerWidth={width - 32}
+                  colors={COLORS}
+                />
               </View>
             )}
 
@@ -1835,6 +1863,7 @@ const HomeScreen: React.FC = () => {
                   bouncesZoom={false}
                   overScrollMode="auto"
                   disableIntervalMomentum={true}
+                  onScroll={(e) => setScrollPositions(prev => ({ ...prev, pepites: e.nativeEvent.contentOffset.x }))}
                 >
                   {pepitesAnimes.map((anime, index) => (
                     <SimpleAnimeCard
@@ -1847,6 +1876,11 @@ const HomeScreen: React.FC = () => {
                     />
                   ))}
                 </OptimizedScrollView>
+                <ScrollProgressIndicator 
+                  contentLength={pepitesAnimes.length * 132}
+                  containerWidth={width - 32}
+                  colors={COLORS}
+                />
               </View>
             )}
 
@@ -1872,6 +1906,7 @@ const HomeScreen: React.FC = () => {
                   bouncesZoom={false}
                   overScrollMode="auto"
                   disableIntervalMomentum={true}
+                  onScroll={(e) => setScrollPositions(prev => ({ ...prev, recommendations: e.nativeEvent.contentOffset.x }))}
                 >
                   {recommendationsAnimes.map((anime, index) => (
                     <SimpleAnimeCard
@@ -1884,6 +1919,11 @@ const HomeScreen: React.FC = () => {
                     />
                   ))}
                 </OptimizedScrollView>
+                <ScrollProgressIndicator 
+                  contentLength={recommendationsAnimes.length * 132}
+                  containerWidth={width - 32}
+                  colors={COLORS}
+                />
               </View>
             )}
 
