@@ -42,7 +42,7 @@ const ImageWithPlaceholder: React.FC<ImageWithPlaceholderProps> = ({
   return (
     <Image
       source={{ uri }}
-      style={style}
+      style={[style, { width: style?.width || 120, height: style?.height || 180 }]}
       resizeMode={resizeMode}
       onLoadStart={onLoadStart}
       onLoadEnd={onLoadEnd}

@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border.glow,
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: 120,
+    height: 180,
   },
   badge: {
     position: 'absolute',
