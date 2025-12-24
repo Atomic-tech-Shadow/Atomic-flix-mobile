@@ -1460,6 +1460,8 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               allowsFullscreenVideo={true}
               allowsInlineMediaPlayback={true}
               mediaPlaybackRequiresUserAction={false}
+              setSupportMultipleWindows={false}
+              originWhitelist={['*']}
               injectedJavaScriptBeforeContentLoaded={`
                 (function() {
                   const initialUrl = '${currentSource.url}';
@@ -1641,6 +1643,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   console.log('Navigation bloquée (parsing échoué et non-HTTP):', requestUrl);
                   return false;
                 }
+              }}
+              onOpenWindow={(event) => {
+                // Bloquer les tentatives d'ouverture de nouvelles fenêtres/pop-ups
+                console.warn('⛔ Tentative d\'ouverture de fenêtre bloquée:', event.nativeEvent?.targetUrl);
+                return false;
               }}
               onNavigationStateChange={(navState) => {
                 // Détecter les erreurs de chargement
