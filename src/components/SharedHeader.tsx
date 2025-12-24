@@ -57,14 +57,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
         {/* Texte à côté du menu, style WhatsApp */}
         <View style={styles.titleSection}>
-          <LinearGradient
-            colors={titleGradientColors}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}
-            style={styles.titleTextGradient}
-          >
-            <Text style={[styles.titleText, { color: themedColors.text.primary }]} numberOfLines={1}>ATOMIC FLIX</Text>
-          </LinearGradient>
+          <Text style={[styles.titleText, { color: themedColors.text.primary }]} numberOfLines={1}>ATOMIC FLIX</Text>
         </View>
 
         {/* Actions à droite */}
