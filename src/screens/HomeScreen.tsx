@@ -1775,17 +1775,8 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
-                  decelerationRate={0.985}
-                  snapToInterval={128}
-                  snapToAlignment="start"
-                  directionalLockEnabled={true}
-                  scrollEventThrottle={4}
-                  removeClippedSubviews={true}
-                  bounces={true}
-                  bouncesZoom={false}
-                  overScrollMode="auto"
-                  disableIntervalMomentum={true}
                   onScroll={(e) => setScrollPositions(prev => ({ ...prev, planning: e.nativeEvent.contentOffset.x }))}
+                  scrollEventThrottle={16}
                 >
                   {planningAnimes.map((anime, index) => (
                     <SimpleAnimeCard
@@ -1816,17 +1807,8 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
-                  decelerationRate={0.985}
-                  snapToInterval={128}
-                  snapToAlignment="start"
-                  directionalLockEnabled={true}
-                  scrollEventThrottle={4}
-                  removeClippedSubviews={true}
-                  bounces={true}
-                  bouncesZoom={false}
-                  overScrollMode="auto"
-                  disableIntervalMomentum={true}
                   onScroll={(e) => setScrollPositions(prev => ({ ...prev, classiques: e.nativeEvent.contentOffset.x }))}
+                  scrollEventThrottle={16}
                 >
                   {classiquesAnimes.map((anime, index) => (
                     <SimpleAnimeCard
@@ -1857,17 +1839,8 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
-                  decelerationRate={0.985}
-                  snapToInterval={128}
-                  snapToAlignment="start"
-                  directionalLockEnabled={true}
-                  scrollEventThrottle={4}
-                  removeClippedSubviews={true}
-                  bounces={true}
-                  bouncesZoom={false}
-                  overScrollMode="auto"
-                  disableIntervalMomentum={true}
                   onScroll={(e) => setScrollPositions(prev => ({ ...prev, pepites: e.nativeEvent.contentOffset.x }))}
+                  scrollEventThrottle={16}
                 >
                   {pepitesAnimes.map((anime, index) => (
                     <SimpleAnimeCard
@@ -1901,17 +1874,8 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
-                  decelerationRate={0.985}
-                  snapToInterval={128}
-                  snapToAlignment="start"
-                  directionalLockEnabled={true}
-                  scrollEventThrottle={4}
-                  removeClippedSubviews={true}
-                  bounces={true}
-                  bouncesZoom={false}
-                  overScrollMode="auto"
-                  disableIntervalMomentum={true}
                   onScroll={(e) => setScrollPositions(prev => ({ ...prev, recommendations: e.nativeEvent.contentOffset.x }))}
+                  scrollEventThrottle={16}
                 >
                   {recommendationsAnimes.map((anime, index) => (
                     <SimpleAnimeCard
