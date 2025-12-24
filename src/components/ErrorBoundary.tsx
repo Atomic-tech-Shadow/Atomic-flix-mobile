@@ -27,12 +27,11 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: any) {
-    // Log l'erreur pour le développement
-    if (__DEV__) {
-      console.error('🚨 ErrorBoundary caught an error:', error);
-      console.error('📍 Error Info:', errorInfo);
-    }
-
+    // Log l'erreur TOUJOURS (dev et production)
+    console.error('🚨 ERREUR CRITIQUE:', error.toString());
+    console.error('📍 Stack trace complète:', error.stack);
+    console.error('📍 Info composant:', errorInfo?.componentStack);
+    
     this.setState({
       error,
       errorInfo,
@@ -82,16 +81,25 @@ class ErrorBoundary extends Component<Props, State> {
               </TouchableOpacity>
             </View>
 
-            {/* Détails de l'erreur en mode développement */}
-            {__DEV__ && this.state.error && (
+            {/* Détails de l'erreur TOUJOURS affichés */}
+            {this.state.error && (
               <View style={styles.debugContainer}>
-                <Text style={styles.debugTitle}>🐛 Détails de l'erreur (DEV):</Text>
+                <Text style={styles.debugTitle}>🐛 Cause du crash :</Text>
                 <Text style={styles.debugText}>{this.state.error.toString()}</Text>
+                
+                {this.state.error.stack && (
+                  <>
+                    <Text style={styles.debugTitle}>📍 Stack trace complète :</Text>
+                    <Text style={styles.debugText} numberOfLines={15}>
+                      {this.state.error.stack}
+                    </Text>
+                  </>
+                )}
                 
                 {this.state.errorInfo?.componentStack && (
                   <>
-                    <Text style={styles.debugTitle}>📍 Stack trace:</Text>
-                    <Text style={styles.debugText}>
+                    <Text style={styles.debugTitle}>🔗 Composant affecté :</Text>
+                    <Text style={styles.debugText} numberOfLines={10}>
                       {this.state.errorInfo.componentStack}
                     </Text>
                   </>
