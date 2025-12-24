@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { COLORS } from '../constants/newColors';
-import ImageWithPlaceholder from './ImageWithPlaceholder';
 
 interface SimpleAnimeCardProps {
   anime: any;
@@ -27,11 +26,11 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
       onPress={onPress}
       activeOpacity={0.8}
     >
-      <ImageWithPlaceholder
-        uri={anime.image}
+      <Image
+        source={{ uri: anime.image }}
         style={styles.image}
         resizeMode="cover"
-        fadeDuration={200}
+        onError={(e) => {}}
       />
       
       {/* Badge de langue en haut à gauche */}
@@ -70,8 +69,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border.glow,
   },
   image: {
-    width: 120,
-    height: 180,
+    width: '100%',
+    height: '100%',
   },
   badge: {
     position: 'absolute',
