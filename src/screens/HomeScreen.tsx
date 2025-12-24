@@ -1708,7 +1708,11 @@ const HomeScreen: React.FC = () => {
                   horizontal 
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
-                  onScroll={(e) => setScrollPositions(prev => ({ ...prev, history: e.nativeEvent.contentOffset.x }))}
+                  onScroll={(e) => {
+                    if (e?.nativeEvent?.contentOffset?.x !== undefined) {
+                      setScrollPositions(prev => ({ ...prev, history: e.nativeEvent.contentOffset.x }));
+                    }
+                  }}
                   scrollEventThrottle={16}
                 >
                   {currentlyWatching.map((historyItem, index) => (
@@ -1744,7 +1748,11 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   style={styles.horizontalScroll}
                   contentContainerStyle={styles.horizontalScrollContainer}
-                  onScroll={(e) => setScrollPositions(prev => ({ ...prev, recent: e.nativeEvent.contentOffset.x }))}
+                  onScroll={(e) => {
+                    if (e?.nativeEvent?.contentOffset?.x !== undefined) {
+                      setScrollPositions(prev => ({ ...prev, recent: e.nativeEvent.contentOffset.x }));
+                    }
+                  }}
                   scrollEventThrottle={16}
                 >
                   {nouveauxEpisodes.map((anime, index) => (
@@ -1777,7 +1785,11 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
-                  onScroll={(e) => setScrollPositions(prev => ({ ...prev, planning: e.nativeEvent.contentOffset.x }))}
+                  onScroll={(e) => {
+                    if (e?.nativeEvent?.contentOffset?.x !== undefined) {
+                      setScrollPositions(prev => ({ ...prev, planning: e.nativeEvent.contentOffset.x }));
+                    }
+                  }}
                   scrollEventThrottle={16}
                 >
                   {planningAnimes.map((anime, index) => (
@@ -1809,7 +1821,11 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
-                  onScroll={(e) => setScrollPositions(prev => ({ ...prev, classiques: e.nativeEvent.contentOffset.x }))}
+                  onScroll={(e) => {
+                    if (e?.nativeEvent?.contentOffset?.x !== undefined) {
+                      setScrollPositions(prev => ({ ...prev, classiques: e.nativeEvent.contentOffset.x }));
+                    }
+                  }}
                   scrollEventThrottle={16}
                 >
                   {classiquesAnimes.map((anime, index) => (
@@ -1841,7 +1857,11 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
-                  onScroll={(e) => setScrollPositions(prev => ({ ...prev, pepites: e.nativeEvent.contentOffset.x }))}
+                  onScroll={(e) => {
+                    if (e?.nativeEvent?.contentOffset?.x !== undefined) {
+                      setScrollPositions(prev => ({ ...prev, pepites: e.nativeEvent.contentOffset.x }));
+                    }
+                  }}
                   scrollEventThrottle={16}
                 >
                   {pepitesAnimes.map((anime, index) => (
@@ -1876,7 +1896,11 @@ const HomeScreen: React.FC = () => {
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={styles.horizontalScrollContainer}
                   style={styles.horizontalScroll}
-                  onScroll={(e) => setScrollPositions(prev => ({ ...prev, recommendations: e.nativeEvent.contentOffset.x }))}
+                  onScroll={(e) => {
+                    if (e?.nativeEvent?.contentOffset?.x !== undefined) {
+                      setScrollPositions(prev => ({ ...prev, recommendations: e.nativeEvent.contentOffset.x }));
+                    }
+                  }}
                   scrollEventThrottle={16}
                 >
                   {recommendationsAnimes.map((anime, index) => (
