@@ -11,6 +11,7 @@ import {
   StatusBar,
   Image,
   TextInput,
+  Linking,
 } from 'react-native';
 import OptimizedScrollView from '../components/OptimizedScrollView';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -1462,6 +1463,9 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               mediaPlaybackRequiresUserAction={false}
               setSupportMultipleWindows={false}
               originWhitelist={['*']}
+              allowFileAccess={false}
+              allowUniversalAccessFromFileURLs={false}
+              mixedContentMode="never"
               injectedJavaScriptBeforeContentLoaded={`
                 (function() {
                   const initialUrl = '${currentSource.url}';
@@ -1581,6 +1585,15 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 const requestUrl = request.url;
                 const initialUrl = currentSource.url;
                 
+                // ❌ BLOQUER LES DEEPLINKS DANGEREUX
+                const blockedSchemes = ['tel:', 'mailto:', 'sms:', 'market://', 'intent://', 'android-app://', 'itms://', 'itms-apps://'];
+                const isBlockedScheme = blockedSchemes.some(scheme => requestUrl.toLowerCase().startsWith(scheme));
+                
+                if (isBlockedScheme) {
+                  console.warn('🚫 Deeplink bloqué - schéma interdit:', requestUrl);
+                  return false;
+                }
+                
                 // Liste complète des domaines/patterns autorisés pour les lecteurs vidéo intégrés
                 const allowedDomains = [
                   // Serveurs vidéo principaux
@@ -1614,33 +1627,34 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   const requestUrlObj = new URL(requestUrl);
                   const initialUrlObj = new URL(initialUrl);
                   
-                  // Permettre les URLs du même domaine
+                  // ✅ Permettre les URLs du même domaine
                   if (requestUrlObj.hostname === initialUrlObj.hostname) {
+                    console.log('✅ Même domaine autorisé:', requestUrl);
                     return true;
                   }
                   
-                  // Permettre les domaines autorisés uniquement
+                  // ✅ Permettre les domaines autorisés uniquement
                   const hostname = requestUrlObj.hostname.toLowerCase();
                   const isAllowed = allowedDomains.some(domain => 
                     hostname === domain || hostname.endsWith('.' + domain)
                   );
                   
                   if (isAllowed) {
-                    console.log('Navigation autorisée vers:', requestUrl);
+                    console.log('✅ Domaine autorisé:', requestUrl);
                     return true;
                   }
                   
-                  // Bloquer tout autre domaine
-                  console.log('Navigation bloquée - domaine non autorisé:', requestUrl);
+                  // ❌ Bloquer tout autre domaine
+                  console.log('🚫 Domaine non autorisé bloqué:', requestUrl);
                   return false;
                   
                 } catch (e) {
-                  // Si parsing URL échoue, vérifier au minimum si c'est HTTP/HTTPS
+                  // ❌ Si parsing URL échoue, bloquer par défaut (sécurité)
                   if (requestUrl.startsWith('http://') || requestUrl.startsWith('https://')) {
-                    console.log('Navigation permise (parsing échoué mais HTTP/HTTPS):', requestUrl);
+                    console.log('✅ URL HTTP/HTTPS acceptée:', requestUrl);
                     return true;
                   }
-                  console.log('Navigation bloquée (parsing échoué et non-HTTP):', requestUrl);
+                  console.log('🚫 URL invalide bloquée:', requestUrl);
                   return false;
                 }
               }}
