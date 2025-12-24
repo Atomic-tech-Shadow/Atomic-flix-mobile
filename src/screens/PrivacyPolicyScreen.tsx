@@ -35,9 +35,12 @@ const PrivacyPolicyScreen: React.FC<Props> = ({ navigation }) => {
     titleSection: {
       alignItems: 'center',
       paddingVertical: 30,
-      borderBottomWidth: 1,
-      borderBottomColor: COLORS.border.card,
-      marginBottom: 20,
+      paddingHorizontal: 16,
+      backgroundColor: `${COLORS.secondary}15`,
+      borderRadius: 14,
+      borderWidth: 1,
+      borderColor: `${COLORS.secondary}33`,
+      marginBottom: 24,
     },
     icon: {
       fontSize: 48,
@@ -68,7 +71,12 @@ const PrivacyPolicyScreen: React.FC<Props> = ({ navigation }) => {
       fontWeight: '600',
     },
     section: {
-      marginBottom: 32,
+      marginBottom: 28,
+      backgroundColor: `${COLORS.primary}f2`,
+      padding: 18,
+      borderRadius: 14,
+      borderWidth: 1,
+      borderColor: `${COLORS.secondary}20`,
     },
     sectionHeader: {
       flexDirection: 'row',
