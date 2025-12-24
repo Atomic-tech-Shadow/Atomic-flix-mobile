@@ -29,15 +29,13 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   badge: {
-    backgroundColor: COLORS.error, // Badge atomique rouge
+    backgroundColor: 'transparent',
     borderRadius: 12,
     minWidth: 24,
     height: 24,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 6,
-    borderWidth: 2,
-    borderColor: COLORS.primary,
   },
   text: {
     color: COLORS.text.primary,
