@@ -7,7 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import { COLORS, getThemedColors } from '../constants/newColors';
-import { NotificationBadge } from './NotificationBadge';
 import { useNotifications } from '../hooks/useNotifications';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -88,15 +87,12 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             />
           </TouchableOpacity>
 
-          {/* Bouton notifications avec badge */}
+          {/* Bouton notifications */}
           <TouchableOpacity 
             style={styles.headerIconButton}
             onPress={onNotificationPress}
           >
             <Ionicons name="notifications-outline" size={22} color={iconColor} />
-            {unreadCount > 0 && (
-              <View style={styles.notificationBadge} />
-            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -162,20 +158,6 @@ const styles = StyleSheet.create({
     padding: 8,
     marginRight: -8,
     position: 'relative',
-  },
-  notificationBadge: {
-    position: 'absolute',
-    top: 4,
-    right: 4,
-    width: 12,
-    height: 12,
-    backgroundColor: COLORS.badges.hot,
-    borderRadius: 6,
-    // Effet glow subtil pour le badge
-    shadowColor: COLORS.badges.hot,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.6,
-    shadowRadius: 3,
   },
 });
 
