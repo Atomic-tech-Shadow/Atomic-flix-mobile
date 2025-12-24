@@ -36,7 +36,7 @@
     },
     "notification": {
       "icon": "./assets/notification-icon-384x384.png",
-      "color": "#ffffff"
+      "color": "#A855F7"
     },
     "plugins": [
       "./android-manifest-config.js",
@@ -45,7 +45,7 @@
         "expo-notifications",
         {
           "icon": "./assets/notification-icon-384x384.png",
-          "color": "#ffffff",
+          "color": "#A855F7",
           "defaultChannel": "atomic-flix-main",
           "sounds": [],
           "enableBackgroundRemoteNotifications": true,
