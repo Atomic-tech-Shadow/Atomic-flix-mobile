@@ -487,15 +487,15 @@ const HomeScreen: React.FC = () => {
   const loadRecommendations = async () => {
     try {
       const response = await apiRequest('/api/recommendations');
-      console.log('💭 API /recommendations réponse complète:', response);
-      console.log('📋 Nombre de recommandations reçues:', Array.isArray(response) ? response.length : 'N/A');
-      if (Array.isArray(response) && response.length > 0) {
-        console.log('🎬 Première recommandation:', response[0]);
-      }
+      // La réponse est {"success": true, "data": [...], "metadata": {...}}
+      const dataArray = response?.data || response;
+      console.log('💭 API /recommendations data array:', dataArray);
+      console.log('📋 Nombre de recommandations reçues:', Array.isArray(dataArray) ? dataArray.length : 'N/A');
 
-      if (response && Array.isArray(response)) {
+      if (dataArray && Array.isArray(dataArray) && dataArray.length > 0) {
+        console.log('🎬 Première recommandation:', dataArray[0]);
         // Convertir les données de l'API en format SearchResult
-        const recommendations: SearchResult[] = response.slice(0, 20).map((anime: any) => ({
+        const recommendations: SearchResult[] = dataArray.slice(0, 20).map((anime: any) => ({
           id: anime.id,
           animeId: anime.id,
           title: anime.title,
@@ -515,12 +515,14 @@ const HomeScreen: React.FC = () => {
           category: 'recommendation'
         }));
         
+        console.log('✅ Recommandations converties:', recommendations.length);
         setRecommendationsAnimes(recommendations);
       } else {
+        console.warn('⚠️ Réponse recommandations vide ou invalide');
         setRecommendationsAnimes([]);
       }
     } catch (error) {
-      console.error('Erreur chargement recommandations:', error);
+      console.error('❌ Erreur chargement recommandations:', error);
       setRecommendationsAnimes([]);
     }
   };
