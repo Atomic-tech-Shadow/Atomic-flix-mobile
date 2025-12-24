@@ -28,7 +28,7 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
     >
       <Image
         source={{ uri: anime.image }}
-        style={styles.image}
+        style={[styles.image, { width: 120, height: 180 }]}
         resizeMode="cover"
         onError={(e) => {}}
       />

@@ -20,7 +20,7 @@ const AnimePlayerHero: React.FC<AnimePlayerHeroProps> = ({
       {/* Image DIRECTE sans progressive rendering pour netteté maximale */}
       <Image
         source={{ uri: image }}
-        style={styles.image}
+        style={[styles.image, { width: '100%', height: 200 }]}
         resizeMode="cover"
         fadeDuration={200}
       />
