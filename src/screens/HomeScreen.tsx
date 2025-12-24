@@ -40,6 +40,7 @@ import ServerErrorCard from '../components/ServerErrorCard';
 import SimpleAnimeCard from '../components/SimpleAnimeCard';
 import SectionTitle from '../components/SectionTitle';
 import ScrollProgressIndicator from '../components/ScrollProgressIndicator';
+import ImageWithPlaceholder from '../components/ImageWithPlaceholder';
 import { formatAddedDate, formatPlanningTime } from '../utils/dateFormatter';
 
 
@@ -746,13 +747,11 @@ const HomeScreen: React.FC = () => {
         activeOpacity={0.8}
       >
         <View style={styles.cardImageContainer}>
-          <Image
-            source={{ uri: anime.image }}
+          <ImageWithPlaceholder
+            uri={anime.image}
             style={styles.cardImage}
             resizeMode="cover"
-            loadingIndicatorSource={require('../../assets/atomic-flix-logo.png')}
             fadeDuration={200}
-            onError={(e) => {}}
           />
 
           {/* Badge type de contenu (identique au site web) */}
@@ -803,11 +802,10 @@ const HomeScreen: React.FC = () => {
         onPress={() => loadEpisodeDirectly(anime)}
         activeOpacity={0.8}
       >
-        <Image
-          source={{ uri: anime.image }}
+        <ImageWithPlaceholder
+          uri={anime.image}
           style={styles.horizontalCardImage}
           resizeMode="cover"
-          onError={(e) => {}}
         />
 
         {/* Badge épisode NOUVEAU sur l'image */}
