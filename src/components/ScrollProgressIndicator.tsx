@@ -17,18 +17,12 @@ const ScrollProgressIndicator: React.FC<ScrollProgressIndicatorProps> = ({
   colors,
   currentScrollOffset = 0,
 }) => {
-  const [scrollOffset, setScrollOffset] = useState(0);
-
   // Valider les props pour éviter division par zéro
   const validContentLength = Math.max(0, contentLength || 0);
   const validContainerWidth = Math.max(0, containerWidth || 0);
   
-  // Utiliser currentScrollOffset si fourni, sinon utiliser scrollOffset interne
-  const activeScrollOffset = currentScrollOffset !== undefined ? currentScrollOffset : scrollOffset;
-
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    setScrollOffset(event.nativeEvent.contentOffset.x);
-  };
+  // Utiliser currentScrollOffset fourni en prop (défini par le parent)
+  const activeScrollOffset = currentScrollOffset !== undefined ? currentScrollOffset : 0;
 
   // Calculer la largeur relative du curseur avec protection contre division par zéro
   const maxScroll = Math.max(0, validContentLength - validContainerWidth);
