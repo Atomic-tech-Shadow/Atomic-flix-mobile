@@ -13,9 +13,25 @@ import { queryClient } from './src/utils/queryClient';
 import ErrorBoundary from './src/components/ErrorBoundary';
 import { ThemeProvider } from './src/contexts/ThemeContext';
 import AnimatedSplashScreen from './src/components/AnimatedSplashScreen';
+import URLSecurityService from './src/services/URLSecurityService';
 
 // Empêcher le splash screen natif de se cacher automatiquement
 SplashScreen.preventAutoHideAsync();
+
+// 🔒 SÉCURITÉ: Bloquer tous les navigateurs externes au démarrage
+URLSecurityService.blockAllExternalBrowsers();
+
+// 🧪 Test des URLs bloquées (optionnel - à retirer en production)
+if (__DEV__) {
+  URLSecurityService.testURLValidation([
+    'https://youtube.com',
+    'https://anime-sama.fr',
+    'tel:+33612345678',
+    'mailto:test@example.com',
+    'javascript:alert(1)',
+    'https://evil.com',
+  ]);
+}
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
