@@ -50,8 +50,6 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
         key={`anime-${anime.id || anime.title.replace(/\s+/g, '-')}-${index}`}
         style={styles.card}
         onPress={onPress}
-        scaleOnPress={true}
-        scaleFactor={0.98}
       >
       <ImageWithPlaceholder
         uri={anime.image}
