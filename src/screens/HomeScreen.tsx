@@ -1728,6 +1728,7 @@ const HomeScreen: React.FC = () => {
                   contentLength={currentlyWatching.length * 132}
                   containerWidth={width - 32}
                   colors={COLORS}
+                  currentScrollOffset={scrollPositions.watching || 0}
                 />
               </View>
             )}
@@ -1760,6 +1761,7 @@ const HomeScreen: React.FC = () => {
                   contentLength={nouveauxEpisodes.length * 132}
                   containerWidth={width - 32}
                   colors={COLORS}
+                  currentScrollOffset={scrollPositions.recent || 0}
                 />
               </View>
             )}
@@ -1800,6 +1802,7 @@ const HomeScreen: React.FC = () => {
                   contentLength={planningAnimes.length * 132}
                   containerWidth={width - 32}
                   colors={COLORS}
+                  currentScrollOffset={scrollPositions.planning || 0}
                 />
               </View>
             )}
@@ -1840,6 +1843,7 @@ const HomeScreen: React.FC = () => {
                   contentLength={classiquesAnimes.length * 132}
                   containerWidth={width - 32}
                   colors={COLORS}
+                  currentScrollOffset={scrollPositions.classiques || 0}
                 />
               </View>
             )}
@@ -1880,6 +1884,7 @@ const HomeScreen: React.FC = () => {
                   contentLength={pepitesAnimes.length * 132}
                   containerWidth={width - 32}
                   colors={COLORS}
+                  currentScrollOffset={scrollPositions.pepites || 0}
                 />
               </View>
             )}
@@ -1923,6 +1928,7 @@ const HomeScreen: React.FC = () => {
                   contentLength={recommendationsAnimes.length * 132}
                   containerWidth={width - 32}
                   colors={COLORS}
+                  currentScrollOffset={scrollPositions.recommendations || 0}
                 />
               </View>
             )}
