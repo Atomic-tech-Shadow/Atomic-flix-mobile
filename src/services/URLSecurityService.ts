@@ -38,7 +38,14 @@ const ALLOWED_DOMAINS = [
   's3.anime-sama.si',
   's4.anime-sama.si',
   'cdn.anime-sama.si',
+  'anime-sama.me',
   'anime-sama.eu',
+  'anime-sama.fr',
+  's1.anime-sama.fr',
+  's2.anime-sama.fr',
+  's3.anime-sama.fr',
+  's4.anime-sama.fr',
+  'cdn.anime-sama.fr',
   'cloudflare.com',
   'hcaptcha.com',
   'recaptcha.net',
@@ -56,12 +63,6 @@ const ALLOWED_DOMAINS = [
   'i2.wp.com',
   'image.tmdb.org',
   'm.media-amazon.com',
-  'anime-sama.fr',
-  's1.anime-sama.fr',
-  's2.anime-sama.fr',
-  's3.anime-sama.fr',
-  's4.anime-sama.fr',
-  'cdn.anime-sama.fr',
 ];
 
 const BLOCKED_SCHEMES = [
