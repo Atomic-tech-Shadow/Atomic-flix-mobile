@@ -22,7 +22,7 @@ const getValidImageUrl = (imageUrl: string | undefined): string | null => {
   
   // Si c'est une URL relative, ajouter la base
   if (imageUrl.startsWith('/')) {
-    return `https://anime-sama.fr${imageUrl}`;
+    return `https://anime-sama.si${imageUrl}`;
   }
   
   // Sinon invalide
