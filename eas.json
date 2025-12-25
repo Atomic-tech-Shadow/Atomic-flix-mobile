@@ -7,6 +7,7 @@
     "development": {
       "distribution": "internal",
       "channel": "development",
+      "developmentClient": true,
       "android": {
         "buildType": "apk",
         "gradleCommand": ":app:assembleDebug",
@@ -25,6 +26,9 @@
         "gradleCommand": ":app:assembleRelease --no-daemon",
         "credentialsSource": "local"
       },
+      "ios": {
+        "simulator": false
+      },
       "env": {
         "NODE_ENV": "production",
         "EXPO_USE_METRO_REQUIRE": "1",
@@ -37,14 +41,15 @@
     },
     "production": {
       "channel": "production",
-      "distribution": "internal",
+      "distribution": "store",
       "android": {
-        "buildType": "apk",
-        "gradleCommand": ":app:assembleRelease",
+        "buildType": "app-bundle",
+        "gradleCommand": ":app:bundleRelease",
         "credentialsSource": "local"
       },
       "ios": {
-        "resourceClass": "m-medium"
+        "resourceClass": "m-medium",
+        "buildConfiguration": "Release"
       },
       "env": {
         "NODE_ENV": "production",
@@ -60,10 +65,24 @@
   "submit": {
     "production": {
       "android": {
+        "serviceAccountKeyPath": "./credentials/play-store-key.json",
         "track": "production"
       },
       "ios": {
-        "appleTeamId": "YOUR_TEAM_ID"
+        "appleTeamId": "YOUR_TEAM_ID",
+        "ascAppId": "YOUR_APP_STORE_ID",
+        "appleId": "your-email@example.com"
+      }
+    },
+    "preview": {
+      "android": {
+        "serviceAccountKeyPath": "./credentials/play-store-key.json",
+        "track": "internal"
+      },
+      "ios": {
+        "appleTeamId": "YOUR_TEAM_ID",
+        "ascAppId": "YOUR_APP_STORE_ID",
+        "appleId": "your-email@example.com"
       }
     }
   }
