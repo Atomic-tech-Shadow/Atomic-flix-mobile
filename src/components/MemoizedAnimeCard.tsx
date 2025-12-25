@@ -1,6 +1,7 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 import OptimizedTouchable from './OptimizedTouchable';
 import { COLORS, getThemedColors } from '../constants/newColors';
 import { getLanguageBadgeText } from '../utils/languageUtils';
@@ -34,6 +35,7 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
   badgeText,
   badgeStyle
 }) => {
+  const [imageError, setImageError] = useState(false);
   // Les cartes doivent toujours avoir un fond sombre pour un bon affichage des images
   const darkColors = getThemedColors(true);
   
@@ -52,11 +54,18 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
         scaleOnPress={true}
         scaleFactor={0.98}
       >
-      <Image
-        source={{ uri: anime.image }}
-        style={styles.cardImage}
-        resizeMode="cover"
-      />
+      {!imageError && anime.image ? (
+        <Image
+          source={{ uri: anime.image }}
+          style={styles.cardImage}
+          resizeMode="cover"
+          onError={() => setImageError(true)}
+        />
+      ) : (
+        <View style={styles.placeholder}>
+          <Ionicons name="image" size={40} color={COLORS.text.muted} />
+        </View>
+      )}
       
       {/* Badge personnalisé ou badge langue */}
       {badgeText ? (
@@ -121,6 +130,13 @@ const styles = StyleSheet.create({
   cardImage: {
     width: '100%',
     height: '100%',
+  },
+  placeholder: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: COLORS.background.secondary,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   badge: {
     position: 'absolute',

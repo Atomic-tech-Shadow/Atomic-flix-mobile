@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { COLORS } from '../constants/newColors';
+import { Ionicons } from '@expo/vector-icons';
 
 interface SimpleAnimeCardProps {
   anime: any;
@@ -19,6 +20,8 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
   languageBadge,
   index
 }) => {
+  const [imageError, setImageError] = useState(false);
+  
   return (
     <TouchableOpacity
       key={`simple-${anime.id || anime.url || anime.title}-${index}`}
@@ -26,12 +29,19 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
       onPress={onPress}
       activeOpacity={0.8}
     >
-      <Image
-        source={{ uri: anime.image }}
-        style={[styles.image, { width: 120, height: 180 }]}
-        resizeMode="cover"
-        onError={(e) => {}}
-      />
+      {!imageError && anime.image ? (
+        <Image
+          source={{ uri: anime.image }}
+          style={[styles.image, { width: 120, height: 180 }]}
+          resizeMode="cover"
+          onError={() => setImageError(true)}
+        />
+      ) : (
+        <View style={styles.placeholder}>
+          <Ionicons name="image" size={40} color={COLORS.text.muted} />
+          <Text style={styles.placeholderText}>Image</Text>
+        </View>
+      )}
       
       {/* Badge de langue en haut à gauche */}
       {languageBadge && (
@@ -71,6 +81,18 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+  },
+  placeholder: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: COLORS.background.secondary,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderText: {
+    color: COLORS.text.muted,
+    fontSize: 8,
+    marginTop: 4,
   },
   badge: {
     position: 'absolute',
