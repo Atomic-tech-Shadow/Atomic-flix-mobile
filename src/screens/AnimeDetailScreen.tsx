@@ -28,7 +28,6 @@ import { getThemedColors, getThemedTextStyles, interactiveStyles } from '../cons
 import { useTheme } from '../contexts/ThemeContext';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
-import ImageWithPlaceholder from '../components/ImageWithPlaceholder';
 import AnimeDetailHero from '../components/AnimeDetailHero';
 import { animeAPI } from '../utils/animeAPI';
 import { apiRequest } from '../utils/api';
@@ -993,8 +992,8 @@ const AnimeDetailScreen: React.FC = () => {
                   activeOpacity={0.8}
                 >
                   {/* Image de fond exactement comme le code web */}
-                  <ImageWithPlaceholder
-                    uri={animeData.image}
+                  <Image
+                    source={{ uri: animeData.image }}
                     style={styles.seasonCardBackground}
                     resizeMode="cover"
                   />

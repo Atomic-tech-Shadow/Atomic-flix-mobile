@@ -28,7 +28,6 @@ import { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator'
 import { Episode, VideoSource, Season, AnimeData, EpisodeDetails } from '../types';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
-import ImageWithPlaceholder from '../components/ImageWithPlaceholder';
 import AnimePlayerHero from '../components/AnimePlayerHero';
 import { getThemedColors, getThemedTextStyles, interactiveStyles } from '../constants/newColors';
 import { useTheme } from '../contexts/ThemeContext';
