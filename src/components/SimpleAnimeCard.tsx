@@ -15,14 +15,20 @@ interface SimpleAnimeCardProps {
 const getValidImageUrl = (imageUrl: string | undefined): string | null => {
   if (!imageUrl) return null;
   
+  // Forcer HTTPS pour les domaines connus qui le supportent
+  let finalUrl = imageUrl;
+  if (finalUrl.startsWith('http://cdn.statically.io')) {
+    finalUrl = finalUrl.replace('http://', 'https://');
+  }
+  
   // Si c'est déjà une URL absolue, retourner telle quelle
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
-    return imageUrl;
+  if (finalUrl.startsWith('http://') || finalUrl.startsWith('https://')) {
+    return finalUrl;
   }
   
   // Si c'est une URL relative, ajouter la base
-  if (imageUrl.startsWith('/')) {
-    return `https://anime-sama.si${imageUrl}`;
+  if (finalUrl.startsWith('/')) {
+    return `https://anime-sama.si${finalUrl}`;
   }
   
   // Sinon invalide

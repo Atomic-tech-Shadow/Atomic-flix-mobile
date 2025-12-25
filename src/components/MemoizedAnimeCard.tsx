@@ -9,11 +9,18 @@ import { useTheme } from '../contexts/ThemeContext';
 
 const getValidImageUrl = (imageUrl: string | undefined): string | null => {
   if (!imageUrl) return null;
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
-    return imageUrl;
+
+  // Forcer HTTPS pour les domaines connus
+  let finalUrl = imageUrl;
+  if (finalUrl.startsWith('http://cdn.statically.io')) {
+    finalUrl = finalUrl.replace('http://', 'https://');
   }
-  if (imageUrl.startsWith('/')) {
-    return `https://anime-sama.si${imageUrl}`;
+
+  if (finalUrl.startsWith('http://') || finalUrl.startsWith('https://')) {
+    return finalUrl;
+  }
+  if (finalUrl.startsWith('/')) {
+    return `https://anime-sama.si${finalUrl}`;
   }
   return null;
 };
