@@ -820,7 +820,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         const formattedEpisodes: Episode[] = data.episodes.map((ep: any, index: number) => {
           const episodeNumber = ep.number || (index + 1);
           const episodeTitle = ep.title || `Épisode ${episodeNumber}`;
-          const episodeUrl = ep.url || `https://anime-sama.fr/catalogue/${animeInfo.id}/${season.value}/${languageCode}/episode-${episodeNumber}`;
+          const episodeUrl = ep.url || `https://anime-sama.si/catalogue/${animeInfo.id}/${season.value}/${languageCode}/episode-${episodeNumber}`;
 
           return {
             id: `${animeInfo.id}-${season.value}-ep${episodeNumber}-${languageCode}`,
@@ -1157,7 +1157,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     }
     
     let cleanId = animeId;
-    if (animeId.includes('anime-sama.fr')) {
+    if (animeId.includes('anime-sama.si') || animeId.includes('anime-sama.fr')) {
       const urlParts = animeId.split('/');
       const catalogueIndex = urlParts.findIndex(part => part === 'catalogue');
       if (catalogueIndex !== -1 && urlParts[catalogueIndex + 1]) {
