@@ -1,7 +1,6 @@
-import React, { memo, useState, useMemo } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import React, { memo } from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
 import OptimizedTouchable from './OptimizedTouchable';
 import { COLORS, getThemedColors } from '../constants/newColors';
 import { getLanguageBadgeText } from '../utils/languageUtils';
@@ -46,8 +45,7 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
   badgeText,
   badgeStyle
 }) => {
-  const [imageError, setImageError] = useState(false);
-  const imageUrl = useMemo(() => getValidImageUrl(anime?.image), [anime?.image]);
+  const imageUrl = getValidImageUrl(anime?.image);
   // Les cartes doivent toujours avoir un fond sombre pour un bon affichage des images
   const darkColors = getThemedColors(true);
   
@@ -66,19 +64,11 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
         scaleOnPress={true}
         scaleFactor={0.98}
       >
-      {!imageError && imageUrl ? (
-        <Image
-          source={{ uri: imageUrl }}
-          style={styles.cardImage}
-          resizeMode="cover"
-          onError={() => setImageError(true)}
-        />
-      ) : (
-        <View style={styles.placeholder}>
-          <Ionicons name="image" size={40} color={COLORS.text.muted} />
-          <Text style={styles.placeholderText}>{anime?.title || 'Image'}</Text>
-        </View>
-      )}
+      <Image
+        source={{ uri: imageUrl || '' }}
+        style={styles.cardImage}
+        resizeMode="cover"
+      />
       
       {/* Badge personnalisé ou badge langue */}
       {badgeText ? (
@@ -143,20 +133,6 @@ const styles = StyleSheet.create({
   cardImage: {
     width: '100%',
     height: '100%',
-  },
-  placeholder: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: COLORS.background.secondary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 8,
-  },
-  placeholderText: {
-    color: COLORS.text.muted,
-    fontSize: 9,
-    marginTop: 6,
-    textAlign: 'center',
   },
   badge: {
     position: 'absolute',
