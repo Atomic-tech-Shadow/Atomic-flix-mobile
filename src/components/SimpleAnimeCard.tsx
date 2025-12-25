@@ -19,9 +19,6 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
   languageBadge,
   index
 }) => {
-  const [imageError, setImageError] = React.useState(false);
-  const imageUrl = anime.image || anime.poster || anime.url;
-  
   return (
     <TouchableOpacity
       key={`simple-${anime.id || anime.url || anime.title}-${index}`}
@@ -29,18 +26,12 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
       onPress={onPress}
       activeOpacity={0.8}
     >
-      {imageUrl && !imageError ? (
-        <Image
-          source={{ uri: imageUrl }}
-          style={[styles.image, { width: 120, height: 180 }]}
-          resizeMode="cover"
-          onError={() => setImageError(true)}
-        />
-      ) : (
-        <View style={[styles.image, styles.placeholderImage]}>
-          <Text style={styles.placeholderText}>🎬</Text>
-        </View>
-      )}
+      <Image
+        source={{ uri: anime.image }}
+        style={[styles.image, { width: 120, height: 180 }]}
+        resizeMode="cover"
+        onError={(e) => {}}
+      />
       
       {/* Badge de langue en haut à gauche */}
       {languageBadge && (
@@ -116,14 +107,6 @@ const styles = StyleSheet.create({
     color: COLORS.text.primary,
     fontSize: 11,
     fontWeight: '600',
-  },
-  placeholderImage: {
-    backgroundColor: COLORS.background.secondary || '#1a1a2e',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  placeholderText: {
-    fontSize: 40,
   },
 });
 

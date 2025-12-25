@@ -4,11 +4,6 @@
     "slug": "atomic-flix",
     "version": "2.0.0",
     "orientation": "portrait",
-    "extra": {
-      "eas": {
-        "projectId": "020823fa-07b8-4be7-ac79-cca146c5fde6"
-      }
-    },
     "icon": "./assets/atomic-flix-logo-new.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0F0F0F",
@@ -73,7 +68,6 @@
         }
       ]
     ],
-    "owner": "ghostshadow228",
     "ios": {}
   }
 }
