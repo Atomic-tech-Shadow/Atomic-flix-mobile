@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { COLORS } from '../constants/newColors';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,6 +12,23 @@ interface SimpleAnimeCardProps {
   index: number;
 }
 
+const getValidImageUrl = (imageUrl: string | undefined): string | null => {
+  if (!imageUrl) return null;
+  
+  // Si c'est déjà une URL absolue, retourner telle quelle
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+    return imageUrl;
+  }
+  
+  // Si c'est une URL relative, ajouter la base
+  if (imageUrl.startsWith('/')) {
+    return `https://anime-sama.fr${imageUrl}`;
+  }
+  
+  // Sinon invalide
+  return null;
+};
+
 const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
   anime,
   onPress,
@@ -21,6 +38,7 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
   index
 }) => {
   const [imageError, setImageError] = useState(false);
+  const imageUrl = useMemo(() => getValidImageUrl(anime?.image), [anime?.image]);
   
   return (
     <TouchableOpacity
@@ -29,9 +47,9 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
       onPress={onPress}
       activeOpacity={0.8}
     >
-      {!imageError && anime.image ? (
+      {!imageError && imageUrl ? (
         <Image
-          source={{ uri: anime.image }}
+          source={{ uri: imageUrl }}
           style={[styles.image, { width: 120, height: 180 }]}
           resizeMode="cover"
           onError={() => setImageError(true)}
@@ -39,7 +57,7 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
       ) : (
         <View style={styles.placeholder}>
           <Ionicons name="image" size={40} color={COLORS.text.muted} />
-          <Text style={styles.placeholderText}>Image</Text>
+          <Text style={styles.placeholderText}>{anime?.title || 'Image'}</Text>
         </View>
       )}
       

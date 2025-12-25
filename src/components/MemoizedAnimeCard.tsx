@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -6,6 +6,17 @@ import OptimizedTouchable from './OptimizedTouchable';
 import { COLORS, getThemedColors } from '../constants/newColors';
 import { getLanguageBadgeText } from '../utils/languageUtils';
 import { useTheme } from '../contexts/ThemeContext';
+
+const getValidImageUrl = (imageUrl: string | undefined): string | null => {
+  if (!imageUrl) return null;
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+    return imageUrl;
+  }
+  if (imageUrl.startsWith('/')) {
+    return `https://anime-sama.fr${imageUrl}`;
+  }
+  return null;
+};
 
 interface AnimeCardProps {
   anime: {
@@ -36,6 +47,7 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
   badgeStyle
 }) => {
   const [imageError, setImageError] = useState(false);
+  const imageUrl = useMemo(() => getValidImageUrl(anime?.image), [anime?.image]);
   // Les cartes doivent toujours avoir un fond sombre pour un bon affichage des images
   const darkColors = getThemedColors(true);
   
@@ -54,9 +66,9 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
         scaleOnPress={true}
         scaleFactor={0.98}
       >
-      {!imageError && anime.image ? (
+      {!imageError && imageUrl ? (
         <Image
-          source={{ uri: anime.image }}
+          source={{ uri: imageUrl }}
           style={styles.cardImage}
           resizeMode="cover"
           onError={() => setImageError(true)}
@@ -64,6 +76,7 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
       ) : (
         <View style={styles.placeholder}>
           <Ionicons name="image" size={40} color={COLORS.text.muted} />
+          <Text style={styles.placeholderText}>{anime?.title || 'Image'}</Text>
         </View>
       )}
       
@@ -137,6 +150,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background.secondary,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 8,
+  },
+  placeholderText: {
+    color: COLORS.text.muted,
+    fontSize: 9,
+    marginTop: 6,
+    textAlign: 'center',
   },
   badge: {
     position: 'absolute',
