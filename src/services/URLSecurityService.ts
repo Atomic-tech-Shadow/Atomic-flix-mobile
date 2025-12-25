@@ -51,6 +51,12 @@ const ALLOWED_DOMAINS = [
   'i2.wp.com',
   'image.tmdb.org',
   'm.media-amazon.com',
+  'anime-sama.fr',
+  's1.anime-sama.fr',
+  's2.anime-sama.fr',
+  's3.anime-sama.fr',
+  's4.anime-sama.fr',
+  'cdn.anime-sama.fr',
 ];
 
 const BLOCKED_SCHEMES = [

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../constants/newColors';
 
 interface SimpleAnimeCardProps {
@@ -38,6 +39,16 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
 }) => {
   const imageUrl = getValidImageUrl(anime?.image);
   
+  const handleImageError = (e: any) => {
+    const errorMsg = e.nativeEvent.error || 'Erreur inconnue';
+    console.warn(`[Image Error] SimpleAnimeCard: "${anime.title}"`, {
+      url: imageUrl,
+      error: errorMsg,
+      animeId: anime.id || anime.url
+    });
+    // On pourrait ajouter un état local ici pour afficher l'erreur sur l'UI si besoin
+  };
+
   return (
     <TouchableOpacity
       key={`simple-${anime.id || anime.url || anime.title}-${index}`}
@@ -45,11 +56,19 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
       onPress={onPress}
       activeOpacity={0.8}
     >
-      <Image
-        source={{ uri: imageUrl || '' }}
-        style={[styles.image, { width: 120, height: 180 }]}
-        resizeMode="cover"
-      />
+      <View style={styles.imageContainer}>
+        <Image
+          source={{ uri: imageUrl || '' }}
+          style={styles.image}
+          resizeMode="cover"
+          onError={handleImageError}
+        />
+        {!imageUrl && (
+          <View style={styles.placeholderContainer}>
+            <Ionicons name="image-outline" size={32} color={COLORS.text.muted} />
+          </View>
+        )}
+      </View>
       
       {/* Badge de langue en haut à gauche */}
       {languageBadge && (
@@ -89,6 +108,23 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+  },
+  imageContainer: {
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+    backgroundColor: COLORS.background.secondary,
+  },
+  placeholderContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
   },
   badge: {
     position: 'absolute',

@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 import OptimizedTouchable from './OptimizedTouchable';
 import { COLORS, getThemedColors } from '../constants/newColors';
 import { getLanguageBadgeText } from '../utils/languageUtils';
@@ -46,6 +47,16 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
   badgeStyle
 }) => {
   const imageUrl = getValidImageUrl(anime?.image);
+  
+  const handleImageError = (e: any) => {
+    const errorMsg = e.nativeEvent.error || 'Erreur inconnue';
+    console.warn(`[Image Error] MemoizedAnimeCard: "${anime.title}"`, {
+      url: imageUrl,
+      error: errorMsg,
+      animeId: anime.id || anime.url
+    });
+  };
+
   // Les cartes doivent toujours avoir un fond sombre pour un bon affichage des images
   const darkColors = getThemedColors(true);
   
@@ -64,11 +75,19 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
         scaleOnPress={true}
         scaleFactor={0.98}
       >
-      <Image
-        source={{ uri: imageUrl || '' }}
-        style={styles.cardImage}
-        resizeMode="cover"
-      />
+      <View style={styles.imageContainer}>
+        <Image
+          source={{ uri: imageUrl || '' }}
+          style={styles.cardImage}
+          resizeMode="cover"
+          onError={handleImageError}
+        />
+        {!imageUrl && (
+          <View style={styles.placeholderContainer}>
+            <Ionicons name="image-outline" size={32} color={COLORS.text.muted} />
+          </View>
+        )}
+      </View>
       
       {/* Badge personnalisé ou badge langue */}
       {badgeText ? (
@@ -133,6 +152,21 @@ const styles = StyleSheet.create({
   cardImage: {
     width: '100%',
     height: '100%',
+  },
+  imageContainer: {
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+    backgroundColor: COLORS.background.secondary,
+  },
+  placeholderContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   badge: {
     position: 'absolute',
