@@ -39,6 +39,18 @@ const ALLOWED_DOMAINS = [
   'recaptcha.net',
   'google.com',
   'cdn.statically.io',
+  'statically.io',
+  'discordapp.com',
+  'discord.com',
+  'discord.gg',
+  'images.search.yahoo.com',
+  'bing.com',
+  'wp.com',
+  'i0.wp.com',
+  'i1.wp.com',
+  'i2.wp.com',
+  'image.tmdb.org',
+  'm.media-amazon.com',
 ];
 
 const BLOCKED_SCHEMES = [
