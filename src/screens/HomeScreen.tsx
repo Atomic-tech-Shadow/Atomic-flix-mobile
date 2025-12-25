@@ -324,7 +324,7 @@ const HomeScreen: React.FC = () => {
     
     // Si l'ID est une URL complète, extraire seulement l'ID propre
     let cleanId = animeId;
-    if (animeId.includes('anime-sama.si') || animeId.includes('anime-sama.fr')) {
+    if (animeId.includes('anime-sama.si')) {
       // Extraire l'ID depuis l'URL : /catalogue/kaoru-hana-wa-rin-to-saku/saison1/vostfr/
       const urlParts = animeId.split('/');
       const catalogueIndex = urlParts.findIndex(part => part === 'catalogue');
@@ -352,7 +352,7 @@ const HomeScreen: React.FC = () => {
     }
     
     // Nettoyer l'ID si c'est une URL complète pour obtenir l'animeId
-    if (cleanId.includes('anime-sama.si') || cleanId.includes('anime-sama.fr')) {
+    if (cleanId.includes('anime-sama.si')) {
       const urlParts = cleanId.split('/');
       const catalogueIndex = urlParts.findIndex(part => part === 'catalogue');
       if (catalogueIndex !== -1 && urlParts[catalogueIndex + 1]) {

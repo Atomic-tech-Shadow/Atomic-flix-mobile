@@ -24,7 +24,6 @@ const ALLOWED_DOMAINS = [
   'dropload.io',
   // Domaines de confiance
   'anime-sama.si',
-  'anime-sama.fr',
   'anime-sama.eu',
   'cloudflare.com',
   'hcaptcha.com',
