@@ -14,29 +14,17 @@ interface SimpleAnimeCardProps {
 
 const getValidImageUrl = (anime: any): string | null => {
   if (!anime) return null;
-
   const imageUrl = anime.image;
-
-  // 1. Si l'image est déjà une URL complète, on l'utilise après nettoyage
   if (imageUrl && (imageUrl.startsWith('http') || imageUrl.startsWith('https'))) {
-    let finalUrl = imageUrl;
-    if (finalUrl.startsWith('http://cdn.statically.io')) {
-      finalUrl = finalUrl.replace('http://', 'https://');
-    }
-    return finalUrl;
+    return imageUrl;
   }
-
-  // 2. Tenter de construire l'URL Statically à partir de l'ID
   const animeId = anime.animeId || anime.id;
   if (animeId && typeof animeId === 'string' && !animeId.includes('/') && !animeId.includes('http')) {
     return `https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/${animeId}.jpg`;
   }
-  
-  // 3. URLs relatives
   if (imageUrl && imageUrl.startsWith('/')) {
     return `https://anime-sama.tv${imageUrl}`;
   }
-  
   return null;
 };
 
