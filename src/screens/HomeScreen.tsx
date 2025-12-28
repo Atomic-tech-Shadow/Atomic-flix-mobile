@@ -182,6 +182,10 @@ const HomeScreen: React.FC = () => {
             id: ep.animeId,
             title: ep.animeTitle,
             contentType: 'anime',
+            currentSeason: ep.season,
+            currentEpisode: ep.episode,
+            isFin: ep.isFin,
+            isReporte: ep.isReporte,
             language: {
               name: ep.language,
               code: (ep.language || '').toLowerCase(),
@@ -216,6 +220,8 @@ const HomeScreen: React.FC = () => {
             ...item,
             id: item.animeId,
             contentType: item.type || 'anime',
+            isFin: item.isFin,
+            isReporte: item.isReporte,
             language: {
               name: item.language,
               code: (item.language || '').toLowerCase(),
