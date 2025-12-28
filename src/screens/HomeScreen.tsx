@@ -695,8 +695,6 @@ const HomeScreen: React.FC = () => {
     if (notification.data?.screen && notification.data?.params) {
       if (notification.data.screen === 'AnimeDetail') {
         navigation.navigate('AnimeDetail', notification.data.params);
-      } else if (notification.data.screen === 'MangaReader') {
-        navigation.navigate('MangaReader', notification.data.params);
       }
     }
   };
