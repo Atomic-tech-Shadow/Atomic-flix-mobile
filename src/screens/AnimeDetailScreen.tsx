@@ -691,7 +691,7 @@ const AnimeDetailScreen: React.FC = () => {
       }
     }
     
-    if (contentType === 'anime') {
+    if (contentType === 'anime' || contentType === 'film' || contentType === 'movie' || !contentType) {
       navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: 'Anime' });
     }
   };

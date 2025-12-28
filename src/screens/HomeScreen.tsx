@@ -430,7 +430,7 @@ const HomeScreen: React.FC = () => {
     
     
     // Détecter si c'est un manga - Masqué car désactivé
-    if (contentType === 'anime') {
+    if (contentType === 'anime' || contentType === 'film' || contentType === 'movie' || !contentType) {
       navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: animeTitle });
     }
   };
