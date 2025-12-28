@@ -211,13 +211,9 @@ const HomeScreen: React.FC = () => {
         // Convertir les données de l'API en format SearchResult
         const classiques: SearchResult[] = (response.categories.classiques?.anime || []).map((anime: any) => ({
           ...anime,
-          id: anime.id,
-          animeId: anime.id,
         }));
         const pepites: SearchResult[] = (response.categories.pepites?.anime || []).map((anime: any) => ({
           ...anime,
-          id: anime.id,
-          animeId: anime.id,
         }));
         
         console.log('👑 Classiques trouvés:', classiques.length, classiques);
@@ -248,16 +244,10 @@ const HomeScreen: React.FC = () => {
       if (response && response.recentEpisodes) {
         // Convertir les données de l'API en format SearchResult
         const recentEpisodes: SearchResult[] = response.recentEpisodes.slice(0, 15).map((episode: RecentEpisode) => ({
+          ...episode,
           id: episode.animeId,
-          animeId: episode.animeId,
           title: episode.animeTitle,
-          image: episode.image,
-          url: episode.url,
           contentType: 'anime',
-          type: episode.type,
-          currentSeason: episode.season,
-          currentEpisode: episode.episode || undefined,
-          episodeInfo: undefined,
           language: {
             name: episode.language,
             code: episode.language.toLowerCase(),
@@ -266,7 +256,6 @@ const HomeScreen: React.FC = () => {
                   episode.language === 'VA' ? '🇺🇸' : '🇯🇵',
             priority: 1
           },
-          addedAt: episode.addedAt
         }));
         
         console.log('✅ Nouveaux épisodes convertis:', recentEpisodes.length);
@@ -503,14 +492,8 @@ const HomeScreen: React.FC = () => {
         console.log('🎬 Première recommandation:', dataArray[0]);
         // Convertir les données de l'API en format SearchResult
         const recommendations: SearchResult[] = dataArray.slice(0, 20).map((anime: any) => ({
-          id: anime.id,
-          animeId: anime.id,
-          title: anime.title,
-          image: anime.image,
-          url: anime.url,
+          ...anime,
           contentType: anime.contentType || 'anime',
-          type: anime.contentType || 'anime',
-          genres: anime.genres || [],
           language: {
             name: anime.languages && anime.languages[0] ? anime.languages[0] : 'VOSTFR',
             code: anime.languages && anime.languages[0] ? anime.languages[0].toLowerCase() : 'vostfr',
@@ -547,13 +530,9 @@ const HomeScreen: React.FC = () => {
       if (response && response.items) {
         // Convertir les données de l'API en format SearchResult
         const planning: SearchResult[] = response.items.slice(0, 15).map((item: any) => ({
+          ...item,
           id: item.animeId,
-          animeId: item.animeId,
-          title: item.title,
-          image: item.image,
-          url: item.url,
           contentType: item.type || 'anime',
-          type: item.type || 'anime',
           language: {
             name: item.language,
             code: item.language.toLowerCase(),
@@ -562,9 +541,6 @@ const HomeScreen: React.FC = () => {
                   item.language === 'VA' ? '🇺🇸' : '🇯🇵',
             priority: 1
           },
-          releaseTime: item.releaseTime,
-          day: item.day,
-          status: item.status,
           category: 'planning'
         }));
         

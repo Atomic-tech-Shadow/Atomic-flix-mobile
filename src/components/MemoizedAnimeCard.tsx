@@ -9,18 +9,7 @@ import { useTheme } from '../contexts/ThemeContext';
 
 const getValidImageUrl = (anime: any): string | null => {
   if (!anime) return null;
-  const imageUrl = anime.image;
-  if (imageUrl && imageUrl.startsWith('https')) {
-    return imageUrl;
-  }
-  const animeId = anime.animeId || anime.id;
-  if (animeId && typeof animeId === 'string' && !animeId.includes('/') && !animeId.includes('http')) {
-    return `https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/${animeId}.jpg`;
-  }
-  if (imageUrl && imageUrl.startsWith('/')) {
-    return `https://anime-sama.tv${imageUrl}`;
-  }
-  return imageUrl || null;
+  return anime.image || null;
 };
 
 interface AnimeCardProps {
@@ -86,7 +75,6 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
           source={{ uri: imageUrl || '' }}
           style={styles.cardImage}
           resizeMode="cover"
-          fadeDuration={0}
           onError={handleImageError}
         />
         {!imageUrl && (
