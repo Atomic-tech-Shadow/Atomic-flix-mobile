@@ -86,6 +86,7 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
           source={{ uri: imageUrl || '' }}
           style={styles.cardImage}
           resizeMode="cover"
+          fadeDuration={0}
           onError={handleImageError}
         />
         {!imageUrl && (

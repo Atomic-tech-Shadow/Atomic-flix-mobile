@@ -60,6 +60,7 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
           source={{ uri: imageUrl || '' }}
           style={styles.image}
           resizeMode="cover"
+          fadeDuration={0}
           onError={handleImageError}
         />
         {!imageUrl && (
