@@ -802,43 +802,82 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     }
   };
 
-  // Fonction séparée pour charger les épisodes avec les données anime
   const loadSeasonEpisodesWithData = async (animeInfo: AnimeData, season: Season, language: string, autoLoadEpisode = false) => {
     try {
       setEpisodeLoading(true);
       const languageCode = normalizeLanguageForAPI(language);
 
-      const data = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeInfo.id}?season=${season.value}&language=${languageCode}`);
+      const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeInfo.id}?season=${season.value}&language=${languageCode}`);
+      
+      const data = response && response.success ? response : { success: true, episodes: response?.episodes || response?.data || [] };
 
-      if (data && data.success && data.episodes && Array.isArray(data.episodes) && data.episodes.length > 0) {
-        const formattedEpisodes: Episode[] = data.episodes.map((ep: any, index: number) => {
-          const episodeNumber = ep.number || (index + 1);
-          const episodeTitle = ep.title || `Épisode ${episodeNumber}`;
-          const episodeUrl = ep.url || `https://anime-sama.tv/catalogue/${animeInfo.id}/${season.value}/${languageCode}/episode-${episodeNumber}`;
+      if (data && data.success) {
+        const episodesList = Array.isArray(data.episodes) ? data.episodes : (Array.isArray(data.data) ? data.data : []);
+        
+        if (episodesList.length > 0) {
+          const formattedEpisodes: Episode[] = episodesList.map((ep: any, index: number) => {
+            const episodeNumber = ep.number || ep.episodeNumber || (index + 1);
+            const episodeTitle = ep.title || `Épisode ${episodeNumber}`;
+            return {
+              id: ep.id || `${animeInfo.id}-${season.value}-ep${episodeNumber}-${languageCode}`,
+              title: episodeTitle,
+              episodeNumber: episodeNumber,
+              url: ep.url || `https://anime-sama.tv/catalogue/${animeInfo.id}/${season.value}/${languageCode}/episode-${episodeNumber}`,
+              language: language,
+              available: ep.available !== false,
+              streamingSources: ep.streamingSources || ep.sources || []
+            };
+          });
 
-          return {
-            id: `${animeInfo.id}-${season.value}-ep${episodeNumber}-${languageCode}`,
-            title: episodeTitle,
-            episodeNumber: episodeNumber,
-            url: episodeUrl,
-            language: language,
-            available: ep.available !== false,
-            streamingSources: ep.streamingSources || []
-          };
-        });
+          setEpisodes(formattedEpisodes);
 
-        setEpisodes(formattedEpisodes);
+          // 🎯 Sélectionner l'épisode spécifique si fourni depuis navigation directe, sinon le premier
+          const episodeToSelect = initialEpisode 
+            ? formattedEpisodes.find(ep => ep.episodeNumber === initialEpisode) || formattedEpisodes[0]
+            : formattedEpisodes[0];
 
-        // 🎯 Sélectionner l'épisode spécifique si fourni depuis navigation directe, sinon le premier
-        const episodeToSelect = initialEpisode 
-          ? formattedEpisodes.find(ep => ep.episodeNumber === initialEpisode) || formattedEpisodes[0]
-          : formattedEpisodes[0];
-        setSelectedEpisode(episodeToSelect);
-
-        if (autoLoadEpisode) {
-          loadEpisodeSources(episodeToSelect);
+          if (episodeToSelect) {
+            setSelectedEpisode(episodeToSelect);
+            if (autoLoadEpisode) {
+              await loadEpisodeSources(episodeToSelect);
+            }
+          }
         }
-      } else {
+      }
+    } catch (e) {
+      console.error('Erreur chargement épisodes:', e);
+    } finally {
+      setEpisodeLoading(false);
+    }
+  };
+
+  const loadEpisodeSources = async (episode: Episode) => {
+    try {
+      setEpisodeLoading(true);
+      setServerError(false);
+      
+      const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/anime/${animeData?.id}/episode/${episode.episodeNumber}/sources`);
+      
+      const data = response && response.success ? response : { success: true, data: response?.data || response?.sources || [] };
+
+      if (data && data.success && data.data) {
+        setEpisodeDetails({
+          id: episode.id,
+          title: episode.title,
+          animeTitle: animeTitle,
+          episodeNumber: episode.episodeNumber,
+          sources: data.data,
+          availableServers: [...new Set(data.data.map((s: any) => s.server))],
+          url: episode.url
+        });
+      }
+    } catch (e) {
+      console.error('Erreur sources:', e);
+      setServerError(true);
+    } finally {
+      setEpisodeLoading(false);
+    }
+  };      } else {
         setError('Aucun épisode trouvé pour cette saison');
       }
     } catch (err) {

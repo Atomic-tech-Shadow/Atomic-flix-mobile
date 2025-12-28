@@ -161,14 +161,72 @@ const HomeScreen: React.FC = () => {
   const loadAllInitialContent = async () => {
     setInitialLoading(true);
     try {
-      // Charger le contenu populaire (Légendaires et Pépites), les nouveaux épisodes, les recommandations et le planning
-      await Promise.all([
-        loadPopularAnimes(),
-        loadRecentEpisodes(),
-        loadRecommendations(),
-        loadPlanning(),
-        loadWatchHistory(),
-      ]);
+        // Charger le contenu populaire (Légendaires et Pépites), les nouveaux épisodes, les recommandations et le planning
+        const [popular, recent, recommendations, planning] = await Promise.all([
+          apiRequest('/api/popular').catch(() => null),
+          apiRequest('/api/recent').catch(() => null),
+          apiRequest('/api/recommendations').catch(() => null),
+          apiRequest('/api/planning').catch(() => null)
+        ]);
+
+        // Traitement populaire
+        if (popular && popular.categories) {
+          setClassiquesAnimes(popular.categories.classiques?.anime || []);
+          setPepitesAnimes(popular.categories.pepites?.anime || []);
+        }
+
+        // Traitement récents
+        if (recent && recent.recentEpisodes) {
+          const formattedRecent = recent.recentEpisodes.slice(0, 15).map((ep: any) => ({
+            ...ep,
+            id: ep.animeId,
+            title: ep.animeTitle,
+            contentType: 'anime',
+            language: {
+              name: ep.language,
+              code: (ep.language || '').toLowerCase(),
+              fullName: ep.language,
+              flag: (ep.language || '').includes('VF') ? '🇫🇷' : ep.language === 'VA' ? '🇺🇸' : '🇯🇵',
+              priority: 1
+            }
+          }));
+          setNouveauxEpisodes(formattedRecent);
+        }
+
+        // Traitement recommandations
+        const recData = recommendations?.data || recommendations;
+        if (Array.isArray(recData)) {
+          const formattedRecs = recData.slice(0, 20).map((anime: any) => ({
+            ...anime,
+            contentType: anime.contentType || 'anime',
+            language: {
+              name: anime.languages?.[0] || 'VOSTFR',
+              code: (anime.languages?.[0] || 'VOSTFR').toLowerCase(),
+              fullName: anime.languages?.[0] || 'VOSTFR',
+              flag: anime.languages?.[0]?.includes('VF') ? '🇫🇷' : anime.languages?.[0] === 'VA' ? '🇺🇸' : '🇯🇵',
+              priority: 1
+            }
+          }));
+          setRecommendationsAnimes(formattedRecs);
+        }
+
+        // Traitement planning
+        if (planning && planning.items) {
+          const formattedPlanning = planning.items.slice(0, 15).map((item: any) => ({
+            ...item,
+            id: item.animeId,
+            contentType: item.type || 'anime',
+            language: {
+              name: item.language,
+              code: (item.language || '').toLowerCase(),
+              fullName: item.language,
+              flag: (item.language || '').includes('VF') ? '🇫🇷' : item.language === 'VA' ? '🇺🇸' : '🇯🇵',
+              priority: 1
+            }
+          }));
+          setPlanningAnimes(formattedPlanning);
+        }
+
     } catch (error) {
     } finally {
       setInitialLoading(false);
