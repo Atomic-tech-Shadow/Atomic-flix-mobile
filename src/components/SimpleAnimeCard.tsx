@@ -72,6 +72,20 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
         </View>
       )}
 
+      {/* Nouveaux badges isFin et isReporte */}
+      <View style={styles.dynamicBadgesContainer}>
+        {anime.isFin && (
+          <View style={[styles.miniBadge, { backgroundColor: '#FF4757' }]}>
+            <Text style={styles.miniBadgeText}>FIN</Text>
+          </View>
+        )}
+        {anime.isReporte && (
+          <View style={[styles.miniBadge, { backgroundColor: '#FFA502' }]}>
+            <Text style={styles.miniBadgeText}>REPORTE</Text>
+          </View>
+        )}
+      </View>
+
       {/* Titre en bas avec gradient */}
       <View style={styles.titleContainer}>
         <Text style={styles.title} numberOfLines={2}>
@@ -149,6 +163,24 @@ const styles = StyleSheet.create({
     color: COLORS.text.primary,
     fontSize: 11,
     fontWeight: '600',
+  },
+  dynamicBadgesContainer: {
+    position: 'absolute',
+    top: 30,
+    right: 6,
+    alignItems: 'flex-end',
+    gap: 4,
+    zIndex: 2,
+  },
+  miniBadge: {
+    paddingHorizontal: 4,
+    paddingVertical: 1,
+    borderRadius: 2,
+  },
+  miniBadgeText: {
+    color: '#FFF',
+    fontSize: 7,
+    fontWeight: 'bold',
   },
 });
 
