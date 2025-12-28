@@ -67,6 +67,8 @@ interface RecentEpisode {
   image: string;
   addedAt: string;
   type: string;
+  isFin?: boolean;
+  isReporte?: boolean;
 }
 
 // Interface pour la réponse de l'API /recent
