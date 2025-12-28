@@ -26,6 +26,7 @@ Notifications.setNotificationHandler({
 export class NotificationService {
   private static instance: NotificationService;
   private listeners: Set<(notifications: PushNotification[]) => void> = new Set();
+  private navigationListeners: Set<(data: any) => void> = new Set();
   private expoPushToken: string | null = null;
   private isInitialized: boolean = false;
   private notificationReceivedSubscription: any = null;
@@ -270,11 +271,11 @@ export class NotificationService {
 
     // Listener pour interactions utilisateur
     this.notificationResponseSubscription = Notifications.addNotificationResponseReceivedListener(async (response) => {
-      const { notification } = response;
+      const { notification, actionIdentifier } = response;
       const data = notification.request.content.data;
       
       if (__DEV__) {
-        console.log('👆 Notification tapée:', data);
+        console.log('👆 Notification tapée:', data, 'Action:', actionIdentifier);
       }
       
       // Marquer comme lue
@@ -282,10 +283,13 @@ export class NotificationService {
         await this.markAsRead(data.notificationId as string);
       }
       
-      // Navigation automatique si spécifiée
-      if (data?.screen && data?.params) {
-        // TODO: Implémenter la navigation globale
-        console.log('Navigation vers:', data.screen, data.params);
+      // Émettre un événement de navigation pour la notification
+      if (actionIdentifier === 'watch' || actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER) {
+        // Émettre l'événement pour la navigation
+        this.emitNavigationEvent({
+          screen: data.screen || 'AnimePlayer',
+          params: data.params || {}
+        });
       }
     });
 
@@ -350,6 +354,20 @@ export class NotificationService {
         sound: 'default',
         priority: Notifications.AndroidNotificationPriority.HIGH,
         color: this.getChannelColor(type),
+        android: {
+          channelId,
+          // Ajouter un bouton "Regarder" pour les épisodes/films
+          actions: type === 'episode' || type === 'film' ? [
+            {
+              identifier: 'watch',
+              buttonTitle: '▶️ Regarder',
+              options: {
+                openAppToForeground: true
+              }
+            }
+          ] : [],
+          summaryText: data.animeTitle || title
+        }
       };
 
       // Ajouter l'image si elle est fournie
@@ -653,6 +671,16 @@ export class NotificationService {
   // Obtenir le token Expo (pour debug/tests)
   getExpoPushToken(): string | null {
     return this.expoPushToken;
+  }
+
+  // Gestion des listeners de navigation
+  addNavigationListener(callback: (data: any) => void): () => void {
+    this.navigationListeners.add(callback);
+    return () => this.navigationListeners.delete(callback);
+  }
+
+  private emitNavigationEvent(data: any): void {
+    this.navigationListeners.forEach(listener => listener(data));
   }
 
 }
