@@ -84,18 +84,21 @@ const MemoizedAnimeCard: React.FC<AnimeCardProps> = memo(({
         )}
       </View>
       
-      {/* Badge personnalisé ou badge langue */}
-      {badgeText ? (
-        <View style={[styles.badge, badgeStyle]}>
-          <Text style={styles.badgeText}>{badgeText}</Text>
-        </View>
-      ) : anime.language && (
-        <View style={styles.languageBadge}>
-          <Text style={styles.languageBadgeText}>
-            {getLanguageBadgeText(anime.language)}
-          </Text>
-        </View>
-      )}
+      {/* Conteneur pour les badges empilés verticalement */}
+      <View style={styles.badgesContainer}>
+        {badgeText && (
+          <View style={[styles.badge, badgeStyle]}>
+            <Text style={styles.badgeText}>{badgeText}</Text>
+          </View>
+        )}
+        {anime.language && (
+          <View style={styles.languageBadge}>
+            <Text style={styles.languageBadgeText}>
+              {getLanguageBadgeText(anime.language)}
+            </Text>
+          </View>
+        )}
+      </View>
       
       <LinearGradient
         colors={['transparent', 'rgba(0,0,0,0.8)']}
@@ -163,15 +166,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  badge: {
+  badgesContainer: {
     position: 'absolute',
     top: 8,
     right: 8,
+    zIndex: 10,
+    gap: 4,
+  },
+  badge: {
     backgroundColor: COLORS.badges.atomic, // Violet éclatant
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 4,
-    zIndex: 2,
     // Effet glow sur les badges
     shadowColor: COLORS.badges.atomic,
     shadowOpacity: 0.6,
@@ -185,14 +191,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   languageBadge: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
     backgroundColor: COLORS.badges.vostfr, // Violet pour badges langue
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 4,
-    zIndex: 2,
     // Effet glow violet pour badges langue
     shadowColor: COLORS.badges.vostfr,
     shadowOpacity: 0.5,
