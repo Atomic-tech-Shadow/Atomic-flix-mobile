@@ -404,9 +404,6 @@ const AnimeDetailScreen: React.FC = () => {
   seasonCardAnime: {
     borderColor: COLORS.accent,
   },
-  seasonCardManga: {
-    borderColor: COLORS.badges.manga,
-  },
   seasonCardBackground: {
     position: 'absolute',
     top: 0,
@@ -574,9 +571,6 @@ const AnimeDetailScreen: React.FC = () => {
     shadowRadius: 3,
     elevation: 3,
   },
-  mangaBadge: {
-    backgroundColor: COLORS.badges.manga,
-  },
   movieBadge: {
     backgroundColor: COLORS.badges.film,
   },
@@ -622,13 +616,6 @@ const AnimeDetailScreen: React.FC = () => {
                    season.name.toLowerCase().includes('chapitre');
     
     if (isManga) {
-      // Rediriger vers le lecteur de manga - Désactivé
-      /*
-      navigation.navigate('MangaReader', {
-        mangaUrl: animeUrl,
-        mangaTitle: animeTitle
-      });
-      */
       return;
     } else {
       // Rediriger vers le lecteur vidéo
@@ -762,13 +749,11 @@ const AnimeDetailScreen: React.FC = () => {
 
           <View style={[
             styles.contentBadge,
-            anime.contentType === 'manga' ? styles.mangaBadge :
             anime.contentType === 'film' || anime.contentType === 'movie' ? styles.movieBadge :
             styles.animeBadgeDetail
           ]}>
             <Text style={styles.badgeText}>
-              {anime.contentType === 'manga' ? 'MANGA' :
-               anime.contentType === 'film' || anime.contentType === 'movie' ? 'FILM' :
+              {anime.contentType === 'film' || anime.contentType === 'movie' ? 'FILM' :
                'ANIME'}
             </Text>
           </View>
@@ -971,7 +956,7 @@ const AnimeDetailScreen: React.FC = () => {
                   key={`season-${index}-${season.name}`}
                   style={[
                     styles.seasonCard,
-                    isManga ? styles.seasonCardManga : styles.seasonCardAnime
+                  styles.seasonCardAnime
                   ]}
                   onPress={() => goToPlayer(season)}
                   activeOpacity={0.8}

@@ -735,9 +735,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     paddingVertical: 4,
     zIndex: 1,
   },
-  mangaBadge: {
-    backgroundColor: COLORS.badges.manga,
-  },
   movieBadge: {
     backgroundColor: COLORS.badges.film,
   },
@@ -1367,13 +1364,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
           <View style={[
             styles.contentBadge,
-            anime.contentType === 'manga' ? styles.mangaBadge :
             anime.contentType === 'film' || anime.contentType === 'movie' ? styles.movieBadge :
             styles.animeBadge
           ]}>
             <Text style={styles.badgeText}>
-              {anime.contentType === 'manga' ? 'MANGA' :
-               anime.contentType === 'film' || anime.contentType === 'movie' ? 'FILM' :
+              {anime.contentType === 'film' || anime.contentType === 'movie' ? 'FILM' :
                'ANIME'}
             </Text>
           </View>

@@ -794,13 +794,11 @@ const HomeScreen: React.FC = () => {
           {/* Badge type de contenu (identique au site web) */}
           <View style={[
             styles.contentBadge,
-            anime.contentType === 'manga' ? styles.mangaBadge :
             anime.contentType === 'film' || anime.contentType === 'movie' ? styles.movieBadge :
             styles.animeBadge
           ]}>
             <Text style={styles.badgeText}>
-              {anime.contentType === 'manga' ? 'MANGA' :
-               anime.contentType === 'film' || anime.contentType === 'movie' ? 'FILM' :
+              {anime.contentType === 'film' || anime.contentType === 'movie' ? 'FILM' :
                'ANIME'}
             </Text>
           </View>
@@ -1058,9 +1056,6 @@ const HomeScreen: React.FC = () => {
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
-  },
-  mangaBadge: {
-    backgroundColor: COLORS.badges.manga,
   },
   movieBadge: {
     backgroundColor: COLORS.badges.film,
