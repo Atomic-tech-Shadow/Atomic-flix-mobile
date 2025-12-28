@@ -704,10 +704,7 @@ const AnimeDetailScreen: React.FC = () => {
       }
     }
     
-    if (contentType === 'manga') {
-      // navigation.navigate('MangaReader', { mangaUrl: cleanId, mangaTitle: 'Manga' });
-      return;
-    } else {
+    if (contentType === 'anime') {
       navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: 'Anime' });
     }
   };

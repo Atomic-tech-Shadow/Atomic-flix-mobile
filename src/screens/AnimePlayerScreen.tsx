@@ -805,6 +805,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   const loadSeasonEpisodesWithData = async (animeInfo: AnimeData, season: Season, language: string, autoLoadEpisode = false) => {
     try {
       setEpisodeLoading(true);
+      setError(null);
       const languageCode = normalizeLanguageForAPI(language);
 
       const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeInfo.id}?season=${season.value}&language=${languageCode}`);
@@ -831,7 +832,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
           setEpisodes(formattedEpisodes);
 
-          // 🎯 Sélectionner l'épisode spécifique si fourni depuis navigation directe, sinon le premier
+          // Sélectionner l'épisode spécifique
           const episodeToSelect = initialEpisode 
             ? formattedEpisodes.find(ep => ep.episodeNumber === initialEpisode) || formattedEpisodes[0]
             : formattedEpisodes[0];
@@ -842,10 +843,15 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
               await loadEpisodeSources(episodeToSelect);
             }
           }
+        } else {
+          setError('Aucun épisode trouvé pour cette saison');
         }
+      } else {
+        setError('Erreur lors du chargement des épisodes');
       }
     } catch (e) {
       console.error('Erreur chargement épisodes:', e);
+      setError('Erreur de connexion au serveur');
     } finally {
       setEpisodeLoading(false);
     }
@@ -853,23 +859,34 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const loadEpisodeSources = async (episode: Episode) => {
     try {
+      // Arrêter le tracking précédent
+      if (watchStartTime) {
+        await stopWatchTracking();
+      }
+
       setEpisodeLoading(true);
       setServerError(false);
       
-      const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/anime/${animeData?.id}/episode/${episode.episodeNumber}/sources`);
+      const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/embed?url=${encodeURIComponent(episode.url)}`);
       
-      const data = response && response.success ? response : { success: true, data: response?.data || response?.sources || [] };
+      const data = response && response.success ? response : { success: true, sources: response?.sources || response?.data || [] };
 
-      if (data && data.success && data.data) {
+      if (data && data.success && data.sources && data.sources.length > 0) {
+        const prioritizedSources = prioritizeSibnetServer(data.sources);
+        
         setEpisodeDetails({
           id: episode.id,
           title: episode.title,
           animeTitle: animeTitle,
           episodeNumber: episode.episodeNumber,
-          sources: data.data,
-          availableServers: [...new Set(data.data.map((s: any) => s.server))],
+          sources: prioritizedSources,
+          availableServers: [...new Set(prioritizedSources.map((s: any) => s.server))],
           url: episode.url
         });
+
+        await saveWatchHistory(episode, 0, 0, 0);
+      } else {
+        setError('Aucune source de streaming trouvée pour cet épisode');
       }
     } catch (e) {
       console.error('Erreur sources:', e);
@@ -877,72 +894,12 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     } finally {
       setEpisodeLoading(false);
     }
-  };      } else {
-        setError('Aucun épisode trouvé pour cette saison');
-      }
-    } catch (err) {
-      setError('Erreur lors du chargement des épisodes');
-    } finally {
-      setEpisodeLoading(false);
-    }
   };
 
   // Fonction pour charger les épisodes via API externe
   const loadSeasonEpisodes = async (season: Season, autoLoadEpisode = false) => {
-    if (!animeData) {
-      return;
-    }
-
+    if (!animeData) return;
     await loadSeasonEpisodesWithData(animeData, season, selectedLanguage, autoLoadEpisode);
-
-    try {
-      setEpisodeLoading(true);
-      const languageCode = normalizeLanguageForAPI(selectedLanguage);
-
-      const data = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeData.id}?season=${season.value}&language=${languageCode}`);
-
-      if (!data || !data.success) {
-        setError('Erreur lors du chargement des épisodes depuis l\'API');
-        return;
-      }
-
-      if (data.episodes && Array.isArray(data.episodes) && data.episodes.length > 0) {
-        const formattedEpisodes: Episode[] = data.episodes.map((ep: any, index: number) => {
-          const episodeNumber = ep.number || (index + 1);
-          const episodeTitle = ep.title || `Épisode ${episodeNumber}`;
-          const episodeUrl = ep.url || `https://anime-sama.fr/catalogue/${animeData.id}/${season.value}/${languageCode}/episode-${episodeNumber}`;
-
-          return {
-            id: `${animeData.id}-${season.value}-ep${episodeNumber}-${languageCode}`,
-            title: episodeTitle,
-            episodeNumber: episodeNumber,
-            url: episodeUrl,
-            language: data.language ? data.language.toUpperCase() : selectedLanguage.toUpperCase(),
-            available: ep.available !== false,
-            streamingSources: ep.streamingSources || []
-          };
-        });
-
-        setEpisodes(formattedEpisodes);
-
-        // 🎯 Sélectionner l'épisode spécifique si fourni depuis navigation directe, sinon le premier
-        const episodeToSelect = initialEpisode 
-          ? formattedEpisodes.find(ep => ep.episodeNumber === initialEpisode) || formattedEpisodes[0]
-          : formattedEpisodes[0];
-        setSelectedEpisode(episodeToSelect);
-
-        // Auto-charger l'épisode spécifique avec l'API embed
-        if (autoLoadEpisode) {
-          loadEpisodeSources(episodeToSelect);
-        }
-      } else {
-        setError('Aucun épisode trouvé pour cette saison et langue');
-      }
-    } catch (err) {
-      setError('Erreur lors du chargement des épisodes depuis l\'API');
-    } finally {
-      setEpisodeLoading(false);
-    }
   };
 
   // Fonction pour sauvegarder l'historique de visionnage
@@ -1198,9 +1155,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       }
     }
     
-    if (contentType === 'manga') {
-      navigation.navigate('MangaReader', { mangaUrl: cleanId, mangaTitle: 'Manga' });
-    } else {
+    if (contentType === 'anime') {
       navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: 'Anime' });
     }
   };
