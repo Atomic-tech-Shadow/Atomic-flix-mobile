@@ -332,9 +332,10 @@ const HomeScreen: React.FC = () => {
     }
     
     
-    // Détecter si c'est un manga pour rediriger vers le lecteur approprié
+    // Détecter si c'est un manga - Masqué car désactivé
     if (contentType === 'manga') {
-      navigation.navigate('MangaReader', { mangaUrl: cleanId, mangaTitle: 'Manga' });
+      // navigation.navigate('MangaReader', { mangaUrl: cleanId, mangaTitle: 'Manga' });
+      return;
     } else {
       navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: animeTitle });
     }

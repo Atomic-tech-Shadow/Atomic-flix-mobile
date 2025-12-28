@@ -622,11 +622,14 @@ const AnimeDetailScreen: React.FC = () => {
                    season.name.toLowerCase().includes('chapitre');
     
     if (isManga) {
-      // Rediriger vers le lecteur de manga
+      // Rediriger vers le lecteur de manga - Désactivé
+      /*
       navigation.navigate('MangaReader', {
         mangaUrl: animeUrl,
         mangaTitle: animeTitle
       });
+      */
+      return;
     } else {
       // Rediriger vers le lecteur vidéo
       navigation.navigate('AnimePlayer', {
@@ -702,7 +705,8 @@ const AnimeDetailScreen: React.FC = () => {
     }
     
     if (contentType === 'manga') {
-      navigation.navigate('MangaReader', { mangaUrl: cleanId, mangaTitle: 'Manga' });
+      // navigation.navigate('MangaReader', { mangaUrl: cleanId, mangaTitle: 'Manga' });
+      return;
     } else {
       navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: 'Anime' });
     }

@@ -11,7 +11,6 @@ import GlobalBackground from '../components/GlobalBackground';
 // Import screens - exact reproductions of web pages
 import HomeScreen from '../screens/HomeScreen';
 import AnimeDetailScreen from '../screens/AnimeDetailScreen';
-import MangaReaderScreen from '../screens/MangaReaderScreen';
 import AboutScreen from '../screens/AboutScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import AnimePlayerScreen from '../screens/AnimePlayerScreen';
@@ -28,7 +27,6 @@ export type RootStackParamList = {
     initialEpisode?: number;
     initialLanguage?: 'VF' | 'VOSTFR';
   };
-  MangaReader: { mangaUrl: string; mangaTitle: string };
   About: undefined;
   NotFound: undefined;
   PrivacyPolicy: undefined;
@@ -85,7 +83,6 @@ const HomeStackNavigator: React.FC = () => {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="AnimeDetail" component={AnimeDetailScreen} />
       <Stack.Screen name="AnimePlayer" component={AnimePlayerScreen} />
-      <Stack.Screen name="MangaReader" component={MangaReaderScreen} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} />
     </Stack.Navigator>
   );
