@@ -67,16 +67,6 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
 
       {/* Nouveaux badges isFin et isReporte */}
       <View style={styles.dynamicBadgesContainer}>
-        {anime.isFin && (
-          <View style={[styles.miniBadge, { backgroundColor: '#FF4757' }]}>
-            <Text style={styles.miniBadgeText}>FIN</Text>
-          </View>
-        )}
-        {anime.isReporte && (
-          <View style={[styles.miniBadge, { backgroundColor: '#FFA502' }]}>
-            <Text style={styles.miniBadgeText}>REPORTE</Text>
-          </View>
-        )}
         {(anime.currentSeason || anime.currentEpisode || anime.seasonPart) && (
           <View style={[styles.miniBadge, { backgroundColor: COLORS.badges.anime }]}>
             <Text style={styles.miniBadgeText}>
@@ -84,6 +74,16 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
               {anime.seasonPart ? `P${anime.seasonPart}` : ''}
               {anime.currentEpisode ? `E${anime.currentEpisode.toString().padStart(2, '0')}` : ''}
             </Text>
+          </View>
+        )}
+        {anime.isReporte && (
+          <View style={[styles.miniBadge, { backgroundColor: '#FFA502' }]}>
+            <Text style={styles.miniBadgeText}>REPORTE</Text>
+          </View>
+        )}
+        {anime.isFin && (
+          <View style={[styles.miniBadge, { backgroundColor: '#FF4757' }]}>
+            <Text style={styles.miniBadgeText}>FIN</Text>
           </View>
         )}
       </View>
