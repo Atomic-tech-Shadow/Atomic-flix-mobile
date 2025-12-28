@@ -10,7 +10,7 @@ import { useTheme } from '../contexts/ThemeContext';
 const getValidImageUrl = (anime: any): string | null => {
   if (!anime) return null;
   const imageUrl = anime.image;
-  if (imageUrl && (imageUrl.startsWith('http') || imageUrl.startsWith('https'))) {
+  if (imageUrl && imageUrl.startsWith('https')) {
     return imageUrl;
   }
   const animeId = anime.animeId || anime.id;
@@ -20,7 +20,7 @@ const getValidImageUrl = (anime: any): string | null => {
   if (imageUrl && imageUrl.startsWith('/')) {
     return `https://anime-sama.tv${imageUrl}`;
   }
-  return null;
+  return imageUrl || null;
 };
 
 interface AnimeCardProps {
