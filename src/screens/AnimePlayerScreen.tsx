@@ -793,15 +793,9 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     }
   };
 
-  // Fonction pour charger les détails d'un anime via l'API externe
   const getAnimeDetails = async (animeId: string) => {
     try {
       const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/anime/${animeId}`);
-
-      if (!response || !response.success) {
-        return null;
-      }
-
       return response;
     } catch (error) {
       return null;

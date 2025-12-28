@@ -590,39 +590,21 @@ const AnimeDetailScreen: React.FC = () => {
   },
 });
 
-  // Charger les données de l'anime (exactement comme le code web)
   const loadAnimeData = async () => {
     try {
       setLoading(true);
       setError(null);
       
-      // Extraire l'ID de l'anime depuis l'URL exactement comme dans le code web
       const animeId = animeUrl.split('/').pop() || animeUrl;
-
-      
-      // Appeler directement animeAPI.getDetails comme dans le code web
       const apiResponse = await animeAPI.getDetails(animeId);
       
       if (!apiResponse || !apiResponse.success) {
-        const errorMsg = apiResponse?.error || apiResponse?.message || 'Anime non trouvé dans la base de données';
-        throw new Error(errorMsg);
+        throw new Error(apiResponse?.error || 'Anime non trouvé');
       }
       
       setAnimeData(apiResponse.data);
-      
     } catch (err) {
-
-      const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue';
-      
-      if (errorMessage.includes('Timeout') || errorMessage.includes('timeout')) {
-        setError('Le serveur met trop de temps à répondre. Cet anime pourrait nécessiter plus de temps de traitement.');
-      } else if (errorMessage.includes('500')) {
-        setError('Erreur temporaire du serveur. Veuillez réessayer.');
-      } else if (errorMessage.includes('404') || errorMessage.includes('non trouvé')) {
-        setError('Cet anime n\'a pas été trouvé. Vérifiez l\'orthographe ou essayez un autre anime.');
-      } else {
-        setError(`Impossible de charger l'anime: ${errorMessage}`);
-      }
+      setError(err instanceof Error ? err.message : 'Erreur inconnue');
     } finally {
       setLoading(false);
     }
@@ -759,12 +741,8 @@ const AnimeDetailScreen: React.FC = () => {
     const detectedLanguage = getLanguageFromAPI(anime);
     const realTitle = anime.title;
     
-    // Déterminer l'URL de l'image (Priorité Statically CDN)
-    let imageUrl = anime.image;
-    const animeId = anime.animeId || anime.id;
-    if (animeId && typeof animeId === 'string' && !animeId.includes('/') && !animeId.includes('http')) {
-      imageUrl = `https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/${animeId}.jpg`;
-    }
+    // Déterminer l'URL de l'image (Directement depuis l'API)
+    const imageUrl = anime.image;
     
     return (
       <TouchableOpacity
@@ -778,7 +756,6 @@ const AnimeDetailScreen: React.FC = () => {
             source={{ uri: imageUrl }}
             style={styles.cardImage}
             resizeMode="cover"
-            fadeDuration={200}
             onError={(e) => {}}
           />
 
