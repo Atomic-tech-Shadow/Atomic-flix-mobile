@@ -208,9 +208,17 @@ const HomeScreen: React.FC = () => {
       console.log('📊 API /popular réponse complète:', response);
 
       if (response && response.categories) {
-        // Extraire les classiques et pépites de l'API
-        const classiques = response.categories.classiques?.anime || [];
-        const pepites = response.categories.pepites?.anime || [];
+        // Convertir les données de l'API en format SearchResult
+        const classiques: SearchResult[] = (response.categories.classiques?.anime || []).map((anime: any) => ({
+          ...anime,
+          id: anime.id,
+          animeId: anime.id,
+        }));
+        const pepites: SearchResult[] = (response.categories.pepites?.anime || []).map((anime: any) => ({
+          ...anime,
+          id: anime.id,
+          animeId: anime.id,
+        }));
         
         console.log('👑 Classiques trouvés:', classiques.length, classiques);
         console.log('💎 Pépites trouvées:', pepites.length, pepites);
@@ -539,7 +547,7 @@ const HomeScreen: React.FC = () => {
       if (response && response.items) {
         // Convertir les données de l'API en format SearchResult
         const planning: SearchResult[] = response.items.slice(0, 15).map((item: any) => ({
-          id: `${item.animeId}-${item.language}`,
+          id: item.animeId,
           animeId: item.animeId,
           title: item.title,
           image: item.image,

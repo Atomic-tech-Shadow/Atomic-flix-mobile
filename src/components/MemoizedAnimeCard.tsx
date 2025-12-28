@@ -10,28 +10,28 @@ import { useTheme } from '../contexts/ThemeContext';
 const getValidImageUrl = (anime: any): string | null => {
   if (!anime) return null;
 
-  // 1. Tenter d'utiliser l'ID de l'anime avec le CDN Statically (Priorité maximale)
-  // On extrait l'ID propre (sans slash)
+  const imageUrl = anime.image;
+  
+  // 1. Si l'image est déjà une URL complète Statically ou autre, on la nettoie et on l'utilise
+  if (imageUrl && (imageUrl.startsWith('http') || imageUrl.startsWith('https'))) {
+    let finalUrl = imageUrl;
+    if (finalUrl.startsWith('http://cdn.statically.io')) {
+      finalUrl = finalUrl.replace('http://', 'https://');
+    }
+    return finalUrl;
+  }
+
+  // 2. Tenter de construire l'URL Statically à partir de l'ID (Priorité pour les URLs relatives ou manquantes)
   const animeId = anime.animeId || anime.id;
   if (animeId && typeof animeId === 'string' && !animeId.includes('/') && !animeId.includes('http')) {
     return `https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/${animeId}.jpg`;
   }
 
-  const imageUrl = anime.image;
-  if (!imageUrl) return null;
-
-  // 2. Fallback sur l'URL de l'API avec nettoyage
-  let finalUrl = imageUrl;
-  if (finalUrl.startsWith('http://cdn.statically.io')) {
-    finalUrl = finalUrl.replace('http://', 'https://');
+  // 3. Cas des URLs relatives
+  if (imageUrl && imageUrl.startsWith('/')) {
+    return `https://anime-sama.tv${imageUrl}`;
   }
 
-  if (finalUrl.startsWith('http://') || finalUrl.startsWith('https://')) {
-    return finalUrl;
-  }
-  if (finalUrl.startsWith('/')) {
-    return `https://anime-sama.tv${finalUrl}`;
-  }
   return null;
 };
 
