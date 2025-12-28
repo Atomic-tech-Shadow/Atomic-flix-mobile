@@ -1837,7 +1837,7 @@ const HomeScreen: React.FC = () => {
                     <SimpleAnimeCard
                       key={`planning-${anime.id || index}`}
                       anime={anime}
-                      badge={anime.releaseTime ? formatPlanningTime(anime.releaseTime) : '⏰'}
+                      badge={anime.releaseTime ? `⏰ ${anime.releaseTime}` : '⏰'}
                       badgeColor={COLORS.secondary}
                       index={index}
                       onPress={() => loadAnimeDetails(anime.animeId || anime.url, anime.contentType, anime.title)}
