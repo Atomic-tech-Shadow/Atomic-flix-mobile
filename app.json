@@ -13,6 +13,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#0F0F0F"
     },
+    "scheme": "atomicflix",
     "android": {
       "versionCode": 3,
       "adaptiveIcon": {
@@ -20,6 +21,20 @@
         "backgroundColor": "#0F0F0F"
       },
       "package": "com.atomic.flix",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "atomicflix"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ],
       "permissions": [
         "android.permission.INTERNET",
         "android.permission.ACCESS_NETWORK_STATE",
