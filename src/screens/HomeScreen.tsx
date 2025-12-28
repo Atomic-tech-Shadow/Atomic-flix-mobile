@@ -316,6 +316,7 @@ const HomeScreen: React.FC = () => {
           contentType: 'anime',
           currentSeason: episode.season,
           currentEpisode: episode.episode || undefined,
+          seasonPart: episode.seasonPart || undefined,
           isFin: episode.isFin,
           isReporte: episode.isReporte,
           language: {

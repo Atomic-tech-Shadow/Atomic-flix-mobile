@@ -28,6 +28,7 @@ export interface SearchResult {
   episodeInfo?: string;
   currentEpisode?: number;
   currentSeason?: number;
+  seasonPart?: number;
   isFin?: boolean;
   isReporte?: boolean;
   isFinale?: boolean;
