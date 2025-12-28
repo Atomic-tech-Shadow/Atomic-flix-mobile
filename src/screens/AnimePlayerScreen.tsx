@@ -994,46 +994,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     return [...sibnetSources, ...otherSources];
   };
 
-  const loadEpisodeSources = async (episode: Episode) => {
-    try {
-      // Arrêter le tracking précédent si il y en a un
-      if (watchStartTime) {
-        await stopWatchTracking();
-      }
-
-      setEpisodeLoading(true);
-
-      const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/embed?url=${encodeURIComponent(episode.url)}`);
-
-      if (response && response.success && response.sources && response.sources.length > 0) {
-        // Prioriser sibnet en première position
-        const prioritizedSources = prioritizeSibnetServer(response.sources);
-        
-        setEpisodeDetails({
-          id: episode.id,
-          title: episode.title,
-          animeTitle: animeTitle,
-          episodeNumber: episode.episodeNumber,
-          sources: prioritizedSources,
-          availableServers: prioritizedSources.map((s: any) => s.server),
-          url: episode.url
-        });
-
-        // Sauvegarder dans l'historique que l'épisode a été ouvert
-        await saveWatchHistory(episode, 0, 0, 0);
-
-        // Ne pas resetter selectedPlayer pour préserver le choix utilisateur
-        // setSelectedPlayer(0); // SUPPRIMÉ: causait le bug de retour serveur 1
-      } else {
-        setError('Aucune source de streaming trouvée pour cet épisode');
-      }
-    } catch (embedError) {
-      setError('Erreur lors du chargement des sources de streaming');
-    } finally {
-      setEpisodeLoading(false);
-    }
-  };
-
   // Variable supprimée : pendingEpisodeReload n'est plus nécessaire avec le nouveau système fluide
 
   // Fonction pour changer de langue (version optimisée pour changement fluide)
