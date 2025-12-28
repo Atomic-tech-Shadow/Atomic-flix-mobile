@@ -805,7 +805,8 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       setError(null);
       const languageCode = normalizeLanguageForAPI(language);
 
-      const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeInfo.id}?season=${season.value}&language=${languageCode}`);
+      // 🎯 Récupérer les épisodes avec l'option includeSources pour éviter une requête supplémentaire
+      const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes/${animeInfo.id}?season=${season.value}&language=${languageCode}&includeSources=true`);
       
       const data = response && response.success ? response : { success: true, episodes: response?.episodes || response?.data || [] };
 
@@ -864,6 +865,25 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       setEpisodeLoading(true);
       setServerError(false);
       
+      // 🚀 Optimisation : Utiliser les sources déjà présentes dans l'épisode si disponibles
+      if (episode.streamingSources && episode.streamingSources.length > 0) {
+        const prioritizedSources = prioritizeSibnetServer(episode.streamingSources);
+        
+        setEpisodeDetails({
+          id: episode.id,
+          title: episode.title,
+          animeTitle: animeTitle,
+          episodeNumber: episode.episodeNumber,
+          sources: prioritizedSources,
+          availableServers: [...new Set(prioritizedSources.map((s: any) => s.server))],
+          url: episode.url
+        });
+        
+        await saveWatchHistory(episode, 0, 0, 0);
+        return;
+      }
+
+      // Si pas de sources, tenter de les charger via l'API embed
       const response = await apiRequest(`https://anime-sama-scraper.vercel.app/api/embed?url=${encodeURIComponent(episode.url)}`);
       
       const data = response && response.success ? response : { success: true, sources: response?.sources || response?.data || [] };
