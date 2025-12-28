@@ -7,6 +7,7 @@ import { Season } from '../types';
 import DrawerContent from '../components/DrawerContent';
 import { COLORS } from '../constants/newColors';
 import GlobalBackground from '../components/GlobalBackground';
+import { NotificationService } from '../services/NotificationService';
 
 // Import screens - exact reproductions of web pages
 import HomeScreen from '../screens/HomeScreen';
@@ -26,11 +27,27 @@ export type RootStackParamList = {
     animeTitle: string;
     initialEpisode?: number;
     initialLanguage?: 'VF' | 'VOSTFR';
+    seasonNumber?: string | number;
+    episodeNumber?: string | number;
+    language?: string;
   };
   About: undefined;
   NotFound: undefined;
   PrivacyPolicy: undefined;
   TermsOfService: undefined;
+};
+
+const linking = {
+  prefixes: ['atomicflix://', 'https://atomic-flix.com'],
+  config: {
+    screens: {
+      HomeStack: {
+        screens: {
+          AnimePlayer: 'player/:animeUrl/:seasonNumber/:episodeNumber/:language',
+        },
+      },
+    },
+  },
 };
 
 export type DrawerParamList = {
@@ -89,8 +106,22 @@ const HomeStackNavigator: React.FC = () => {
 };
 
 const AppNavigator: React.FC = () => {
+  const navigationRef = React.useRef<any>(null);
+
+  React.useEffect(() => {
+    const service = NotificationService.getInstance();
+    const unsubscribe = service.navigationListeners.add((data: any) => {
+      if (navigationRef.current && data.screen) {
+        navigationRef.current.navigate(data.screen, data.params);
+      }
+    });
+    return () => {
+      service.navigationListeners.delete(unsubscribe as any);
+    };
+  }, []);
+
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking} ref={navigationRef}>
       <StatusBar style="light" backgroundColor={COLORS.primary} />
       <GlobalBackground>
         <Drawer.Navigator

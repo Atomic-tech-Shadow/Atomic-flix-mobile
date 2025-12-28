@@ -523,14 +523,14 @@ export class NotificationService {
         animeTitle: item.title,
         episodeNumber: item.currentEpisode,
         seasonNumber: item.currentSeason,
-        language: languageName,
-        screen: type === 'manga' ? 'MangaReader' : 'AnimePlayer',
+        language: languageBadge,
+        screen: 'AnimePlayer',
         params: {
           animeUrl: item.animeId || item.id,
           animeTitle: item.title,
           seasonNumber: item.currentSeason,
           episodeNumber: item.currentEpisode,
-          language: languageName
+          language: languageBadge
         }
       }
     };
