@@ -173,8 +173,18 @@ const HomeScreen: React.FC = () => {
 
         // Traitement populaire
         if (popular && popular.categories) {
-          setClassiquesAnimes(popular.categories.classiques?.anime || []);
-          setPepitesAnimes(popular.categories.pepites?.anime || []);
+          const classiquesData = (popular.categories.classiques?.anime || []).map((anime: any) => ({
+            ...anime,
+            id: anime.id || anime.url,
+            image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`
+          }));
+          const pepitesData = (popular.categories.pepites?.anime || []).map((anime: any) => ({
+            ...anime,
+            id: anime.id || anime.url,
+            image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`
+          }));
+          setClassiquesAnimes(classiquesData);
+          setPepitesAnimes(pepitesData);
         }
 
         // Traitement récents
@@ -184,6 +194,7 @@ const HomeScreen: React.FC = () => {
             id: ep.animeId,
             title: ep.animeTitle,
             contentType: 'anime',
+            image: ep.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${ep.animeId}.jpg`,
             currentSeason: ep.season,
             currentEpisode: ep.episode,
             isFin: ep.isFin,
@@ -204,7 +215,9 @@ const HomeScreen: React.FC = () => {
         if (Array.isArray(recData)) {
           const formattedRecs = recData.slice(0, 20).map((anime: any) => ({
             ...anime,
+            id: anime.id || anime.url,
             contentType: anime.contentType || 'anime',
+            image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`,
             language: {
               name: anime.languages?.[0] || 'VOSTFR',
               code: (anime.languages?.[0] || 'VOSTFR').toLowerCase(),
@@ -277,9 +290,11 @@ const HomeScreen: React.FC = () => {
         // Convertir les données de l'API en format SearchResult
         const classiques: SearchResult[] = (response.categories.classiques?.anime || []).map((anime: any) => ({
           ...anime,
+          image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`
         }));
         const pepites: SearchResult[] = (response.categories.pepites?.anime || []).map((anime: any) => ({
           ...anime,
+          image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`
         }));
         
         console.log('👑 Classiques trouvés:', classiques.length, classiques);
@@ -314,6 +329,7 @@ const HomeScreen: React.FC = () => {
           id: episode.animeId,
           title: episode.animeTitle,
           contentType: 'anime',
+          image: episode.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${episode.animeId}.jpg`,
           currentSeason: episode.season,
           currentEpisode: episode.episode || undefined,
           seasonPart: episode.seasonPart || undefined,
@@ -563,6 +579,7 @@ const HomeScreen: React.FC = () => {
         const recommendations: SearchResult[] = dataArray.slice(0, 20).map((anime: any) => ({
           ...anime,
           contentType: anime.contentType || 'anime',
+          image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`,
           language: {
             name: anime.languages && anime.languages[0] ? anime.languages[0] : 'VOSTFR',
             code: anime.languages && anime.languages[0] ? anime.languages[0].toLowerCase() : 'vostfr',
