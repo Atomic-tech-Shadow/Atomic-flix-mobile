@@ -110,18 +110,23 @@ const AppNavigator: React.FC = () => {
 
   React.useEffect(() => {
     const service = NotificationService.getInstance();
-    const unsubscribe = service.navigationListeners.add((data: any) => {
-      if (navigationRef.current && data.screen) {
-        navigationRef.current.navigate(data.screen, data.params);
-      }
-    });
+    const unsubscribe = () => {
+      const listener = (data: any) => {
+        if (navigationRef.current && data.screen) {
+          navigationRef.current.navigate(data.screen, data.params);
+        }
+      };
+      service.navigationListeners.add(listener);
+      return () => service.navigationListeners.delete(listener);
+    };
+    const cleanup = unsubscribe();
     return () => {
-      service.navigationListeners.delete(unsubscribe as any);
+      cleanup();
     };
   }, []);
 
   return (
-    <NavigationContainer linking={linking} ref={navigationRef}>
+    <NavigationContainer linking={linking as any} ref={navigationRef}>
       <StatusBar style="light" backgroundColor={COLORS.primary} />
       <GlobalBackground>
         <Drawer.Navigator

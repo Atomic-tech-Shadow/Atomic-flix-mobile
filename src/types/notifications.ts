@@ -13,6 +13,7 @@ export interface PushNotification {
     episodeNumber?: number;
     seasonNumber?: number;
     chapterNumber?: number;
+    language?: string;
     releaseTime?: string;
     screen?: string;
     params?: any;

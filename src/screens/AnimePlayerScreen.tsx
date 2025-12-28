@@ -47,12 +47,25 @@ interface Props {
 const { width, height } = Dimensions.get('window');
 
 const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
-  const { animeUrl, seasonData, animeTitle, initialEpisode, initialLanguage } = route.params;
+  const { 
+    animeUrl, 
+    seasonData, 
+    animeTitle, 
+    initialEpisode, 
+    initialLanguage,
+    seasonNumber,
+    episodeNumber,
+    language 
+  } = route.params;
 
   // États pour les données
   const [animeData, setAnimeData] = useState<AnimeData | null>(null);
-  const [selectedSeason, setSelectedSeason] = useState<Season | null>(seasonData || null);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(initialLanguage || 'VOSTFR');
+  const [selectedSeason, setSelectedSeason] = useState<Season | null>(
+    seasonData || (seasonNumber ? { label: `Saison ${seasonNumber}`, value: String(seasonNumber), number: Number(seasonNumber) } : null)
+  );
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(
+    language || initialLanguage || 'VOSTFR'
+  );
   const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
   const [selectedPlayer, setSelectedPlayer] = useState<number>(0);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
@@ -1211,6 +1224,15 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   }, [navigation]);
 
   // Charger les données de l'anime
+  useEffect(() => {
+    if (episodeNumber && episodes.length > 0) {
+      const episode = episodes.find(ep => ep.number === Number(episodeNumber));
+      if (episode) {
+        setSelectedEpisode(episode);
+      }
+    }
+  }, [episodeNumber, episodes]);
+
   useEffect(() => {
     const loadAnimeData = async () => {
       try {

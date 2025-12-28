@@ -26,7 +26,7 @@ Notifications.setNotificationHandler({
 export class NotificationService {
   private static instance: NotificationService;
   private listeners: Set<(notifications: PushNotification[]) => void> = new Set();
-  private navigationListeners: Set<(data: any) => void> = new Set();
+  public navigationListeners: Set<(data: any) => void> = new Set();
   private expoPushToken: string | null = null;
   private isInitialized: boolean = false;
   private notificationReceivedSubscription: any = null;
@@ -679,7 +679,8 @@ export class NotificationService {
     return () => this.navigationListeners.delete(callback);
   }
 
-  private emitNavigationEvent(data: any): void {
+  // Émettre un événement de navigation pour la notification
+  public emitNavigationEvent(data: any): void {
     this.navigationListeners.forEach(listener => listener(data));
   }
 
