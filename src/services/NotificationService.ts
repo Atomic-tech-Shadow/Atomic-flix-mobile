@@ -463,23 +463,33 @@ export class NotificationService {
     
     // Extraire la langue de l'anime
     const languageBadge = getLanguageBadgeText(item.language);
-    const languageText = languageBadge ? ` (${languageBadge})` : '';
+    const languageName = typeof item.language === 'object' ? item.language.name : languageBadge;
     
-    let title = `${emoji} ATOMIC FLIX`;
+    let title = '';
     let body = '';
+    let seasonEpisodeInfo = '';
     
-    if (item.episodeInfo) {
-      title = `Nouvel épisode disponible${languageText}`;
-      body = `${item.title} - ${item.episodeInfo}`;
+    // Construire l'info season/episode
+    if (item.currentSeason || item.currentEpisode) {
+      const seasonPart = item.currentSeason ? `S${String(item.currentSeason).padStart(2, '0')}` : '';
+      const episodePart = item.currentEpisode ? `E${String(item.currentEpisode).padStart(2, '0')}` : '';
+      seasonEpisodeInfo = seasonPart && episodePart ? `${seasonPart}${episodePart}` : seasonPart || episodePart;
+    }
+    
+    if (type === 'episode') {
+      // Title: "Anime Name S01E01"
+      title = `${emoji} ${item.title}${seasonEpisodeInfo ? ` ${seasonEpisodeInfo}` : ''}`;
+      // Body: "Nouvel épisode • VF • Regarder"
+      body = `Nouvel épisode${languageName ? ` • ${languageName}` : ''}`;
     } else if (type === 'manga') {
-      title = `Nouveau chapitre disponible${languageText}`;
-      body = item.title;
+      title = `${emoji} ${item.title}${seasonEpisodeInfo ? ` ${seasonEpisodeInfo}` : ''}`;
+      body = `Nouveau chapitre${languageName ? ` • ${languageName}` : ''}`;
     } else if (type === 'film') {
-      title = `Nouveau film disponible${languageText}`;
-      body = item.title;
+      title = `${emoji} ${item.title}`;
+      body = `Nouveau film disponible${languageName ? ` • ${languageName}` : ''}`;
     } else {
-      title = `Nouveau contenu disponible${languageText}`;
-      body = item.title;
+      title = `${emoji} ${item.title}${seasonEpisodeInfo ? ` ${seasonEpisodeInfo}` : ''}`;
+      body = `Nouveau contenu${languageName ? ` • ${languageName}` : ''}`;
     }
 
     return {
@@ -495,10 +505,14 @@ export class NotificationService {
         animeTitle: item.title,
         episodeNumber: item.currentEpisode,
         seasonNumber: item.currentSeason,
-        screen: type === 'manga' ? 'MangaReader' : 'AnimeDetail',
+        language: languageName,
+        screen: type === 'manga' ? 'MangaReader' : 'AnimePlayer',
         params: {
           animeUrl: item.animeId || item.id,
-          animeTitle: item.title
+          animeTitle: item.title,
+          seasonNumber: item.currentSeason,
+          episodeNumber: item.currentEpisode,
+          language: languageName
         }
       }
     };
