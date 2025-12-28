@@ -58,13 +58,6 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
         )}
       </View>
       
-      {/* Badge de langue en haut à gauche */}
-      {languageBadge && (
-        <View style={[styles.languageBadge, { backgroundColor: COLORS.badges.atomic }]}>
-          <Text style={styles.badgeText}>{languageBadge}</Text>
-        </View>
-      )}
-
       {/* Badge de temps/heure (si fourni par badge prop) */}
       {badge && (
         <View style={[styles.timeBadge, { backgroundColor: badgeColor || COLORS.secondary }]}>
@@ -157,7 +150,7 @@ const styles = StyleSheet.create({
   },
   timeBadge: {
     position: 'absolute',
-    top: 30,
+    top: 6,
     left: 6,
     paddingHorizontal: 6,
     paddingVertical: 2,

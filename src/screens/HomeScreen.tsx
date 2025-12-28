@@ -1836,7 +1836,13 @@ const HomeScreen: React.FC = () => {
                   {planningAnimes.map((anime, index) => (
                     <SimpleAnimeCard
                       key={`planning-${anime.id || index}`}
-                      anime={anime}
+                      anime={{
+                        ...anime,
+                        // Forcer la suppression des infos de saison/épisode pour cette section
+                        currentSeason: undefined,
+                        currentEpisode: undefined,
+                        seasonPart: undefined
+                      }}
                       badge={anime.releaseTime ? `⏰ ${anime.releaseTime}` : '⏰'}
                       badgeColor={COLORS.secondary}
                       index={index}
