@@ -726,7 +726,7 @@ const HomeScreen: React.FC = () => {
         if (matchingSeason) {
           // Naviguer avec les vraies données de saison de l'API
           navigation.navigate('AnimePlayer', {
-            animeUrl: `https://anime-sama.si/catalogue/${historyItem.animeId}`,
+            animeUrl: historyItem.animeId,
             seasonData: matchingSeason,
             animeTitle: historyItem.animeTitle,
             initialEpisode: historyItem.episodeNumber,
@@ -741,7 +741,7 @@ const HomeScreen: React.FC = () => {
 
     // Fallback : navigation avec seasonData null si l'API échoue
     navigation.navigate('AnimePlayer', {
-      animeUrl: `https://anime-sama.fr/catalogue/${historyItem.animeId}`,
+      animeUrl: historyItem.animeId,
       seasonData: null, // Sera déterminé automatiquement
       animeTitle: historyItem.animeTitle,
       initialEpisode: historyItem.episodeNumber,
