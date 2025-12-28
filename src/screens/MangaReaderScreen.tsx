@@ -251,8 +251,9 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
       
       const chaptersResponse = await apiRequest(`https://anime-sama-scraper.vercel.app/api/episodes?url=${encodeURIComponent(season.fullUrl)}&language=${language}`);
       
-      if (chaptersResponse && chaptersResponse.success && chaptersResponse.episodes) {
-        const formattedChapters: MangaChapter[] = chaptersResponse.episodes.map((ep: any) => ({
+      if (chaptersResponse && chaptersResponse.success) {
+        const episodesList = chaptersResponse.episodes || chaptersResponse.data || [];
+        const formattedChapters: MangaChapter[] = episodesList.map((ep: any) => ({
           id: ep.id || `chapter-${ep.episodeNumber}`,
           title: ep.title || `Chapitre ${ep.episodeNumber}`,
           number: ep.episodeNumber,
@@ -288,10 +289,11 @@ export default function MangaReaderScreen({ navigation, route }: Props) {
       
       const pagesResponse = await apiRequest(`https://anime-sama-scraper.vercel.app/api/manga-pages?url=${encodeURIComponent(chapter.url)}`);
       
-      if (pagesResponse && pagesResponse.success && pagesResponse.pages) {
+      if (pagesResponse && pagesResponse.success) {
+        const pagesList = pagesResponse.pages || pagesResponse.data || [];
         const updatedChapter = {
           ...chapter,
-          pages: pagesResponse.pages
+          pages: pagesList
         };
         setSelectedChapter(updatedChapter);
         

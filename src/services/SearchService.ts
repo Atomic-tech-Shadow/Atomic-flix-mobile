@@ -49,7 +49,7 @@ class SearchService {
       const response = await apiRequest(`/api/search?query=${encodeURIComponent(query)}`);
       
       if (response && response.success) {
-        const results = response.animes || response.results || [];
+        const results = response.animes || response.results || response.data || [];
         if (Array.isArray(results)) {
           // Mettre en cache les résultats
           this.setCachedResult(normalizedQuery, results);
