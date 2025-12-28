@@ -12,10 +12,19 @@ interface SimpleAnimeCardProps {
   index: number;
 }
 
-const getValidImageUrl = (imageUrl: string | undefined): string | null => {
+const getValidImageUrl = (anime: any): string | null => {
+  if (!anime) return null;
+
+  // 1. Tenter d'utiliser l'ID de l'anime avec le CDN Statically (Priorité maximale)
+  const animeId = anime.animeId || anime.id;
+  if (animeId && typeof animeId === 'string' && !animeId.includes('/') && !animeId.includes('http')) {
+    return `https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/${animeId}.jpg`;
+  }
+
+  const imageUrl = anime.image;
   if (!imageUrl) return null;
   
-  // Forcer HTTPS pour les domaines connus qui le supportent
+  // 2. Fallback sur l'URL de l'API avec nettoyage
   let finalUrl = imageUrl;
   if (finalUrl.startsWith('http://cdn.statically.io')) {
     finalUrl = finalUrl.replace('http://', 'https://');
@@ -43,7 +52,7 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
   languageBadge,
   index
 }) => {
-  const imageUrl = getValidImageUrl(anime?.image);
+  const imageUrl = getValidImageUrl(anime);
   
   const handleImageError = (e: any) => {
     const errorMsg = e.nativeEvent.error || 'Erreur inconnue';

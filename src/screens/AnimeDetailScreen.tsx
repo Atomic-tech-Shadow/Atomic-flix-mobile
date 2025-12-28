@@ -759,6 +759,13 @@ const AnimeDetailScreen: React.FC = () => {
     const detectedLanguage = getLanguageFromAPI(anime);
     const realTitle = anime.title;
     
+    // Déterminer l'URL de l'image (Priorité Statically CDN)
+    let imageUrl = anime.image;
+    const animeId = anime.animeId || anime.id;
+    if (animeId && typeof animeId === 'string' && !animeId.includes('/') && !animeId.includes('http')) {
+      imageUrl = `https://cdn.statically.io/gh/Anime-Sama/IMG/img/contenu/${animeId}.jpg`;
+    }
+    
     return (
       <TouchableOpacity
         key={anime.id || index}
@@ -768,7 +775,7 @@ const AnimeDetailScreen: React.FC = () => {
       >
         <View style={styles.cardImageContainer}>
           <Image
-            source={{ uri: anime.image }}
+            source={{ uri: imageUrl }}
             style={styles.cardImage}
             resizeMode="cover"
             fadeDuration={200}
