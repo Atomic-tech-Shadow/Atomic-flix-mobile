@@ -308,6 +308,8 @@ const HomeScreen: React.FC = () => {
           contentType: 'anime',
           currentSeason: episode.season,
           currentEpisode: episode.episode || undefined,
+          isFin: episode.isFin,
+          isReporte: episode.isReporte,
           language: {
             name: episode.language,
             code: episode.language.toLowerCase(),

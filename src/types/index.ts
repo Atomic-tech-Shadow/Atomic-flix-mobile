@@ -28,6 +28,8 @@ export interface SearchResult {
   episodeInfo?: string;
   currentEpisode?: number;
   currentSeason?: number;
+  isFin?: boolean;
+  isReporte?: boolean;
   isFinale?: boolean;
   // Champs pour les dates
   addedAt?: string;
