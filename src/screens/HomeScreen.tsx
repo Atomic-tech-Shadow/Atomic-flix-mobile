@@ -246,6 +246,7 @@ const HomeScreen: React.FC = () => {
             contentType: item.type || 'anime',
             isFin: item.isFin,
             isReporte: item.isReporte,
+            planningTime: item.planningTime, // Ajout du temps de diffusion
             language: {
               name: item.language,
               code: (item.language || '').toLowerCase(),
