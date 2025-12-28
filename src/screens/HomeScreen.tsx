@@ -157,7 +157,7 @@ const HomeScreen: React.FC = () => {
       }
     };
     setupNavigationBar();
-    
+
     const initializeApp = async () => {
       // Charger le contenu initial et l'historique
       await Promise.all([
