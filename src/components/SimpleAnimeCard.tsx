@@ -65,13 +65,6 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
         </View>
       )}
 
-      {/* Badge simple en haut à droite */}
-      {badge && (
-        <View style={[styles.badge, { backgroundColor: badgeColor || COLORS.badges.atomic }]}>
-          <Text style={styles.badgeText}>{badge}</Text>
-        </View>
-      )}
-
       {/* Nouveaux badges isFin et isReporte */}
       <View style={styles.dynamicBadgesContainer}>
         {anime.isFin && (

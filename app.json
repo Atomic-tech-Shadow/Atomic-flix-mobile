@@ -28,10 +28,6 @@
       ],
       "softwareKeyboardLayoutMode": "pan"
     },
-    "androidNavigationBar": {
-      "visible": "sticky-immersive",
-      "backgroundColor": "#0F0F0F"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.atomic.flix",
