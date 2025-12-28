@@ -20,7 +20,7 @@ const getValidImageUrl = (imageUrl: string | undefined): string | null => {
     return finalUrl;
   }
   if (finalUrl.startsWith('/')) {
-    return `https://anime-sama.si${finalUrl}`;
+    return `https://anime-sama.tv${finalUrl}`;
   }
   return null;
 };

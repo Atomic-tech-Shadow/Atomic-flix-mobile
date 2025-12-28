@@ -711,7 +711,7 @@ const AnimeDetailScreen: React.FC = () => {
     }
     
     let cleanId = animeId;
-    if (animeId.includes('anime-sama.si')) {
+    if (animeId.includes('anime-sama.tv') || animeId.includes('anime-sama.si')) {
       const urlParts = animeId.split('/');
       const catalogueIndex = urlParts.findIndex(part => part === 'catalogue');
       if (catalogueIndex !== -1 && urlParts[catalogueIndex + 1]) {

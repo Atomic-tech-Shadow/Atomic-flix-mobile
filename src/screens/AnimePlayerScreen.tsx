@@ -820,7 +820,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
         const formattedEpisodes: Episode[] = data.episodes.map((ep: any, index: number) => {
           const episodeNumber = ep.number || (index + 1);
           const episodeTitle = ep.title || `Épisode ${episodeNumber}`;
-          const episodeUrl = ep.url || `https://anime-sama.si/catalogue/${animeInfo.id}/${season.value}/${languageCode}/episode-${episodeNumber}`;
+          const episodeUrl = ep.url || `https://anime-sama.tv/catalogue/${animeInfo.id}/${season.value}/${languageCode}/episode-${episodeNumber}`;
 
           return {
             id: `${animeInfo.id}-${season.value}-ep${episodeNumber}-${languageCode}`,

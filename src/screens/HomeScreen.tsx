@@ -121,7 +121,7 @@ const HomeScreen: React.FC = () => {
 
   // Configuration API identique au site web
   const API_BASE_URL = 'https://anime-sama-scraper.vercel.app';
-  const SITE_BASE_URL = 'https://anime-sama.si';
+  const SITE_BASE_URL = 'https://anime-sama.tv';
 
 
   // Fonction utilitaire pour obtenir le badge de langue

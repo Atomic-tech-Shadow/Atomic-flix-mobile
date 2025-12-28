@@ -32,6 +32,12 @@ const ALLOWED_DOMAINS = [
   'netu.tv',
   'dropload.io',
   // Domaines de confiance
+  'anime-sama.tv',
+  's1.anime-sama.tv',
+  's2.anime-sama.tv',
+  's3.anime-sama.tv',
+  's4.anime-sama.tv',
+  'cdn.anime-sama.tv',
   'anime-sama.si',
   's1.anime-sama.si',
   's2.anime-sama.si',
