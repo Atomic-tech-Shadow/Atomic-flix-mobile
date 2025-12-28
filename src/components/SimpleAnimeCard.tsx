@@ -84,19 +84,13 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
             <Text style={styles.miniBadgeText}>REPORTE</Text>
           </View>
         )}
-        {anime.currentSeason && (
+        {(anime.currentSeason || anime.currentEpisode || anime.seasonPart) && (
           <View style={[styles.miniBadge, { backgroundColor: COLORS.badges.anime }]}>
-            <Text style={styles.miniBadgeText}>S{anime.currentSeason}</Text>
-          </View>
-        )}
-        {anime.seasonPart && (
-          <View style={[styles.miniBadge, { backgroundColor: COLORS.badges.film }]}>
-            <Text style={styles.miniBadgeText}>P{anime.seasonPart}</Text>
-          </View>
-        )}
-        {anime.currentEpisode && (
-          <View style={[styles.miniBadge, { backgroundColor: COLORS.badges.manga }]}>
-            <Text style={styles.miniBadgeText}>EP{anime.currentEpisode}</Text>
+            <Text style={styles.miniBadgeText}>
+              {anime.currentSeason ? `S${anime.currentSeason.toString().padStart(2, '0')}` : ''}
+              {anime.seasonPart ? `P${anime.seasonPart}` : ''}
+              {anime.currentEpisode ? `E${anime.currentEpisode.toString().padStart(2, '0')}` : ''}
+            </Text>
           </View>
         )}
       </View>
