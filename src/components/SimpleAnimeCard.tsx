@@ -168,20 +168,21 @@ const styles = StyleSheet.create({
   },
   dynamicBadgesContainer: {
     position: 'absolute',
-    top: 30,
+    top: 6,
     right: 6,
+    flexDirection: 'column',
     alignItems: 'flex-end',
-    gap: 4,
+    gap: 3,
     zIndex: 2,
   },
   miniBadge: {
     paddingHorizontal: 4,
-    paddingVertical: 1,
+    paddingVertical: 2,
     borderRadius: 2,
   },
   miniBadgeText: {
     color: '#FFF',
-    fontSize: 7,
+    fontSize: 8,
     fontWeight: 'bold',
   },
 });
