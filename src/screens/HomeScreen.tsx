@@ -15,6 +15,7 @@ import OptimizedScrollView from '../components/OptimizedScrollView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
+import * as NavigationBar from 'expo-navigation-bar';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { DrawerNavigationProp } from '@react-navigation/drawer';
@@ -146,8 +147,17 @@ const HomeScreen: React.FC = () => {
     }
   };
 
-  // Charger tout le contenu au démarrage
   useEffect(() => {
+    const setupNavigationBar = async () => {
+      try {
+        await NavigationBar.setVisibilityAsync('hidden');
+        await NavigationBar.setBehaviorAsync('sticky-immersive');
+      } catch (e) {
+        console.warn('NavigationBar non supporté sur cette plateforme');
+      }
+    };
+    setupNavigationBar();
+    
     const initializeApp = async () => {
       // Charger le contenu initial et l'historique
       await Promise.all([
