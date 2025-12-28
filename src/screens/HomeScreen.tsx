@@ -306,6 +306,8 @@ const HomeScreen: React.FC = () => {
           id: episode.animeId,
           title: episode.animeTitle,
           contentType: 'anime',
+          currentSeason: episode.season,
+          currentEpisode: episode.episode,
           language: {
             name: episode.language,
             code: episode.language.toLowerCase(),
