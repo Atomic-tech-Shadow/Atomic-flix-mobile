@@ -6,6 +6,12 @@ ATOMIC FLIX is a React Native mobile application built with Expo, designed for s
 
 ## Recent Changes
 
+### January 8, 2026 - Version 3.1.0
+- **Mise à jour majeure**: Version 3.1.0
+- **UI/UX**: Refonte de l'en-tête du menu latéral (logo agrandi, texte supprimé)
+- **Notifications**: Icône de notification mise à jour vers le logo officiel
+- **Documentation**: Mise à jour globale de toutes les références de version
+
 ### November 1, 2025 - Migration vers Expo SDK 54
 -   **Mise à jour majeure**: Migration de React Native et React vers des versions compatibles avec Expo SDK 54.0.21
     -   React: 19.1.0 (version exacte requise)

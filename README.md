@@ -7,10 +7,10 @@
 ### 🎌 *L'univers de l'anime et du manga dans votre poche* 📱
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.0-8B5DFF?style=for-the-badge&logo=android&logoColor=white" alt="Version">
-  <img src="https://img.shields.io/badge/React_Native-0.79.5-00D4FF?style=for-the-badge&logo=react&logoColor=white" alt="React Native">
-  <img src="https://img.shields.io/badge/Expo-53.0.22-FF6B9D?style=for-the-badge&logo=expo&logoColor=white" alt="Expo">
-  <img src="https://img.shields.io/badge/TypeScript-5.8.3-8B5DFF?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Version-3.1.0-8B5DFF?style=for-the-badge&logo=android&logoColor=white" alt="Version">
+  <img src="https://img.shields.io/badge/React_Native-0.81.5-00D4FF?style=for-the-badge&logo=react&logoColor=white" alt="React Native">
+  <img src="https://img.shields.io/badge/Expo-54.0.21-FF6B9D?style=for-the-badge&logo=expo&logoColor=white" alt="Expo">
+  <img src="https://img.shields.io/badge/TypeScript-5.9.2-8B5DFF?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
 </p>
 
 <p align="center">
@@ -95,9 +95,9 @@
 
 ```mermaid
 graph TB
-    A[📱 ATOMIC FLIX Mobile App] --> B[🎭 React Native 0.79.5]
-    B --> C[🚀 Expo SDK 53.0.20]
-    B --> D[📘 TypeScript 5.8.3]
+    A[📱 ATOMIC FLIX Mobile App] --> B[🎭 React Native 0.81.5]
+    B --> C[🚀 Expo SDK 54.0.21]
+    B --> D[📘 TypeScript 5.9.2]
     
     A --> E[🧠 Services Intelligents]
     E --> G[🔔 NotificationService]
@@ -238,10 +238,10 @@ graph TB
 
 | 🎭 **Frontend** | 🧠 **État & Données** | 🎨 **UI/UX** | 📱 **Mobile** |
 |---|---|---|---|
-| ⚛️ React 19.0.0 | 🔄 TanStack React Query | 🎪 Expo Blur | 📱 React Native 0.79.5 |
-| 📘 TypeScript 5.8.3 | 💾 AsyncStorage | 🌈 Linear Gradient | 🚀 Expo SDK 53.0.20 |
-| 🎯 React Navigation 6 | 🗄️ Stockage Local | 🎭 Gesture Handler | 🔔 Expo Notifications |
-| 🎨 React Native SVG | 🔍 Cache Intelligent | ⚡ Reanimated 3 | 📺 WebView 13.13.5 |
+| ⚛️ React 19.1.0 | 🔄 TanStack React Query | 🎪 Expo Blur | 📱 React Native 0.81.5 |
+| 📘 TypeScript 5.9.2 | 💾 AsyncStorage | 🌈 Linear Gradient | 🚀 Expo SDK 54.0.21 |
+| 🎯 React Navigation 7 | 🗄️ Stockage Local | 🎭 Gesture Handler | 🔔 Expo Notifications |
+| 🎨 React Native SVG | 🔍 Cache Intelligent | ⚡ Reanimated 4 | 📺 WebView 13.15.0 |
 
 ---
 

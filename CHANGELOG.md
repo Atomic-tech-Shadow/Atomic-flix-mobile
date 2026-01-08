@@ -1,5 +1,13 @@
 # Changelog - ATOMIC FLIX
 
+## [3.1.0] - 2026-01-08
+
+### Changed
+- Mise à jour majeure de la version à 3.1.0
+- Refonte de l'en-tête du menu latéral (logo agrandi, suppression du texte)
+- Mise à jour de l'icône de notification Android vers le logo officiel
+- Migration vers Expo SDK 54.0.21 et React Native 0.81.5
+
 ## [3.3.2] - 2025-08-04
 
 ### Fixed

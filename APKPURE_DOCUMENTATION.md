@@ -1,5 +1,5 @@
 # 🌌 ATOMIC FLIX - Documentation APKPure
-**Version 1.0.0 | Package: com.atomic.flix**
+**Version 3.1.0 | Package: com.atomic.flix**
 
 ---
 
@@ -90,7 +90,7 @@ L'univers anime et manga dans votre poche - Streaming gratuit et lecture optimis
 ### **Compatibilité**
 - **Android:** 7.0+ (API niveau 24+)
 - **Taille:** ~50 MB
-- **Architecture:** React Native 0.79.5 + Expo SDK 53
+- **Architecture:** React Native 0.81.5 + Expo SDK 54
 - **Internet:** Requis pour streaming/lecture
 - **Stockage:** 100-500 MB (cache et historique)
 
@@ -104,11 +104,11 @@ L'univers anime et manga dans votre poche - Streaming gratuit et lecture optimis
 ```
 
 ### **Technologies Utilisées**
-- React Native 0.79.5 (Framework mobile natif)
-- Expo SDK 53.0.22 (Outils développement avancés)
-- TypeScript 5.8.3 (Typage strict pour stabilité)
+- React Native 0.81.5 (Framework mobile natif)
+- Expo SDK 54.0.21 (Outils développement avancés)
+- TypeScript 5.9.2 (Typage strict pour stabilité)
 - TanStack React Query (Gestion état et cache)
-- React Navigation 6 (Navigation native fluide)
+- React Navigation 7 (Navigation native fluide)
 - AsyncStorage (Stockage local sécurisé)
 
 ---
@@ -218,8 +218,8 @@ Entertainment > Media & Video > Streaming
 ### **Support & Contact**
 - **Développeur:** ATOMIC FLIX Team
 - **Email Support:** [À définir]
-- **Version:** 1.0.0 (Build initial APKPure)
-- **Dernière MAJ:** Septembre 2025
+- **Version:** 3.1.0 (Build actuel)
+- **Dernière MAJ:** Janvier 2026
 
 ---
 
