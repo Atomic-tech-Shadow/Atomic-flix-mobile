@@ -14,7 +14,7 @@ interface Props {
 const PrivacyPolicyScreen: React.FC<Props> = ({ navigation }) => {
   const { isDark } = useTheme();
   const COLORS = getThemedColors(isDark);
-  const lastUpdated = "4 septembre 2025";
+  const lastUpdated = "8 Janvier 2026";
 
   const styles = StyleSheet.create({
     safeArea: {
@@ -388,7 +388,7 @@ const PrivacyPolicyScreen: React.FC<Props> = ({ navigation }) => {
 
             <View style={styles.contactBox}>
               <Text style={styles.contactText}>
-                📱 <Text style={styles.boldText}>Application :</Text> Atomic Flix v1.0.0{'\n'}
+                📱 <Text style={styles.boldText}>Application :</Text> Atomic Flix v3.1.0{'\n'}
                 🛡️ <Text style={styles.boldText}>Engagement :</Text> Zéro collecte de données personnelles{'\n'}
                 ⏰ <Text style={styles.boldText}>Dernière révision :</Text> {lastUpdated}
               </Text>

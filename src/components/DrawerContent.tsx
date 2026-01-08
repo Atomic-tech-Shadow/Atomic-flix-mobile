@@ -130,7 +130,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
           }
         ]}>
           <Text style={[styles.footerText, { color: colors.text.secondary }]}>
-            © 2025 ATOMIC FLIX
+            © 2026 ATOMIC FLIX
           </Text>
           <Text style={[styles.footerSubtext, { color: colors.text.muted }]}>
             La meilleure app pour les otakus

@@ -301,7 +301,11 @@ npm run build:android  # 📦 Build APK production
 
 <div align="center">
 
-### 🚀 **Version 4.0 - Q4 2025**
+### January 8, 2026 - Version 3.1.0
+- **Mise à jour majeure**: Version 3.1.0
+- **UI/UX**: Refonte de l'en-tête du menu latéral (logo agrandi, texte supprimé)
+- **Notifications**: Icône de notification mise à jour vers le logo officiel
+- **Documentation**: Mise à jour globale de toutes les références de version
 
 </div>
 
