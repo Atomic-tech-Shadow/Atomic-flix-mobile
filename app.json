@@ -2,7 +2,7 @@
   "expo": {
     "name": "Atomic Flix",
     "slug": "atomic-flix",
-    "version": "2.0.0",
+    "version": "3.1.0",
     "orientation": "portrait",
     "icon": "./assets/atomic-flix-logo-new.png",
     "userInterfaceStyle": "dark",
@@ -15,7 +15,7 @@
     },
     "scheme": "atomicflix",
     "android": {
-      "versionCode": 3,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/atomic-flix-logo-new.png",
         "backgroundColor": "#0F0F0F"
@@ -46,7 +46,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.atomic.flix",
-      "buildNumber": "3"
+      "buildNumber": "4"
     },
     "web": {
       "favicon": "./assets/favicon.png",

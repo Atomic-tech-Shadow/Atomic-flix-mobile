@@ -74,7 +74,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
               resizeMode="contain"
             />
           </View>
-          <Text style={[styles.appVersion, { color: colors.text.secondary }]}>v{appVersion}</Text>
+          <Text style={[styles.appVersion, { color: colors.text.secondary }]}>v3.1.0</Text>
         </View>
 
         {/* Menu items modernes */}
