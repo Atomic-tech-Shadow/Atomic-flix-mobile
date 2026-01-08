@@ -65,16 +65,9 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
           styles.header,
           {
             backgroundColor: colors.background.card,
-            borderBottomColor: colors.secondary,
           }
         ]}>
-          <View style={[
-            styles.logoContainer,
-            {
-              backgroundColor: colors.secondary,
-              shadowColor: colors.secondary,
-            }
-          ]}>
+          <View style={styles.logoContainer}>
             <Image 
               source={require('../../assets/atomic-flix-logo-new.png')}
               style={styles.logoImage}
@@ -164,18 +157,13 @@ const styles = StyleSheet.create({
   logoContainer: {
     width: '100%',
     height: 120,
-    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 8,
   },
   logoImage: {
-    width: '90%',
-    height: '90%',
+    width: '100%',
+    height: '100%',
   },
   appName: {
     fontSize: 24,
