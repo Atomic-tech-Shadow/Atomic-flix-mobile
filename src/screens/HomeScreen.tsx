@@ -149,8 +149,7 @@ const HomeScreen: React.FC = () => {
   useEffect(() => {
     const setupNavigationBar = async () => {
       try {
-        await NavigationBar.setVisibilityAsync('hidden');
-        await NavigationBar.setBehaviorAsync('sticky-immersive');
+        // Logique de navigation bar désactivée pour le web
       } catch (e) {
         console.warn('NavigationBar non supporté sur cette plateforme');
       }
@@ -1737,7 +1736,6 @@ const HomeScreen: React.FC = () => {
 
         {!searchQuery && !searchResults.length && (
           <View>
-            {/* Section Héro - Nouvelle Saison (identique au site web) */}
             <View style={styles.heroSection}>
               {/* Images d'animes en mosaïque visible en haut */}
               <View style={styles.heroMosaicContainer}>
@@ -1865,7 +1863,7 @@ const HomeScreen: React.FC = () => {
                 >
                   {classiquesAnimes.map((anime, index) => (
                     <SimpleAnimeCard
-                      key={`classique-${anime.id || index}`}
+                      key={`classique-${anime.id || index}-${index}`}
                       anime={anime}
                       badge="★ CLASSIQUE"
                       badgeColor={COLORS.badges.atomic}
@@ -1889,7 +1887,7 @@ const HomeScreen: React.FC = () => {
                 >
                   {pepitesAnimes.map((anime, index) => (
                     <SimpleAnimeCard
-                      key={`pepite-${anime.id || index}`}
+                      key={`pepite-${anime.id || index}-${index}`}
                       anime={anime}
                       badge="💎 RARE"
                       badgeColor={COLORS.badges.manga}

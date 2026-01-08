@@ -67,7 +67,7 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
 
       {/* Nouveaux badges isFin et isReporte */}
       <View style={styles.dynamicBadgesContainer}>
-        {(anime.currentSeason || anime.currentEpisode || anime.seasonPart) && (
+        {badge === undefined && (anime.currentSeason || anime.currentEpisode || anime.seasonPart) && (
           <View style={[styles.miniBadge, { backgroundColor: COLORS.badges.anime }]}>
             <Text style={styles.miniBadgeText}>
               {anime.currentSeason ? `S${anime.currentSeason.toString().padStart(2, '0')}` : ''}
