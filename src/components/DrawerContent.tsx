@@ -81,10 +81,6 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
               resizeMode="contain"
             />
           </View>
-          <Text style={[
-            styles.appName,
-            { color: colors.text.primary }
-          ]}>ATOMIC FLIX</Text>
           <Text style={[styles.appVersion, { color: colors.text.secondary }]}>v{appVersion}</Text>
         </View>
 
@@ -166,20 +162,20 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   logoContainer: {
-    width: 80,
-    height: 80,
+    width: '100%',
+    height: 120,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
+    marginBottom: 8,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 12,
     elevation: 8,
   },
   logoImage: {
-    width: 50,
-    height: 50,
+    width: '90%',
+    height: '90%',
   },
   appName: {
     fontSize: 24,
