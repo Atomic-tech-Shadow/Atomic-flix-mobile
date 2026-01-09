@@ -1813,7 +1813,7 @@ const HomeScreen: React.FC = () => {
                       anime={anime}
                       badge={`S${anime.currentSeason || 1}${anime.currentEpisode ? `E${anime.currentEpisode}` : ''}`}
                       badgeColor={COLORS.badges.hot}
-                      languageBadge={anime.language?.name}
+                      languageBadge={getLanguageBadgeText(anime.language)}
                       index={index}
                       onPress={() => loadEpisodeDirectly(anime)}
                     />
