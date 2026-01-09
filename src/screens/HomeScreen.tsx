@@ -133,6 +133,7 @@ const HomeScreen: React.FC = () => {
       const upper = language.toUpperCase();
       if (upper.includes('VF')) return '🇫🇷';
       if (upper.includes('VO')) return '🇯🇵';
+      if (upper.includes('VA')) return '🇺🇸';
       return upper;
     }
     if (language.vf) return '🇫🇷';
@@ -141,6 +142,7 @@ const HomeScreen: React.FC = () => {
       const upper = language.name.toUpperCase();
       if (upper.includes('VF')) return '🇫🇷';
       if (upper.includes('VO')) return '🇯🇵';
+      if (upper.includes('VA')) return '🇺🇸';
       return upper;
     }
     return undefined;

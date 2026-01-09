@@ -75,6 +75,9 @@ export const getLanguageBadgeText = (language: any): string => {
   
   // Grouper les versions japonaises sous "VO"
   if (langInfo.group === 'japanese') return '🇯🇵';
+
+  // Grouper les versions américaines sous "VA"
+  if (langInfo.group === 'american') return '🇺🇸';
   
   // Garder les autres langues telles quelles
   return langInfo.flag || langInfo.displayName;
