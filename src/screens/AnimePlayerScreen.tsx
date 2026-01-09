@@ -202,7 +202,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   },
   languageFlag: {
     position: 'absolute',
-    fontSize: 32,
+    fontSize: 24,
     opacity: 1,
     zIndex: 1,
     top: 0,

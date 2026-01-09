@@ -129,6 +129,9 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
             shadowRadius: 8,
           }
         ]}>
+          <Text style={[styles.footerText, { color: colors.text.primary }]}>
+            Dev: cid akue shadow
+          </Text>
           <Text style={[styles.footerText, { color: colors.text.secondary }]}>
             © 2026 ATOMIC FLIX
           </Text>

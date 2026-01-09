@@ -58,6 +58,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
         {/* Texte à côté du menu, style WhatsApp */}
         <View style={styles.titleSection}>
           <Text style={[styles.titleText, { color: themedColors.text.primary }]} numberOfLines={1}>ATOMIC FLIX</Text>
+          <Text style={[styles.devName, { color: themedColors.text.muted }]}>Dev cid akue shadow</Text>
         </View>
 
         {/* Actions à droite */}
@@ -145,6 +146,12 @@ const styles = StyleSheet.create({
     textShadowColor: COLORS.badges.atomic,
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
+  },
+  devName: {
+    fontSize: 10,
+    color: COLORS.text.muted,
+    fontStyle: 'italic',
+    marginTop: -2,
   },
   headerIcons: {
     flexDirection: 'row',

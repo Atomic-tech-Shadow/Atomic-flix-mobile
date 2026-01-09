@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   },
   miniBadgeText: {
     color: '#FFF',
-    fontSize: 28,
+    fontSize: 16,
     fontWeight: 'bold',
   },
   flagContainer: {
