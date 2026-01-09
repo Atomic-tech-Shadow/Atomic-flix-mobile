@@ -129,11 +129,20 @@ const HomeScreen: React.FC = () => {
   // Fonction utilitaire pour obtenir le badge de langue
   const getLanguageBadge = (language: any): string | undefined => {
     if (!language) return undefined;
-    if (typeof language === 'string') return language;
-    if (language.vf) return 'VF';
-    if (language.vostfr) return 'VOSTFR';
-    if (language.vjstfr) return 'VJSTFR';
-    if (language.name) return language.name;
+    if (typeof language === 'string') {
+      const upper = language.toUpperCase();
+      if (upper.includes('VF')) return 'VF 🇫🇷';
+      if (upper.includes('VO')) return 'VO 🇯🇵';
+      return upper;
+    }
+    if (language.vf) return 'VF 🇫🇷';
+    if (language.vostfr || language.vjstfr) return 'VO 🇯🇵';
+    if (language.name) {
+      const upper = language.name.toUpperCase();
+      if (upper.includes('VF')) return 'VF 🇫🇷';
+      if (upper.includes('VO')) return 'VO 🇯🇵';
+      return upper;
+    }
     return undefined;
   };
 

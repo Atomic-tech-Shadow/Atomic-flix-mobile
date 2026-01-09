@@ -68,13 +68,13 @@ export const extractLanguageInfo = (language: any): LanguageInfo | null => {
  */
 export const getLanguageBadgeText = (language: any): string => {
   const langInfo = extractLanguageInfo(language);
-  if (!langInfo) return 'VO';
+  if (!langInfo) return 'VO 🇯🇵';
   
   // Grouper les versions françaises sous "VF"
-  if (langInfo.group === 'french') return 'VF';
+  if (langInfo.group === 'french') return 'VF 🇫🇷';
   
   // Grouper les versions japonaises sous "VO"
-  if (langInfo.group === 'japanese') return 'VO';
+  if (langInfo.group === 'japanese') return 'VO 🇯🇵';
   
   // Garder les autres langues telles quelles
   return langInfo.displayName;
