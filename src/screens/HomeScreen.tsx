@@ -1788,6 +1788,7 @@ const HomeScreen: React.FC = () => {
                       }}
                       badge={`S${historyItem.seasonNumber || 1}E${historyItem.episodeNumber}`}
                       badgeColor={COLORS.secondary}
+                      languageBadge={historyItem.language}
                       index={index}
                       onPress={() => resumeWatching(historyItem)}
                     />
@@ -1843,6 +1844,7 @@ const HomeScreen: React.FC = () => {
                       }}
                       badge={anime.releaseTime ? `⏰ ${anime.releaseTime}` : '⏰'}
                       badgeColor={COLORS.secondary}
+                      languageBadge={getLanguageBadgeText(anime.language)}
                       index={index}
                       onPress={() => loadAnimeDetails(anime.animeId || anime.url, anime.contentType, anime.title)}
                     />
@@ -1867,6 +1869,7 @@ const HomeScreen: React.FC = () => {
                       anime={anime}
                       badge="★ CLASSIQUE"
                       badgeColor={COLORS.badges.atomic}
+                      languageBadge={getLanguageBadgeText(anime.language)}
                       index={index}
                       onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
                     />
@@ -1891,6 +1894,7 @@ const HomeScreen: React.FC = () => {
                       anime={anime}
                       badge="💎 RARE"
                       badgeColor={COLORS.badges.manga}
+                      languageBadge={getLanguageBadgeText(anime.language)}
                       index={index}
                       onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
                     />
@@ -1918,6 +1922,7 @@ const HomeScreen: React.FC = () => {
                       anime={anime}
                       badge="🎯 RECOM."
                       badgeColor={COLORS.secondary}
+                      languageBadge={getLanguageBadgeText(anime.language)}
                       index={index}
                       onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
                     />

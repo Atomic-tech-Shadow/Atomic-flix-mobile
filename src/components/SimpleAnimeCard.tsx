@@ -65,6 +65,13 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
         </View>
       )}
 
+      {/* Badge de langue (si fourni) */}
+      {languageBadge && (
+        <View style={[styles.languageBadge, { backgroundColor: COLORS.badges.vostfr }]}>
+          <Text style={styles.badgeText}>{languageBadge}</Text>
+        </View>
+      )}
+
       {/* Nouveaux badges isFin et isReporte */}
       <View style={styles.dynamicBadgesContainer}>
         {badge === undefined && (anime.currentSeason || anime.currentEpisode || anime.seasonPart) && (
