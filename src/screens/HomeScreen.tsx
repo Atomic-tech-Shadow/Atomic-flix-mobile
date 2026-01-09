@@ -127,14 +127,14 @@ const HomeScreen: React.FC = () => {
 
 
   // Fonction utilitaire pour obtenir le badge de langue
-  const getLanguageBadge = (language: any): string => {
-    if (!language) return 'VOSTFR';
+  const getLanguageBadge = (language: any): string | undefined => {
+    if (!language) return undefined;
     if (typeof language === 'string') return language;
     if (language.vf) return 'VF';
     if (language.vostfr) return 'VOSTFR';
     if (language.vjstfr) return 'VJSTFR';
     if (language.name) return language.name;
-    return 'VOSTFR';
+    return undefined;
   };
 
   // Charger l'historique de visionnage
@@ -186,14 +186,14 @@ const HomeScreen: React.FC = () => {
           const classiquesData = (popular.categories.classiques?.anime || []).map((anime: any) => ({
             ...anime,
             id: anime.id || anime.url,
-            image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`,
-            language: { name: 'VOSTFR', code: 'vostfr' } // Fallback par défaut pour les classiques
+            image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`
+            // Pas de badge forcé VOSTFR ici, on laisse l'API décider
           }));
           const pepitesData = (popular.categories.pepites?.anime || []).map((anime: any) => ({
             ...anime,
             id: anime.id || anime.url,
-            image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`,
-            language: { name: 'VOSTFR', code: 'vostfr' } // Fallback par défaut pour les pépites
+            image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`
+            // Pas de badge forcé VOSTFR ici, on laisse l'API décider
           }));
           setClassiquesAnimes(classiquesData);
           setPepitesAnimes(pepitesData);
@@ -303,13 +303,11 @@ const HomeScreen: React.FC = () => {
         // Convertir les données de l'API en format SearchResult
         const classiques: SearchResult[] = (response.categories.classiques?.anime || []).map((anime: any) => ({
           ...anime,
-          image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`,
-          language: { name: 'VOSTFR', code: 'vostfr' }
+          image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`
         }));
         const pepites: SearchResult[] = (response.categories.pepites?.anime || []).map((anime: any) => ({
           ...anime,
-          image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`,
-          language: { name: 'VOSTFR', code: 'vostfr' }
+          image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`
         }));
         
         console.log('👑 Classiques trouvés:', classiques.length, classiques);
@@ -1820,7 +1818,7 @@ const HomeScreen: React.FC = () => {
                       anime={anime}
                       badge={`S${anime.currentSeason || 1}${anime.currentEpisode ? `E${anime.currentEpisode}` : ''}`}
                       badgeColor={COLORS.badges.hot}
-                      languageBadge={getLanguageBadgeText(anime.language)}
+                      languageBadge={getLanguageBadge(anime.language)}
                       index={index}
                       onPress={() => loadEpisodeDirectly(anime)}
                     />
@@ -1851,7 +1849,7 @@ const HomeScreen: React.FC = () => {
                       }}
                       badge={anime.releaseTime ? `⏰ ${anime.releaseTime}` : '⏰'}
                       badgeColor={COLORS.secondary}
-                      languageBadge={getLanguageBadgeText(anime.language)}
+                      languageBadge={getLanguageBadge(anime.language)}
                       index={index}
                       onPress={() => loadAnimeDetails(anime.animeId || anime.url, anime.contentType, anime.title)}
                     />
@@ -1876,7 +1874,7 @@ const HomeScreen: React.FC = () => {
                       anime={anime}
                       badge="★ CLASSIQUE"
                       badgeColor={COLORS.badges.atomic}
-                      languageBadge={getLanguageBadgeText(anime.language)}
+                      languageBadge={getLanguageBadge(anime.language)}
                       index={index}
                       onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
                     />
@@ -1901,7 +1899,7 @@ const HomeScreen: React.FC = () => {
                       anime={anime}
                       badge="💎 RARE"
                       badgeColor={COLORS.badges.manga}
-                      languageBadge={getLanguageBadgeText(anime.language)}
+                      languageBadge={getLanguageBadge(anime.language)}
                       index={index}
                       onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
                     />
@@ -1925,11 +1923,11 @@ const HomeScreen: React.FC = () => {
                 >
                   {recommendationsAnimes.map((anime, index) => (
                     <SimpleAnimeCard
-                      key={`recommendation-${anime.id || index}`}
+                      key={`recommendation-${anime.id || index}-${index}`}
                       anime={anime}
                       badge="🎯 RECOM."
                       badgeColor={COLORS.secondary}
-                      languageBadge={getLanguageBadgeText(anime.language)}
+                      languageBadge={getLanguageBadge(anime.language)}
                       index={index}
                       onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
                     />

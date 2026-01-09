@@ -59,22 +59,20 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
       </View>
       
       {/* Badge de temps/heure (si fourni par badge prop) */}
-      {badge && (
+      {badge ? (
         <View style={[styles.timeBadge, { backgroundColor: badgeColor || COLORS.secondary }]}>
           <Text style={styles.badgeText}>{badge}</Text>
         </View>
-      )}
+      ) : null}
 
-      {/* Badge de langue (si fourni) */}
-      {languageBadge && (
-        <View style={[styles.languageBadge, { backgroundColor: COLORS.badges.vostfr }]}>
-          <Text style={styles.badgeText}>{languageBadge}</Text>
-        </View>
-      )}
-
-      {/* Nouveaux badges isFin et isReporte */}
+      {/* Nouveaux badges isFin et isReporte et Langue */}
       <View style={styles.dynamicBadgesContainer}>
-        {badge === undefined && (anime.currentSeason || anime.currentEpisode || anime.seasonPart) && (
+        {languageBadge ? (
+          <View style={[styles.miniBadge, { backgroundColor: COLORS.badges.vostfr }]}>
+            <Text style={styles.miniBadgeText}>{languageBadge}</Text>
+          </View>
+        ) : null}
+        {badge === undefined && (anime.currentSeason || anime.currentEpisode || anime.seasonPart) ? (
           <View style={[styles.miniBadge, { backgroundColor: COLORS.badges.anime }]}>
             <Text style={styles.miniBadgeText}>
               {anime.currentSeason ? `S${anime.currentSeason.toString().padStart(2, '0')}` : ''}
@@ -82,17 +80,17 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
               {anime.currentEpisode ? `E${anime.currentEpisode.toString().padStart(2, '0')}` : ''}
             </Text>
           </View>
-        )}
-        {anime.isReporte && (
+        ) : null}
+        {anime.isReporte ? (
           <View style={[styles.miniBadge, { backgroundColor: '#FFA502' }]}>
             <Text style={styles.miniBadgeText}>REPORTE</Text>
           </View>
-        )}
-        {anime.isFin && (
+        ) : null}
+        {anime.isFin ? (
           <View style={[styles.miniBadge, { backgroundColor: '#FF4757' }]}>
             <Text style={styles.miniBadgeText}>FIN</Text>
           </View>
-        )}
+        ) : null}
       </View>
 
       {/* Titre en bas avec gradient */}
@@ -146,15 +144,6 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     zIndex: 2,
   },
-  languageBadge: {
-    position: 'absolute',
-    top: 6,
-    left: 6,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 3,
-    zIndex: 2,
-  },
   timeBadge: {
     position: 'absolute',
     top: 6,
@@ -189,12 +178,17 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-end',
     gap: 3,
-    zIndex: 2,
+    zIndex: 10,
   },
   miniBadge: {
     paddingHorizontal: 4,
     paddingVertical: 2,
     borderRadius: 2,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
   },
   miniBadgeText: {
     color: '#FFF',
