@@ -128,11 +128,13 @@ const HomeScreen: React.FC = () => {
 
   // Fonction utilitaire pour obtenir le badge de langue
   const getLanguageBadge = (language: any): string => {
-    if (!language) return 'VO';
+    if (!language) return 'VOSTFR';
+    if (typeof language === 'string') return language;
     if (language.vf) return 'VF';
     if (language.vostfr) return 'VOSTFR';
     if (language.vjstfr) return 'VJSTFR';
-    return 'VO';
+    if (language.name) return language.name;
+    return 'VOSTFR';
   };
 
   // Charger l'historique de visionnage
@@ -184,12 +186,14 @@ const HomeScreen: React.FC = () => {
           const classiquesData = (popular.categories.classiques?.anime || []).map((anime: any) => ({
             ...anime,
             id: anime.id || anime.url,
-            image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`
+            image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`,
+            language: { name: 'VOSTFR', code: 'vostfr' } // Fallback par défaut pour les classiques
           }));
           const pepitesData = (popular.categories.pepites?.anime || []).map((anime: any) => ({
             ...anime,
             id: anime.id || anime.url,
-            image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`
+            image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`,
+            language: { name: 'VOSTFR', code: 'vostfr' } // Fallback par défaut pour les pépites
           }));
           setClassiquesAnimes(classiquesData);
           setPepitesAnimes(pepitesData);
@@ -299,11 +303,13 @@ const HomeScreen: React.FC = () => {
         // Convertir les données de l'API en format SearchResult
         const classiques: SearchResult[] = (response.categories.classiques?.anime || []).map((anime: any) => ({
           ...anime,
-          image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`
+          image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`,
+          language: { name: 'VOSTFR', code: 'vostfr' }
         }));
         const pepites: SearchResult[] = (response.categories.pepites?.anime || []).map((anime: any) => ({
           ...anime,
-          image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`
+          image: anime.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${anime.id}.jpg`,
+          language: { name: 'VOSTFR', code: 'vostfr' }
         }));
         
         console.log('👑 Classiques trouvés:', classiques.length, classiques);
@@ -1780,15 +1786,16 @@ const HomeScreen: React.FC = () => {
                 >
                   {currentlyWatching.map((historyItem, index) => (
                     <SimpleAnimeCard
-                      key={`history-${historyItem.id}`}
+                      key={`history-${historyItem.id}-${index}`}
                       anime={{
                         title: historyItem.animeTitle,
                         image: historyItem.animeImage || 'https://via.placeholder.com/200x280',
-                        id: historyItem.id
+                        id: historyItem.id,
+                        language: historyItem.language // Passer la langue brute
                       }}
                       badge={`S${historyItem.seasonNumber || 1}E${historyItem.episodeNumber}`}
                       badgeColor={COLORS.secondary}
-                      languageBadge={historyItem.language}
+                      languageBadge={getLanguageBadge(historyItem.language)} // Utiliser la fonction de formatage
                       index={index}
                       onPress={() => resumeWatching(historyItem)}
                     />
@@ -1809,7 +1816,7 @@ const HomeScreen: React.FC = () => {
                 >
                   {nouveauxEpisodes.map((anime, index) => (
                     <SimpleAnimeCard
-                      key={`new-${anime.id}-${anime.language?.name || index}`}
+                      key={`new-${anime.id}-${anime.language?.name || index}-${index}`}
                       anime={anime}
                       badge={`S${anime.currentSeason || 1}${anime.currentEpisode ? `E${anime.currentEpisode}` : ''}`}
                       badgeColor={COLORS.badges.hot}
@@ -1834,7 +1841,7 @@ const HomeScreen: React.FC = () => {
                 >
                   {planningAnimes.map((anime, index) => (
                     <SimpleAnimeCard
-                      key={`planning-${anime.id || index}`}
+                      key={`planning-${anime.id || index}-${index}`}
                       anime={{
                         ...anime,
                         // Forcer la suppression des infos de saison/épisode pour cette section
