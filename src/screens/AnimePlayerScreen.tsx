@@ -61,7 +61,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   // États pour les données
   const [animeData, setAnimeData] = useState<AnimeData | null>(null);
   const [selectedSeason, setSelectedSeason] = useState<Season | null>(
-    seasonData || (seasonNumber ? { label: `Saison ${seasonNumber}`, value: String(seasonNumber), number: Number(seasonNumber) } : null)
+    (seasonData as Season | null) || (seasonNumber ? { name: `Saison ${seasonNumber}`, value: String(seasonNumber), number: Number(seasonNumber) } : null)
   );
   const [selectedLanguage, setSelectedLanguage] = useState<string>(
     language || initialLanguage || 'VOSTFR'
@@ -117,7 +117,8 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     height: '100%',
   },
   bannerOverlay: {
-    display: 'none',
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   bannerContent: {
     position: 'absolute',
@@ -128,8 +129,11 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   bannerTitle: {
     fontSize: 24, // Équivalent à text-2xl
     fontWeight: 'bold',
-    ...textStyles.heroTitle,
+    color: '#FFFFFF',
     marginBottom: 4,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10
   },
   bannerSeason: {
     fontSize: 18, // Équivalent à text-lg
@@ -198,7 +202,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   },
   languageFlag: {
     position: 'absolute',
-    fontSize: 40,
+    fontSize: 32,
     opacity: 1,
     zIndex: 1,
     top: 0,
@@ -1226,7 +1230,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   // Charger les données de l'anime
   useEffect(() => {
     if (episodeNumber && episodes.length > 0) {
-      const episode = episodes.find(ep => ep.number === Number(episodeNumber));
+      const episode = episodes.find(ep => (ep as any).episodeNumber === Number(episodeNumber));
       if (episode) {
         setSelectedEpisode(episode);
       }
