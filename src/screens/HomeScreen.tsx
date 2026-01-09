@@ -131,16 +131,16 @@ const HomeScreen: React.FC = () => {
     if (!language) return undefined;
     if (typeof language === 'string') {
       const upper = language.toUpperCase();
-      if (upper.includes('VF')) return 'VF 🇫🇷';
-      if (upper.includes('VO')) return 'VO 🇯🇵';
+      if (upper.includes('VF')) return '🇫🇷';
+      if (upper.includes('VO')) return '🇯🇵';
       return upper;
     }
-    if (language.vf) return 'VF 🇫🇷';
-    if (language.vostfr || language.vjstfr) return 'VO 🇯🇵';
+    if (language.vf) return '🇫🇷';
+    if (language.vostfr || language.vjstfr) return '🇯🇵';
     if (language.name) {
       const upper = language.name.toUpperCase();
-      if (upper.includes('VF')) return 'VF 🇫🇷';
-      if (upper.includes('VO')) return 'VO 🇯🇵';
+      if (upper.includes('VF')) return '🇫🇷';
+      if (upper.includes('VO')) return '🇯🇵';
       return upper;
     }
     return undefined;
@@ -226,7 +226,7 @@ const HomeScreen: React.FC = () => {
               fullName: ep.language,
               flag: (ep.language || '').includes('VF') ? '🇫🇷' : ep.language === 'VA' ? '🇺🇸' : '🇯🇵',
               priority: 1,
-              badgeText: (ep.language || '').includes('VF') ? 'VF 🇫🇷' : 'VO 🇯🇵'
+              badgeText: (ep.language || '').includes('VF') ? '🇫🇷' : '🇯🇵'
             }
           }));
           setNouveauxEpisodes(formattedRecent);
@@ -246,7 +246,7 @@ const HomeScreen: React.FC = () => {
               fullName: anime.languages?.[0] || 'VOSTFR',
               flag: anime.languages?.[0]?.includes('VF') ? '🇫🇷' : anime.languages?.[0] === 'VA' ? '🇺🇸' : '🇯🇵',
               priority: 1,
-              badgeText: (anime.languages?.[0] || '').includes('VF') ? 'VF 🇫🇷' : 'VO 🇯🇵'
+              badgeText: (anime.languages?.[0] || '').includes('VF') ? '🇫🇷' : '🇯🇵'
             }
           }));
           setRecommendationsAnimes(formattedRecs);
@@ -267,7 +267,7 @@ const HomeScreen: React.FC = () => {
               fullName: item.language,
               flag: (item.language || '').includes('VF') ? '🇫🇷' : item.language === 'VA' ? '🇺🇸' : '🇯🇵',
               priority: 1,
-              badgeText: (item.language || '').includes('VF') ? 'VF 🇫🇷' : 'VO 🇯🇵'
+              badgeText: (item.language || '').includes('VF') ? '🇫🇷' : '🇯🇵'
             }
           }));
           setPlanningAnimes(formattedPlanning);
