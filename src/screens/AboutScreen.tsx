@@ -185,6 +185,7 @@ const AboutScreen: React.FC<Props> = ({ navigation }) => {
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>© 2026 Atomic Flix. Tous droits réservés.</Text>
+          <Text style={[styles.footerText, { marginTop: 8 }]}>Développé par cid akue</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

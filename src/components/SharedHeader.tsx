@@ -58,7 +58,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
         {/* Texte à côté du menu, style WhatsApp */}
         <View style={styles.titleSection}>
           <Text style={[styles.titleText, { color: themedColors.text.primary }]} numberOfLines={1}>ATOMIC FLIX</Text>
-          <Text style={[styles.devName, { color: themedColors.text.muted }]}>Dev cid akue shadow</Text>
         </View>
 
         {/* Actions à droite */}
