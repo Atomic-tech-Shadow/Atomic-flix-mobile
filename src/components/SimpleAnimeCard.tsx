@@ -68,7 +68,7 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
       {/* Nouveaux badges isFin et isReporte et Langue */}
       <View style={styles.dynamicBadgesContainer}>
         {languageBadge ? (
-          <View style={[styles.miniBadge, { backgroundColor: COLORS.badges.vostfr }]}>
+          <View style={styles.flagContainer}>
             <Text style={styles.miniBadgeText}>{languageBadge.includes('🇫🇷') || languageBadge.includes('VF') ? '🇫🇷' : languageBadge.includes('🇯🇵') || languageBadge.includes('VO') ? '🇯🇵' : languageBadge.includes('🇺🇸') || languageBadge.includes('VA') ? '🇺🇸' : languageBadge}</Text>
           </View>
         ) : null}
@@ -194,6 +194,13 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 8,
     fontWeight: 'bold',
+  },
+  flagContainer: {
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    backgroundColor: 'transparent',
+    elevation: 0,
+    shadowOpacity: 0,
   },
 });
 
