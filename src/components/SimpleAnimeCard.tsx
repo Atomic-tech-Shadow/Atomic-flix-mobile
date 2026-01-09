@@ -69,7 +69,7 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
       <View style={styles.dynamicBadgesContainer}>
         {languageBadge ? (
           <View style={[styles.miniBadge, { backgroundColor: COLORS.badges.vostfr }]}>
-            <Text style={styles.miniBadgeText}>{languageBadge}</Text>
+            <Text style={styles.miniBadgeText}>{languageBadge.includes('VF') ? 'VF 🇫🇷' : languageBadge.includes('VO') ? 'VO 🇯🇵' : languageBadge}</Text>
           </View>
         ) : null}
         {badge === undefined && (anime.currentSeason || anime.currentEpisode || anime.seasonPart) ? (

@@ -225,7 +225,8 @@ const HomeScreen: React.FC = () => {
               code: (ep.language || '').toLowerCase(),
               fullName: ep.language,
               flag: (ep.language || '').includes('VF') ? '🇫🇷' : ep.language === 'VA' ? '🇺🇸' : '🇯🇵',
-              priority: 1
+              priority: 1,
+              badgeText: (ep.language || '').includes('VF') ? 'VF 🇫🇷' : 'VO 🇯🇵'
             }
           }));
           setNouveauxEpisodes(formattedRecent);
@@ -244,7 +245,8 @@ const HomeScreen: React.FC = () => {
               code: (anime.languages?.[0] || 'VOSTFR').toLowerCase(),
               fullName: anime.languages?.[0] || 'VOSTFR',
               flag: anime.languages?.[0]?.includes('VF') ? '🇫🇷' : anime.languages?.[0] === 'VA' ? '🇺🇸' : '🇯🇵',
-              priority: 1
+              priority: 1,
+              badgeText: (anime.languages?.[0] || '').includes('VF') ? 'VF 🇫🇷' : 'VO 🇯🇵'
             }
           }));
           setRecommendationsAnimes(formattedRecs);
@@ -264,7 +266,8 @@ const HomeScreen: React.FC = () => {
               code: (item.language || '').toLowerCase(),
               fullName: item.language,
               flag: (item.language || '').includes('VF') ? '🇫🇷' : item.language === 'VA' ? '🇺🇸' : '🇯🇵',
-              priority: 1
+              priority: 1,
+              badgeText: (item.language || '').includes('VF') ? 'VF 🇫🇷' : 'VO 🇯🇵'
             }
           }));
           setPlanningAnimes(formattedPlanning);
