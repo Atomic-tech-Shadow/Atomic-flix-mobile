@@ -72,12 +72,10 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
             <Text style={styles.miniBadgeText}>{languageBadge.includes('🇫🇷') || languageBadge.includes('VF') ? '🇫🇷' : languageBadge.includes('🇯🇵') || languageBadge.includes('VO') ? '🇯🇵' : languageBadge.includes('🇺🇸') || languageBadge.includes('VA') ? '🇺🇸' : languageBadge}</Text>
           </View>
         ) : null}
-        {badge === undefined && (anime.currentSeason || anime.currentEpisode || anime.seasonPart) ? (
+        {badge === undefined && (anime.infoText || anime.currentSeason || anime.currentEpisode || anime.seasonPart) ? (
           <View style={[styles.miniBadge, { backgroundColor: COLORS.badges.anime }]}>
             <Text style={styles.miniBadgeText}>
-              {anime.currentSeason ? `S${anime.currentSeason.toString().padStart(2, '0')}` : ''}
-              {anime.seasonPart ? `P${anime.seasonPart}` : ''}
-              {anime.currentEpisode ? `E${anime.currentEpisode.toString().padStart(2, '0')}` : ''}
+              {anime.infoText || `${anime.currentSeason ? `S${anime.currentSeason.toString().padStart(2, '0')}` : ''}${anime.seasonPart ? `P${anime.seasonPart}` : ''}${anime.currentEpisode ? `E${anime.currentEpisode.toString().padStart(2, '0')}` : ''}`}
             </Text>
           </View>
         ) : null}

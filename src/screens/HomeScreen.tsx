@@ -212,25 +212,33 @@ const HomeScreen: React.FC = () => {
 
         // Traitement récents
         if (recent && recent.recentEpisodes) {
-          const formattedRecent = recent.recentEpisodes.slice(0, 15).map((ep: any) => ({
-            ...ep,
-            id: ep.animeId,
-            title: ep.animeTitle,
-            contentType: 'anime',
-            image: ep.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${ep.animeId}.jpg`,
-            currentSeason: ep.season,
-            currentEpisode: ep.episode,
-            isFin: ep.isFin,
-            isReporte: ep.isReporte,
-            language: {
-              name: ep.language,
-              code: (ep.language || '').toLowerCase(),
-              fullName: ep.language,
-              flag: (ep.language || '').includes('VF') ? '🇫🇷' : ep.language === 'VA' ? '🇺🇸' : '🇯🇵',
-              priority: 1,
-              badgeText: (ep.language || '').includes('VF') ? '🇫🇷' : '🇯🇵'
-            }
-          }));
+          const formattedRecent = recent.recentEpisodes.slice(0, 15).map((ep: any) => {
+            let infoText = '';
+            if (ep.season) infoText += `S${ep.season.toString().padStart(2, '0')}`;
+            if (ep.seasonPart) infoText += `P${ep.seasonPart}`;
+            if (ep.episode) infoText += `EP${ep.episode.toString().padStart(2, '0')}`;
+            
+            return {
+              ...ep,
+              id: ep.animeId,
+              title: ep.animeTitle,
+              contentType: 'anime',
+              image: ep.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${ep.animeId}.jpg`,
+              currentSeason: ep.season,
+              currentEpisode: ep.episode,
+              infoText: infoText || ep.infoText,
+              isFin: ep.isFin,
+              isReporte: ep.isReporte,
+              language: {
+                name: ep.language,
+                code: (ep.language || '').toLowerCase(),
+                fullName: ep.language,
+                flag: (ep.language || '').includes('VF') ? '🇫🇷' : ep.language === 'VA' ? '🇺🇸' : '🇯🇵',
+                priority: 1,
+                badgeText: (ep.language || '').includes('VF') ? '🇫🇷' : '🇯🇵'
+              }
+            };
+          });
           setNouveauxEpisodes(formattedRecent);
         }
 
@@ -351,26 +359,34 @@ const HomeScreen: React.FC = () => {
 
       if (response && response.recentEpisodes) {
         // Convertir les données de l'API en format SearchResult
-        const recentEpisodes: SearchResult[] = response.recentEpisodes.slice(0, 15).map((episode: RecentEpisode) => ({
-          ...episode,
-          id: episode.animeId,
-          title: episode.animeTitle,
-          contentType: 'anime',
-          image: episode.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${episode.animeId}.jpg`,
-          currentSeason: episode.season,
-          currentEpisode: episode.episode || undefined,
-          seasonPart: episode.seasonPart || undefined,
-          isFin: episode.isFin,
-          isReporte: episode.isReporte,
-          language: {
-            name: episode.language,
-            code: episode.language.toLowerCase(),
-            fullName: episode.language,
-            flag: episode.language.includes('VF') ? '🇫🇷' : 
-                  episode.language === 'VA' ? '🇺🇸' : '🇯🇵',
-            priority: 1
-          },
-        }));
+        const recentEpisodes: SearchResult[] = response.recentEpisodes.slice(0, 15).map((episode: RecentEpisode) => {
+          let infoText = '';
+          if (episode.season) infoText += `S${episode.season.toString().padStart(2, '0')}`;
+          if (episode.seasonPart) infoText += `P${episode.seasonPart}`;
+          if (episode.episode) infoText += `EP${episode.episode.toString().padStart(2, '0')}`;
+          
+          return {
+            ...episode,
+            id: episode.animeId,
+            title: episode.animeTitle,
+            contentType: 'anime',
+            image: episode.image || `https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/${episode.animeId}.jpg`,
+            currentSeason: episode.season,
+            currentEpisode: episode.episode || undefined,
+            seasonPart: episode.seasonPart || undefined,
+            infoText: infoText || (episode as any).infoText,
+            isFin: episode.isFin,
+            isReporte: episode.isReporte,
+            language: {
+              name: episode.language,
+              code: episode.language.toLowerCase(),
+              fullName: episode.language,
+              flag: episode.language.includes('VF') ? '🇫🇷' : 
+                    episode.language === 'VA' ? '🇺🇸' : '🇯🇵',
+              priority: 1
+            },
+          };
+        });
         
         console.log('✅ Nouveaux épisodes convertis:', recentEpisodes.length);
         setNouveauxEpisodes(recentEpisodes);
