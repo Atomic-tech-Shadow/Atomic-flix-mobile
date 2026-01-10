@@ -216,7 +216,7 @@ const HomeScreen: React.FC = () => {
             let infoText = '';
             if (ep.season) infoText += `S${ep.season.toString().padStart(2, '0')}`;
             if (ep.seasonPart) infoText += `P${ep.seasonPart}`;
-            if (ep.episode) infoText += `EP${ep.episode.toString().padStart(2, '0')}`;
+            if (ep.episode) infoText += `E${ep.episode.toString().padStart(2, '0')}`;
             
             return {
               ...ep,
@@ -363,7 +363,7 @@ const HomeScreen: React.FC = () => {
           let infoText = '';
           if (episode.season) infoText += `S${episode.season.toString().padStart(2, '0')}`;
           if (episode.seasonPart) infoText += `P${episode.seasonPart}`;
-          if (episode.episode) infoText += `EP${episode.episode.toString().padStart(2, '0')}`;
+          if (episode.episode) infoText += `E${episode.episode.toString().padStart(2, '0')}`;
           
           return {
             ...episode,
