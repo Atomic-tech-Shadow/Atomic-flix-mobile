@@ -170,16 +170,16 @@ const AboutScreen: React.FC<Props> = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity 
             style={styles.linkButton} 
-            onPress={() => openURL('https://github.com/atomicflix')}
+            onPress={() => openURL('https://wa.me/22871394585')}
           >
-            <Text style={styles.linkButtonText}>GitHub</Text>
+            <Text style={styles.linkButtonText}>WhatsApp</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
             style={styles.linkButton} 
-            onPress={() => openURL('https://atomicflix.com')}
+            onPress={() => openURL('mailto:atomictech228@gmail.com')}
           >
-            <Text style={styles.linkButtonText}>Site Web</Text>
+            <Text style={styles.linkButtonText}>Email</Text>
           </TouchableOpacity>
         </View>
 
