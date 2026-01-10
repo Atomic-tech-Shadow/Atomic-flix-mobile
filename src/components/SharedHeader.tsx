@@ -87,9 +87,9 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             onPress={onNotificationPress}
           >
             <Ionicons name="notifications-outline" size={22} color={iconColor} />
-            {unreadCount > 0 && (
+            {unreadCount > 0 ? (
               <View style={styles.notificationBadge} />
-            )}
+            ) : null}
           </TouchableOpacity>
         </View>
       </View>

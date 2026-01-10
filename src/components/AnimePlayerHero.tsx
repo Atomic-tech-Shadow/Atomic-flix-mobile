@@ -28,9 +28,9 @@ const AnimePlayerHero: React.FC<AnimePlayerHeroProps> = ({
       {/* Contenu SEULEMENT en bas - position absolute */}
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
-        {seasonName && (
+        {seasonName ? (
           <Text style={styles.season}>{seasonName}</Text>
-        )}
+        ) : null}
       </View>
     </View>
   );

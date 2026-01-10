@@ -66,15 +66,13 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
       {/* Header avec actions */}
       <View style={styles.header}>
         <Text style={styles.title}>
-          🔔 Notifications {unreadCount > 0 && `(${unreadCount})`}
+          🔔 Notifications {unreadCount > 0 ? `(${unreadCount})` : ''}
         </Text>
-        <View style={styles.headerActions}>
-          {unreadCount > 0 && (
-            <TouchableOpacity onPress={onMarkAllRead} style={styles.markAllButton}>
-              <Text style={styles.markAllText}>Tout marquer lu</Text>
-            </TouchableOpacity>
-          )}
-        </View>
+        {unreadCount > 0 && (
+          <TouchableOpacity onPress={onMarkAllRead} style={styles.markAllButton}>
+            <Text style={styles.markAllText}>Tout marquer lu</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       {/* Liste des notifications */}
@@ -115,6 +113,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                     <Image
                       source={{ uri: notification.image }}
                       style={styles.notificationImage}
+                      resizeMode="cover"
                     />
                   ) : (
                     <View style={[styles.placeholderImage, { backgroundColor: getTypeColor(notification.type) }]}>
@@ -140,15 +139,27 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                   <Text style={styles.notificationBody} numberOfLines={2}>
                     {notification.body}
                   </Text>
-                  <Text style={styles.timestamp}>
-                    {getTimeAgo(notification.timestamp)}
-                  </Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
+                    <Text style={styles.timestamp}>
+                      {getTimeAgo(notification.timestamp)}
+                    </Text>
+                    
+                    {/* Bouton Regarder rapide */}
+                    {(notification.type === 'episode' || notification.type === 'film') ? (
+                      <TouchableOpacity 
+                        style={styles.watchButton}
+                        onPress={() => onNotificationPress(notification)}
+                      >
+                        <Text style={styles.watchButtonText}>▶️ Regarder</Text>
+                      </TouchableOpacity>
+                    ) : null}
+                  </View>
                 </View>
 
                 {/* Indicateur non lu */}
-                {!notification.read && (
+                {!notification.read ? (
                   <View style={styles.unreadIndicator} />
-                )}
+                ) : null}
               </View>
             </TouchableOpacity>
           ))
@@ -320,5 +331,21 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.secondary,
     marginLeft: 8,
     alignSelf: 'center',
+  },
+  watchButton: {
+    backgroundColor: COLORS.secondary,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 6,
+    shadowColor: COLORS.secondary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  watchButtonText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: 'bold',
   },
 });
