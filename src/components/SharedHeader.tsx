@@ -69,18 +69,6 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             <Ionicons name="search" size={22} color={iconColor} />
           </TouchableOpacity>
 
-          {/* Bouton thème (mode sombre/clair) */}
-          <TouchableOpacity 
-            style={styles.headerIconButton}
-            onPress={toggleTheme}
-          >
-            <Ionicons 
-              name={isDark ? "sunny" : "moon"} 
-              size={22} 
-              color={iconColor} 
-            />
-          </TouchableOpacity>
-
           {/* Bouton notifications avec badge */}
           <TouchableOpacity 
             style={styles.headerIconButton}
