@@ -192,7 +192,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     gap: 16,
   },
   languageButton: {
-    width: 48, // Bouton carré 48x48 comme spécifié
+    width: 48, 
     height: 48,
     borderRadius: 8,
     backgroundColor: COLORS.primary,
@@ -202,7 +202,8 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     alignItems: 'center',
     position: 'relative',
     overflow: 'hidden',
-    opacity: 0.5, // 50% d'opacité par défaut
+    opacity: 0.5, 
+    padding: 8,
   },
   languageButtonActive: {
     opacity: 1, // 100% d'opacité quand actif

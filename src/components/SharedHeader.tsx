@@ -119,8 +119,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   menuButton: {
-    padding: 8,
-    marginLeft: -8,
+    padding: 12,
+    marginLeft: -12,
   },
   titleSection: {
     flex: 1,
@@ -157,9 +157,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerIconButton: {
-    marginLeft: 12,
-    padding: 8,
-    marginRight: -8,
+    marginLeft: 16,
+    padding: 12,
+    marginRight: -12,
     position: 'relative',
   },
   notificationBadge: {
