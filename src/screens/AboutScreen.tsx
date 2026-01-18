@@ -177,6 +177,13 @@ const AboutScreen: React.FC<Props> = ({ navigation }) => {
           
           <TouchableOpacity 
             style={styles.linkButton} 
+            onPress={() => openURL('https://discord.gg/anime-sama')}
+          >
+            <Text style={styles.linkButtonText}>Discord</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.linkButton} 
             onPress={() => openURL('mailto:atomictech228@gmail.com')}
           >
             <Text style={styles.linkButtonText}>Email</Text>

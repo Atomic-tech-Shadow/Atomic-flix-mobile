@@ -798,10 +798,16 @@ const HomeScreen: React.FC = () => {
 
   const handleSearchPress = () => {
     // Active l'affichage de la barre de recherche
-    setShowSearchBar(true);
-    setSearchQuery('');
-    setSearchResults([]);
-    setError(null);
+    if (showSearchBar) {
+      setShowSearchBar(false);
+      setSearchQuery('');
+      setSearchResults([]);
+    } else {
+      setShowSearchBar(true);
+      setSearchQuery('');
+      setSearchResults([]);
+      setError(null);
+    }
   };
 
   // Gestionnaire pour les notifications (icône)
