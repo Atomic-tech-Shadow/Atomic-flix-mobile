@@ -365,32 +365,6 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     color: COLORS.accent,
     fontWeight: 'bold',
   },
-  atomicMessageContainer: {
-    marginHorizontal: 16,
-    marginVertical: 8,
-    padding: 16,
-    backgroundColor: 'rgba(255, 107, 157, 0.1)',
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: COLORS.accent,
-    alignItems: 'center',
-  },
-  atomicMessageBold: {
-    fontWeight: 'bold',
-    color: COLORS.accent,
-  },
-  atomicMessageText: {
-    color: COLORS.text.secondary,
-    fontSize: 14,
-    textAlign: 'center',
-  },
-  atomicMessageSubtext: {
-    color: COLORS.text.secondary,
-    fontSize: 14,
-    textAlign: 'center',
-    marginTop: 4,
-    fontStyle: 'italic',
-  },
 
   errorMessage: {
     flexDirection: 'row',
