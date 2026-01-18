@@ -1956,7 +1956,7 @@ const HomeScreen: React.FC = () => {
             {/* Section Historique - REPRENEZ VOTRE VISIONNAGE */}
             {currentlyWatching.length > 0 && (
               <View style={styles.horizontalSection}>
-                <SectionTitle title="🎯 CONTINUER À REGARDER" colors={COLORS} />
+                <SectionTitle title="🎯 CONTINUER" colors={COLORS} />
                 <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
@@ -1987,7 +1987,7 @@ const HomeScreen: React.FC = () => {
             {/* Section Nouveaux épisodes - 1ère position */}
             {nouveauxEpisodes.length > 0 && (
               <View style={styles.horizontalSection}>
-                <SectionTitle title="🔥 Nouveaux épisodes" colors={COLORS} />
+                <SectionTitle title="🔥 RÉCENTS" colors={COLORS} />
                 <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
@@ -2012,7 +2012,7 @@ const HomeScreen: React.FC = () => {
             {/* Section Sorties aujourd'hui - 2ème position planning immédiat */}
             {planningAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
-                <SectionTitle title="⏰ Sorties aujourd'hui" colors={COLORS} />
+                <SectionTitle title="⏰ PLANNING" colors={COLORS} />
                 <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
@@ -2043,7 +2043,7 @@ const HomeScreen: React.FC = () => {
             {/* Section Classiques - 3ème position valeurs sûres */}
             {classiquesAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
-                <SectionTitle title="👑 Légendaires" colors={COLORS} />
+                <SectionTitle title="👑 LÉGENDAIRES" colors={COLORS} />
                 <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
@@ -2068,7 +2068,7 @@ const HomeScreen: React.FC = () => {
             {/* Section Pépites - 4ème position exploration */}
             {pepitesAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
-                <SectionTitle title="💎 Pépites cachées" colors={COLORS} />
+                <SectionTitle title="💎 PÉPITES" colors={COLORS} />
                 <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}
@@ -2096,7 +2096,7 @@ const HomeScreen: React.FC = () => {
             {/* Section Recommandations - Position après Historique */}
             {recommendationsAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
-                <SectionTitle title="🎯 Recommandations" colors={COLORS} />
+                <SectionTitle title="🎯 POUR TOI" colors={COLORS} />
                 <OptimizedScrollView 
                   horizontal 
                   showsHorizontalScrollIndicator={false}

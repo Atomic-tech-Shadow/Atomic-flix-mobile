@@ -17,28 +17,36 @@ const SectionTitle: React.FC<SectionTitleProps> = ({ title, icon = 'pencil', col
     header: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: colors.background.surface,
-      paddingHorizontal: 14,
-      paddingVertical: 12,
+      justifyContent: 'flex-start',
+      backgroundColor: 'transparent',
+      paddingHorizontal: 0,
+      paddingVertical: 8,
       borderRadius: 4,
-      borderBottomWidth: 2,
-      borderBottomColor: colors.secondary,
     },
     iconBox: {
-      marginRight: 8,
+      marginRight: 10,
+      fontSize: 22,
     },
     titleText: {
-      fontSize: 16,
-      fontWeight: '700',
-      color: colors.text.primary,
-      letterSpacing: 1,
+      fontSize: 20,
+      fontWeight: '900',
+      color: colors.secondary,
+      letterSpacing: 1.5,
+      textTransform: 'uppercase',
+      textShadowColor: 'rgba(0, 212, 255, 0.5)',
+      textShadowOffset: { width: 0, height: 0 },
+      textShadowRadius: 10,
     },
     underline: {
-      height: 2,
+      height: 3,
+      width: 40,
       backgroundColor: colors.secondary,
-      marginTop: 8,
-      borderRadius: 1,
+      marginTop: -4,
+      borderRadius: 2,
+      shadowColor: colors.secondary,
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 1,
+      shadowRadius: 5,
     },
   });
 
@@ -52,7 +60,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({ title, icon = 'pencil', col
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.iconBox}>{displayEmoji}</Text>
-        <Text style={styles.titleText}>{displayTitle.toUpperCase()}</Text>
+        <Text style={styles.titleText}>{displayTitle}</Text>
       </View>
       <View style={styles.underline} />
     </View>
