@@ -25,7 +25,7 @@ const DEFAULT_OPTIONS: Required<RetryOptions> = {
   baseDelay: 1000,
   maxDelay: 10000,
   backoffFactor: 2,
-  timeout: 10000,
+  timeout: 15000, // Augmenté de 10s à 15s pour les réseaux instables
 };
 
 /**
