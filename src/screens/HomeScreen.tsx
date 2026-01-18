@@ -1698,37 +1698,148 @@ const HomeScreen: React.FC = () => {
     borderRadius: 6,
     flex: 2,
   },
+  historyEpisodeText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: COLORS.text.primary,
+    textAlign: 'center',
+  },
 
-  // Gestionnaire pour les actions des notifications
-  const handleNotificationItemPress = (notification: PushNotification) => {
-    // Marquer comme lue
-    markAsRead(notification.id);
-    
-    // Navigation selon le type de contenu
-    if (notification.data?.screen && notification.data?.params) {
-      if (notification.data.screen === 'AnimeDetail') {
-        navigation.navigate('AnimeDetail', notification.data.params);
-      }
-    }
-  };
+});
 
-  const renderHeroSection = () => (
-    <View style={styles.heroSection}>
-      <View style={styles.heroMosaicContainer}>
-        {classiquesAnimes.slice(0, 8).map((anime, index) => (
-          <View key={`hero-mosaic-${index}`} style={styles.heroMosaicImage}>
-            <Image
-              source={{ uri: anime.image }}
-              style={styles.heroMosaicImageContent}
-              resizeMode="cover"
+  return (
+    <CosmicBackground>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
+
+      {/* Bannière de statut réseau */}
+      <NetworkStatusBanner
+        isVisible={showOfflineBanner}
+        onRetry={async () => {
+          const isConnected = await checkConnection();
+          if (isConnected) {
+            await loadAllInitialContent();
+          }
+        }}
+        onDismiss={hideBanner}
+      />
+
+      {/* Header fixe au-dessus du contenu */}
+      <View style={styles.headerContainer}>
+        <SharedHeader 
+          onSearchPress={handleSearchPress}
+          onNotificationPress={handleNotificationPress}
+          onMenuPress={handleMenuPress}
+        />
+      </View>
+
+      <OptimizedScrollView
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[COLORS.secondary]}
+            tintColor={COLORS.secondary}
+          />
+        }
+      >
+        {/* Barre de recherche locale (identique au site web) */}
+        {showSearchBar && (
+          <View style={styles.searchBarContainer}>
+            <View style={styles.searchBar}>
+              <Ionicons name="search" size={20} color={COLORS.secondary} />
+              <TextInput
+                style={styles.searchInput}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholder="Rechercher des animes..."
+                placeholderTextColor={COLORS.text.muted}
+                autoFocus
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setSearchQuery('');
+                  setShowSearchBar(false);
+                }}
+                style={styles.clearSearchButton}
+              >
+                <Text style={styles.clearSearchText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+
+        {/* Résultats de recherche (identique au site web) */}
+        {searchLoading && searchQuery.trim().length > 0 && (
+          <View style={styles.loadingContainer}>
+            <LoadingSpinner 
+              message="Recherche en cours..." 
+              size="large"
+              color={COLORS.primary}
             />
           </View>
-        ))}
-      </View>
-      <LinearGradient colors={getOverlayGradient() as any} style={styles.heroContent}>
-        <Text style={[styles.heroSubtitle, textStyles.shadowTitle]}>
-          BINGE TOUT L'ANIME QUE TU VEUX{"\n"}GRATUIT • HD • SANS LIMITE
-        </Text>
+        )}
+
+        {searchResults.length > 0 && !searchLoading && searchQuery.trim().length > 0 && (
+          <View style={styles.searchResultsGrid}>
+            {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
+          </View>
+        )}
+
+        {/* Message d'erreur de recherche */}
+        {error && searchQuery.trim().length > 0 && (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{error}</Text>
+            <TouchableOpacity 
+              onPress={() => {
+                setError(null);
+                searchAnimes(searchQuery);
+              }}
+              style={styles.retryButton}
+            >
+              <Text style={styles.retryText}>Réessayer la recherche</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Message si aucun résultat */}
+        {searchQuery.trim().length > 0 && !searchLoading && searchResults.length === 0 && !error && (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>Aucun résultat trouvé pour "{searchQuery}"</Text>
+          </View>
+        )}
+
+        {searchQuery.trim().length === 0 && (
+          <View key="main-content-wrapper">
+            <View style={styles.heroSection}>
+              {/* Images d'animes en mosaïque visible en haut */}
+              <View style={styles.heroMosaicContainer}>
+                {classiquesAnimes.slice(0, 8).map((anime, index) => (
+                  <View
+                    key={`hero-mosaic-${index}`}
+                    style={styles.heroMosaicImage}
+                  >
+                    <Image
+                      source={{ uri: anime.image }}
+                      style={styles.heroMosaicImageContent}
+                      resizeMode="cover"
+                      onError={(e) => {}}
+                    />
+                  </View>
+                ))}
+              </View>
+
+              {/* Contenu principal */}
+              <LinearGradient
+                colors={getOverlayGradient() as any}
+                style={styles.heroContent}
+              >
+                <Text style={[styles.heroSubtitle, textStyles.shadowTitle]}>
+                  BINGE TOUT L'ANIME QUE TU VEUX{"\n"}GRATUIT • HD • SANS LIMITE
+                </Text>
+                
+        {/* Drapeaux décoratifs dans les coins */}
         <Text style={styles.heroFlagLeft}>🎌</Text>
         <Text style={styles.heroFlagRight}>🎌</Text>
       </LinearGradient>
@@ -1739,195 +1850,336 @@ const HomeScreen: React.FC = () => {
     <CosmicBackground>
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
         <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
-        <NetworkStatusBanner
-          isVisible={showOfflineBanner}
-          onRetry={async () => {
-            const isConnected = await checkConnection();
-            if (isConnected) await loadAllInitialContent();
-          }}
-          onDismiss={hideBanner}
-        />
-        <View style={styles.headerContainer}>
-          <SharedHeader 
-            onSearchPress={handleSearchPress}
-            onNotificationPress={handleNotificationPress}
-            onMenuPress={handleMenuPress}
-          />
-        </View>
-        <OptimizedScrollView
-          style={styles.scrollView}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              colors={[COLORS.secondary]}
-              tintColor={COLORS.secondary}
-            />
+
+      {/* Bannière de statut réseau */}
+      <NetworkStatusBanner
+        isVisible={showOfflineBanner}
+        onRetry={async () => {
+          const isConnected = await checkConnection();
+          if (isConnected) {
+            await loadAllInitialContent();
           }
-        >
-          {showSearchBar && (
-            <View style={styles.searchBarContainer}>
-              <View style={styles.searchBar}>
-                <Ionicons name="search" size={20} color={COLORS.secondary} />
-                <TextInput
-                  style={styles.searchInput}
-                  value={searchQuery}
-                  onChangeText={setSearchQuery}
-                  placeholder="Rechercher des animes..."
-                  placeholderTextColor={COLORS.text.muted}
-                  autoFocus
-                />
-                <TouchableOpacity
-                  onPress={() => {
-                    setSearchQuery('');
-                    setShowSearchBar(false);
-                  }}
-                  style={styles.clearSearchButton}
-                >
-                  <Text style={styles.clearSearchText}>✕</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
+        }}
+        onDismiss={hideBanner}
+      />
 
-          {searchLoading && searchQuery.trim().length > 0 && (
-            <View style={styles.loadingContainer}>
-              <LoadingSpinner message="Recherche en cours..." size="large" color={COLORS.primary} />
-            </View>
-          )}
+      {/* Header fixe au-dessus du contenu */}
+      <View style={styles.headerContainer}>
+        <SharedHeader 
+          onSearchPress={handleSearchPress}
+          onNotificationPress={handleNotificationPress}
+          onMenuPress={handleMenuPress}
+        />
+      </View>
 
-          {searchResults.length > 0 && !searchLoading && searchQuery.trim().length > 0 && (
-            <View style={styles.searchResultsGrid}>
-              {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
-            </View>
-          )}
-
-          {error && searchQuery.trim().length > 0 && (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>{error}</Text>
-              <TouchableOpacity onPress={() => { setError(null); searchAnimes(searchQuery); }} style={styles.retryButton}>
-                <Text style={styles.retryText}>Réessayer la recherche</Text>
+      <OptimizedScrollView
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[COLORS.secondary]}
+            tintColor={COLORS.secondary}
+          />
+        }
+      >
+        {/* Barre de recherche locale (identique au site web) */}
+        {showSearchBar && (
+          <View style={styles.searchBarContainer}>
+            <View style={styles.searchBar}>
+              <Ionicons name="search" size={20} color={COLORS.secondary} />
+              <TextInput
+                style={styles.searchInput}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholder="Rechercher des animes..."
+                placeholderTextColor={COLORS.text.muted}
+                autoFocus
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setSearchQuery('');
+                  setShowSearchBar(false);
+                }}
+                style={styles.clearSearchButton}
+              >
+                <Text style={styles.clearSearchText}>✕</Text>
               </TouchableOpacity>
             </View>
-          )}
+          </View>
+        )}
 
-          {searchQuery.trim().length > 0 && !searchLoading && searchResults.length === 0 && !error && (
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Aucun résultat trouvé pour "{searchQuery}"</Text>
-            </View>
-          )}
+        {/* Résultats de recherche (identique au site web) */}
+        {searchLoading && searchQuery.trim().length > 0 && (
+          <View style={styles.loadingContainer}>
+            <LoadingSpinner 
+              message="Recherche en cours..." 
+              size="large"
+              color={COLORS.primary}
+            />
+          </View>
+        )}
 
-          {searchQuery.trim().length === 0 && (
-            <View key="main-content-wrapper">
-              {renderHeroSection()}
-              {currentlyWatching.length > 0 && (
-                <View style={styles.horizontalSection}>
-                  <SectionTitle title="🎯 CONTINUER À REGARDER" colors={COLORS} />
-                  <OptimizedScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalScrollContainer}>
-                    {currentlyWatching.map((historyItem, index) => (
-                      <SimpleAnimeCard
-                        key={`history-${historyItem.id}-${index}`}
-                        anime={{
-                          title: historyItem.animeTitle,
-                          image: historyItem.animeImage || 'https://via.placeholder.com/200x280',
-                          id: historyItem.id,
-                          language: historyItem.language
-                        }}
-                        badge={`S${historyItem.seasonNumber || 1}E${historyItem.episodeNumber}`}
-                        badgeColor={COLORS.secondary}
-                        languageBadge={getLanguageBadge(historyItem.language)}
-                        index={index}
-                        onPress={() => resumeWatching(historyItem)}
-                      />
-                    ))}
-                  </OptimizedScrollView>
-                </View>
-              )}
-              {nouveauxEpisodes.length > 0 && (
-                <View style={styles.horizontalSection}>
-                  <SectionTitle title="🔥 Nouveaux épisodes" colors={COLORS} />
-                  <OptimizedScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll} contentContainerStyle={styles.horizontalScrollContainer}>
-                    {nouveauxEpisodes.map((anime, index) => (
-                      <SimpleAnimeCard
-                        key={`new-${anime.id}-${index}`}
-                        anime={anime}
-                        badge={anime.infoText || `S${anime.currentSeason || 1}${anime.currentEpisode ? `E${anime.currentEpisode}` : ''}`}
-                        badgeColor={COLORS.badges.hot}
-                        languageBadge={getLanguageBadge(anime.language)}
-                        index={index}
-                        onPress={() => loadEpisodeDirectly(anime)}
-                      />
-                    ))}
-                  </OptimizedScrollView>
-                </View>
-              )}
-              {planningAnimes.length > 0 && (
-                <View style={styles.horizontalSection}>
-                  <SectionTitle title="⏰ Sorties aujourd'hui" colors={COLORS} />
-                  <OptimizedScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalScrollContainer} style={styles.horizontalScroll}>
-                    {planningAnimes.map((anime, index) => (
-                      <SimpleAnimeCard
-                        key={`planning-${anime.id || index}`}
-                        anime={{...anime, currentSeason: undefined, currentEpisode: undefined}}
-                        badge={anime.releaseTime ? `⏰ ${anime.releaseTime}` : '⏰'}
-                        badgeColor={COLORS.secondary}
-                        languageBadge={getLanguageBadge(anime.language)}
-                        index={index}
-                        onPress={() => loadAnimeDetails(anime.animeId || anime.url, anime.contentType, anime.title)}
-                      />
-                    ))}
-                  </OptimizedScrollView>
-                </View>
-              )}
-            </View>
-          )}
-        </OptimizedScrollView>
+        {searchResults.length > 0 && !searchLoading && searchQuery.trim().length > 0 && (
+          <View style={styles.searchResultsGrid}>
+            {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
+          </View>
+        )}
+
+        {/* Message d'erreur de recherche */}
+        {error && searchQuery.trim().length > 0 && (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{error}</Text>
+            <TouchableOpacity 
+              onPress={() => {
+                setError(null);
+                searchAnimes(searchQuery);
+              }}
+              style={styles.retryButton}
+            >
+              <Text style={styles.retryText}>Réessayer la recherche</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Message si aucun résultat */}
+        {searchQuery.trim().length > 0 && !searchLoading && searchResults.length === 0 && !error && (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>Aucun résultat trouvé pour "{searchQuery}"</Text>
+          </View>
+        )}
+
+        {searchQuery.trim().length === 0 && (
+          <View key="main-content-wrapper">
+            {renderHeroSection()}
+
+            {/* Section Historique - REPRENEZ VOTRE VISIONNAGE */}
+            {currentlyWatching.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <SectionTitle title="🎯 CONTINUER À REGARDER" colors={COLORS} />
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                >
+                  {currentlyWatching.map((historyItem, index) => (
+                    <SimpleAnimeCard
+                      key={`history-${historyItem.id}-${index}`}
+                      anime={{
+                        title: historyItem.animeTitle,
+                        image: historyItem.animeImage || 'https://via.placeholder.com/200x280',
+                        id: historyItem.id,
+                        language: historyItem.language // Passer la langue brute
+                      }}
+                      badge={`S${historyItem.seasonNumber || 1}E${historyItem.episodeNumber}`}
+                      badgeColor={COLORS.secondary}
+                      languageBadge={getLanguageBadge(historyItem.language)} // Utiliser la fonction de formatage
+                      index={index}
+                      onPress={() => resumeWatching(historyItem)}
+                      onRemove={() => removeFromHistory(historyItem)}
+                      showRemoveButton={true}
+                    />
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
+
+            {/* Section Nouveaux épisodes - 1ère position */}
+            {nouveauxEpisodes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <SectionTitle title="🔥 Nouveaux épisodes" colors={COLORS} />
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.horizontalScroll}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                >
+                  {nouveauxEpisodes.map((anime, index) => (
+                    <SimpleAnimeCard
+                      key={`new-${anime.id}-${anime.language?.name || index}-${index}`}
+                      anime={anime}
+                      badge={anime.infoText || `S${anime.currentSeason || 1}${anime.currentEpisode ? `E${anime.currentEpisode}` : ''}`}
+                      badgeColor={COLORS.badges.hot}
+                      languageBadge={getLanguageBadge(anime.language)}
+                      index={index}
+                      onPress={() => loadEpisodeDirectly(anime)}
+                    />
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
+
+            {/* Section Sorties aujourd'hui - 2ème position planning immédiat */}
+            {planningAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <SectionTitle title="⏰ Sorties aujourd'hui" colors={COLORS} />
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                >
+                  {planningAnimes.map((anime, index) => (
+                    <SimpleAnimeCard
+                      key={`planning-${anime.id || index}-${index}`}
+                      anime={{
+                        ...anime,
+                        // Forcer la suppression des infos de saison/épisode pour cette section
+                        currentSeason: undefined,
+                        currentEpisode: undefined,
+                        seasonPart: undefined
+                      }}
+                      badge={anime.releaseTime ? `⏰ ${anime.releaseTime}` : '⏰'}
+                      badgeColor={COLORS.secondary}
+                      languageBadge={getLanguageBadge(anime.language)}
+                      index={index}
+                      onPress={() => loadAnimeDetails(anime.animeId || anime.url, anime.contentType, anime.title)}
+                    />
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
+
+            {/* Section Classiques - 3ème position valeurs sûres */}
+            {classiquesAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <SectionTitle title="👑 Légendaires" colors={COLORS} />
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                >
+                  {classiquesAnimes.map((anime, index) => (
+                    <SimpleAnimeCard
+                      key={`classique-${anime.id || index}-${index}`}
+                      anime={anime}
+                      badge="★ CLASSIQUE"
+                      badgeColor={COLORS.badges.atomic}
+                      languageBadge={getLanguageBadge(anime.language)}
+                      index={index}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
+                    />
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
+
+            {/* Section Pépites - 4ème position exploration */}
+            {pepitesAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <SectionTitle title="💎 Pépites cachées" colors={COLORS} />
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                >
+                  {pepitesAnimes.map((anime, index) => (
+                    <SimpleAnimeCard
+                      key={`pepite-${anime.id || index}-${index}`}
+                      anime={anime}
+                      badge="💎 RARE"
+                      badgeColor={COLORS.badges.manga}
+                      languageBadge={getLanguageBadge(anime.language)}
+                      index={index}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
+                    />
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
+
+
+
+
+            {/* Section Recommandations - Position après Historique */}
+            {recommendationsAnimes.length > 0 && (
+              <View style={styles.horizontalSection}>
+                <SectionTitle title="🎯 Recommandations" colors={COLORS} />
+                <OptimizedScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalScrollContainer}
+                  style={styles.horizontalScroll}
+                >
+                  {recommendationsAnimes.map((anime, index) => (
+                    <SimpleAnimeCard
+                      key={`recommendation-${anime.id || index}-${index}`}
+                      anime={anime}
+                      badge="🎯 RECOM."
+                      badgeColor={COLORS.secondary}
+                      languageBadge={getLanguageBadge(anime.language)}
+                      index={index}
+                      onPress={() => loadAnimeDetails(anime.id || anime.url, anime.contentType, anime.title)}
+                    />
+                  ))}
+                </OptimizedScrollView>
+              </View>
+            )}
+
+            {/* Chargement initial unique */}
+            {initialLoading && (
+              <View style={styles.loadingContainer}>
+                <LoadingSpinner 
+                  message="Chargement de l'univers des animes..." 
+                  size="large"
+                  color={COLORS.secondary}
+                />
+              </View>
+            )}
+
+            {/* Message d'erreur selon le type */}
+            {error && errorType === 'server' && (
+              <ServerErrorCard 
+                onRetry={() => {
+                  setError(null);
+                  setErrorType(null);
+                  loadPopularAnimes();
+                }}
+              />
+            )}
+            
+            {error && errorType === 'network' && (
+              <OfflineErrorCard 
+                onRetry={() => {
+                  setError(null);
+                  setErrorType(null);
+                  loadPopularAnimes();
+                }}
+              />
+            )}
+
+            {error && errorType !== 'server' && errorType !== 'network' && (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>{error}</Text>
+                <TouchableOpacity 
+                  onPress={() => {
+                    setError(null);
+                    setErrorType(null);
+                    loadPopularAnimes();
+                  }}
+                  style={styles.retryButton}
+                >
+                  <Text style={styles.retryText}>Réessayer</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            {/* Message vide si pas de contenu et pas de chargement */}
+            {!initialLoading && !error && classiquesAnimes.length === 0 && pepitesAnimes.length === 0 && (
+              <ServerErrorCard 
+                onRetry={() => loadPopularAnimes()}
+              />
+            )}
+          </View>
+        )}
+      </OptimizedScrollView>
+
+
       </SafeAreaView>
     </CosmicBackground>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#000' },
-  scrollView: { flex: 1 },
-  headerContainer: { zIndex: 100 },
-  searchBarContainer: { padding: 10 },
-  searchBar: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#333', borderRadius: 5, padding: 5 },
-  searchInput: { flex: 1, color: '#fff', marginLeft: 10 },
-  clearSearchButton: { padding: 5 },
-  clearSearchText: { color: '#fff' },
-  loadingContainer: { padding: 20, alignItems: 'center' },
-  searchResultsGrid: { flexDirection: 'row', flexWrap: 'wrap', padding: 10 },
-  errorContainer: { padding: 20, alignItems: 'center' },
-  errorText: { color: 'red' },
-  retryButton: { marginTop: 10, padding: 10, backgroundColor: '#555', borderRadius: 5 },
-  retryText: { color: '#fff' },
-  emptyContainer: { padding: 20, alignItems: 'center' },
-  emptyText: { color: '#fff' },
-  heroSection: { height: 200, position: 'relative' },
-  heroMosaicContainer: { flexDirection: 'row', flexWrap: 'wrap', height: '100%' },
-  heroMosaicImage: { width: '25%', height: '50%' },
-  heroMosaicImageContent: { width: '100%', height: '100%' },
-  heroContent: { position: 'absolute', bottom: 0, left: 0, right: 0, top: 0, justifyContent: 'center', alignItems: 'center', padding: 20 },
-  heroSubtitle: { color: '#fff', fontSize: 18, textAlign: 'center', fontWeight: 'bold' },
-  heroFlagLeft: { position: 'absolute', left: 10, bottom: 10, fontSize: 24 },
-  heroFlagRight: { position: 'absolute', right: 10, bottom: 10, fontSize: 24 },
-  horizontalSection: { marginVertical: 15 },
-  horizontalScroll: { paddingLeft: 10 },
-  horizontalScrollContainer: { paddingRight: 20 },
-  animeCard: { width: '45%', margin: '2.5%', backgroundColor: '#222', borderRadius: 10, overflow: 'hidden' },
-  cardImageContainer: { height: 150 },
-  cardImage: { width: '100%', height: '100%' },
-  contentBadge: { position: 'absolute', top: 5, left: 5, padding: 3, borderRadius: 3 },
-  movieBadge: { backgroundColor: 'blue' },
-  animeBadge: { backgroundColor: 'green' },
-  badgeText: { color: '#fff', fontSize: 10 },
-  cardGradient: { position: 'absolute', bottom: 0, left: 0, right: 0, height: 50 },
-  cardContent: { padding: 10 },
-  cardTitle: { color: '#fff', fontWeight: 'bold' },
-  cardMeta: { marginTop: 5 },
-  languageBadge: { backgroundColor: '#444', padding: 2, borderRadius: 3 },
-  languageText: { color: '#fff', fontSize: 10 }
-});
 
 export default HomeScreen;
