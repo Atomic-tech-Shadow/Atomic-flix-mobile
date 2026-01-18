@@ -1729,7 +1729,7 @@ const HomeScreen: React.FC = () => {
         )}
 
         {/* Résultats de recherche (identique au site web) */}
-        {searchLoading && searchQuery && (
+        {searchLoading && searchQuery.trim().length > 0 && (
           <View style={styles.loadingContainer}>
             <LoadingSpinner 
               message="Recherche en cours..." 
@@ -1739,14 +1739,14 @@ const HomeScreen: React.FC = () => {
           </View>
         )}
 
-        {searchResults.length > 0 && !searchLoading && (
+        {searchResults.length > 0 && !searchLoading && searchQuery.trim().length > 0 && (
           <View style={styles.searchResultsGrid}>
             {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
           </View>
         )}
 
         {/* Message d'erreur de recherche */}
-        {error && searchQuery && (
+        {error && searchQuery.trim().length > 0 && (
           <View style={styles.errorContainer}>
             <Text style={styles.errorText}>{error}</Text>
             <TouchableOpacity 
@@ -1762,14 +1762,14 @@ const HomeScreen: React.FC = () => {
         )}
 
         {/* Message si aucun résultat */}
-        {searchQuery && !searchLoading && searchResults.length === 0 && !error && (
+        {searchQuery.trim().length > 0 && !searchLoading && searchResults.length === 0 && !error && (
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>Aucun résultat trouvé pour "{searchQuery}"</Text>
           </View>
         )}
 
-        {!searchQuery && !searchResults.length && (
-          <View>
+        {searchQuery.trim().length === 0 && (
+          <View key="main-content-wrapper">
             <View style={styles.heroSection}>
               {/* Images d'animes en mosaïque visible en haut */}
               <View style={styles.heroMosaicContainer}>

@@ -33,6 +33,7 @@ export interface SearchResult {
   isReporte?: boolean;
   isFinale?: boolean;
   // Champs pour les dates
+  infoText?: string;
   addedAt?: string;
   category?: string;
   genres?: string[];
