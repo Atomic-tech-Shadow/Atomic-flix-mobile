@@ -1826,6 +1826,8 @@ const HomeScreen: React.FC = () => {
                       languageBadge={getLanguageBadge(historyItem.language)} // Utiliser la fonction de formatage
                       index={index}
                       onPress={() => resumeWatching(historyItem)}
+                      onRemove={() => removeFromHistory(historyItem)}
+                      showRemoveButton={true}
                     />
                   ))}
                 </OptimizedScrollView>

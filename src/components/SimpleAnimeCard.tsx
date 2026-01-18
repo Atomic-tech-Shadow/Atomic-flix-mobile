@@ -10,6 +10,8 @@ interface SimpleAnimeCardProps {
   badgeColor?: string;
   languageBadge?: string;
   index: number;
+  onRemove?: () => void;
+  showRemoveButton?: boolean;
 }
 
 const getValidImageUrl = (anime: any): string | null => {
@@ -23,7 +25,9 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
   badge,
   badgeColor,
   languageBadge,
-  index
+  index,
+  onRemove,
+  showRemoveButton = false
 }) => {
   const imageUrl = getValidImageUrl(anime);
   
@@ -55,6 +59,20 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
           <View style={styles.placeholderContainer}>
             <Ionicons name="image-outline" size={32} color={COLORS.text.muted} />
           </View>
+        )}
+        
+        {/* Bouton de suppression Overlay */}
+        {showRemoveButton && onRemove && (
+          <TouchableOpacity 
+            style={styles.removeButton}
+            onPress={(e) => {
+              e.stopPropagation();
+              onRemove();
+            }}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="close-circle" size={24} color={COLORS.error} />
+          </TouchableOpacity>
         )}
       </View>
       
@@ -199,6 +217,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     elevation: 0,
     shadowOpacity: 0,
+  },
+  removeButton: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    zIndex: 20,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 12,
   },
 });
 
