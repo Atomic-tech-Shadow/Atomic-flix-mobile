@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   // Header mobile exact - Effet "I am Atomic"
   mobileHeader: {
     backgroundColor: COLORS.primary,
-    paddingLeft: 8,
+    paddingLeft: 0,
     paddingRight: 16,
     paddingTop: 16,
     paddingBottom: 12,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     padding: 8,
-    marginLeft: 0,
+    marginLeft: -4,
   },
   titleSection: {
     flex: 1,
