@@ -111,9 +111,10 @@ const AppNavigator: React.FC = () => {
   const navigationRef = React.useRef<any>(null);
 
   React.useEffect(() => {
-    // Configuration de la barre de navigation Android
+    // Configuration de la barre de navigation Android pour un mode immersif
     if (Platform.OS === 'android') {
-      NavigationBar.setBackgroundColorAsync(COLORS.primary);
+      NavigationBar.setPositionAsync('absolute');
+      NavigationBar.setBackgroundColorAsync('#00000000'); // Transparent
       NavigationBar.setButtonStyleAsync('light');
     }
 
