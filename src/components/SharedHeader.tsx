@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   },
   titleSection: {
     flex: 1,
-    marginLeft: 10,
+    marginLeft: 0,
   },
   logo3DContainer: {
     flexDirection: 'row',
