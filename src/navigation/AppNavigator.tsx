@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StatusBar } from 'expo-status-bar';
+import * as NavigationBar from 'expo-navigation-bar';
+import { Platform } from 'react-native';
 import { Season } from '../types';
 import DrawerContent from '../components/DrawerContent';
 import { COLORS } from '../constants/newColors';
@@ -109,6 +111,12 @@ const AppNavigator: React.FC = () => {
   const navigationRef = React.useRef<any>(null);
 
   React.useEffect(() => {
+    // Configuration de la barre de navigation Android
+    if (Platform.OS === 'android') {
+      NavigationBar.setBackgroundColorAsync(COLORS.primary);
+      NavigationBar.setButtonStyleAsync('light');
+    }
+
     const service = NotificationService.getInstance();
     const unsubscribe = () => {
       const listener = (data: any) => {
