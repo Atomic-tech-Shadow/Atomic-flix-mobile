@@ -4,13 +4,10 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  ActivityIndicator,
   StyleSheet,
   Dimensions,
-  Alert,
   RefreshControl,
   TextInput,
-  Modal,
 } from 'react-native';
 import OptimizedScrollView from '../components/OptimizedScrollView';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -24,11 +21,10 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { SearchResult } from '../types/index';
 import type { RootStackParamList, DrawerParamList } from '../navigation/AppNavigator';
-import { getThemedColors, getThemedTextStyles, interactiveStyles } from '../constants/newColors';
+import { getThemedTextStyles } from '../constants/newColors';
 import { useTheme } from '../contexts/ThemeContext';
 import SharedHeader from '../components/SharedHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
-import AnimeDetailHero from '../components/AnimeDetailHero';
 import { animeAPI } from '../utils/animeAPI';
 import { apiRequest } from '../utils/api';
 import { useNotifications } from '../hooks/useNotifications';
@@ -37,25 +33,6 @@ type AnimeDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, '
 type AnimeDetailScreenRouteProp = RouteProp<RootStackParamList, 'AnimeDetail'>;
 
 const { width, height } = Dimensions.get('window');
-
-// Interfaces pour les épisodes et sources vidéo (identiques au site web)
-interface Episode {
-  id: string;
-  title: string;
-  episodeNumber: number;
-  url: string;
-  language: string;
-  available: boolean;
-}
-
-interface VideoSource {
-  url: string;
-  server: string;
-  quality: string;
-  language: string;
-  type: string;
-  serverIndex: number;
-}
 
 interface Season {
   number: number;
@@ -81,24 +58,6 @@ interface AnimeData {
   url: string;
 }
 
-// Interfaces pour les détails d'épisode et réponses API
-interface EpisodeDetails {
-  id: string;
-  title: string;
-  animeTitle: string;
-  episodeNumber: number;
-  sources: VideoSource[];
-  availableServers: string[];
-  url: string;
-}
-
-interface ApiResponse<T> {
-  success: boolean;
-  data: T;
-  timestamp: string;
-  meta?: any;
-}
-
 const AnimeDetailScreen: React.FC = () => {
   const navigation = useNavigation<AnimeDetailScreenNavigationProp>();
   const route = useRoute<AnimeDetailScreenRouteProp>();
@@ -114,488 +73,263 @@ const AnimeDetailScreen: React.FC = () => {
   const [searchLoading, setSearchLoading] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   
-  // Hook pour les notifications
-  const {
-    notifications,
-    unreadCount,
-    markAsRead,
-    markAllAsRead,
-    refreshNotifications,
-  } = useNotifications();
-
-  // Hook pour le thème
+  const { unreadCount } = useNotifications();
   const { isDark, colors } = useTheme();
   const COLORS = colors;
   const textStyles = getThemedTextStyles(isDark);
 
-  // Styles
   const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.primary,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  
-  // Header mobile exact
-  mobileHeader: {
-    backgroundColor: `${COLORS.background.primary}f2`,
-    paddingHorizontal: 12,
-    paddingTop: 8,
-    paddingBottom: 6,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.primary,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 100,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  logoSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  atomicIcon: {
-    marginRight: 4,
-  },
-  atomicSymbolSmall: {
-    width: 18,
-    height: 18,
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  atomicCoreSmall: {
-    width: 3,
-    height: 3,
-    borderRadius: 1.5,
-    backgroundColor: COLORS.accent,
-    position: 'absolute',
-  },
-  atomicRingSmall: {
-    position: 'absolute',
-    borderWidth: 1,
-    borderColor: COLORS.accent,
-    borderRadius: 50,
-  },
-  ringSmall1: {
-    width: 16,
-    height: 16,
-  },
-  logoTextMobile: {
-    fontSize: 13,
-    fontWeight: 'bold',
-  },
-  atomicTextMobile: {
-    color: COLORS.text.primary,
-    fontFamily: 'monospace',
-  },
-  flixTextMobile: {
-    color: COLORS.accent,
-    fontFamily: 'monospace',
-  },
-  headerIcons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerIconButton: {
-    padding: 4,
-    marginLeft: 4,
-  },
-  // Header fixe
-  headerContainer: {
-    position: 'relative',
-    zIndex: 10,
-    backgroundColor: COLORS.background.primary,
-  },
-  // Hero Section réduite pour laisser place au header
-  heroContainer: {
-    position: 'relative',
-    height: height * 0.35, // 35% de la hauteur de l'écran au lieu de 50%
-    backgroundColor: 'transparent',
-  },
-  heroImageContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'transparent',
-  },
-  heroImage: {
-    width: '100%',
-    height: '100%',
-  },
-  heroGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: '70%',
-  },
-  heroContent: {
-    position: 'absolute',
-    bottom: 20, // Plus proche du bas
-    left: 20,
-    right: 20,
-    alignItems: 'flex-start', // Tout aligné à gauche
-  },
-  heroTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    ...textStyles.heroTitle,
-    marginBottom: 16,
-  },
-  heroBadgesCompact: {
-    alignItems: 'flex-start', // Alignés à gauche
-    marginBottom: 8, // Réduit l'espace en bas
-    marginTop: 8, // Petit espace après le titre
-    maxWidth: '75%', // Plus compact pour garder l'image visible
-  },
-  heroBadgeSmall: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    backgroundColor: `${COLORS.primary}cc`,
-    borderRadius: 10,
-    paddingHorizontal: 6,
-    paddingVertical: 4,
-    marginBottom: 3,
-    borderWidth: 1,
-    borderColor: `${COLORS.accent}66`,
-    alignSelf: 'flex-start',
-    maxWidth: '90%',
-    flexWrap: 'wrap',
-  },
-  yearBadge: {
-    backgroundColor: COLORS.badges.anime + '4D', // Violet cohérent avec app
-    borderColor: COLORS.badges.anime + '80',
-  },
-  badgeDotSmall: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: COLORS.accent,
-    marginRight: 4,
-    flexShrink: 0,
-  },
-  genreBadge: {
-    borderColor: COLORS.badges.anime + '66',
-  },
-  genreDot: {
-    backgroundColor: COLORS.badges.anime, // Violet pour le genre
-  },
-  badgeTextSmall: {
-    ...textStyles.cardTitle,
-    fontSize: 10,
-    fontWeight: '500',
-    flexShrink: 1,
-    lineHeight: 14,
-  },
-  animeBadgeContainer: {
-    alignSelf: 'flex-start',
-  },
-  animeBadgeDetail: {
-    backgroundColor: COLORS.secondary, // Cyan cohérent
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  animeBadgeMain: {
-    backgroundColor: COLORS.secondary, // Cyan principal de l'app
-    borderWidth: 1,
-    borderColor: COLORS.secondary + '99',
-  },
-  animeBadgeText: {
-    color: COLORS.text.primary,
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  
-  // Section Synopsis mobile
-  mobileSection: {
-    paddingHorizontal: 16,
-    paddingVertical: 24,
-  },
-  mobileSectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  mobileSectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: COLORS.text.primary,
-    marginLeft: 8,
-  },
-  synopsisContainer: {
-    backgroundColor: `${COLORS.primary}99`,
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: `${COLORS.text.primary}1a`,
-  },
-  synopsisText: {
-    color: COLORS.text.secondary,
-    fontSize: 14,
-    lineHeight: 22,
-  },
-  
-
-  
-  // États de chargement et erreur
-  loadingContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 64,
-  },
-  loadingText: {
-    color: COLORS.text.secondary,
-    marginTop: 16,
-    fontSize: 16,
-  },
-  errorContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 64,
-    paddingHorizontal: 32,
-  },
-  errorText: {
-    color: COLORS.error,
-    marginTop: 16,
-    marginBottom: 24,
-    textAlign: 'center',
-    fontSize: 16,
-  },
-  retryButton: {
-    backgroundColor: COLORS.accent,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  retryText: {
-    color: COLORS.text.primary,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  
-  // Saisons Grid exactement comme le code web
-  seasonsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    gap: 16,
-  },
-  seasonCard: {
-    width: '47%', // Pour 2 colonnes avec gap
-    height: 112, // h-28 du code web = 112px
-    borderRadius: 16, // rounded-2xl
-    overflow: 'hidden',
-    position: 'relative',
-    borderWidth: 2,
-  },
-  seasonCardAnime: {
-    borderColor: COLORS.accent,
-  },
-  seasonCardBackground: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: '100%',
-    height: '100%',
-  },
-  seasonCardOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: COLORS.primary + '99', // bg-black/60
-  },
-  seasonCardContent: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-  },
-  seasonCardTitle: {
-    ...textStyles.cardTitle,
-    fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 4,
-  },
-  seasonCardBadgeAnime: {
-    color: COLORS.accent,
-    fontSize: 10,
-    fontWeight: '600',
-  },
-  seasonCardBadgeManga: {
-    color: COLORS.badges.manga,
-    fontSize: 10,
-    fontWeight: '600',
-  },
-
-  // Styles pour la recherche
-  searchBarContainer: {
-    padding: 16,
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.text.primary + '1A',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  searchInput: {
-    flex: 1,
-    color: COLORS.text.primary,
-    fontSize: 16,
-    marginLeft: 12,
-  },
-  clearSearchButton: {
-    padding: 4,
-  },
-  clearSearchText: {
-    color: COLORS.text.secondary,
-    fontSize: 18,
-  },
-  loadingSearchContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 64,
-  },
-  searchResultsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-  },
-  emptySearchContainer: {
-    padding: 32,
-    alignItems: 'center',
-  },
-  emptySearchText: {
-    color: COLORS.text.secondary,
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  animeCard: {
-    width: (width - 48) / 2,
-    minHeight: 200,
-    height: 'auto',
-    marginBottom: 16,
-    borderRadius: 16,
-    backgroundColor: `${COLORS.primary}f2`,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: `${COLORS.secondary}33`,
-    shadowColor: COLORS.secondary,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    elevation: 5,
-  },
-  cardImageContainer: {
-    position: 'relative',
-    height: 160,
-    backgroundColor: `${COLORS.primary}99`,
-  },
-  cardImage: {
-    width: '100%',
-    height: '100%',
-  },
-  cardGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 60,
-  },
-  cardContent: {
-    padding: 14,
-    flex: 1,
-    backgroundColor: `${COLORS.primary}f2`,
-  },
-  cardTitle: {
-    ...textStyles.cardTitle,
-    fontSize: 14,
-    marginBottom: 8,
-    fontWeight: '600',
-  },
-  cardMeta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    gap: 6,
-  },
-  languageBadge: {
-    backgroundColor: `${COLORS.secondary}1a`,
-    borderRadius: 6,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderWidth: 1,
-    borderColor: `${COLORS.secondary}4d`,
-  },
-  languageText: {
-    color: COLORS.secondary,
-    fontSize: 10,
-    fontWeight: '600',
-  },
-  contentBadge: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    borderRadius: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    zIndex: 1,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.4,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  movieBadge: {
-    backgroundColor: COLORS.badges.film,
-  },
-  animeBadge: {
-    backgroundColor: COLORS.badges.anime,
-  },
-  badgeText: {
-    color: '#FFFFFF',
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-});
+    container: {
+      flex: 1,
+      backgroundColor: COLORS.primary,
+    },
+    scrollView: {
+      flex: 1,
+    },
+    mobileHeader: {
+      backgroundColor: 'transparent',
+      paddingHorizontal: 12,
+      paddingTop: 8,
+      paddingBottom: 6,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 100,
+    },
+    headerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    headerIcons: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    headerIconButton: {
+      padding: 8,
+      marginLeft: 4,
+      backgroundColor: 'rgba(0,0,0,0.3)',
+      borderRadius: 20,
+    },
+    heroContainer: {
+      position: 'relative',
+      height: height * 0.45,
+      backgroundColor: COLORS.primary,
+    },
+    heroImageContainer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
+    heroImage: {
+      width: '100%',
+      height: '100%',
+    },
+    heroGradient: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: '100%',
+    },
+    heroContent: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      padding: 20,
+    },
+    heroTitle: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      color: '#FFFFFF',
+      marginBottom: 12,
+      textShadowColor: 'rgba(0, 0, 0, 0.75)',
+      textShadowOffset: { width: -1, height: 1 },
+      textShadowRadius: 10,
+    },
+    heroBadgesCompact: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+    },
+    heroBadgeSmall: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      borderRadius: 8,
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderWidth: 1,
+      borderColor: 'rgba(255, 255, 255, 0.2)',
+    },
+    badgeDotSmall: {
+      width: 6,
+      height: 6,
+      borderRadius: 3,
+      backgroundColor: COLORS.accent,
+      marginRight: 6,
+    },
+    badgeTextSmall: {
+      color: '#FFFFFF',
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    mobileSection: {
+      padding: 20,
+    },
+    mobileSectionHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    mobileSectionTitle: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: COLORS.text.primary,
+      marginLeft: 10,
+    },
+    synopsisContainer: {
+      backgroundColor: 'rgba(255, 255, 255, 0.03)',
+      borderRadius: 16,
+      padding: 16,
+      borderWidth: 1,
+      borderColor: 'rgba(255, 255, 255, 0.05)',
+    },
+    synopsisText: {
+      color: COLORS.text.secondary,
+      fontSize: 15,
+      lineHeight: 24,
+    },
+    seasonsGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 12,
+      marginTop: 8,
+    },
+    seasonCard: {
+      width: (width - 52) / 2,
+      height: 100,
+      borderRadius: 16,
+      overflow: 'hidden',
+      position: 'relative',
+      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    },
+    seasonCardAnime: {
+      borderWidth: 1,
+      borderColor: COLORS.accent + '40',
+    },
+    seasonCardContent: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 12,
+      backgroundColor: 'rgba(0,0,0,0.4)',
+    },
+    seasonCardTitle: {
+      color: '#FFFFFF',
+      fontSize: 15,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: 4,
+    },
+    seasonCardBadgeAnime: {
+      color: COLORS.accent,
+      fontSize: 11,
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+      letterSpacing: 1,
+    },
+    seasonCardBadgeManga: {
+      color: COLORS.badges.manga,
+      fontSize: 10,
+      fontWeight: '600',
+    },
+    loadingContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 64,
+    },
+    errorContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 64,
+      paddingHorizontal: 32,
+    },
+    errorText: {
+      color: COLORS.error,
+      marginTop: 16,
+      marginBottom: 24,
+      textAlign: 'center',
+      fontSize: 16,
+    },
+    retryButton: {
+      backgroundColor: COLORS.accent,
+      paddingHorizontal: 24,
+      paddingVertical: 12,
+      borderRadius: 8,
+    },
+    retryText: {
+      color: COLORS.text.primary,
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+    searchBarContainer: {
+      padding: 16,
+      backgroundColor: COLORS.primary,
+    },
+    searchBar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+      borderRadius: 12,
+      paddingHorizontal: 16,
+      paddingVertical: 10,
+    },
+    searchInput: {
+      flex: 1,
+      color: '#FFFFFF',
+      fontSize: 16,
+      marginLeft: 12,
+    },
+    clearSearchButton: {
+      padding: 4,
+    },
+    clearSearchText: {
+      color: 'rgba(255, 255, 255, 0.5)',
+      fontSize: 18,
+    },
+    loadingSearchContainer: {
+      padding: 20,
+      alignItems: 'center',
+    },
+    searchResultsGrid: {
+      padding: 16,
+    },
+    emptySearchContainer: {
+      padding: 20,
+      alignItems: 'center',
+    },
+    emptySearchText: {
+      color: 'rgba(255, 255, 255, 0.5)',
+      fontSize: 14,
+    }
+  });
 
   const loadAnimeData = async () => {
     try {
       setLoading(true);
       setError(null);
-      
       const animeId = animeUrl.split('/').pop() || animeUrl;
       const apiResponse = await animeAPI.getDetails(animeId);
-      
       if (!apiResponse || !apiResponse.success) {
         throw new Error(apiResponse?.error || 'Anime non trouvé');
       }
-      
       setAnimeData(apiResponse.data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erreur inconnue');
@@ -604,219 +338,48 @@ const AnimeDetailScreen: React.FC = () => {
     }
   };
 
-  // Navigation vers la page de lecteur appropriée (identique au site web)
   const goToPlayer = async (season: Season) => {
     if (!animeUrl || !animeData) return;
-    
-    
-    // Vérifier si c'est un manga/scan basé sur le nom de la saison
-    const isManga = season.name.toLowerCase().includes('scan') || 
-                   season.name.toLowerCase().includes('manga') ||
-                   season.name.toLowerCase().includes('tome') ||
-                   season.name.toLowerCase().includes('chapitre');
-    
-    if (isManga) {
-      return;
-    } else {
-      // Rediriger vers le lecteur vidéo
-      navigation.navigate('AnimePlayer', {
-        animeUrl: animeUrl,
-        seasonData: season,
-        animeTitle: animeTitle
-      });
-    }
+    navigation.navigate('AnimePlayer', {
+      animeUrl: animeUrl,
+      seasonData: season,
+      animeTitle: animeTitle
+    });
   };
 
-  // Charger les données au démarrage
   useEffect(() => {
-    if (animeUrl) {
-      loadAnimeData();
-    }
+    if (animeUrl) loadAnimeData();
   }, [animeUrl]);
 
-  // Refresh control
   const onRefresh = async () => {
     setRefreshing(true);
     await loadAnimeData();
     setRefreshing(false);
   };
 
-  // Retry function
-  const retryLoad = () => {
-    loadAnimeData();
-  };
-
-  // Recherche d'animes (copié depuis HomeScreen)
-  const searchAnimes = async (query: string) => {
-    if (query.trim().length < 2) {
-      setSearchResults([]);
-      return;
-    }
-
-    setSearchLoading(true);
-
-    try {
-      const response = await apiRequest(`/api/search?query=${encodeURIComponent(query)}`);
-
-      if (response && response.success) {
-        const results = response.animes || response.results || [];
-        if (Array.isArray(results)) {
-          setSearchResults(results);
-        } else {
-          setSearchResults([]);
-        }
-      } else {
-        throw new Error('Réponse API invalide');
-      }
-    } catch (err) {
-      console.error('Erreur recherche:', err);
-      setSearchResults([]);
-    } finally {
-      setSearchLoading(false);
-    }
-  };
-
-  // Navigation vers un anime depuis les résultats de recherche
-  const loadAnimeDetails = async (animeId: string, contentType?: string) => {
-    if (!animeId || animeId === 'undefined') {
-      return;
-    }
-    
-    let cleanId = animeId;
-    if (animeId.includes('anime-sama.tv') || animeId.includes('anime-sama.si')) {
-      const urlParts = animeId.split('/');
-      const catalogueIndex = urlParts.findIndex(part => part === 'catalogue');
-      if (catalogueIndex !== -1 && urlParts[catalogueIndex + 1]) {
-        cleanId = urlParts[catalogueIndex + 1];
-      }
-    }
-    
-    if (contentType === 'anime' || contentType === 'film' || contentType === 'movie' || !contentType) {
-      navigation.navigate('AnimeDetail', { animeUrl: cleanId, animeTitle: 'Anime' });
-    }
-  };
-
-  // Gestionnaire pour l'icône de recherche
   const handleSearchPress = () => {
-    setShowSearchBar(true);
+    setShowSearchBar(!showSearchBar);
     setSearchQuery('');
     setSearchResults([]);
   };
 
-  // Effet pour la recherche en temps réel
-  useEffect(() => {
-    if (searchQuery) {
-      const timeoutId = setTimeout(() => {
-        searchAnimes(searchQuery);
-      }, 300);
-      return () => clearTimeout(timeoutId);
-    } else {
-      setSearchResults([]);
-      return undefined;
-    }
-  }, [searchQuery]);
-
-  // Fonction pour extraire la langue depuis l'objet language de l'API
-  const getLanguageFromAPI = (anime: SearchResult) => {
-    if (anime.language && anime.language.name) {
-      return anime.language.name;
-    }
-    return null;
-  };
-
-  // Composant Carte Anime pour les résultats de recherche
-  const renderAnimeCard = React.useCallback((anime: SearchResult, index: number) => {
-    const detectedLanguage = getLanguageFromAPI(anime);
-    const realTitle = anime.title;
-    
-    // Déterminer l'URL de l'image (Directement depuis l'API)
-    const imageUrl = anime.image;
-    
-    return (
-      <TouchableOpacity
-        key={anime.id || index}
-        style={styles.animeCard}
-        onPress={() => loadAnimeDetails(anime.id, anime.contentType || anime.type)}
-        activeOpacity={0.8}
-      >
-        <View style={styles.cardImageContainer}>
-          <Image
-            source={{ uri: imageUrl }}
-            style={styles.cardImage}
-            resizeMode="cover"
-            onError={(e) => {}}
-          />
-
-          <View style={[
-            styles.contentBadge,
-            anime.contentType === 'film' || anime.contentType === 'movie' ? styles.movieBadge :
-            styles.animeBadgeDetail
-          ]}>
-            <Text style={styles.badgeText}>
-              {anime.contentType === 'film' || anime.contentType === 'movie' ? 'FILM' :
-               'ANIME'}
-            </Text>
-          </View>
-
-          <LinearGradient
-            colors={['transparent', COLORS.primary]}
-            style={styles.cardGradient}
-          />
-        </View>
-
-        <View style={styles.cardContent}>
-          <Text style={styles.cardTitle} numberOfLines={3}>
-            {realTitle}
-          </Text>
-          <View style={styles.cardMeta}>
-            {detectedLanguage && (
-              <View style={styles.languageBadge}>
-                <Text style={styles.languageText}>{detectedLanguage}</Text>
-              </View>
-            )}
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  }, []);
-
-
-
-  // État de chargement
   if (loading && !animeData) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
-        <SharedHeader 
-          onSearchPress={handleSearchPress}
-          onNotificationPress={() => setShowNotifications(true)}
-          onMenuPress={() => navigation.openDrawer()}
-        />
         <View style={styles.loadingContainer}>
-          <LoadingSpinner 
-            message="Chargement des détails de l'anime..." 
-            size="large"
-            color={COLORS.secondary}
-          />
+          <LoadingSpinner message="Chargement..." size="large" color={COLORS.secondary} />
         </View>
       </SafeAreaView>
     );
   }
 
-  // État d'erreur
   if (error && !animeData) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
-        <SharedHeader 
-          onSearchPress={handleSearchPress}
-          onNotificationPress={() => setShowNotifications(true)}
-          onMenuPress={() => navigation.openDrawer()}
-        />
         <View style={styles.errorContainer}>
-          <Ionicons name="alert-circle" size={48} color={COLORS.text.error} />
+          <Ionicons name="alert-circle" size={48} color={COLORS.error} />
           <Text style={styles.errorText}>{error}</Text>
-          <TouchableOpacity style={styles.retryButton} onPress={retryLoad}>
+          <TouchableOpacity style={styles.retryButton} onPress={loadAnimeData}>
             <Text style={styles.retryText}>Réessayer</Text>
           </TouchableOpacity>
         </View>
@@ -824,175 +387,131 @@ const AnimeDetailScreen: React.FC = () => {
     );
   }
 
-  // Anime non trouvé
-  if (!animeData) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
-        <SharedHeader 
-          onSearchPress={handleSearchPress}
-          onNotificationPress={() => setShowNotifications(true)}
-          onMenuPress={() => navigation.openDrawer()}
-        />
-        <View style={styles.errorContainer}>
-          <Ionicons name="search" size={48} color={COLORS.text.muted} />
-          <Text style={styles.errorText}>Anime non trouvé</Text>
-        </View>
-      </SafeAreaView>
-    );
-  }
+  if (!animeData) return null;
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <StatusBar style={isDark ? "light" : "dark"} backgroundColor={COLORS.primary} />
+      <StatusBar style="light" />
       
-      {/* Header fixe au-dessus du contenu */}
-      <View style={styles.headerContainer}>
-        <SharedHeader 
-          onSearchPress={handleSearchPress}
-          onNotificationPress={() => setShowNotifications(true)}
-          onMenuPress={() => navigation.openDrawer()}
-        />
-      </View>
-      
-      <OptimizedScrollView
+      {showSearchBar && (
+        <View style={styles.searchBarContainer}>
+          <View style={styles.searchBar}>
+            <Ionicons name="search" size={20} color={COLORS.secondary} />
+            <TextInput
+              style={styles.searchInput}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              placeholder="Rechercher..."
+              placeholderTextColor="rgba(255, 255, 255, 0.3)"
+              autoFocus
+            />
+            <TouchableOpacity onPress={() => setShowSearchBar(false)} style={styles.clearSearchButton}>
+              <Text style={styles.clearSearchText}>✕</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+
+      <OptimizedScrollView 
         style={styles.scrollView}
         refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            colors={[COLORS.secondary]}
-            tintColor={COLORS.secondary}
-          />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.accent} />
         }
       >
-        {/* Barre de recherche locale */}
-        {showSearchBar && (
-          <View style={styles.searchBarContainer}>
-            <View style={styles.searchBar}>
-              <Ionicons name="search" size={20} color={COLORS.secondary} />
-              <TextInput
-                style={styles.searchInput}
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-                placeholder="Rechercher des animes..."
-                placeholderTextColor={COLORS.text.muted}
-                autoFocus
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  setSearchQuery('');
-                  setShowSearchBar(false);
-                }}
-                style={styles.clearSearchButton}
-              >
-                <Text style={styles.clearSearchText}>✕</Text>
+        <View style={styles.mobileHeader}>
+          <View style={styles.headerRow}>
+            <TouchableOpacity style={styles.headerIconButton} onPress={() => navigation.goBack()}>
+              <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
+            </TouchableOpacity>
+            <View style={styles.headerIcons}>
+              <TouchableOpacity style={styles.headerIconButton} onPress={handleSearchPress}>
+                <Ionicons name="search" size={24} color="#FFFFFF" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.headerIconButton} onPress={() => {}}>
+                <View>
+                  <Ionicons name="notifications-outline" size={24} color="#FFFFFF" />
+                  {unreadCount > 0 && (
+                    <View style={{
+                      position: 'absolute',
+                      right: -2,
+                      top: -2,
+                      backgroundColor: COLORS.accent,
+                      borderRadius: 10,
+                      minWidth: 16,
+                      height: 16,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                      <Text style={{ color: COLORS.primary, fontSize: 9, fontWeight: 'bold' }}>{unreadCount}</Text>
+                    </View>
+                  )}
+                </View>
               </TouchableOpacity>
             </View>
           </View>
-        )}
+        </View>
 
-        {/* Résultats de recherche */}
-        {searchLoading && searchQuery && (
-          <View style={styles.loadingSearchContainer}>
-            <LoadingSpinner 
-              message="Recherche en cours..." 
-              size="large"
-              color={COLORS.primary}
-            />
+        <View style={styles.heroContainer}>
+          <View style={styles.heroImageContainer}>
+            <Image source={{ uri: animeData.image }} style={styles.heroImage} resizeMode="cover" />
+            <LinearGradient colors={['transparent', 'rgba(15, 15, 15, 0.5)', COLORS.primary]} style={styles.heroGradient} />
           </View>
-        )}
-
-        {searchResults.length > 0 && !searchLoading && (
-          <View style={styles.searchResultsGrid}>
-            {searchResults.map((anime, index) => renderAnimeCard(anime, index))}
+          <View style={styles.heroContent}>
+            <Text style={styles.heroTitle} numberOfLines={2}>{animeData.title}</Text>
+            <View style={styles.heroBadgesCompact}>
+              {animeData.year && (
+                <View style={styles.heroBadgeSmall}>
+                  <View style={styles.badgeDotSmall} />
+                  <Text style={styles.badgeTextSmall}>{animeData.year}</Text>
+                </View>
+              )}
+              {animeData.status && (
+                <View style={styles.heroBadgeSmall}>
+                  <View style={[styles.badgeDotSmall, { backgroundColor: COLORS.secondary }]} />
+                  <Text style={styles.badgeTextSmall}>{animeData.status}</Text>
+                </View>
+              )}
+              {animeData.genres?.slice(0, 2).map((genre, idx) => (
+                <View key={idx} style={styles.heroBadgeSmall}>
+                  <View style={[styles.badgeDotSmall, { backgroundColor: '#A855F7' }]} />
+                  <Text style={styles.badgeTextSmall}>{genre}</Text>
+                </View>
+              ))}
+            </View>
           </View>
-        )}
+        </View>
 
-        {searchQuery && !searchLoading && searchResults.length === 0 && (
-          <View style={styles.emptySearchContainer}>
-            <Text style={styles.emptySearchText}>Aucun résultat trouvé pour "{searchQuery}"</Text>
-          </View>
-        )}
-
-        <AnimeDetailHero
-          title={animeData.title}
-          image={animeData.image}
-          progressInfo={animeData.progressInfo}
-          correspondence={animeData.correspondence}
-          genres={animeData.genres}
-        />
-
-        {/* Section Synopsis exactement comme dans l'image */}
         <View style={styles.mobileSection}>
           <View style={styles.mobileSectionHeader}>
-            <Ionicons name="document-text" size={20} color={COLORS.secondary} />
+            <Ionicons name="information-circle" size={24} color={COLORS.accent} />
             <Text style={styles.mobileSectionTitle}>Synopsis</Text>
           </View>
-          
           <View style={styles.synopsisContainer}>
-            <Text style={styles.synopsisText}>{animeData.synopsis}</Text>
+            <Text style={styles.synopsisText}>{animeData.synopsis || "Aucun synopsis disponible."}</Text>
           </View>
         </View>
 
-
-        {/* Section Saisons exactement comme le code web */}
-        <View style={styles.mobileSection}>
+        <View style={[styles.mobileSection, { paddingTop: 0 }]}>
           <View style={styles.mobileSectionHeader}>
-            <Ionicons name="film" size={20} color={COLORS.secondary} />
-            <Text style={styles.mobileSectionTitle}>Saisons et Films</Text>
+            <Ionicons name="list" size={24} color={COLORS.secondary} />
+            <Text style={styles.mobileSectionTitle}>Saisons & Films</Text>
           </View>
-          
-          {/* Grid 2 colonnes comme le code web */}
           <View style={styles.seasonsGrid}>
-            {animeData.seasons.map((season, index) => {
-              const isManga = season.name.toLowerCase().includes('scan') || 
-                             season.name.toLowerCase().includes('manga') ||
-                             season.name.toLowerCase().includes('tome') ||
-                             season.name.toLowerCase().includes('chapitre');
-              
-              return (
-                <TouchableOpacity
-                  key={`season-${index}-${season.name}`}
-                  style={[
-                    styles.seasonCard,
-                  styles.seasonCardAnime
-                  ]}
-                  onPress={() => goToPlayer(season)}
-                  activeOpacity={0.8}
-                >
-                  {/* Image de fond exactement comme le code web */}
-                  <Image
-                    source={{ uri: animeData.image }}
-                    style={styles.seasonCardBackground}
-                    resizeMode="cover"
-                  />
-                  
-                  {/* Overlay dark exactement comme le code web */}
-                  <View style={styles.seasonCardOverlay} />
-                  
-                  {/* Contenu centré exactement comme le code web */}
-                  <View style={styles.seasonCardContent}>
-                    <Text style={styles.seasonCardTitle}>{season.name}</Text>
-                    
-                    {/* Badge type exactement comme le code web */}
-                    {isManga ? (
-                      <Text style={styles.seasonCardBadgeManga}>📖 MANGA</Text>
-                    ) : (
-                      <Text style={styles.seasonCardBadgeAnime}>🎥 ANIME</Text>
-                    )}
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
+            {animeData.seasons?.map((season, index) => (
+              <TouchableOpacity key={index} style={[styles.seasonCard, styles.seasonCardAnime]} onPress={() => goToPlayer(season)}>
+                <Image source={{ uri: animeData.image }} style={{ position: 'absolute', width: '100%', height: '100%', opacity: 0.3 }} resizeMode="cover" />
+                <View style={styles.seasonCardContent}>
+                  <Text style={styles.seasonCardTitle} numberOfLines={2}>{season.name}</Text>
+                  <Text style={styles.seasonCardBadgeAnime}>{season.episodeCount > 0 ? `${season.episodeCount} EPISODES` : 'VOIR'}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
-
-
+        <View style={{ height: 40 }} />
       </OptimizedScrollView>
     </SafeAreaView>
   );
 };
-
 
 export default AnimeDetailScreen;
