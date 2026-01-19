@@ -66,11 +66,27 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
         {/* Actions à droite */}
         <View style={styles.headerIcons}>
+          {/* Bouton changement de thème */}
+          <TouchableOpacity 
+            style={styles.headerIconButton}
+            onPress={toggleTheme}
+          >
+            <View style={styles.iconGlowContainer}>
+              <Ionicons 
+                name={isDark ? "sunny" : "moon"} 
+                size={22} 
+                color={isDark ? "#FFD700" : COLORS.secondary} 
+              />
+            </View>
+          </TouchableOpacity>
+
           <TouchableOpacity 
             style={styles.headerIconButton}
             onPress={handleSearchPress}
           >
-            <Ionicons name="search" size={22} color={iconColor} />
+            <View style={styles.iconGlowContainer}>
+              <Ionicons name="search" size={22} color={iconColor} />
+            </View>
           </TouchableOpacity>
 
           {/* Bouton notifications avec badge */}
@@ -78,10 +94,12 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             style={styles.headerIconButton}
             onPress={onNotificationPress}
           >
-            <Ionicons name="notifications-outline" size={22} color={iconColor} />
-            {unreadCount > 0 ? (
-              <View style={styles.notificationBadge} />
-            ) : null}
+            <View style={styles.iconGlowContainer}>
+              <Ionicons name="notifications-outline" size={22} color={iconColor} />
+              {unreadCount > 0 ? (
+                <View style={styles.notificationBadge} />
+              ) : null}
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -187,10 +205,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerIconButton: {
-    marginLeft: 16,
-    padding: 12,
-    marginRight: -12,
+    marginLeft: 8,
+    padding: 8,
     position: 'relative',
+  },
+  iconGlowContainer: {
+    padding: 4,
+    borderRadius: 10,
+    backgroundColor: 'rgba(168, 85, 247, 0.05)',
+    borderWidth: 1,
+    borderColor: 'rgba(168, 85, 247, 0.1)',
+    // Effet de lueur néon pour les icônes
+    shadowColor: COLORS.secondary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
   },
   notificationBadge: {
     position: 'absolute',
