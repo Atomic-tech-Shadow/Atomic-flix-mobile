@@ -52,7 +52,9 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           style={styles.menuButton}
           onPress={onMenuPress}
         >
-          <Ionicons name="menu" size={24} color={iconColor} />
+          <View style={styles.iconGlowContainer}>
+            <Ionicons name="menu" size={24} color={iconColor} />
+          </View>
         </TouchableOpacity>
 
         {/* Texte à côté du menu, style WhatsApp */}
@@ -129,8 +131,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   menuButton: {
-    padding: 12,
-    marginLeft: -12,
+    padding: 8,
+    marginLeft: -4,
   },
   titleSection: {
     flex: 1,
