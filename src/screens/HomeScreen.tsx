@@ -1813,6 +1813,7 @@ const HomeScreen: React.FC = () => {
         {searchQuery.trim().length === 0 && (
           <View key="main-content-wrapper">
             {renderHeroSection()}
+            
             {/* Section Historique - REPRENEZ VOTRE VISIONNAGE */}
             {currentlyWatching.length > 0 && (
               <View style={styles.horizontalSection}>
@@ -1829,11 +1830,11 @@ const HomeScreen: React.FC = () => {
                         title: historyItem.animeTitle,
                         image: historyItem.animeImage || 'https://via.placeholder.com/200x280',
                         id: historyItem.id,
-                        language: historyItem.language // Passer la langue brute
+                        language: historyItem.language
                       }}
                       badge={`S${historyItem.seasonNumber || 1}E${historyItem.episodeNumber}`}
                       badgeColor={COLORS.secondary}
-                      languageBadge={getLanguageBadge(historyItem.language)} // Utiliser la fonction de formatage
+                      languageBadge={getLanguageBadge(historyItem.language)}
                       index={index}
                       onPress={() => resumeWatching(historyItem)}
                       onRemove={() => removeFromHistory(historyItem)}
@@ -1844,7 +1845,7 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-            {/* Section Nouveaux épisodes - 1ère position */}
+            {/* Section Nouveaux épisodes */}
             {nouveauxEpisodes.length > 0 && (
               <View style={styles.horizontalSection}>
                 <SectionTitle title="🔥 RÉCENTS" colors={COLORS} />
@@ -1869,7 +1870,7 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-            {/* Section Sorties aujourd'hui - 2ème position planning immédiat */}
+            {/* Section Planning */}
             {planningAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
                 <SectionTitle title="⏰ PLANNING" colors={COLORS} />
@@ -1884,7 +1885,6 @@ const HomeScreen: React.FC = () => {
                       key={`planning-${anime.id || index}-${index}`}
                       anime={{
                         ...anime,
-                        // Forcer la suppression des infos de saison/épisode pour cette section
                         currentSeason: undefined,
                         currentEpisode: undefined,
                         seasonPart: undefined
@@ -1900,7 +1900,7 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-            {/* Section Classiques - 3ème position valeurs sûres */}
+            {/* Section Légendaires */}
             {classiquesAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
                 <SectionTitle title="👑 LÉGENDAIRES" colors={COLORS} />
@@ -1925,7 +1925,7 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-            {/* Section Pépites - 4ème position exploration */}
+            {/* Section Pépites */}
             {pepitesAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
                 <SectionTitle title="💎 PÉPITES" colors={COLORS} />
@@ -1950,10 +1950,7 @@ const HomeScreen: React.FC = () => {
               </View>
             )}
 
-
-
-
-            {/* Section Recommandations - Position après Historique */}
+            {/* Section Recommandations */}
             {recommendationsAnimes.length > 0 && (
               <View style={styles.horizontalSection}>
                 <SectionTitle title="🎯 POUR TOI" colors={COLORS} />
@@ -1987,50 +1984,6 @@ const HomeScreen: React.FC = () => {
                   color={COLORS.secondary}
                 />
               </View>
-            )}
-
-            {/* Message d'erreur selon le type */}
-            {error && errorType === 'server' && (
-              <ServerErrorCard 
-                onRetry={() => {
-                  setError(null);
-                  setErrorType(null);
-                  loadPopularAnimes();
-                }}
-              />
-            )}
-            
-            {error && errorType === 'network' && (
-              <OfflineErrorCard 
-                onRetry={() => {
-                  setError(null);
-                  setErrorType(null);
-                  loadPopularAnimes();
-                }}
-              />
-            )}
-
-            {error && errorType !== 'server' && errorType !== 'network' && (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>{error}</Text>
-                <TouchableOpacity 
-                  onPress={() => {
-                    setError(null);
-                    setErrorType(null);
-                    loadPopularAnimes();
-                  }}
-                  style={styles.retryButton}
-                >
-                  <Text style={styles.retryText}>Réessayer</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-
-            {/* Message vide si pas de contenu et pas de chargement */}
-            {!initialLoading && !error && classiquesAnimes.length === 0 && pepitesAnimes.length === 0 && (
-              <ServerErrorCard 
-                onRetry={() => loadPopularAnimes()}
-              />
             )}
           </View>
         )}
