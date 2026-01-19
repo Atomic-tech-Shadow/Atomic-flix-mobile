@@ -57,7 +57,11 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
         {/* Texte à côté du menu, style WhatsApp */}
         <View style={styles.titleSection}>
-          <Text style={[styles.titleText, { color: themedColors.text.primary }]} numberOfLines={1}>ATOMIC FLIX</Text>
+          <View style={styles.logo3DContainer}>
+            <Text style={styles.logoTextMain}>ATOMIC</Text>
+            <Text style={styles.logoTextSub}>FLIX</Text>
+            <View style={styles.logoHologram} />
+          </View>
         </View>
 
         {/* Actions à droite */}
@@ -112,7 +116,45 @@ const styles = StyleSheet.create({
   },
   titleSection: {
     flex: 1,
-    marginLeft: 12,
+    marginLeft: 15,
+  },
+  logo3DContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    // Effet de perspective 3D
+    transform: [{ perspective: 1000 }, { rotateX: '15deg' }, { rotateY: '-5deg' }],
+  },
+  logoTextMain: {
+    fontSize: 22,
+    fontWeight: '900',
+    color: '#FFFFFF',
+    letterSpacing: 2,
+    textShadowColor: COLORS.secondary,
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 15,
+  },
+  logoTextSub: {
+    fontSize: 22,
+    fontWeight: '900',
+    color: COLORS.secondary,
+    marginLeft: 6,
+    letterSpacing: 2,
+    textShadowColor: '#FFFFFF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 10,
+  },
+  logoHologram: {
+    position: 'absolute',
+    bottom: -4,
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: COLORS.secondary,
+    opacity: 0.8,
+    shadowColor: COLORS.secondary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 5,
   },
   titleTextGradient: {
     borderRadius: 6,
