@@ -224,10 +224,10 @@ const styles = StyleSheet.create({
   headerIcons: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 4, // Espace réduit entre les icônes
   },
   headerIconButton: {
-    marginLeft: 8,
-    padding: 8,
+    padding: 6, // Un peu moins de padding
     position: 'relative',
   },
   iconGlowContainer: {
