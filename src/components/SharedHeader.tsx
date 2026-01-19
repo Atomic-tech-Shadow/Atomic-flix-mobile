@@ -113,12 +113,12 @@ const styles = StyleSheet.create({
   // Header mobile exact - Effet "I am Atomic"
   mobileHeader: {
     backgroundColor: COLORS.primary,
-    paddingHorizontal: 16,
+    paddingLeft: 8,
+    paddingRight: 16,
     paddingTop: 16,
     paddingBottom: 12,
-    zIndex: 10000, // Au-dessus des lignes rouges pour les masquer
+    zIndex: 10000,
     position: 'relative',
-    // Effet glow subtil sur le header
     shadowColor: COLORS.badges.atomic,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     padding: 8,
-    marginLeft: -4,
+    marginLeft: 0,
   },
   titleSection: {
     flex: 1,
