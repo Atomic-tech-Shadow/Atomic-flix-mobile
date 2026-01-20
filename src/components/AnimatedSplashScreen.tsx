@@ -11,38 +11,67 @@ interface AnimatedSplashScreenProps {
 
 export default function AnimatedSplashScreen({ 
   onFinish, 
-  duration = 800 
+  duration = 2500 
 }: AnimatedSplashScreenProps) {
   const logoOpacity = useRef(new Animated.Value(0)).current;
-  const logoScale = useRef(new Animated.Value(0.8)).current;
+  const logoScale = useRef(new Animated.Value(0.5)).current;
+  const logoRotateX = useRef(new Animated.Value(0)).current;
+  const logoRotateY = useRef(new Animated.Value(0)).current;
   const glowOpacity = useRef(new Animated.Value(0)).current;
   const backgroundOpacity = useRef(new Animated.Value(1)).current;
+  const sloganOpacity = useRef(new Animated.Value(0)).current;
+  const sloganTranslateY = useRef(new Animated.Value(20)).current;
 
   useEffect(() => {
     const animationSequence = Animated.sequence([
-      Animated.delay(300),
+      Animated.delay(200),
+      // Apparition 3D du logo
       Animated.parallel([
         Animated.timing(logoOpacity, {
           toValue: 1,
-          duration: 800,
+          duration: 1000,
           useNativeDriver: true,
         }),
         Animated.spring(logoScale, {
           toValue: 1,
-          friction: 4,
+          friction: 6,
           tension: 40,
           useNativeDriver: true,
         }),
+        Animated.timing(logoRotateX, {
+          toValue: 1,
+          duration: 1200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(logoRotateY, {
+          toValue: 1,
+          duration: 1500,
+          useNativeDriver: true,
+        }),
       ]),
-      Animated.timing(glowOpacity, {
-        toValue: 1,
-        duration: 600,
-        useNativeDriver: true,
-      }),
-      Animated.delay(800),
+      // Apparition de la lueur et du slogan
+      Animated.parallel([
+        Animated.timing(glowOpacity, {
+          toValue: 1,
+          duration: 800,
+          useNativeDriver: true,
+        }),
+        Animated.timing(sloganOpacity, {
+          toValue: 1,
+          duration: 800,
+          useNativeDriver: true,
+        }),
+        Animated.timing(sloganTranslateY, {
+          toValue: 0,
+          duration: 800,
+          useNativeDriver: true,
+        }),
+      ]),
+      Animated.delay(1200),
+      // Sortie en fondu
       Animated.timing(backgroundOpacity, {
         toValue: 0,
-        duration: 400,
+        duration: 600,
         useNativeDriver: true,
       }),
     ]);
@@ -63,12 +92,12 @@ export default function AnimatedSplashScreen({
       Animated.sequence([
         Animated.timing(pulseGlow, {
           toValue: 1,
-          duration: 1500,
+          duration: 2000,
           useNativeDriver: true,
         }),
         Animated.timing(pulseGlow, {
           toValue: 0,
-          duration: 1500,
+          duration: 2000,
           useNativeDriver: true,
         }),
       ])
@@ -81,9 +110,19 @@ export default function AnimatedSplashScreen({
     };
   }, []);
 
+  const rotateX = logoRotateX.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['45deg', '0deg'],
+  });
+
+  const rotateY = logoRotateY.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['-45deg', '0deg'],
+  });
+
   const glowScale = pulseGlow.interpolate({
     inputRange: [0, 1],
-    outputRange: [1, 1.15],
+    outputRange: [1, 1.3],
   });
 
   return (
@@ -91,33 +130,36 @@ export default function AnimatedSplashScreen({
       style={[styles.container, { opacity: backgroundOpacity }]}
     >
       <LinearGradient
-        colors={['#0F0F0F', '#1E1B4B', '#0F0F0F']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
+        colors={['#050505', '#1e1b4b', '#050505']}
         style={styles.gradient}
       >
         <View style={styles.logoContainer}>
+          {/* Cosmic Aura */}
           <Animated.View
             style={[
               styles.glowContainer,
               {
-                opacity: Animated.multiply(glowOpacity, pulseGlow),
+                opacity: Animated.multiply(glowOpacity, pulseGlow.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.4, 0.8]
+                })),
                 transform: [{ scale: glowScale }],
               },
             ]}
           >
-            <LinearGradient
-              colors={['rgba(168, 85, 247, 0.6)', 'rgba(219, 39, 119, 0.4)', 'transparent']}
-              start={{ x: 0.5, y: 0.5 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.glow}
-            />
+            <View style={[styles.glow, { backgroundColor: '#A855F7', opacity: 0.3 }]} />
           </Animated.View>
 
+          {/* Logo with 3D Transforms */}
           <Animated.View
             style={{
               opacity: logoOpacity,
-              transform: [{ scale: logoScale }],
+              transform: [
+                { scale: logoScale },
+                { perspective: 1000 },
+                { rotateX: rotateX },
+                { rotateY: rotateY },
+              ],
             }}
           >
             <Image
@@ -126,18 +168,33 @@ export default function AnimatedSplashScreen({
               resizeMode="contain"
             />
           </Animated.View>
+          
+          {/* Slogan "I am Atomic" */}
+          <Animated.Text
+            style={[
+              styles.slogan,
+              {
+                opacity: sloganOpacity,
+                transform: [{ translateY: sloganTranslateY }],
+              }
+            ]}
+          >
+            I AM ATOMIC
+          </Animated.Text>
         </View>
 
+        {/* Floating Stars/Particles */}
         <View style={styles.particlesContainer}>
-          {[...Array(20)].map((_, i) => (
+          {[...Array(30)].map((_, i) => (
             <View
               key={i}
               style={[
                 styles.particle,
                 {
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  opacity: Math.random() * 0.5 + 0.2,
+                  left: `${(i * 137.5) % 100}%`,
+                  top: `${(i * 123.4) % 100}%`,
+                  opacity: Math.random() * 0.4 + 0.1,
+                  transform: [{ scale: Math.random() + 0.5 }]
                 },
               ]}
             />
@@ -166,19 +223,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
+    width: width,
   },
   logo: {
-    width: width * 0.6,
-    height: width * 0.6,
+    width: width * 0.65,
+    height: width * 0.65,
     maxWidth: 400,
     maxHeight: 400,
+    shadowColor: '#A855F7',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 20,
   },
   glowContainer: {
     position: 'absolute',
-    width: width * 0.8,
-    height: width * 0.8,
-    maxWidth: 500,
-    maxHeight: 500,
+    width: width * 0.9,
+    height: width * 0.9,
+    maxWidth: 600,
+    maxHeight: 600,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -187,6 +249,16 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 1000,
   },
+  slogan: {
+    marginTop: 40,
+    color: '#FFF',
+    fontSize: 24,
+    fontWeight: '900',
+    letterSpacing: 8,
+    textShadowColor: '#A855F7',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 15,
+  },
   particlesContainer: {
     position: 'absolute',
     width: '100%',
@@ -194,9 +266,9 @@ const styles = StyleSheet.create({
   },
   particle: {
     position: 'absolute',
-    width: 2,
-    height: 2,
-    borderRadius: 1,
-    backgroundColor: '#A855F7',
+    width: 3,
+    height: 3,
+    borderRadius: 1.5,
+    backgroundColor: '#FFF',
   },
 });
