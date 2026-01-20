@@ -86,32 +86,6 @@ const AnimeDetailScreen: React.FC = () => {
     scrollView: {
       flex: 1,
     },
-    mobileHeader: {
-      backgroundColor: 'transparent',
-      paddingHorizontal: 12,
-      paddingTop: 8,
-      paddingBottom: 6,
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      zIndex: 100,
-    },
-    headerRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    headerIcons: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    headerIconButton: {
-      padding: 8,
-      marginLeft: 4,
-      backgroundColor: 'rgba(0,0,0,0.3)',
-      borderRadius: 20,
-    },
     heroContainer: {
       position: 'relative',
       height: height * 0.45,
@@ -418,38 +392,10 @@ const AnimeDetailScreen: React.FC = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.accent} />
         }
       >
-        <View style={styles.mobileHeader}>
-          <View style={styles.headerRow}>
-            <TouchableOpacity style={styles.headerIconButton} onPress={() => navigation.goBack()}>
-              <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
-            </TouchableOpacity>
-            <View style={styles.headerIcons}>
-              <TouchableOpacity style={styles.headerIconButton} onPress={handleSearchPress}>
-                <Ionicons name="search" size={24} color="#FFFFFF" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.headerIconButton} onPress={() => {}}>
-                <View>
-                  <Ionicons name="notifications-outline" size={24} color="#FFFFFF" />
-                  {unreadCount > 0 && (
-                    <View style={{
-                      position: 'absolute',
-                      right: -2,
-                      top: -2,
-                      backgroundColor: COLORS.accent,
-                      borderRadius: 10,
-                      minWidth: 16,
-                      height: 16,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                      <Text style={{ color: COLORS.primary, fontSize: 9, fontWeight: 'bold' }}>{unreadCount}</Text>
-                    </View>
-                  )}
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
+        <SharedHeader 
+          onSearchPress={handleSearchPress}
+          onMenuPress={() => navigation.openDrawer()}
+        />
 
         <View style={styles.heroContainer}>
           <View style={styles.heroImageContainer}>
