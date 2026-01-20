@@ -1386,7 +1386,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
   // Rendu du lecteur vidéo
   const renderVideoPlayer = () => {
-    if (!episodeDetails || !episodeDetails.sources[selectedPlayer]) {
+    if (!episodeDetails || !episodeDetails.sources || !episodeDetails.sources[selectedPlayer]) {
       return (
         <View style={styles.videoContainer}>
           <LoadingSpinner 
