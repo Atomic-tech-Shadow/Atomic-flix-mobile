@@ -259,13 +259,13 @@ const styles = StyleSheet.create({
   },
   historyRemoveButtonUnderFlag: {
     position: 'absolute',
-    top: 35, // Positionné juste en dessous du drapeau (qui est à top: 6 + sa hauteur)
+    top: 32, // Réduit de 35 à 32 pour rapprocher de l'icône du drapeau
     right: 6,
     zIndex: 25,
     backgroundColor: 'rgba(0,0,0,0.6)',
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 26, // Légèrement plus petit
+    height: 26,
+    borderRadius: 13,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
