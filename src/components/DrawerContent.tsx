@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     appVersion: {
       fontSize: 11,
       fontWeight: '600',
-      color: colors.text.muted,
+      color: COLORS.text.muted,
       letterSpacing: 2,
     },
     menuContainer: {
@@ -222,22 +222,13 @@ const styles = StyleSheet.create({
       fontSize: 12,
       fontWeight: '600',
       letterSpacing: 0.5,
+      marginBottom: 4,
     },
     footerSubtext: {
       fontSize: 10,
-      marginTop: 4,
+      textAlign: 'center',
       opacity: 0.4,
     },
-  footerText: {
-    fontSize: 12,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  footerSubtext: {
-    fontSize: 10,
-    textAlign: 'center',
-    opacity: 0.7,
-  },
 });
 
 export default DrawerContent;
