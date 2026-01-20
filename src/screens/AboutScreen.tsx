@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { StatusBar } from 'expo-status-bar';
+import { Ionicons } from '@expo/vector-icons';
 import SharedHeader from '../components/SharedHeader';
 import { getThemedColors } from '../constants/newColors';
 import { useTheme } from '../contexts/ThemeContext';
@@ -96,27 +97,24 @@ const AboutScreen: React.FC<Props> = ({ navigation }) => {
     },
     buttonContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-around',
+      justifyContent: 'center',
       marginTop: 24,
-      gap: 12,
+      gap: 20,
     },
-    linkButton: {
-      flex: 1,
-      backgroundColor: COLORS.secondary,
-      paddingVertical: 14,
-      paddingHorizontal: 20,
-      borderRadius: 12,
+    socialButton: {
+      width: 56,
+      height: 56,
+      backgroundColor: COLORS.background.secondary,
+      borderRadius: 28,
       alignItems: 'center',
+      justifyContent: 'center',
       shadowColor: COLORS.secondary,
       shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.2,
+      shadowOpacity: 0.3,
       shadowRadius: 8,
-      elevation: 3,
-    },
-    linkButtonText: {
-      color: COLORS.text.primaryBold,
-      fontSize: 15,
-      fontWeight: '600',
+      elevation: 5,
+      borderWidth: 1,
+      borderColor: `${COLORS.secondary}33`,
     },
     footer: {
       marginTop: 40,
@@ -170,24 +168,24 @@ const AboutScreen: React.FC<Props> = ({ navigation }) => {
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity 
-            style={styles.linkButton} 
+            style={styles.socialButton} 
             onPress={() => openURL('https://wa.me/22871394585')}
           >
-            <Text style={styles.linkButtonText}>WhatsApp</Text>
+            <Ionicons name="logo-whatsapp" size={32} color="#25D366" />
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={styles.linkButton} 
+            style={styles.socialButton} 
             onPress={() => openURL('https://discord.gg/anime-sama')}
           >
-            <Text style={styles.linkButtonText}>Discord</Text>
+            <Ionicons name="logo-discord" size={32} color="#5865F2" />
           </TouchableOpacity>
 
           <TouchableOpacity 
-            style={styles.linkButton} 
+            style={styles.socialButton} 
             onPress={() => openURL('mailto:atomictech228@gmail.com')}
           >
-            <Text style={styles.linkButtonText}>Email</Text>
+            <Ionicons name="mail" size={32} color={COLORS.secondary} />
           </TouchableOpacity>
         </View>
 
