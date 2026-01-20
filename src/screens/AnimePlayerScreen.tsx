@@ -1915,10 +1915,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                   styles.languageTextPicker,
                   selectedLanguage === lang && styles.languageTextActive
                 ]}>
-                  {(lang === 'VF' || lang === 'VF1' || lang === 'VF2') ? 'VF' : 
-                   lang === 'VA' ? 'VA' :
-                   lang === 'VOSTFR' ? 'VOST' : 
-                   lang}
+                  {lang === 'VOSTFR' ? 'VOST' : lang}
                 </Text>
               </TouchableOpacity>
             ))}
