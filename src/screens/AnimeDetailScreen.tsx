@@ -119,7 +119,7 @@ const AnimeDetailScreen: React.FC = () => {
     heroTitle: {
       fontSize: 28,
       fontWeight: 'bold',
-      color: '#FFFFFF',
+      color: COLORS.text.primaryBold,
       marginBottom: 12,
       textShadowColor: 'rgba(0, 0, 0, 0.75)',
       textShadowOffset: { width: -1, height: 1 },
@@ -133,12 +133,12 @@ const AnimeDetailScreen: React.FC = () => {
     heroBadgeSmall: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
       borderRadius: 8,
       paddingHorizontal: 10,
       paddingVertical: 5,
       borderWidth: 1,
-      borderColor: 'rgba(255, 255, 255, 0.2)',
+      borderColor: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)',
     },
     badgeDotSmall: {
       width: 6,
@@ -148,7 +148,7 @@ const AnimeDetailScreen: React.FC = () => {
       marginRight: 6,
     },
     badgeTextSmall: {
-      color: '#FFFFFF',
+      color: COLORS.text.primary,
       fontSize: 12,
       fontWeight: '600',
     },
@@ -167,11 +167,11 @@ const AnimeDetailScreen: React.FC = () => {
       marginLeft: 10,
     },
     synopsisContainer: {
-      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
       borderRadius: 20,
       padding: 20,
       borderWidth: 1.5,
-      borderColor: 'rgba(168, 85, 247, 0.3)',
+      borderColor: COLORS.border.card,
       // Effet 3D prononcé
       transform: [{ perspective: 1000 }, { rotateX: '2deg' }, { rotateY: '-1deg' }],
       shadowColor: COLORS.secondary,
@@ -238,12 +238,12 @@ const AnimeDetailScreen: React.FC = () => {
       fontWeight: '900',
       textTransform: 'uppercase',
       letterSpacing: 1.5,
-      backgroundColor: 'rgba(168, 85, 247, 0.2)',
+      backgroundColor: isDark ? 'rgba(168, 85, 247, 0.2)' : 'rgba(168, 85, 247, 0.1)',
       paddingHorizontal: 8,
       paddingVertical: 2,
       borderRadius: 4,
       borderWidth: 1,
-      borderColor: 'rgba(168, 85, 247, 0.4)',
+      borderColor: isDark ? 'rgba(168, 85, 247, 0.4)' : 'rgba(168, 85, 247, 0.2)',
     },
     seasonCardBadgeManga: {
       color: COLORS.badges.manga,
@@ -288,14 +288,14 @@ const AnimeDetailScreen: React.FC = () => {
     searchBar: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
       borderRadius: 12,
       paddingHorizontal: 16,
       paddingVertical: 10,
     },
     searchInput: {
       flex: 1,
-      color: '#FFFFFF',
+      color: COLORS.text.primary,
       fontSize: 16,
       marginLeft: 12,
     },
@@ -303,7 +303,7 @@ const AnimeDetailScreen: React.FC = () => {
       padding: 4,
     },
     clearSearchText: {
-      color: 'rgba(255, 255, 255, 0.5)',
+      color: COLORS.text.muted,
       fontSize: 18,
     },
     loadingSearchContainer: {
@@ -318,7 +318,7 @@ const AnimeDetailScreen: React.FC = () => {
       alignItems: 'center',
     },
     emptySearchText: {
-      color: 'rgba(255, 255, 255, 0.5)',
+      color: COLORS.text.muted,
       fontSize: 14,
     }
   });
@@ -393,7 +393,7 @@ const AnimeDetailScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <StatusBar style="light" />
+      <StatusBar style={isDark ? "light" : "dark"} />
       
       {showSearchBar && (
         <View style={styles.searchBarContainer}>
@@ -404,7 +404,7 @@ const AnimeDetailScreen: React.FC = () => {
               value={searchQuery}
               onChangeText={setSearchQuery}
               placeholder="Rechercher..."
-              placeholderTextColor="rgba(255, 255, 255, 0.3)"
+              placeholderTextColor={isDark ? "rgba(255, 255, 255, 0.3)" : "rgba(0, 0, 0, 0.3)"}
               autoFocus
             />
             <TouchableOpacity onPress={() => setShowSearchBar(false)} style={styles.clearSearchButton}>
