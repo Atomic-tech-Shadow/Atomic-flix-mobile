@@ -414,16 +414,17 @@ const AnimeDetailScreen: React.FC = () => {
         </View>
       )}
 
+      <SharedHeader 
+        onSearchPress={handleSearchPress}
+        onMenuPress={() => navigation.openDrawer()}
+      />
+
       <OptimizedScrollView 
         style={styles.scrollView}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.accent} />
         }
       >
-        <SharedHeader 
-          onSearchPress={handleSearchPress}
-          onMenuPress={() => navigation.openDrawer()}
-        />
 
         <View style={styles.heroContainer}>
           <View style={styles.heroImageContainer}>
