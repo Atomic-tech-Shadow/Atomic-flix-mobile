@@ -83,6 +83,20 @@ const SimpleAnimeCard: React.FC<SimpleAnimeCardProps> = ({
         </View>
       ) : null}
 
+      {/* Bouton de suppression spécifique pour l'historique (sous le drapeau) */}
+      {showRemoveButton && onRemove && (
+        <TouchableOpacity 
+          style={styles.historyRemoveButtonUnderFlag}
+          onPress={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
+          activeOpacity={0.7}
+        >
+          <Ionicons name="trash" size={18} color={COLORS.error} />
+        </TouchableOpacity>
+      )}
+
       {/* Nouveaux badges isFin et isReporte et Langue */}
       <View style={styles.dynamicBadgesContainer}>
         {languageBadge ? (
@@ -241,6 +255,26 @@ const styles = StyleSheet.create({
     zIndex: 20,
     backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: 12,
+    display: 'none', // Masqué au profit du nouveau bouton sous le drapeau
+  },
+  historyRemoveButtonUnderFlag: {
+    position: 'absolute',
+    top: 35, // Positionné juste en dessous du drapeau (qui est à top: 6 + sa hauteur)
+    right: 6,
+    zIndex: 25,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    shadowColor: COLORS.error,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 4,
   },
 });
 
