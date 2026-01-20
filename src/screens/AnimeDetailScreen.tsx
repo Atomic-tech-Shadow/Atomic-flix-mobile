@@ -167,11 +167,18 @@ const AnimeDetailScreen: React.FC = () => {
       marginLeft: 10,
     },
     synopsisContainer: {
-      backgroundColor: 'rgba(255, 255, 255, 0.03)',
+      backgroundColor: 'rgba(255, 255, 255, 0.05)',
       borderRadius: 16,
       padding: 16,
-      borderWidth: 1,
-      borderColor: 'rgba(255, 255, 255, 0.05)',
+      borderWidth: 1.5,
+      borderColor: 'rgba(255, 255, 255, 0.1)',
+      // Effet 3D léger
+      transform: [{ perspective: 1000 }, { rotateX: '1deg' }],
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 10,
+      elevation: 4,
     },
     synopsisText: {
       color: COLORS.text.secondary,
