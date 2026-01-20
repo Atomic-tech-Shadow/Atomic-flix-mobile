@@ -49,6 +49,7 @@ const AboutScreen: React.FC<Props> = ({ navigation }) => {
       shadowOpacity: 0.3,
       shadowRadius: 12,
       elevation: 5,
+      tintColor: isDark ? undefined : COLORS.secondary,
     },
     appName: {
       fontSize: 32,
@@ -113,7 +114,7 @@ const AboutScreen: React.FC<Props> = ({ navigation }) => {
       elevation: 3,
     },
     linkButtonText: {
-      color: '#FFFFFF',
+      color: COLORS.text.primaryBold,
       fontSize: 15,
       fontWeight: '600',
     },

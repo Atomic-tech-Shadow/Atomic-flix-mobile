@@ -134,77 +134,77 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     left: 16,
     right: 16,
   },
-  bannerTitle: {
-    fontSize: 24, // Équivalent à text-2xl
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 4,
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10
-  },
-  bannerSeason: {
-    fontSize: 18, // Équivalent à text-lg
-    color: COLORS.text.secondary,
-    textTransform: 'uppercase',
-  },
-  scrollContainer: {
-    flex: 1,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    color: COLORS.text.muted,
-    marginTop: 16,
-    fontSize: 16,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 32,
-  },
-  errorText: {
-    color: COLORS.text.error,
-    fontSize: 18,
-    textAlign: 'center',
-    marginTop: 16,
-    marginBottom: 24,
-  },
-  retryButton: {
-    backgroundColor: COLORS.secondary,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  retryButtonText: {
-    color: COLORS.text.primary,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  languageSelector: {
-    flexDirection: 'row',
-    padding: 16,
-    justifyContent: 'flex-start',
-    gap: 16,
-  },
-  languageButton: {
-    width: 48, 
-    height: 48,
-    borderRadius: 8,
-    backgroundColor: COLORS.primary,
-    borderWidth: 2,
-    borderColor: COLORS.secondary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    overflow: 'hidden',
-    opacity: 0.5, 
-    padding: 8,
-  },
+    bannerTitle: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: COLORS.text.primaryBold,
+      marginBottom: 4,
+      textShadowColor: 'rgba(0, 0, 0, 0.75)',
+      textShadowOffset: { width: -1, height: 1 },
+      textShadowRadius: 10
+    },
+    bannerSeason: {
+      fontSize: 18,
+      color: COLORS.text.secondary,
+      textTransform: 'uppercase',
+    },
+    scrollContainer: {
+      flex: 1,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    loadingText: {
+      color: COLORS.text.muted,
+      marginTop: 16,
+      fontSize: 16,
+    },
+    errorContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 32,
+    },
+    errorText: {
+      color: COLORS.text.error,
+      fontSize: 18,
+      textAlign: 'center',
+      marginTop: 16,
+      marginBottom: 24,
+    },
+    retryButton: {
+      backgroundColor: COLORS.secondary,
+      paddingHorizontal: 24,
+      paddingVertical: 12,
+      borderRadius: 8,
+    },
+    retryButtonText: {
+      color: COLORS.text.primaryBold,
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+    languageSelector: {
+      flexDirection: 'row',
+      padding: 16,
+      justifyContent: 'flex-start',
+      gap: 16,
+    },
+    languageButton: {
+      width: 48, 
+      height: 48,
+      borderRadius: 8,
+      backgroundColor: COLORS.background.secondary,
+      borderWidth: 2,
+      borderColor: COLORS.secondary,
+      justifyContent: 'center',
+      alignItems: 'center',
+      position: 'relative',
+      overflow: 'hidden',
+      opacity: 0.5, 
+      padding: 8,
+    },
   languageButtonActive: {
     opacity: 1, // 100% d'opacité quand actif
     // Suppression des changements de couleur et effets
@@ -319,7 +319,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     marginBottom: 12,
   },
     pickerContainer: {
-      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
       borderRadius: 12,
       borderWidth: 2,
       borderColor: COLORS.secondary,
@@ -369,6 +369,9 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
       shadowOpacity: 0.6,
       shadowRadius: 25,
       elevation: 15,
+    },
+    searchBarContainer: {
+      padding: 16,
     },
 
   lastSelectionContainer: {
@@ -475,7 +478,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   downloadMenu: {
     position: 'absolute',
     top: 55,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.background.secondary,
     borderRadius: 8,
     minWidth: 200,
     shadowColor: '#000',
@@ -487,7 +490,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
   },
   downloadMenuHeader: {
     borderBottomWidth: 1,
-    borderBottomColor: '#475569',
+    borderBottomColor: COLORS.border.primary,
     paddingVertical: 12,
     paddingHorizontal: 16,
   },
@@ -642,31 +645,27 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
     borderStyle: 'dotted',
   },
 
-  // Styles pour la recherche
-  searchBarContainer: {
-    padding: 16,
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  searchInput: {
-    flex: 1,
-    color: COLORS.text.primary,
-    fontSize: 16,
-    marginLeft: 12,
-  },
-  clearSearchButton: {
-    padding: 4,
-  },
-  clearSearchText: {
-    color: COLORS.text.secondary,
-    fontSize: 18,
-  },
+    searchBar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+      borderRadius: 12,
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+    },
+    searchInput: {
+      flex: 1,
+      color: COLORS.text.primary,
+      fontSize: 16,
+      marginLeft: 12,
+    },
+    clearSearchButton: {
+      padding: 4,
+    },
+    clearSearchText: {
+      color: COLORS.text.muted,
+      fontSize: 18,
+    },
   loadingSearchContainer: {
     flex: 1,
     alignItems: 'center',
