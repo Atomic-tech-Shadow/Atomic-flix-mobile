@@ -59,11 +59,11 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 
         {/* Texte à côté du menu, style WhatsApp */}
         <View style={styles.titleSection}>
-          <View style={styles.logo3DContainer}>
-            <Text style={styles.logoTextMain}>ATOMIC</Text>
-            <Text style={styles.logoTextSub}>FLIX</Text>
-            <View style={styles.logoHologram} />
-          </View>
+          <Image 
+            source={require('../assets/images/logo-3d.png')}
+            style={styles.logoImageHeader}
+            resizeMode="contain"
+          />
         </View>
 
         {/* Actions à droite */}
@@ -136,7 +136,12 @@ const styles = StyleSheet.create({
   },
   titleSection: {
     flex: 1,
-    marginLeft: 0,
+    marginLeft: 10,
+    justifyContent: 'center',
+  },
+  logoImageHeader: {
+    width: 140,
+    height: 40,
   },
   logo3DContainer: {
     flexDirection: 'row',

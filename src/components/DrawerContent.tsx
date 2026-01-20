@@ -73,7 +73,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
         ]}>
           <View style={styles.logoContainer}>
             <Image 
-              source={require('../../assets/atomic-flix-logo-new.png')}
+              source={require('../assets/images/logo-3d.png')}
               style={styles.logoImage}
               resizeMode="contain"
             />
