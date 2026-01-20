@@ -163,7 +163,7 @@ export default function AnimatedSplashScreen({
             }}
           >
             <Image
-              source={require('../assets/images/logo-3d.png')}
+              source={require('../../assets/atomic-flix-logo-new.png')}
               style={styles.logo}
               resizeMode="contain"
             />
