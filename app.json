@@ -4,12 +4,12 @@
     "slug": "atomic-flix",
     "version": "3.1.0",
     "orientation": "portrait",
-    "icon": "./assets/atomic-flix-logo-new.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0F0F0F",
     "primaryColor": "#1A1A1A",
     "splash": {
-      "image": "./assets/atomic-flix-logo-new.png",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#0F0F0F"
     },
@@ -17,8 +17,8 @@
     "android": {
       "versionCode": 4,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/atomic-flix-logo-new.png",
-        "backgroundColor": "#0F0F0F"
+        "foregroundImage": "./assets/icon-android.png",
+        "backgroundColor": "#8B5DFF"
       },
       "package": "com.atomic.flix",
       "intentFilters": [
@@ -53,7 +53,7 @@
       "bundler": "metro"
     },
     "notification": {
-      "icon": "./assets/atomic-flix-logo-new.png"
+      "icon": "./assets/icon-android.png"
     },
     "plugins": [
       "./android-manifest-config.js",
@@ -61,7 +61,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/atomic-flix-logo-new.png",
+          "icon": "./assets/icon-android.png",
           "defaultChannel": "atomic-flix-main",
           "sounds": [],
           "enableBackgroundRemoteNotifications": true,
@@ -74,7 +74,7 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#0F0F0F",
-          "image": "./assets/atomic-flix-logo-new.png",
+          "image": "./assets/logo.png",
           "imageWidth": 280,
           "resizeMode": "contain"
         }
