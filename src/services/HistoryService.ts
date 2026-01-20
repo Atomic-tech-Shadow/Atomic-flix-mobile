@@ -48,6 +48,22 @@ class HistoryService {
       };
     }
 
+    // Gestion des OAV
+    if (animeId.toLowerCase().includes('oav')) {
+      return {
+        seasonName: 'OAV',
+        seasonNumber: 0
+      };
+    }
+
+    // Gestion des Films
+    if (animeId.toLowerCase().includes('film')) {
+      return {
+        seasonName: 'Film',
+        seasonNumber: -1
+      };
+    }
+
     // Fallback par défaut
     return {
       seasonName: 'Saison 1',
@@ -60,12 +76,13 @@ class HistoryService {
     try {
       const existingHistory = await this.getWatchHistory();
       
-      // Vérifie si cet épisode existe déjà dans l'historique
-      const existingIndex = existingHistory.findIndex(
-        h => h.animeId === item.animeId && 
-             h.episodeNumber === item.episodeNumber && 
-             h.language === item.language
-      );
+    // Vérifie si cet épisode existe déjà dans l'historique
+    const existingIndex = existingHistory.findIndex(
+      h => h.animeId === item.animeId && 
+           h.episodeNumber === item.episodeNumber && 
+           h.language === item.language &&
+           (h.seasonNumber === item.seasonNumber || (!h.seasonNumber && !item.seasonNumber))
+    );
 
       const historyItem: WatchHistoryItem = {
         ...item,
