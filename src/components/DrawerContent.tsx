@@ -56,7 +56,9 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
 
   const handleMenuPress = (route: string) => {
     navigation.closeDrawer();
-    navigation.navigate(route);
+    // Utiliser HomeStack comme cible si la route est Home
+    const targetRoute = route === 'Home' ? 'HomeStack' : route;
+    navigation.navigate(targetRoute);
   };
 
   return (
