@@ -13,6 +13,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../contexts/ThemeContext';
 import Constants from 'expo-constants';
 
+import { COLORS } from '../constants/newColors';
+
 const packageJson = require('../../package.json');
 
 interface DrawerContentProps extends DrawerContentComponentProps {}
@@ -147,20 +149,35 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    paddingVertical: 32,
+    paddingVertical: 40,
     paddingHorizontal: 20,
-    borderBottomWidth: 1,
+    borderBottomWidth: 1.5,
+    borderColor: 'rgba(168, 85, 247, 0.3)',
+    // Effet 3D pour le header
+    transform: [{ perspective: 1000 }, { rotateX: '5deg' }],
+    shadowColor: COLORS.secondary,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 15,
+    elevation: 8,
   },
   logoContainer: {
     width: '100%',
     height: 120,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 8,
+    marginBottom: 12,
+    // Lueur cosmique pour le logo
+    shadowColor: COLORS.secondary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 20,
   },
   logoImage: {
-    width: '100%',
-    height: '100%',
+    width: '90%',
+    height: '90%',
+    // Légère inclinaison 3D
+    transform: [{ rotateY: '-10deg' }, { rotateX: '5deg' }],
   },
   appName: {
     fontSize: 24,
@@ -169,62 +186,79 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   appVersion: {
-    fontSize: 12,
-    opacity: 0.7,
-    letterSpacing: 0.5,
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: COLORS.secondary,
+    opacity: 0.9,
+    letterSpacing: 1.5,
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
   },
   menuContainer: {
     flex: 1,
-    paddingVertical: 16,
-    paddingHorizontal: 8,
+    paddingVertical: 24,
+    paddingHorizontal: 12,
   },
   menuItem: {
-    marginHorizontal: 8,
-    marginVertical: 8,
-    borderRadius: 16,
+    marginHorizontal: 4,
+    marginVertical: 10,
+    borderRadius: 20,
     overflow: 'hidden',
-    borderLeftWidth: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 3,
+    borderLeftWidth: 5,
+    borderLeftColor: COLORS.secondary,
+    // Effet 3D flottant pour les items
+    transform: [{ perspective: 1000 }, { rotateX: '2deg' }, { translateX: 2 }],
+    shadowColor: COLORS.secondary,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 10,
+    elevation: 6,
   },
   menuItemContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 14,
+    paddingVertical: 16,
     paddingHorizontal: 16,
-    gap: 12,
+    gap: 14,
   },
   iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
+    width: 52,
+    height: 52,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(168, 85, 247, 0.3)',
   },
   menuTextContainer: {
     flex: 1,
   },
   menuTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    marginBottom: 3,
+    fontSize: 16,
+    fontWeight: '800',
+    marginBottom: 4,
+    letterSpacing: 0.5,
   },
   menuDescription: {
-    fontSize: 11,
-    lineHeight: 15,
-    opacity: 0.8,
+    fontSize: 12,
+    lineHeight: 16,
+    opacity: 0.7,
   },
   chevron: {
     marginLeft: 8,
+    // Effet pulsant simulé par l'inclinaison
+    transform: [{ rotate: '-5deg' }],
   },
   footer: {
     alignItems: 'center',
-    paddingVertical: 20,
+    paddingVertical: 24,
     paddingHorizontal: 20,
-    borderTopWidth: 1,
+    borderTopWidth: 2,
+    borderTopColor: COLORS.secondary,
+    // Effet 3D pour le footer
+    transform: [{ perspective: 1000 }, { rotateX: '-5deg' }],
+    backgroundColor: 'rgba(255, 255, 255, 0.02)',
   },
   footerText: {
     fontSize: 12,
