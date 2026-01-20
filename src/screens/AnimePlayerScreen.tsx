@@ -60,19 +60,19 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
 
   // États pour les données
   const [animeData, setAnimeData] = useState<AnimeData | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(
+    language || initialLanguage || 'VOSTFR'
+  );
   const [selectedSeason, setSelectedSeason] = useState<Season | null>(
     (seasonData as Season | null) || (seasonNumber ? { 
       name: `Saison ${seasonNumber}`, 
       value: String(seasonNumber), 
       number: Number(seasonNumber),
-      languages: [selectedLanguage || 'VOSTFR'],
+      languages: [language || initialLanguage || 'VOSTFR'],
       episodeCount: 0,
       url: '',
       available: true
     } as Season : null)
-  );
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(
-    language || initialLanguage || 'VOSTFR'
   );
   const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
   const [selectedPlayer, setSelectedPlayer] = useState<number>(0);
