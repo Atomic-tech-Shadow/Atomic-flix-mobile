@@ -173,7 +173,10 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    blurRadius: 20,
+    shadowColor: COLORS.secondary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 20,
   },
   core: {
     position: 'absolute',
