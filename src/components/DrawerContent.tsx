@@ -133,7 +133,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({ navigation }) => {
             shadowRadius: 8,
           }
         ]}>
-          <Text style={[styles.footerText, { color: colors.text.primary }]}>Dev: ATOMIC TECH</Text>
+          <Text style={[styles.footerText, { color: colors.text.primary }]}>Dev: cid AKUE</Text>
           <Text style={[styles.footerText, { color: colors.text.secondary }]}>© 2026 ATOMIC FLIX</Text>
           <Text style={[styles.footerSubtext, { color: colors.text.muted }]}>La meilleure app pour les otakus</Text>
         </View>
