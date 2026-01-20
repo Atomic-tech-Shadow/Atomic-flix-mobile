@@ -1917,7 +1917,7 @@ const AnimePlayerScreen: React.FC<Props> = ({ navigation, route }) => {
                 ]}>
                   {(lang === 'VF' || lang === 'VF1' || lang === 'VF2') ? 'VF' : 
                    lang === 'VA' ? 'VA' :
-                   lang === 'VOSTFR' ? 'VO' : 
+                   lang === 'VOSTFR' ? 'VOST' : 
                    lang}
                 </Text>
               </TouchableOpacity>
