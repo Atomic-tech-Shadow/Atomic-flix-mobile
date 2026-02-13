@@ -187,46 +187,40 @@ const AnimeDetailScreen: React.FC = () => {
     },
     seasonCard: {
       width: (width - 56) / 2,
-      height: 120,
-      borderRadius: 20,
+      height: 160,
+      borderRadius: 24,
       overflow: 'hidden',
-      position: 'relative',
       backgroundColor: COLORS.background.card,
-      borderWidth: 2,
-      borderColor: COLORS.border.glow,
-    },
-    seasonCardAnime: {
-      borderColor: COLORS.border.glow,
+      borderWidth: 1,
+      borderColor: COLORS.border.card,
+      marginBottom: 4,
     },
     seasonCardContent: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 12,
-      backgroundColor: 'rgba(0,0,0,0.5)',
+      padding: 16,
+      justifyContent: 'flex-end',
+    },
+    seasonCardGradient: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: '100%',
     },
     seasonCardTitle: {
       color: '#FFFFFF',
-      fontSize: 15,
+      fontSize: 16,
       fontWeight: 'bold',
-      textAlign: 'center',
-      marginBottom: 4,
-      textShadowColor: 'rgba(0, 0, 0, 0.75)',
+      marginBottom: 6,
+      textShadowColor: 'rgba(0, 0, 0, 0.5)',
       textShadowOffset: { width: 0, height: 1 },
-      textShadowRadius: 3,
+      textShadowRadius: 4,
     },
-    seasonCardBadgeAnime: {
-      color: COLORS.accent,
-      fontSize: 11,
-      fontWeight: '900',
-      textTransform: 'uppercase',
-      letterSpacing: 1.5,
-      backgroundColor: isDark ? 'rgba(168, 85, 247, 0.2)' : 'rgba(168, 85, 247, 0.1)',
-      paddingHorizontal: 8,
-      paddingVertical: 2,
-      borderRadius: 4,
-      borderWidth: 1,
-      borderColor: isDark ? 'rgba(168, 85, 247, 0.4)' : 'rgba(168, 85, 247, 0.2)',
+    seasonCardEpisode: {
+      color: COLORS.secondary,
+      fontSize: 12,
+      fontWeight: '700',
+      letterSpacing: 0.5,
     },
     seasonCardBadgeManga: {
       color: COLORS.badges.manga,
@@ -456,11 +450,14 @@ const AnimeDetailScreen: React.FC = () => {
           </View>
           <View style={styles.seasonsGrid}>
             {animeData.seasons?.map((season, index) => (
-              <TouchableOpacity key={index} style={[styles.seasonCard, styles.seasonCardAnime]} onPress={() => goToPlayer(season)}>
-                <Image source={{ uri: animeData.image }} style={{ position: 'absolute', width: '100%', height: '100%', opacity: 0.3 }} resizeMode="cover" />
+              <TouchableOpacity key={index} style={styles.seasonCard} onPress={() => goToPlayer(season)}>
+                <Image source={{ uri: animeData.image }} style={{ position: 'absolute', width: '100%', height: '100%' }} resizeMode="cover" />
+                <LinearGradient colors={['transparent', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.9)']} style={styles.seasonCardGradient} />
                 <View style={styles.seasonCardContent}>
                   <Text style={styles.seasonCardTitle} numberOfLines={2}>{season.name}</Text>
-                  <Text style={styles.seasonCardBadgeAnime}>{season.episodeCount > 0 ? `${season.episodeCount} EPISODES` : 'VOIR'}</Text>
+                  <Text style={styles.seasonCardEpisode}>
+                    {season.episodeCount > 0 ? `${season.episodeCount} ÉPISODES` : 'DÉTAILS'}
+                  </Text>
                 </View>
               </TouchableOpacity>
             ))}
