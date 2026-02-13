@@ -172,21 +172,11 @@ const AnimeDetailScreen: React.FC = () => {
       padding: 20,
       borderWidth: 1.5,
       borderColor: COLORS.border.card,
-      // Effet 3D prononcé
-      transform: [{ perspective: 1000 }, { rotateX: '2deg' }, { rotateY: '-1deg' }],
-      shadowColor: COLORS.secondary,
-      shadowOffset: { width: 0, height: 10 },
-      shadowOpacity: 0.4,
-      shadowRadius: 15,
-      elevation: 8,
     },
     synopsisText: {
       color: COLORS.text.primary,
       fontSize: 15,
       lineHeight: 24,
-      textShadowColor: 'rgba(0, 0, 0, 0.5)',
-      textShadowOffset: { width: 1, height: 1 },
-      textShadowRadius: 3,
     },
     seasonsGrid: {
       flexDirection: 'row',
@@ -204,13 +194,6 @@ const AnimeDetailScreen: React.FC = () => {
       backgroundColor: COLORS.background.card,
       borderWidth: 2,
       borderColor: COLORS.border.glow,
-      // Effet 3D flottant
-      transform: [{ perspective: 1000 }, { rotateX: '5deg' }, { translateY: -2 }],
-      shadowColor: COLORS.secondary,
-      shadowOffset: { width: 0, height: 8 },
-      shadowOpacity: 0.5,
-      shadowRadius: 12,
-      elevation: 10,
     },
     seasonCardAnime: {
       borderColor: COLORS.border.glow,
