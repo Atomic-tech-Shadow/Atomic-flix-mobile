@@ -342,31 +342,21 @@ const AnimeDetailScreen: React.FC = () => {
     setSearchResults([]);
   };
 
-  if (loading && !animeData) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <LoadingSpinner message="Chargement..." size="large" color={COLORS.secondary} />
-        </View>
-      </SafeAreaView>
-    );
-  }
+  const renderLoading = () => (
+    <View style={styles.loadingContainer}>
+      <LoadingSpinner message="Chargement..." size="large" color={COLORS.secondary} />
+    </View>
+  );
 
-  if (error && !animeData) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.errorContainer}>
-          <Ionicons name="alert-circle" size={48} color={COLORS.error} />
-          <Text style={styles.errorText}>{error}</Text>
-          <TouchableOpacity style={styles.retryButton} onPress={loadAnimeData}>
-            <Text style={styles.retryText}>Réessayer</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-    );
-  }
-
-  if (!animeData) return null;
+  const renderError = () => (
+    <View style={styles.errorContainer}>
+      <Ionicons name="alert-circle" size={48} color={COLORS.error} />
+      <Text style={styles.errorText}>{error}</Text>
+      <TouchableOpacity style={styles.retryButton} onPress={loadAnimeData}>
+        <Text style={styles.retryText}>Réessayer</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
@@ -396,75 +386,81 @@ const AnimeDetailScreen: React.FC = () => {
         onMenuPress={() => navigation.openDrawer()}
       />
 
-      <OptimizedScrollView 
-        style={styles.scrollView}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.accent} />
-        }
-      >
+      {loading && !animeData ? (
+        renderLoading()
+      ) : error && !animeData ? (
+        renderError()
+      ) : animeData ? (
+        <OptimizedScrollView 
+          style={styles.scrollView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.accent} />
+          }
+        >
 
-        <View style={styles.heroContainer}>
-          <View style={styles.heroImageContainer}>
-            <Image source={{ uri: animeData.image }} style={styles.heroImage} resizeMode="cover" />
-            <LinearGradient colors={['transparent', 'rgba(15, 15, 15, 0.5)', COLORS.primary]} style={styles.heroGradient} />
+          <View style={styles.heroContainer}>
+            <View style={styles.heroImageContainer}>
+              <Image source={{ uri: animeData.image }} style={styles.heroImage} resizeMode="cover" />
+              <LinearGradient colors={['transparent', 'rgba(15, 15, 15, 0.5)', COLORS.primary]} style={styles.heroGradient} />
+            </View>
+            <View style={styles.heroContent}>
+              <Text style={styles.heroTitle} numberOfLines={2}>{animeData.title}</Text>
+              <View style={styles.heroBadgesCompact}>
+                {animeData.year && (
+                  <View style={styles.heroBadgeSmall}>
+                    <View style={styles.badgeDotSmall} />
+                    <Text style={styles.badgeTextSmall}>{animeData.year}</Text>
+                  </View>
+                )}
+                {animeData.status && (
+                  <View style={styles.heroBadgeSmall}>
+                    <View style={[styles.badgeDotSmall, { backgroundColor: COLORS.secondary }]} />
+                    <Text style={styles.badgeTextSmall}>{animeData.status}</Text>
+                  </View>
+                )}
+                {animeData.genres?.slice(0, 2).map((genre, idx) => (
+                  <View key={idx} style={styles.heroBadgeSmall}>
+                    <View style={[styles.badgeDotSmall, { backgroundColor: '#A855F7' }]} />
+                    <Text style={styles.badgeTextSmall}>{genre}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
           </View>
-          <View style={styles.heroContent}>
-            <Text style={styles.heroTitle} numberOfLines={2}>{animeData.title}</Text>
-            <View style={styles.heroBadgesCompact}>
-              {animeData.year && (
-                <View style={styles.heroBadgeSmall}>
-                  <View style={styles.badgeDotSmall} />
-                  <Text style={styles.badgeTextSmall}>{animeData.year}</Text>
-                </View>
-              )}
-              {animeData.status && (
-                <View style={styles.heroBadgeSmall}>
-                  <View style={[styles.badgeDotSmall, { backgroundColor: COLORS.secondary }]} />
-                  <Text style={styles.badgeTextSmall}>{animeData.status}</Text>
-                </View>
-              )}
-              {animeData.genres?.slice(0, 2).map((genre, idx) => (
-                <View key={idx} style={styles.heroBadgeSmall}>
-                  <View style={[styles.badgeDotSmall, { backgroundColor: '#A855F7' }]} />
-                  <Text style={styles.badgeTextSmall}>{genre}</Text>
-                </View>
+
+          <View style={styles.mobileSection}>
+            <View style={styles.mobileSectionHeader}>
+              <Ionicons name="information-circle" size={24} color={COLORS.accent} />
+              <Text style={styles.mobileSectionTitle}>Synopsis</Text>
+            </View>
+            <View style={styles.synopsisContainer}>
+              <Text style={styles.synopsisText}>{animeData.synopsis || "Aucun synopsis disponible."}</Text>
+            </View>
+          </View>
+
+          <View style={[styles.mobileSection, { paddingTop: 0 }]}>
+            <View style={styles.mobileSectionHeader}>
+              <Ionicons name="list" size={24} color={COLORS.secondary} />
+              <Text style={styles.mobileSectionTitle}>Saisons & Films</Text>
+            </View>
+            <View style={styles.seasonsGrid}>
+              {animeData.seasons?.map((season, index) => (
+                <TouchableOpacity key={index} style={styles.seasonCard} onPress={() => goToPlayer(season)}>
+                  <Image source={{ uri: animeData.image }} style={{ position: 'absolute', width: '100%', height: '100%' }} resizeMode="cover" />
+                  <LinearGradient colors={['transparent', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.9)']} style={styles.seasonCardGradient} />
+                  <View style={styles.seasonCardContent}>
+                    <Text style={styles.seasonCardTitle} numberOfLines={2}>{season.name}</Text>
+                    <Text style={styles.seasonCardEpisode}>
+                      {season.episodeCount > 0 ? `${season.episodeCount} ÉPISODES` : 'DÉTAILS'}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               ))}
             </View>
           </View>
-        </View>
-
-        <View style={styles.mobileSection}>
-          <View style={styles.mobileSectionHeader}>
-            <Ionicons name="information-circle" size={24} color={COLORS.accent} />
-            <Text style={styles.mobileSectionTitle}>Synopsis</Text>
-          </View>
-          <View style={styles.synopsisContainer}>
-            <Text style={styles.synopsisText}>{animeData.synopsis || "Aucun synopsis disponible."}</Text>
-          </View>
-        </View>
-
-        <View style={[styles.mobileSection, { paddingTop: 0 }]}>
-          <View style={styles.mobileSectionHeader}>
-            <Ionicons name="list" size={24} color={COLORS.secondary} />
-            <Text style={styles.mobileSectionTitle}>Saisons & Films</Text>
-          </View>
-          <View style={styles.seasonsGrid}>
-            {animeData.seasons?.map((season, index) => (
-              <TouchableOpacity key={index} style={styles.seasonCard} onPress={() => goToPlayer(season)}>
-                <Image source={{ uri: animeData.image }} style={{ position: 'absolute', width: '100%', height: '100%' }} resizeMode="cover" />
-                <LinearGradient colors={['transparent', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.9)']} style={styles.seasonCardGradient} />
-                <View style={styles.seasonCardContent}>
-                  <Text style={styles.seasonCardTitle} numberOfLines={2}>{season.name}</Text>
-                  <Text style={styles.seasonCardEpisode}>
-                    {season.episodeCount > 0 ? `${season.episodeCount} ÉPISODES` : 'DÉTAILS'}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-        <View style={{ height: 40 }} />
-      </OptimizedScrollView>
+          <View style={{ height: 40 }} />
+        </OptimizedScrollView>
+      ) : null}
     </SafeAreaView>
   );
 };
